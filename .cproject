@@ -68,7 +68,7 @@
 					<folderInfo id="cdt.managedbuild.toolchain.gnu.macosx.base.453760004.1335453066." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.macosx.base.1328381825" name="cdt.managedbuild.toolchain.gnu.macosx.base" nonInternalBuilderId="cdt.managedbuild.target.gnu.builder.macosx.base" superClass="cdt.managedbuild.toolchain.gnu.macosx.base">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.MachO64" id="cdt.managedbuild.target.gnu.platform.macosx.base.1113942234" name="Debug Platform" osList="macosx" superClass="cdt.managedbuild.target.gnu.platform.macosx.base"/>
-							<builder buildPath="${workspace_loc:/xsilium/Debug}" id="cdt.managedbuild.target.gnu.builder.macosx.base.1002304708" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.macosx.base"/>
+							<builder buildPath="${workspace_loc:/xsilium/Debug}" id="cdt.managedbuild.target.gnu.builder.macosx.base.1002304708" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.macosx.base"/>
 							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.base.2084827230" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.base"/>
 							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.base.2056304279" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.base">
 								<option id="macosx.cpp.link.option.flags.1300055025" name="Linker flags" superClass="macosx.cpp.link.option.flags" value="-pthread" valueType="string"/>
