@@ -1,4 +1,4 @@
-#include "DotSceneLoader.h"
+#include "DotSceneLoader.hpp"
 #include <Ogre.h>
 #include <Terrain/OgreTerrain.h>
 #include <Terrain/OgreTerrainGroup.h>
