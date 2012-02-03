@@ -1,7 +1,8 @@
 #include <stdio.h> // Printf
 #include <signal.h> // gestion de signaux
+#include <cmath>
 
-#include "Auth/authServer.h" // serveur d'authantification
+#include "Auth/AuthServer.h" // serveur d'authantification
 
 int main()
 {
@@ -9,6 +10,6 @@ int main()
 
     authServer::authServer * authServer = new authServer::authServer();
     authServer->startThread();
-
+    while(1);
     return 0 ;
 }
