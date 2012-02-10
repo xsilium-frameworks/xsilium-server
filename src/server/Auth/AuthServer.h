@@ -8,6 +8,8 @@
 #ifndef AUTHSERVER_H_
 #define AUTHSERVER_H_
 
+#include <pthread.h>
+
 class authServer {
 public:
 	authServer();
@@ -22,6 +24,7 @@ public:
 
 private:
 	bool endThread;
+	pthread_t threadSocket;
 
 
 

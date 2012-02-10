@@ -9,6 +9,7 @@
 #define AUTHSOCKET_H_
 
 #include "RakPeerInterface.h"
+#include "../Authentification/Authentification.h"
 
 
 class AuthSocket {

@@ -1,6 +1,5 @@
 #include <stdio.h> // Printf
 #include <signal.h> // gestion de signaux
-#include <cmath>
 
 #include "Auth/AuthServer.h" // serveur d'authantification
 

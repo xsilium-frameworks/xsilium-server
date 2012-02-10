@@ -42,8 +42,8 @@ void AuthSocket::Start(void)
 {
 	RakNet::SocketDescriptor socketDescriptor;
 	socketDescriptor.port=(unsigned short) SERVER_PORT;
-	bool b = peer->Startup((unsigned short) 600,&socketDescriptor,1)==RakNet::RAKNET_STARTED;
-	RakAssert(b);
+	bool b = peer->Startup((unsigned short) 600,&socketDescriptor,1);
+	RakAssert(b==RakNet::RAKNET_STARTED);
 	peer->SetMaximumIncomingConnections(600);
 }
 
@@ -61,11 +61,20 @@ void AuthSocket::Update()
 		switch (p->data[0])
 		{
 		case ID_CONNECTION_LOST:
+			printf("connexion perdu");
+			break;
+
 		case ID_DISCONNECTION_NOTIFICATION:
+			printf("deconnexion" );
+			break;
+
 		case ID_NEW_INCOMING_CONNECTION:
 			printf("Connections = %i\n", ConnectionCount());
 			break;
+
  		case ID_USER_PACKET_ENUM:
+ 			printf("Packet recu\n");
+ 			//peer->Send((const char*) p->data, p->length, HIGH_PRIORITY, RELIABLE_ORDERED, 0, p->guid, true);
  			break;
 
 		}
