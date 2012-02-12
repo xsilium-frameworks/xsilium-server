@@ -8,7 +8,13 @@
 #ifndef AUTHSERVER_H_
 #define AUTHSERVER_H_
 
-#include <pthread.h>
+#include "RakThread.h"
+#include "BitStream.h"
+#include "RakPeerInterface.h"
+#include "MessageIdentifiers.h"
+#include "resource.h"
+#include "RakSleep.h"
+
 
 class authServer {
 public:
@@ -17,21 +23,9 @@ public:
 
 	void startThread();
 	void stopThread();
-	void restartThread();
-
-	void setEndThread(bool);
-	bool getEndThread();
 
 private:
 	bool endThread;
-	pthread_t threadSocket;
-
-
-
-
-
-
-
 
 };
 
