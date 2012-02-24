@@ -72,10 +72,10 @@
 							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.base.2084827230" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.base"/>
 							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.base.2056304279" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.base">
 								<option id="macosx.cpp.link.option.flags.1300055025" name="Linker flags" superClass="macosx.cpp.link.option.flags" value="-pthread -lpq" valueType="string"/>
-								<option id="macosx.cpp.link.option.libs.1220532641" name="Libraries (-l)" superClass="macosx.cpp.link.option.libs" valueType="libs"/>
+								<option id="macosx.cpp.link.option.libs.1220532641" name="Libraries (-l)" superClass="macosx.cpp.link.option.libs"/>
 								<option id="macosx.cpp.link.option.shared.118058187" name="Shared (-dynamiclib)" superClass="macosx.cpp.link.option.shared" value="false" valueType="boolean"/>
 								<option id="macosx.cpp.link.option.nodeflibs.1336748290" name="Do not use default libraries (-nodefaultlibs)" superClass="macosx.cpp.link.option.nodeflibs" value="false" valueType="boolean"/>
-								<option id="macosx.cpp.link.option.other.1062160634" name="Other options (-Xlinker [option])" superClass="macosx.cpp.link.option.other" valueType="stringList"/>
+								<option id="macosx.cpp.link.option.other.1062160634" name="Other options (-Xlinker [option])" superClass="macosx.cpp.link.option.other"/>
 								<option id="macosx.cpp.link.option.strip.563695065" name="Omit all symbol information (-s)" superClass="macosx.cpp.link.option.strip" value="false" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.macosx.cpp.linker.input.767485981" superClass="cdt.managedbuild.tool.macosx.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -98,7 +98,7 @@
 								<option id="gnu.c.compiler.option.include.paths.315838347" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Dep/Raknet}&quot;"/>
 								</option>
-								<option id="gnu.c.compiler.option.include.files.1321161099" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" valueType="includeFiles"/>
+								<option id="gnu.c.compiler.option.include.files.1321161099" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.864099728" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 						</toolChain>
