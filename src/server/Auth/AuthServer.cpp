@@ -23,25 +23,32 @@ RAK_THREAD_DECLARATION(SocketThread)
 
 	while(!endthread)
 	{
-		Packet * p = peer->Receive();
-		while (p)
+		Packet * packet = peer->Receive();
+		while (packet)
 		{
-			switch (p->data[0])
+			switch (packet->data[0])
 			{
+			case ID_NEW_INCOMING_CONNECTION:
+				printf("Nouvelle connexion\n");
+				if(!auth->CreateClient(packet))
+					printf("Impossible de cree le client\n");
+				break;
+			case ID_CONNECTION_LOST:
+			case ID_DISCONNECTION_NOTIFICATION:
+				printf("deconnexion\n");
+				if(!auth->DeleteClient(packet))
+					printf("Impossible de supprimer le client\n");
+				break;
 	 		case ID_USER_PACKET_ENUM:
 	 			printf("Packet recu\n");
-	 			if(auth->_HandleLogonChallenge(p->data))
-	 			{
-	 				printf("client auth true\n");
-	 			}
-
-
+	 			if(!auth->_HandleLogonChallenge(packet))
+	 				printf("Impossible d'authentifier le client\n");
 	 			break;
 	 		default:
 	 			break;
 			}
-			peer->DeallocatePacket(p);
-			p = peer->Receive();
+			peer->DeallocatePacket(packet);
+			packet = peer->Receive();
 		}
 		RakSleep(30);
 	}

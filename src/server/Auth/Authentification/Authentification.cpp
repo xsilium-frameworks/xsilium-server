@@ -14,8 +14,49 @@ Authentification::~Authentification() {
 	// TODO Auto-generated destructor stub
 }
 
-bool Authentification::_HandleLogonChallenge( unsigned char *data)
+bool Authentification::FindClient(RakNet::RakNetGUID guid)
 {
+
+	for (client=listOfClient.begin() ; client!=listOfClient.end() ; ++client)
+	{
+	  if ( client->guid == guid )
+		  return true;
+	}
+
+	return false;
+}
+
+
+bool Authentification::CreateClient(Packet *packet)
+{
+	sClient clientTemp ;
+	clientTemp.guid = packet->guid ;
+	//clientTemp.login = (char)std::rand();
+	listOfClient.push_back(clientTemp);
+
+	return true;
+}
+
+bool Authentification::DeleteClient(Packet *packet)
+{
+	FindClient(packet->guid);
+	listOfClient.erase(client);
+	return true;
+}
+
+
+
+bool Authentification::_HandleLogonChallenge( Packet *packet)
+{
+	FindClient(packet->guid);
+
+	printf("Nom du client : %c\n",client->login);
+
+	//if (packet->length < sizeof(sAuthLogonChallenge_C))
+	//	return false;
+
+	//sAuthLogonChallenge_C *data = (sAuthLogonChallenge_C *) &packet->data ;
+
 
 	return true;
 }

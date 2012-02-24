@@ -71,7 +71,12 @@
 							<builder buildPath="${workspace_loc:/xsilium/Debug}" id="cdt.managedbuild.target.gnu.builder.macosx.base.1002304708" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.macosx.base"/>
 							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.base.2084827230" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.base"/>
 							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.base.2056304279" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.base">
-								<option id="macosx.cpp.link.option.flags.1300055025" name="Linker flags" superClass="macosx.cpp.link.option.flags" value="-pthread" valueType="string"/>
+								<option id="macosx.cpp.link.option.flags.1300055025" name="Linker flags" superClass="macosx.cpp.link.option.flags" value="-pthread -lpq" valueType="string"/>
+								<option id="macosx.cpp.link.option.libs.1220532641" name="Libraries (-l)" superClass="macosx.cpp.link.option.libs" valueType="libs"/>
+								<option id="macosx.cpp.link.option.shared.118058187" name="Shared (-dynamiclib)" superClass="macosx.cpp.link.option.shared" value="false" valueType="boolean"/>
+								<option id="macosx.cpp.link.option.nodeflibs.1336748290" name="Do not use default libraries (-nodefaultlibs)" superClass="macosx.cpp.link.option.nodeflibs" value="false" valueType="boolean"/>
+								<option id="macosx.cpp.link.option.other.1062160634" name="Other options (-Xlinker [option])" superClass="macosx.cpp.link.option.other" valueType="stringList"/>
+								<option id="macosx.cpp.link.option.strip.563695065" name="Omit all symbol information (-s)" superClass="macosx.cpp.link.option.strip" value="false" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.macosx.cpp.linker.input.767485981" superClass="cdt.managedbuild.tool.macosx.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -84,8 +89,9 @@
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.base.1577868539" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.base">
 								<option id="gnu.cpp.compiler.option.include.paths.503957194" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Dep/Raknet}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Dep}&quot;"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.821053865" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -arch i386 -Xarch_x86_64" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.821053865" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.183112387" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool command="gcc" id="cdt.managedbuild.tool.gnu.c.compiler.macosx.base.707491786" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.base">
