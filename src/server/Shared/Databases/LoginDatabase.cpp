@@ -32,25 +32,51 @@ bool LoginDatabase::selectAccout(const char * userName,char * results)
 	if (strlen(userName)>32)
 		return false ;
 	RakNet::RakString escapedUserName = GetEscapedString(userName);
-
-
-		sprintf(query, "SELECT a.sha_pass_hash,a.id,a.locked,a.last_ip,aa.gmlevel,a.v,a.s FROM account a LEFT JOIN account_access aa ON (a.id = aa.id) WHERE a.username = '%s'", escapedUserName.C_String());
-		if (ExecuteBlockingCommand(query, &result, false)==false)
-		{
-			PQclear(result);
-			return false;
-		}
-
-		int numRows = PQntuples(result);
-		if (numRows>0)
-		{
-			int fileIdIndex = PQfnumber(result, "fileId");
-			int fileLengthIndex = PQfnumber(result, "fileLength");
-		}
+	sprintf(query, "SELECT a.sha_pass_hash,a.id,a.locked,a.last_ip,aa.gmlevel,a.v,a.s FROM account a LEFT JOIN account_access aa ON (a.id = aa.id) WHERE a.username = '%s'", escapedUserName.C_String());
+	if (ExecuteBlockingCommand(query, &result, false)==false)
+	{
 		PQclear(result);
-
-
-
+		return false;
+	}
+	int numRows = PQntuples(result);
+	if (numRows>0)
+	{
+		int fileIdIndex = PQfnumber(result, "fileId");
+		int fileLengthIndex = PQfnumber(result, "fileLength");
+	}
+	PQclear(result);
 
 	return true ;
 }
+
+bool LoginDatabase::getIPBan(std::string *IP,char * results)
+{
+	PGresult *result;
+	char query[512];
+	sprintf(query, "SELECT * FROM ip_banned WHERE ip = '%s'", IP->c_str() );
+	if (ExecuteBlockingCommand(query, &result, false)==false)
+	{
+		PQclear(result);
+		return false;
+	}
+
+	results['rows'] = PQntuples(result);
+	PQclear(result);
+	return true ;
+}
+
+bool LoginDatabase::setIPBan()
+{
+	PGresult *result;
+	char query[512] = "DELETE FROM ip_banned WHERE unbandate<=UNIX_TIMESTAMP() AND unbandate<>bandate" ;
+	if (ExecuteBlockingCommand(query, &result, false)==false)
+	{
+		PQclear(result);
+		return false;
+	}
+
+	PQclear(result);
+	return true ;
+}
+
+

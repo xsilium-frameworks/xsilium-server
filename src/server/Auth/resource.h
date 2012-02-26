@@ -15,14 +15,17 @@ static const int NUM_CLIENTS=100;
 
 typedef struct AUTH_LOGON_CHALLENGE_C
 {
-    int   cmd;
-    int   error;
-    char   version;
-    int   platform[4];
-    int   os[4];
-    int   country[4];
-    int   loginLen;
-    char   login;
+    uint8_t   cmd;
+    uint8_t   error;
+    uint16_t  size;
+    uint8_t   version1;
+    uint16_t  build;
+    uint8_t   platform[4];
+    uint8_t   os[4];
+    uint8_t   country[4];
+    uint32_t  timezone_bias;
+    uint8_t   login_len;
+    uint8_t   login[1];
 } sAuthLogonChallenge_C;
 
 typedef struct AUTH_LOGON_PROOF_C

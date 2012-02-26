@@ -53,8 +53,10 @@ RAK_THREAD_DECLARATION(SocketThread)
 		RakSleep(30);
 	}
 
+	delete auth;
 
-	return 0;
+
+	return false;
 }
 
 

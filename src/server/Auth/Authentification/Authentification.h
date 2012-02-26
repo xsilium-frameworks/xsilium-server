@@ -8,8 +8,9 @@
 #define AUTHENTIFICATION_H_
 
 #include <stdio.h>
-#include <stdint.h>
 #include <vector>
+#include <gmp.h>
+#include <string>
 
 
 #include "RakThread.h"
@@ -17,15 +18,23 @@
 #include "RakPeerInterface.h"
 #include "MessageIdentifiers.h"
 #include "RakSleep.h"
-#include "../resource.h"
 
+
+#include "../resource.h"
+#include "../../Shared/Databases/LoginDatabase.h"
 
 using namespace RakNet;
+using namespace std;
 
 typedef struct
 {
-	RakNet::RakNetGUID 	guid;
-    char   login;
+	RakNetGUID 	guid;
+	string IP ;
+    string login;
+    uint16_t  build;
+    uint8_t   platform[4];
+    uint8_t   os[4];
+    uint8_t   country[4];
 } sClient;
 
 
@@ -46,8 +55,13 @@ public:
 
 private:
 
-    std::vector<sClient> listOfClient ;
-    std::vector<sClient>::iterator client ;
+    vector<sClient> listOfClient ;
+    vector<sClient>::iterator client ;
+    LoginDatabase * realms ;
+    char connectionString[256];
+
+    bool isDBConnect ;
+
 
 };
 
