@@ -1,8 +1,7 @@
 #include "PostgreSQLInterface.h"
 #include "VariadicSQLParser.h"
 
-// libpq-fe.h is part of PostgreSQL which must be installed on this computer to use the PostgreRepository
-#include "libpq-fe.h"
+
 
 #ifdef _CONSOLE_1
 #include "Console1Includes.h"
@@ -55,7 +54,7 @@ bool PostgreSQLInterface::Connect(const char *conninfo)
 		if (isConnected==false)
 		{
 			PQfinish(pgConn);
-			return false;
+			return isConnected ;
 		}
 		pgConnAllocatedHere=true;
 	}

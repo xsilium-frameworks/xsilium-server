@@ -9,18 +9,8 @@
 
 Authentification::Authentification() {
 	realms = new LoginDatabase();
-	char connectionString[256],password[128];
-	char username[256];
-	strcpy(username, "postgres");
-	strcpy(password, "johan1");
-	strcpy(connectionString, "user=");
-	strcat(connectionString, username);
-	strcat(connectionString, " password=");
-	strcat(connectionString, password);
+	connectionString = "host=localhost port= 5432 dbname=realms user=postgres password=johan1";
 	isDBConnect = realms->Connect(connectionString);
-	printf("Nom du client : %s\n",realms->GetLastError());
-
-
 }
 
 Authentification::~Authentification() {
@@ -61,64 +51,57 @@ bool Authentification::DeleteClient(Packet *packet)
 
 bool Authentification::_HandleLogonChallenge( Packet *packet)
 {
-	if (packet->length < sizeof(sAuthLogonChallenge_C))
-		return false;
+	//if (packet->length < sizeof(sAuthLogonChallenge_C))
+	//	return false;
 
 	FindClient(packet->guid);
 
 	sAuthLogonChallenge_C *data = (sAuthLogonChallenge_C *) &packet->data ;
 
-	client->login = (const char*) data->login ;
+	string login = (const char*) data->login ;
 	client->build = data->build;
 
-	printf("Nom du client : %s\n",client->login.c_str());
+	printf("Nom du client : %s\n",login.c_str());
 
-	char *results;
+	bool resultsGetBan;
 	realms->setIPBan();
 	client->IP = packet->systemAddress.ToString(false);
-
-	if(realms->getIPBan(&client->IP,results))
+	if(realms->getIPBan(&client->IP,&resultsGetBan))
 	{
-		if(!results['rows'])
+		if(resultsGetBan)
 		{
-			printf("[AuthChallenge] L'ip %s est bannie !",client->login.c_str());
+			printf("[AuthChallenge] L'ip %s est bannie !\n",client->IP.c_str());
+			return false;
 		}
-		else
-			return true ;
 
+		if (realms->selectAccount(login.c_str(),client.base()))
+		{
+			if(client->idLogin == 0)
+			{
+				printf("[AuthChallenge] Le compte %s n'existe pas \n",login.c_str());
+				return false;
+			}
+			if(client->locked)
+			{
+				printf("[AuthChallenge] Le compte %s est lier a l'IP %s \n",login.c_str(),client->lastIP.c_str());
+				printf("[AuthChallenge] Le client ˆ pour l'IP %s \n",client->IP.c_str());
 
+				if(client->IP != client->lastIP)
+				{
+					printf("[AuthChallenge] L'IP %s ne correspond pas ˆ la derniere IP %s \n",client->IP.c_str(),client->lastIP.c_str());
+					return false;
+				}
+				else
+					printf("[AuthChallenge] Les IPs correspondent \n");
+			}
 
+		}
 
 
 	}
 
+
 /*
-	        ///- Get the account details from the account table
-	        // No SQL injection (prepared statement)
-	        stmt = LoginDatabase.GetPreparedStatement(LOGIN_GET_LOGONCHALLENGE);
-	        stmt->setString(0, _login);
-
-	        PreparedQueryResult res2 = LoginDatabase.Query(stmt);
-	        if (res2)
-	        {
-	            ///- If the IP is 'locked', check that the player comes indeed from the correct IP address
-	            bool locked = false;
-	            if (res2->GetUInt8(2) == 1)            // if ip is locked
-	            {
-	                sLog.outStaticDebug("[AuthChallenge] Account '%s' is locked to IP - '%s'", _login.c_str(), res2->GetString(3));
-	                sLog.outStaticDebug("[AuthChallenge] Player address is '%s'", ip_address.c_str());
-	                if (strcmp(res2->GetCString(3), ip_address.c_str()))
-	                {
-	                    sLog.outStaticDebug("[AuthChallenge] Account IP differs");
-	                    pkt << (uint8) WOW_FAIL_SUSPENDED;
-	                    locked=true;
-	                }
-	                else
-	                    sLog.outStaticDebug("[AuthChallenge] Account IP matches");
-	            }
-	            else
-	                sLog.outStaticDebug("[AuthChallenge] Account '%s' is not locked to ip", _login.c_str());
-
 	            if (!locked)
 	            {
 	                //set expired bans to inactive

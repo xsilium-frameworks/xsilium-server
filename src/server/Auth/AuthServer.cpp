@@ -69,9 +69,9 @@ void authServer::startThread()
 	printf("Demarrage du thread d'authentification\n");
 	SocketDescriptor socketDescriptor;
 	socketDescriptor.port=(unsigned short) SERVER_PORT;
-	bool b = peer->Startup((unsigned short) 600,&socketDescriptor,1)==RAKNET_STARTED;
+	bool b = peer->Startup((unsigned short) NUM_CLIENTS,&socketDescriptor,1)==RAKNET_STARTED;
 	RakAssert(b);
-	peer->SetMaximumIncomingConnections(600);
+	peer->SetMaximumIncomingConnections(NUM_CLIENTS);
 	RakThread::Create(&SocketThread, &this->endThread);
 
 

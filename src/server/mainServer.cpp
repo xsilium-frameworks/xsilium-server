@@ -1,6 +1,6 @@
 #include <stdio.h> // Printf
 #include <iostream>
-#include "Shared/SignalHandler/SignalHandler.h"
+#include "SignalHandler/SignalHandler.h"
 
 #include "Auth/AuthServer.h" // serveur d'authantification
 

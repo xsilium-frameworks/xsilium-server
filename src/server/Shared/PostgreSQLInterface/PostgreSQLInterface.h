@@ -10,6 +10,9 @@ typedef struct pg_result PGresult;
 #include "RakString.h"
 #include "DS_OrderedList.h"
 
+// libpq-fe.h is part of PostgreSQL which must be installed on this computer to use the PostgreRepository
+#include "libpq-fe.h"
+
 class PostgreSQLInterface
 {
 public:

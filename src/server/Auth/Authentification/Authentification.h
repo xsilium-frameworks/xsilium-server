@@ -21,21 +21,13 @@
 
 
 #include "../resource.h"
-#include "../../Shared/Databases/LoginDatabase.h"
+#include "Databases/LoginDatabase.h"
+#include "Structure/Server.h"
+#include "Structure/Client.h"
 
 using namespace RakNet;
 using namespace std;
 
-typedef struct
-{
-	RakNetGUID 	guid;
-	string IP ;
-    string login;
-    uint16_t  build;
-    uint8_t   platform[4];
-    uint8_t   os[4];
-    uint8_t   country[4];
-} sClient;
 
 
 class Authentification {
@@ -45,7 +37,7 @@ public:
 
 	bool CreateClient(Packet *packet);
 	bool DeleteClient(Packet *packet);
-	bool FindClient(RakNet::RakNetGUID guid);
+	bool FindClient(RakNetGUID guid);
 
     bool _HandleLogonChallenge( RakNet::Packet *packet);
     bool _HandleLogonProof();
@@ -58,7 +50,7 @@ private:
     vector<sClient> listOfClient ;
     vector<sClient>::iterator client ;
     LoginDatabase * realms ;
-    char connectionString[256];
+    const char * connectionString;
 
     bool isDBConnect ;
 

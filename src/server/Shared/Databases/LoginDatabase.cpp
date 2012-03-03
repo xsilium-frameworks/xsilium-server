@@ -5,8 +5,6 @@
  *      Author: joda2
  */
 
-// libpq-fe.h is part of PostgreSQL which must be installed on this computer to use the PostgreRepository
-#include "libpq-fe.h"
 #include "LoginDatabase.h"
 // #include "SHA1.h"
 #include <stdlib.h>
@@ -25,14 +23,13 @@ LoginDatabase::~LoginDatabase() {
 }
 
 
-bool LoginDatabase::selectAccout(const char * userName,char * results)
+bool LoginDatabase::selectAccount(const char * userName,sClient *client)
 {
 	PGresult *result;
 	char query[512];
 	if (strlen(userName)>32)
 		return false ;
-	RakNet::RakString escapedUserName = GetEscapedString(userName);
-	sprintf(query, "SELECT a.sha_pass_hash,a.id,a.locked,a.last_ip,aa.gmlevel,a.v,a.s FROM account a LEFT JOIN account_access aa ON (a.id = aa.id) WHERE a.username = '%s'", escapedUserName.C_String());
+	sprintf(query, "SELECT a.sha_pass_hash,a.id,a.locked,a.last_ip,aa.gmlevel,aa.realmID,ab.unbandate FROM account a LEFT outer JOIN account_access aa ON (a.id = aa.id) Left outer join account_banned ab on a.id = ab.id WHERE a.username = 'Joda'");
 	if (ExecuteBlockingCommand(query, &result, false)==false)
 	{
 		PQclear(result);
@@ -41,34 +38,43 @@ bool LoginDatabase::selectAccout(const char * userName,char * results)
 	int numRows = PQntuples(result);
 	if (numRows>0)
 	{
-		int fileIdIndex = PQfnumber(result, "fileId");
-		int fileLengthIndex = PQfnumber(result, "fileLength");
+		client->idLogin = atoi(PQgetvalue(result,0,PQfnumber(result, "id")));
+		client->locked = (bool)PQgetvalue(result,0,PQfnumber(result, "locked"));
+		for(int i  = 0 ; i < numRows ; i++)
+		{
+			client->gmlevel[atoi(PQgetvalue(result,i,PQfnumber(result, "realmID")))] = atoi(PQgetvalue(result,i,PQfnumber(result, "gmlevel")));
+		}
+
+		client->lastIP = PQgetvalue(result,0,PQfnumber(result, "last_ip"));
+		client->shaPassHash = PQgetvalue(result,0,PQfnumber(result, "sha_pass_hash"));
+		client->accountUnBanDate = atoi(PQgetvalue(result,0,PQfnumber(result, "unbandate")));
 	}
 	PQclear(result);
 
 	return true ;
 }
 
-bool LoginDatabase::getIPBan(std::string *IP,char * results)
+
+bool LoginDatabase::getIPBan(std::string *IP, bool *results)
 {
 	PGresult *result;
 	char query[512];
-	sprintf(query, "SELECT * FROM ip_banned WHERE ip = '%s'", IP->c_str() );
-	if (ExecuteBlockingCommand(query, &result, false)==false)
+	sprintf(query, "SELECT 1 FROM ip_banned WHERE ip = '%s'", IP->c_str() );
+	if (!ExecuteBlockingCommand(query, &result, false))
 	{
 		PQclear(result);
 		return false;
 	}
 
-	results['rows'] = PQntuples(result);
-	PQclear(result);
-	return true ;
+	results = (bool*)PQntuples(result);
+	return true;
+
 }
 
 bool LoginDatabase::setIPBan()
 {
 	PGresult *result;
-	char query[512] = "DELETE FROM ip_banned WHERE unbandate<=UNIX_TIMESTAMP() AND unbandate<>bandate" ;
+	char query[512] = "DELETE FROM ip_banned WHERE unbandate<=now() AND unbandate<>bandate" ;
 	if (ExecuteBlockingCommand(query, &result, false)==false)
 	{
 		PQclear(result);
