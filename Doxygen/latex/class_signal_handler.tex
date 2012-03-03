@@ -1,0 +1,89 @@
+\hypertarget{class_signal_handler}{\section{Signal\-Handler Class Reference}
+\label{class_signal_handler}\index{Signal\-Handler@{Signal\-Handler}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_signal_handler_a3149ab1b5e1c8940d11b182f8059d916}{Signal\-Handler} ()
+\item 
+\hyperlink{class_signal_handler_addc8b5b0b969eb405376a77a369de007}{$\sim$\-Signal\-Handler} ()
+\item 
+void \hyperlink{class_signal_handler_a90eff6c9610cdcd77a1706491f2ce28a}{setup\-Signal\-Handlers} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \hyperlink{class_signal_handler_a2183f0bfa67a2d4f48ac0728e87b4028}{got\-Exit\-Signal} ()
+\item 
+static void \hyperlink{class_signal_handler_a3957097139051b4d82bc50b83cf29080}{set\-Exit\-Signal} (bool \-\_\-b\-Exit\-Signal)
+\item 
+static void \hyperlink{class_signal_handler_a0481ef127cdf7fb80fd16a11f3c2b5a6}{exit\-Signal\-Handler} (int \-\_\-ignored)
+\end{DoxyCompactItemize}
+\subsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_signal_handler_aaba4b32f36557a877c9081c8eeed4a98}{static bool {\bfseries mb\-Got\-Exit\-Signal} = false}\label{class_signal_handler_aaba4b32f36557a877c9081c8eeed4a98}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_signal_handler_a3149ab1b5e1c8940d11b182f8059d916}{\index{Signal\-Handler@{Signal\-Handler}!Signal\-Handler@{Signal\-Handler}}
+\index{Signal\-Handler@{Signal\-Handler}!SignalHandler@{Signal\-Handler}}
+\subsubsection[{Signal\-Handler}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Signal\-Handler\-::\-Signal\-Handler} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_signal_handler_a3149ab1b5e1c8940d11b182f8059d916}
+Default Contructor. \hypertarget{class_signal_handler_addc8b5b0b969eb405376a77a369de007}{\index{Signal\-Handler@{Signal\-Handler}!$\sim$\-Signal\-Handler@{$\sim$\-Signal\-Handler}}
+\index{$\sim$\-Signal\-Handler@{$\sim$\-Signal\-Handler}!SignalHandler@{Signal\-Handler}}
+\subsubsection[{$\sim$\-Signal\-Handler}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Signal\-Handler\-::$\sim$\-Signal\-Handler} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_signal_handler_addc8b5b0b969eb405376a77a369de007}
+Destructor. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_signal_handler_a0481ef127cdf7fb80fd16a11f3c2b5a6}{\index{Signal\-Handler@{Signal\-Handler}!exit\-Signal\-Handler@{exit\-Signal\-Handler}}
+\index{exit\-Signal\-Handler@{exit\-Signal\-Handler}!SignalHandler@{Signal\-Handler}}
+\subsubsection[{exit\-Signal\-Handler}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf Signal\-Handler\-::exit\-Signal\-Handler} (
+\begin{DoxyParamCaption}
+\item[{int}]{\-\_\-ignored}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}\label{class_signal_handler_a0481ef127cdf7fb80fd16a11f3c2b5a6}
+Sets exit signal to true. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em \-\_\-ignored} & Not used but required by function prototype to match required handler. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_signal_handler_a2183f0bfa67a2d4f48ac0728e87b4028}{\index{Signal\-Handler@{Signal\-Handler}!got\-Exit\-Signal@{got\-Exit\-Signal}}
+\index{got\-Exit\-Signal@{got\-Exit\-Signal}!SignalHandler@{Signal\-Handler}}
+\subsubsection[{got\-Exit\-Signal}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf Signal\-Handler\-::got\-Exit\-Signal} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}\label{class_signal_handler_a2183f0bfa67a2d4f48ac0728e87b4028}
+Returns the bool flag indicating whether we received an exit signal \begin{DoxyReturn}{Returns}
+Flag indicating shutdown of program 
+\end{DoxyReturn}
+\hypertarget{class_signal_handler_a3957097139051b4d82bc50b83cf29080}{\index{Signal\-Handler@{Signal\-Handler}!set\-Exit\-Signal@{set\-Exit\-Signal}}
+\index{set\-Exit\-Signal@{set\-Exit\-Signal}!SignalHandler@{Signal\-Handler}}
+\subsubsection[{set\-Exit\-Signal}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf Signal\-Handler\-::set\-Exit\-Signal} (
+\begin{DoxyParamCaption}
+\item[{bool}]{\-\_\-b\-Exit\-Signal}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}\label{class_signal_handler_a3957097139051b4d82bc50b83cf29080}
+Sets the bool flag indicating whether we received an exit signal \hypertarget{class_signal_handler_a90eff6c9610cdcd77a1706491f2ce28a}{\index{Signal\-Handler@{Signal\-Handler}!setup\-Signal\-Handlers@{setup\-Signal\-Handlers}}
+\index{setup\-Signal\-Handlers@{setup\-Signal\-Handlers}!SignalHandler@{Signal\-Handler}}
+\subsubsection[{setup\-Signal\-Handlers}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf Signal\-Handler\-::setup\-Signal\-Handlers} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_signal_handler_a90eff6c9610cdcd77a1706491f2ce28a}
+Set up the signal handlers for C\-T\-R\-L-\/\-C. 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/server/\-Shared/\-Signal\-Handler/Signal\-Handler.\-h\item 
+src/server/\-Shared/\-Signal\-Handler/Signal\-Handler.\-cpp\end{DoxyCompactItemize}
