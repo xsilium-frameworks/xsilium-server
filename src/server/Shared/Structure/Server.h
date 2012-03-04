@@ -32,7 +32,7 @@ typedef struct AUTH_LOGON_PROOF_S
 typedef struct sClient
 {
 	RakNet::RakNetGUID 	guid; /*!< Numero unique generer lors de la connection au socket  */
-	std::string IP ; /*!<test      */
+	std::string IP ; /*!< L'ip du client       */
     uint8_t idLogin; /*      */
     uint16_t  build; /*      */
     uint8_t   platform[4]; /*      */
@@ -40,7 +40,7 @@ typedef struct sClient
     uint8_t   country[4]; /*      */
     std::string shaPassHash; /*      */
     bool locked; /*      */
-    std::string lastIP; /*      */
+    std::string lastIP; /*!< derniere IP du compte      */
     uint8_t gmlevel[50] ; /*      */
     std::string shaPassHask; /*      */
     int accountUnBanDate ; /*      */
