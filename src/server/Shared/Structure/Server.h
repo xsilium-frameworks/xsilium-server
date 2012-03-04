@@ -40,7 +40,7 @@ typedef struct sClient
     uint8_t   country[4]; /*      */
     std::string shaPassHash; /*      */
     bool locked; /*      */
-    std::string lastIP; /*!< derniere IP du compte      */
+    std::string lastIP; /*!< derniere IP du compte  */
     uint8_t gmlevel[50] ; /*      */
     std::string shaPassHask; /*      */
     int accountUnBanDate ; /*      */
