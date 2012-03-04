@@ -12,29 +12,38 @@
 #include <gmp.h>
 #include "RakPeerInterface.h"
 
+
+/** \struct AUTH_LOGON_PROOF_S
+ *
+ *
+ */
 typedef struct AUTH_LOGON_PROOF_S
 {
-    int   cmd;
-    int   error;
-    int   M2[20];
+    uint8_t   cmd; /*!< correspond au type de packet que l'on envoi */
+    int   error; /*!< correspond a l'erreur qui a ete detecter */
+    int   M2[20]; /*      */
 } sAuthLogonProof_S;
 
 
+/** \struct sClient
+ *
+ *
+ */
 typedef struct sClient
 {
-	RakNet::RakNetGUID 	guid;
-	std::string IP ;
-    uint8_t idLogin;
-    uint16_t  build;
-    uint8_t   platform[4];
-    uint8_t   os[4];
-    uint8_t   country[4];
-    std::string shaPassHash;
-    bool locked;
-    std::string lastIP;
-    uint8_t gmlevel[50] ;
-    std::string shaPassHask;
-    int accountUnBanDate ;
+	RakNet::RakNetGUID 	guid; /*!< Numero unique generer lors de la connection au socket  */
+	std::string IP ; /*!<test      */
+    uint8_t idLogin; /*      */
+    uint16_t  build; /*      */
+    uint8_t   platform[4]; /*      */
+    uint8_t   os[4]; /*      */
+    uint8_t   country[4]; /*      */
+    std::string shaPassHash; /*      */
+    bool locked; /*      */
+    std::string lastIP; /*      */
+    uint8_t gmlevel[50] ; /*      */
+    std::string shaPassHask; /*      */
+    int accountUnBanDate ; /*      */
 };
 
 
