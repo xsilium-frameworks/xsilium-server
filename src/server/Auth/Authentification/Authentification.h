@@ -11,16 +11,13 @@
 #include <vector>
 
 
-#include "RakThread.h"
 #include "BitStream.h"
-#include "RakPeerInterface.h"
 #include "MessageIdentifiers.h"
 #include "RakSleep.h"
 
 
 #include "../resource.h"
 #include "Databases/LoginDatabase.h"
-#include "Structure/Server.h"
 #include "Structure/Client.h"
 
 using namespace RakNet;

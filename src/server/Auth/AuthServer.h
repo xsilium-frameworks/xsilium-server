@@ -9,11 +9,8 @@
 #define AUTHSERVER_H_
 
 #include "RakThread.h"
-#include "BitStream.h"
-#include "RakPeerInterface.h"
-#include "MessageIdentifiers.h"
-#include "resource.h"
-#include "RakSleep.h"
+
+#include "Authentification/Authentification.h"
 
 
 class authServer {

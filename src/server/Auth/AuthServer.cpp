@@ -7,8 +7,6 @@
  */
 
 #include "AuthServer.h"
-#include "Authentification/Authentification.h"
-#include <stdio.h> // Printf
 
 
 using namespace RakNet;
