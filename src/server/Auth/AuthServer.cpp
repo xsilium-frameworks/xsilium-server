@@ -9,7 +9,7 @@
 #include "AuthServer.h"
 
 
-using namespace RakNet;
+using namespace RakNet; // a commenter
 
 RakPeerInterface *peer;
 
