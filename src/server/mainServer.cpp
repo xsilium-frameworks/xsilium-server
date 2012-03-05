@@ -1,4 +1,3 @@
-#include <stdio.h> // Printf
 #include <iostream>
 #include "SignalHandler/SignalHandler.h"
 

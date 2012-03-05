@@ -9,8 +9,6 @@
 
 #include <stdio.h>
 #include <vector>
-#include <gmp.h>
-#include <string>
 
 
 #include "RakThread.h"
