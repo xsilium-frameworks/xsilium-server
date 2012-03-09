@@ -19,7 +19,7 @@
 
 #include "Authentification/Authentification.h"
 
-  /*! \class CPlayer
+  /*! \class AuthServer
    * \brief classe permettant la gestion de l'authentification
    *
    *  La classe gère l'authentification des clients
