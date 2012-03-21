@@ -92,6 +92,14 @@ public:
 
 	bool FindClient(RakNetGUID guid);
 
+    /*!
+     *  \brief _HandleLogonChallenge
+     *
+     *  Recherche le client dans la DB
+     *
+     *  \param
+     */
+
     bool _HandleLogonChallenge( RakNet::Packet *packet);
     bool _HandleLogonProof();
     bool _HandleReconnectChallenge();
