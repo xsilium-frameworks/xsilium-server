@@ -1,12 +1,12 @@
 /*
- * AuthServer.h
+ * authServer.h
  *
  *  Created on: 2 f�vr. 2012
  *      Author:
  */
 
 /*!
- * \file AuthServer.h
+ * \file authServer.h
  * \brief authentication server
  * \author joda2
  *
@@ -19,7 +19,7 @@
 
 #include "Authentification/Authentification.h"
 
-  /*! \class AuthServer
+  /*! \class authServer
    * \brief classe permettant la gestion de l'authentification
    *
    *  La classe gère l'authentification des clients
