@@ -1,10 +1,10 @@
 /*
- * \file authServer.cpp
+ * AuthServer.h
  *
- *  Created on: \date 2 fŽvr. 2012
- *      Author: \author joda2
- *     \brief :
+ *  Created on: 2 fï¿½vr. 2012
+ *      Author:
  */
+
 
 #include "AuthServer.h"
 

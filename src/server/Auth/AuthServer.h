@@ -1,5 +1,5 @@
 /*
- * authServer.h
+ * AuthServer.h
  *
  *  Created on: 2 f�vr. 2012
  *      Author:
