@@ -61,9 +61,9 @@ public:
     /*!
      *  \brief CreateClient
      *
-     *  Prend le client et le met dans la pile
-     *  gestion de la pile FIFO
-     *  Et l'integre dans la DB
+     *  creation d'une variable de type client que l'on va mettre
+     *  dans le vector "listofclient" afin d'identifier et d'utiliser
+     *  les meme donner d'une etape a une autre
      *
      *  \param
      */
@@ -73,9 +73,8 @@ public:
     /*!
      *  \brief DeleteClient
      *
-     *  Prend le client et le met dans la pile
-     *  gestion de la pile FIFO
-     *  Et supprime de la DB
+     *  Supression de la variable de type client que l'on a mis
+     *  dans le vector "listofclient"
      *
      *  \param
      */
@@ -85,7 +84,8 @@ public:
     /*!
      *  \brief FindClient
      *
-     *  Recherche le client dans la DB
+     *  Recherche d'une variable de type client que l'on a mis
+     *  dans le vector "listofclient"
      *
      *  \param
      */
