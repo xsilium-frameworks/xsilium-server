@@ -95,7 +95,8 @@ public:
     /*!
      *  \brief _HandleLogonChallenge
      *
-     *  Recherche le client dans la DB
+     *  Vérifie la l'existance du client ainsi que son status
+     *  banni ou non et génère les defis
      *
      *  \param
      */
