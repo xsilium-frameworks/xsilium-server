@@ -20,9 +20,8 @@
 #include "Authentification/Authentification.h"
 
   /*! \class authServer
-   * \brief classe permettant la gestion de l'authentification
-   *
-   *  La classe gère l'authentification des clients
+   * \brief Permet de faire la liaison entre la reception des packets
+   * et le traitement des données
    */
 
 class authServer {
