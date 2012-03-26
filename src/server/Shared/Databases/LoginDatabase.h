@@ -70,7 +70,7 @@ public:
     /*!
      *  \brief setIPBan
      *
-     *   Ecrire l'état Ip bannis
+     *   supprime l'Ip bannis dans la table ip_banned
      *
      *  \param
      */
