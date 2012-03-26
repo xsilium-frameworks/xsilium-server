@@ -1,14 +1,19 @@
 /*
  * SignalException.cpp
  *
- *  Created on: 11 fŽvr. 2012
+ *  Created on: 11 fï¿½vr. 2012
  *      Author: joda2
  */
+
 #include <signal.h>
 #include <errno.h>
 #include "SignalHandler.h"
 
 bool SignalHandler::mbGotExitSignal = false;
+
+
+
+
 
 /**
 * Default Contructor.

@@ -1,14 +1,14 @@
 /*
  * resource.h
  *
- *  Created on: 3 fŽvr. 2012
+ *  Created on: 3 fï¿½vr. 2012
  *      Author: joda2
  */
 
 #ifndef RESOURCE_H_
 #define RESOURCE_H_
 
-static const int NUM_CLIENTS=600;
-#define SERVER_PORT 1234
+static const int NUM_CLIENTS=600; // nb de client la limite
+#define SERVER_PORT 1234          // port du srv attribuÃ©e
 
 #endif /* RESOURCE_H_ */
