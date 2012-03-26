@@ -102,32 +102,6 @@ bool Authentification::_HandleLogonChallenge( Packet *packet)
 
 
 /*
-	            if (!locked)
-	            {
-	                //set expired bans to inactive
-	                LoginDatabase.Execute(
-	                        LoginDatabase.GetPreparedStatement(LOGIN_SET_EXPIREDACCBANS)
-	                    );
-
-	                ///- If the account is banned, reject the logon attempt
-	                stmt = LoginDatabase.GetPreparedStatement(LOGIN_GET_ACCBANNED);
-	                stmt->setUInt32(0, res2->GetUInt32(1));
-	                PreparedQueryResult banresult = LoginDatabase.Query(stmt);
-	                if (banresult)
-	                {
-	                    if (banresult->GetUInt64(0) == banresult->GetUInt64(1))
-	                    {
-	                        pkt << (uint8) WOW_FAIL_BANNED;
-	                        sLog.outBasic("[AuthChallenge] Banned account %s tries to login!", _login.c_str());
-	                    }
-	                    else
-	                    {
-	                        pkt << (uint8) WOW_FAIL_SUSPENDED;
-	                        sLog.outBasic("[AuthChallenge] Temporarily banned account %s tries to login!", _login.c_str());
-	                    }
-	                }
-	                else
-	                {
 	                    ///- Get the password from the account table, upper it, and make the SRP6 calculation
 	                    std::string rI = res2->GetString(0);
 
