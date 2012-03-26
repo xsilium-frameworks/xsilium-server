@@ -1,3 +1,10 @@
+/*!
+ * \file PostgreSQLInterface.h
+ * \brief
+ * \author joda2
+ *
+ */
+
 #ifndef __POSTGRESQL_INTERFACE_H
 #define __POSTGRESQL_INTERFACE_H
 
@@ -13,33 +20,91 @@ typedef struct pg_result PGresult;
 // libpq-fe.h is part of PostgreSQL which must be installed on this computer to use the PostgreRepository
 #include "libpq-fe.h"
 
+
+/*! \class PostgreSQLInterface
+ * \brief
+ *
+ */
 class PostgreSQLInterface
 {
 public:
+    /*!
+     *  \brief PostgreSQLInterface
+     *
+     *  Constructeur de la classe PostgreSQLInterface
+     *
+     *  \param
+     */
 	PostgreSQLInterface();
+    /*!
+     *  \brief ~PostgreSQLInterface
+     *
+     *  Destructeur de la classe PostgreSQLInterface
+     *
+     *  \param
+     */
 	virtual ~PostgreSQLInterface();
-
-	/// Connect to the database using the connection string
-	/// \param[in] conninfo See the postgre docs
-	/// \return True on success, false on failure.
+    /*!
+     *  \brief Connect
+     *
+     *  Connect to the database using the connection string
+     *  param[in] conninfo See the postgre docs
+     *  \return True on success, false on failure.
+     *
+     *  \param
+     */
 	bool Connect(const char *conninfo);
 
-	/// Use a connection allocated elsewehre
+    /*!
+     *  \brief AssignConnection
+     *
+     *  Use a connection allocated elsewehre
+     *
+     *  \param
+     */
 	void AssignConnection(PGconn *_pgConn);
 
-	/// Get the instance of PGconn
+    /*!
+     *  \brief GetPGConn
+     *
+     *  Get the instance of PGconn
+     *
+     *  \param
+     */
 	PGconn *GetPGConn(void) const;
 
-	/// Disconnect from the database
+	   /*!
+	     *  \brief Disconnect
+	     *
+	     *  Disconnect from the database
+	     *
+	     *  \param
+	     */
 	void Disconnect(void);
 
-	/// If any of the above functions fail, the error string is stored internally.  Call this to get it.
+	   /*!
+	     *  \brief GetLastError
+	     *
+	     *  If any of the above functions fail, the error string is stored internally.  Call this to get it.
+	     *
+	     *  \param
+	     */
 	virtual const char *GetLastError(void) const;
-
-	// Returns  DEFAULT EXTRACT(EPOCH FROM current_timestamp))
+	   /*!
+	     *  \brief GetEpoch
+	     *
+	     *  Returns  DEFAULT EXTRACT(EPOCH FROM current_timestamp))
+	     *
+	     *  \param
+	     */
 	long long GetEpoch(void);
-
-	// Returns a string containing LOCALTIMESTAMP on the server
+	   /*!
+	     *  \brief GetLocalTimestamp
+	     *
+	     *  Returns a string containing LOCALTIMESTAMP on the server
+	     *
+	     *  \param
+	     */
 	char *GetLocalTimestamp(void);
 
 	static bool PQGetValueFromBinary(int *output, PGresult *result, unsigned int rowIndex, const char *columnName);

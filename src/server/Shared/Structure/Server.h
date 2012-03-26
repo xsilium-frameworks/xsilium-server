@@ -13,10 +13,13 @@
 #include "RakPeerInterface.h"
 
 
-/** \struct AUTH_LOGON_PROOF_S
- *
- *
- */
+    /*!
+     *  \brief struct AUTH_LOGON_PROOF_S
+     *
+     *  structure de AUTH_LOGON_PROOF_S
+     *
+     *  \param
+     */
 typedef struct AUTH_LOGON_PROOF_S
 {
     uint8_t   cmd; /*!< correspond au type de packet que l'on envoi */
@@ -24,15 +27,18 @@ typedef struct AUTH_LOGON_PROOF_S
 } sAuthLogonProof_S;
 
 
-/** \struct sClient
+/*!
+ *  \brief struct sClient
  *
+ *  structure de sClient
  *
+ *  \param
  */
 typedef struct sClient
 {
 	RakNet::RakNetGUID 	guid; /*!< Numero unique generer lors de la connection au socket  */
 	std::string IP ; /*!< L'ip du client       */
-    uint8_t idLogin; /*!< numero unique du compte dans la base de donnŽe      */
+    uint8_t idLogin; /*!< numero unique du compte dans la base de donnï¿½e      */
     uint16_t  build; /*!< version du client      */
     uint8_t   platform[4]; /*!< la platform du client      */
     uint8_t   os[4]; /*      */

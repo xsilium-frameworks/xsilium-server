@@ -76,9 +76,11 @@ public:
     void        setupSignalHandlers();
     /*!
      *  \brief exitSignalHandler
+     *
      * Sets exit signal to true.
      * @param[in] _ignored Not used but required by function prototype
      * to match required handler.
+     *
      *  \param
      */
     static void exitSignalHandler(int _ignored);

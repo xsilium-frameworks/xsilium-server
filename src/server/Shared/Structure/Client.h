@@ -8,7 +8,13 @@
 #ifndef CLIENT_H_
 #define CLIENT_H_
 
-
+    /*!
+     *  \brief structure AUTH_LOGON_CHALLENGE_C
+     *
+     *  structure de AUTH_LOGON_CHALLENGE_C
+     *
+     *  \param
+     */
 typedef struct AUTH_LOGON_CHALLENGE_C
 {
     uint8_t   cmd;
@@ -23,7 +29,13 @@ typedef struct AUTH_LOGON_CHALLENGE_C
     uint8_t   login_len;
     uint8_t   login[1];
 } sAuthLogonChallenge_C;
-
+/*!
+ *  \brief structure AUTH_LOGON_PROOF_C
+ *
+ *  structure de AUTH_LOGON_PROOF_C
+ *
+ *  \param
+ */
 typedef struct AUTH_LOGON_PROOF_C
 {
     int   cmd;
