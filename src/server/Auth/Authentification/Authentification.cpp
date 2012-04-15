@@ -101,7 +101,7 @@ bool Authentification::_HandleLogonChallenge( Packet *packet)
 	}
 
 
-/* test
+/*
 	                    ///- Get the password from the account table, upper it, and make the SRP6 calculation
 	                    std::string rI = res2->GetString(0);
 
