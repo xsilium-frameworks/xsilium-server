@@ -23,14 +23,14 @@ void readConfig::testRead(){
 	ifstream file( "config.txt" );
     if ( !file )
     {
-        cout << "Erreur d'ouverture\n";
+        cout << "Erreur d'ouverture\n" <<endl;
         return;
     }
 
     string line;
     if ( ! ( file >> line ) )
     {
-        cout << "Erreur de lecture\n";
+        cout << "Erreur de lecture\n" << endl;
         return;
     }
     cout << "Ligne lue : " << line;
