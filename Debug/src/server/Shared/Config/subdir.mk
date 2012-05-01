@@ -4,13 +4,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../src/server/Shared/Config/readConfig.cpp 
+../src/server/Shared/Config/Configuration.cpp 
 
 OBJS += \
-./src/server/Shared/Config/readConfig.o 
+./src/server/Shared/Config/Configuration.o 
 
 CPP_DEPS += \
-./src/server/Shared/Config/readConfig.d 
+./src/server/Shared/Config/Configuration.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

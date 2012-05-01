@@ -6,6 +6,7 @@ src/server/mainServer.d src/server/mainServer.o:  \
   /Users/joda/workspace/xsilium/Dep/Raknet/Export.h \
   /Users/joda/workspace/xsilium/Dep/Raknet/RakNetDefines.h \
   /Users/joda/workspace/xsilium/Dep/Raknet/RakNetDefinesOverrides.h \
+  ../src/server/Auth/../Shared/Config/Configuration.h \
   ../src/server/Auth/Authentification/Authentification.h \
   /Users/joda/workspace/xsilium/Dep/Raknet/BitStream.h \
   /Users/joda/workspace/xsilium/Dep/Raknet/RakMemoryOverride.h \
@@ -45,6 +46,8 @@ src/server/mainServer.d src/server/mainServer.o:  \
 /Users/joda/workspace/xsilium/Dep/Raknet/RakNetDefines.h:
 
 /Users/joda/workspace/xsilium/Dep/Raknet/RakNetDefinesOverrides.h:
+
+../src/server/Auth/../Shared/Config/Configuration.h:
 
 ../src/server/Auth/Authentification/Authentification.h:
 

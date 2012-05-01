@@ -9,7 +9,6 @@
 #define SERVER_H_
 
 #include <string>;
-#include <gmp.h>
 #include "RakPeerInterface.h"
 
 
