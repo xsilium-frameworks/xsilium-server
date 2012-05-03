@@ -1,10 +1,13 @@
 /*
  * \file Configuration.h
  *
- *  Created on: \date 1 mai 2012
+ *  Created on: \date 3 mai 2012
  *      Author: \author joda
  *  \brief :
  */
+
+#ifndef CONFIGURATION_H_
+#define CONFIGURATION_H_
 
 #include <map>
 #include <string>
@@ -12,12 +15,6 @@
 #include <iostream>
 
 using namespace std;
-
-
-
-
-#ifndef CONFIGURATION_H_
-#define CONFIGURATION_H_
 
 /*
  *
@@ -28,31 +25,27 @@ public:
 	virtual ~Configuration();
 
 	// clear all values
-	void Clear();
+	    void Clear();
 
-	// load a configuration file
-	bool Load(const string& File);
+	    // load a configuration file
+	    bool Load(const string& File);
 
-	// check if value associated with given key exists
-	bool Contains(const string& key) const;
+	    // check if value associated with given key exists
+	    bool Contains(const string& key) const;
 
-	// get value associated with given key
-	bool Get(const string& key, string& value) const;
-	bool Get(const string& key, int&    value) const;
-	bool Get(const string& key, long&   value) const;
-	bool Get(const string& key, double& value) const;
-    bool Get(const string& key, bool&   value) const;
+	    // get value associated with given key
+	    bool Get(const string& key, string& value) const;
+	    bool Get(const string& key, int&    value) const;
+	    bool Get(const string& key, long&   value) const;
+	    bool Get(const string& key, double& value) const;
+	    bool Get(const string& key, bool&   value) const;
 
+	private:
+	    // the container
+	    map<string,string> data;
 
-
-private:
-    // the container
-    map<string,string> data;
-
-    // remove leading and trailing tabs and spaces
-    static string Trim(const string& str);
-
-
+	    // remove leading and trailing tabs and spaces
+	    static string Trim(const string& str);
 
 };
 

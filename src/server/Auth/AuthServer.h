@@ -16,7 +16,7 @@
 #define AUTHSERVER_H_
 
 #include "RakThread.h"
-#include "../Shared/Config/Configuration.h"
+#include "Config/Configuration.h"
 
 #include "Authentification/Authentification.h"
 

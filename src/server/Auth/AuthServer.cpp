@@ -12,11 +12,12 @@
 using namespace RakNet; // a commenter
 
 RakPeerInterface *peer;
-
+Configuration * config ;
 
 
 RAK_THREAD_DECLARATION(SocketThread)
 {
+
 	bool endthread = *((bool *) arguments);
 	Authentification * auth = new Authentification();
 
@@ -66,11 +67,18 @@ RAK_THREAD_DECLARATION(SocketThread)
 void authServer::startThread()
 {
 	printf("Demarrage du thread d'authentification\n");
+	if (!config->Load("/Users/joda/workspace/xsilium/Debug/auth.config"))
+	{
+
+	}
 	SocketDescriptor socketDescriptor;
-	socketDescriptor.port=(unsigned short) SERVER_PORT;
-	bool b = peer->Startup((unsigned short) NUM_CLIENTS,&socketDescriptor,1)==RAKNET_STARTED;
+	int serverPort , numClient ;
+	config->Get("port",serverPort);
+	config->Get("clientMax",numClient);
+	socketDescriptor.port=(unsigned short) serverPort;
+	bool b = peer->Startup((unsigned short) numClient,&socketDescriptor,1)==RAKNET_STARTED;
 	RakAssert(b);
-	peer->SetMaximumIncomingConnections(NUM_CLIENTS);
+	peer->SetMaximumIncomingConnections(numClient);
 	RakThread::Create(&SocketThread, &this->endThread);
 
 
@@ -87,12 +95,14 @@ void authServer::stopThread()
 authServer::authServer() {
 	printf("Lancement du serveur d'authantification de Xsilium\n");
 	peer = RakNet::RakPeerInterface::GetInstance();
+	config = new Configuration();
 	this->endThread = false ;
 
 }
 
 authServer::~authServer() {
 	RakNet::RakPeerInterface::DestroyInstance(peer);
+	delete config;
 
 }
 

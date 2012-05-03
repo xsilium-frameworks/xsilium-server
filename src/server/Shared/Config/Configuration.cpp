@@ -1,7 +1,7 @@
 /*
  * \file Configuration.cpp
  *
- *  Created on: \date 1 mai 2012
+ *  Created on: \date 3 mai 2012
  *      Author: \author joda
  *  \brief :
  */
@@ -31,8 +31,6 @@ bool Configuration::Load(const string& file)
         cout << "Cannot read configuration file " << file << endl;
         return false;
     }
-
-    Clear();
 
     while (inFile.good() && ! inFile.eof())
     {
@@ -70,6 +68,7 @@ bool Configuration::Load(const string& file)
 
     return true;
 }
+
 bool Configuration::Contains(const string& key) const
 {
     return data.find(key) != data.end();
