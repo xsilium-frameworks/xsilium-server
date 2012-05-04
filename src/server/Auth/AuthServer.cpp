@@ -11,8 +11,8 @@
 
 using namespace RakNet; // a commenter
 
-RakPeerInterface *peer;
-Configuration * config ;
+
+
 
 
 RAK_THREAD_DECLARATION(SocketThread)
@@ -20,6 +20,7 @@ RAK_THREAD_DECLARATION(SocketThread)
 
 	bool endthread = *((bool *) arguments);
 	Authentification * auth = new Authentification();
+	RakPeerInterface *peer = RakPeerInterface::GetInstance();
 
 	while(!endthread)
 	{
@@ -94,15 +95,15 @@ void authServer::stopThread()
 
 authServer::authServer() {
 	printf("Lancement du serveur d'authantification de Xsilium\n");
-	peer = RakNet::RakPeerInterface::GetInstance();
-	config = new Configuration();
+	peer = RakPeerInterface::GetInstance();
+	config = Configuration::getInstance();
 	this->endThread = false ;
 
 }
 
 authServer::~authServer() {
-	RakNet::RakPeerInterface::DestroyInstance(peer);
-	delete config;
+	RakPeerInterface::DestroyInstance(peer);
+	Configuration::DestroyInstance();
 
 }
 

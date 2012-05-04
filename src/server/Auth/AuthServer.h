@@ -65,6 +65,9 @@ public:
 private:
 	bool endThread;
 
+	RakPeerInterface *peer;
+	Configuration * config ;
+
 };
 
 #endif /* AUTHSERVER_H_ */

@@ -13,17 +13,18 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include "Singleton/Singleton.h"
 
 using namespace std;
 
 /*
  *
  */
-class Configuration {
-public:
-	Configuration();
-	virtual ~Configuration();
+class Configuration : public Singleton<Configuration>
+{
+	friend class Singleton<Configuration>;
 
+public:
 	// clear all values
 	    void Clear();
 
@@ -41,6 +42,9 @@ public:
 	    bool Get(const string& key, bool&   value) const;
 
 	private:
+
+		Configuration();
+		~Configuration();
 	    // the container
 	    map<string,string> data;
 
