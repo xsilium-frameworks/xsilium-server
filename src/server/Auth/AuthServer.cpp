@@ -67,11 +67,15 @@ RAK_THREAD_DECLARATION(SocketThread)
 
 void authServer::startThread()
 {
-	printf("Demarrage du thread d'authentification\n");
 	if (!config->Load("/Users/joda/workspace/xsilium/Debug/auth.config"))
 	{
 
 	}
+	int logLevel;
+	config->Get("LogLevel",logLevel);
+	log->Start((Log::Priority)logLevel,"");
+	log->Write(Log::DEBUG,"Demarrage du thread d'authentification");
+
 	SocketDescriptor socketDescriptor;
 	int serverPort , numClient ;
 	config->Get("port",serverPort);
@@ -89,6 +93,7 @@ void authServer::startThread()
 void authServer::stopThread()
 {
 	printf("Arret du thread d'authentification\n");
+	log->Stop();
 	this->endThread = true ;
 }
 
@@ -97,10 +102,7 @@ authServer::authServer() {
 	peer = RakPeerInterface::GetInstance();
 	config = Configuration::getInstance();
 	log = Log::getInstance();
-	int logLevel;
-	config->Get("LogLevel",logLevel);
-	log->Start((Log::Priority)logLevel,"");
-	log->Write(Log::DEBUG,"Lancement du serveur d'authantification de Xsilium");
+
 	this->endThread = false ;
 
 }

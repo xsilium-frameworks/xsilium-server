@@ -12,11 +12,11 @@ using namespace std;
 
 const string Log::PRIORITY_NAMES[] =
 {
-    "DEBUG",
-    "CONFIG",
-    "INFO",
-    "WARNING",
-    "ERROR"
+	"ERROR",
+	"WARNING",
+	"INFO",
+	"CONFIG",
+    "DEBUG"
 };
 
 Log::Log() {
