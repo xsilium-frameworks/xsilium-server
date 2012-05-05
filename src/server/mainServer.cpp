@@ -17,7 +17,7 @@ int main()
 	    // Register signal handler to handle kill signal
 	    signalHandler.setupSignalHandlers();
 
-		printf("Lancement du serveur Xsilium\n");
+	    cout << "Lancement du serveur Xsilium" <<endl ;
 
 	    authServer::authServer * authServer = new authServer::authServer();
 	    authServer->startThread();

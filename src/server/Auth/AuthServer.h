@@ -17,6 +17,7 @@
 
 #include "RakThread.h"
 #include "Config/Configuration.h"
+#include "Logging/Log.h"
 
 #include "Authentification/Authentification.h"
 
@@ -67,6 +68,7 @@ private:
 
 	RakPeerInterface *peer;
 	Configuration * config ;
+	Log * log;
 
 };
 

@@ -8,9 +8,9 @@
 
 #include "Configuration.h"
 
-Configuration::Configuration() {
-	// TODO Auto-generated constructor stub
-
+Configuration::Configuration()
+{
+	//this->mutex1 = PTHREAD_MUTEX_INITIALIZER ;
 }
 
 Configuration::~Configuration() {
@@ -24,6 +24,9 @@ void Configuration::Clear()
 
 bool Configuration::Load(const string& file)
 {
+
+	pthread_mutex_lock( &mutex1 );
+
     ifstream inFile(file.c_str());
 
     if (!inFile.good())
@@ -66,6 +69,8 @@ bool Configuration::Load(const string& file)
         }
     }
 
+    pthread_mutex_unlock( &mutex1 );
+
     return true;
 }
 
@@ -81,6 +86,7 @@ bool Configuration::Get(const string& key, string& value) const
     if (iter != data.end())
     {
         value = iter->second;
+
         return true;
     }
     else

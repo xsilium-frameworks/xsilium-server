@@ -94,9 +94,13 @@ void authServer::stopThread()
 
 
 authServer::authServer() {
-	printf("Lancement du serveur d'authantification de Xsilium\n");
 	peer = RakPeerInterface::GetInstance();
 	config = Configuration::getInstance();
+	log = Log::getInstance();
+	int logLevel;
+	config->Get("LogLevel",logLevel);
+	log->Start((Log::Priority)logLevel,"");
+	log->Write(Log::DEBUG,"Lancement du serveur d'authantification de Xsilium");
 	this->endThread = false ;
 
 }
@@ -104,6 +108,7 @@ authServer::authServer() {
 authServer::~authServer() {
 	RakPeerInterface::DestroyInstance(peer);
 	Configuration::DestroyInstance();
+	Log::DestroyInstance();
 
 }
 
