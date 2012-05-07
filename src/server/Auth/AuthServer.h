@@ -18,6 +18,7 @@
 #include "RakThread.h"
 #include "Config/Configuration.h"
 #include "Logging/Log.h"
+#include "SignalHandler/SignalHandler.h"
 
 #include "Authentification/Authentification.h"
 
@@ -48,12 +49,12 @@ public:
 	virtual ~authServer();
 
     /*!
-     *  \brief StartThread
+     *  \brief StartServer
      *
-     *  Launches starThread
+     *  Launches startServer
      */
 
-	void startThread();
+	void startServer();
 
     /*!
      *  \brief StopThread
@@ -66,7 +67,7 @@ public:
 private:
 	bool endThread;
 
-	RakPeerInterface *peer;
+	SignalHandler * signalHandler;
 	Configuration * config ;
 	Log * log;
 

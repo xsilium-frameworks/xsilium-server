@@ -48,7 +48,7 @@ public:
      *  \param
      */
 
-	Authentification();
+	Authentification(RakPeerInterface *peer);
 
     /*!
      *  \brief Constructeur
@@ -118,6 +118,7 @@ private:
     LoginDatabase * realms ;
     Log * log;
     Configuration * config ;
+    RakPeerInterface *peer2;
 
 
      string connectionString;

@@ -16,9 +16,22 @@ RAK_THREAD_DECLARATION(SocketThread)
 {
 
 	bool endthread = *((bool *) arguments);
-	Authentification * auth = new Authentification();
 	RakPeerInterface *peer = RakPeerInterface::GetInstance();
+	Authentification * auth = new Authentification(peer);
 	Log *log = Log::getInstance();
+	Configuration *config = Configuration::getInstance();
+	SocketDescriptor socketDescriptor;
+	int serverPort , numClient ;
+	config->Get("port",serverPort);
+	config->Get("clientMax",numClient);
+	socketDescriptor.port=(unsigned short) serverPort;
+	bool b = peer->Startup((unsigned short) numClient,&socketDescriptor,1)==RAKNET_STARTED;
+	RakAssert(b);
+	peer->SetMaximumIncomingConnections(numClient);
+
+
+
+
 
 	while(!endthread)
 	{
@@ -54,6 +67,7 @@ RAK_THREAD_DECLARATION(SocketThread)
 	}
 
 	delete auth;
+	RakPeerInterface::DestroyInstance(peer);
 
 
 	return false;
@@ -64,26 +78,27 @@ RAK_THREAD_DECLARATION(SocketThread)
 
 
 
-void authServer::startThread()
+void authServer::startServer()
 {
-	if (!config->Load("/Users/joda/workspace/xsilium/Debug/auth.config"))
-	{}
-	int logLevel;
-	config->Get("LogLevel",logLevel);
-	log->Start((Log::Priority)logLevel,"");
-	log->Write(Log::DEBUG,"Demarrage du thread d'authentification");
+	try
+	{
+		if (!config->Load("/Users/joda/workspace/xsilium/Debug/auth.config"))
+		{}
+		int logLevel;
+		config->Get("LogLevel",logLevel);
+		log->Start((Log::Priority)logLevel,"");
+		log->Write(Log::DEBUG,"Demarrage du thread d'authentification");
+		RakThread::Create(&SocketThread, &this->endThread);
 
-	SocketDescriptor socketDescriptor;
-	int serverPort , numClient ;
-	config->Get("port",serverPort);
-	config->Get("clientMax",numClient);
-	socketDescriptor.port=(unsigned short) serverPort;
-	bool b = peer->Startup((unsigned short) numClient,&socketDescriptor,1)==RAKNET_STARTED;
-	RakAssert(b);
-	peer->SetMaximumIncomingConnections(numClient);
-	RakThread::Create(&SocketThread, &this->endThread);
+		while(!signalHandler->gotExitSignal())
+		        sleep(1);
 
-
+		stopThread();
+	}
+	catch (SignalException& e)
+	{
+		std::cerr << "SignalException: " << e.what() << std::endl;
+	}
 }
 
 
@@ -96,16 +111,13 @@ void authServer::stopThread()
 
 
 authServer::authServer() {
-	peer = RakPeerInterface::GetInstance();
 	config = Configuration::getInstance();
 	log = Log::getInstance();
-
 	this->endThread = false ;
 
 }
 
 authServer::~authServer() {
-	RakPeerInterface::DestroyInstance(peer);
 	Configuration::DestroyInstance();
 	Log::DestroyInstance();
 
