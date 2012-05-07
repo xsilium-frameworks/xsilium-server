@@ -12,15 +12,13 @@
 using namespace RakNet; // a commenter
 
 
-
-
-
 RAK_THREAD_DECLARATION(SocketThread)
 {
 
 	bool endthread = *((bool *) arguments);
 	Authentification * auth = new Authentification();
 	RakPeerInterface *peer = RakPeerInterface::GetInstance();
+	Log *log = Log::getInstance();
 
 	while(!endthread)
 	{
@@ -30,20 +28,20 @@ RAK_THREAD_DECLARATION(SocketThread)
 			switch (packet->data[0])
 			{
 			case ID_NEW_INCOMING_CONNECTION:
-				printf("Nouvelle connexion\n");
+				log->Write(Log::DEBUG,"Nouvelle connexion");
 				if(!auth->CreateClient(packet))
-					printf("Impossible de cree le client\n");
+					log->Write(Log::ERROR,"Impossible de cree le client");
 				break;
 			case ID_CONNECTION_LOST:
 			case ID_DISCONNECTION_NOTIFICATION:
-				printf("deconnexion\n");
+				log->Write(Log::DEBUG,"deconnexion");
 				if(!auth->DeleteClient(packet))
-					printf("Impossible de supprimer le client\n");
+					log->Write(Log::ERROR,"Impossible de supprimer le client");
 				break;
 	 		case ID_USER_PACKET_ENUM:
-	 			printf("Packet recu\n");
+	 			log->Write(Log::DEBUG,"Packet recu");
 	 			if(!auth->_HandleLogonChallenge(packet))
-	 				printf("Impossible d'authentifier le client\n");
+	 				log->Write(Log::ERROR,"Impossible d'authentifier le client");
 	 			break;
 	 		default:
 	 			break;
@@ -51,6 +49,7 @@ RAK_THREAD_DECLARATION(SocketThread)
 			peer->DeallocatePacket(packet);
 			packet = peer->Receive();
 		}
+		//log->Write(Log::DEBUG,"attente de 0,003s");
 		RakSleep(30);
 	}
 
@@ -68,9 +67,7 @@ RAK_THREAD_DECLARATION(SocketThread)
 void authServer::startThread()
 {
 	if (!config->Load("/Users/joda/workspace/xsilium/Debug/auth.config"))
-	{
-
-	}
+	{}
 	int logLevel;
 	config->Get("LogLevel",logLevel);
 	log->Start((Log::Priority)logLevel,"");
@@ -92,7 +89,7 @@ void authServer::startThread()
 
 void authServer::stopThread()
 {
-	printf("Arret du thread d'authentification\n");
+	log->Write(Log::DEBUG,"Arret du thread d'authentification");
 	log->Stop();
 	this->endThread = true ;
 }

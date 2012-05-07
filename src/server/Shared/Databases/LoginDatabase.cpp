@@ -29,7 +29,7 @@ bool LoginDatabase::selectAccount(const char * userName,sClient *client)
 	char query[512];
 	if (strlen(userName)>32)
 		return false ;
-	sprintf(query, "SELECT a.sha_pass_hash,a.id,a.locked,a.last_ip,aa.gmlevel,aa.realmID,ab.unbandate FROM account a LEFT outer JOIN account_access aa ON (a.id = aa.id) Left outer join account_banned ab on a.id = ab.id WHERE a.username = 'Joda'");
+	sprintf(query, "SELECT a.sha_pass_hash,a.id,a.locked,a.last_ip,aa.gmlevel,aa.realmID,ab.unbandate FROM account a LEFT outer JOIN account_access aa ON (a.id = aa.id) Left outer join account_banned ab on a.id = ab.id WHERE a.username = '%s'",userName);
 	if (ExecuteBlockingCommand(query, &result, false)==false)
 	{
 		PQclear(result);

@@ -28,6 +28,8 @@
 #include "../resource.h"
 #include "Databases/LoginDatabase.h"
 #include "Structure/Client.h"
+#include "Logging/Log.h"
+#include "Config/Configuration.h"
 
 using namespace RakNet;
 using namespace std;
@@ -101,6 +103,8 @@ public:
      *  \param
      */
 
+	void ConnexionDB();
+
     bool _HandleLogonChallenge( RakNet::Packet *packet);
     bool _HandleLogonProof();
     bool _HandleReconnectChallenge();
@@ -112,7 +116,11 @@ private:
     vector<sClient> listOfClient ;
     vector<sClient>::iterator client ;
     LoginDatabase * realms ;
-    const char * connectionString;
+    Log * log;
+    Configuration * config ;
+
+
+     string connectionString;
 
     bool isDBConnect ;
 

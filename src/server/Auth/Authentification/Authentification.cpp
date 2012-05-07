@@ -9,8 +9,10 @@
 
 Authentification::Authentification() {
 	realms = new LoginDatabase();
-	connectionString = "host=localhost port= 5432 dbname=realms user=postgres password=johan1";
-	isDBConnect = realms->Connect(connectionString);
+	config = Configuration::getInstance();
+	log = Log::getInstance();
+	this->ConnexionDB();
+
 }
 
 Authentification::~Authentification() {
@@ -27,6 +29,20 @@ bool Authentification::FindClient(RakNet::RakNetGUID guid)
 	}
 
 	return false;
+}
+
+void Authentification::ConnexionDB()
+{
+	string host,port,dbname,user,password;
+	config->Get("postgresHost",host);
+	config->Get("postgresPort",port);
+	config->Get("postgresDBname",dbname);
+	config->Get("postgresUser",user);
+	config->Get("postgresPassword",password);
+	connectionString = "host=" + host + " port=" + port + " dbname=" + dbname + " user=" + user + " password=" + password;
+	isDBConnect = realms->Connect(connectionString.c_str());
+
+
 }
 
 
@@ -71,6 +87,8 @@ bool Authentification::_HandleLogonChallenge( Packet *packet)
 		if(resultsGetBan)
 		{
 			printf("[AuthChallenge] L'ip %s est bannie !\n",client->IP.c_str());
+
+			//peer->Send(ID_CONNECTION_BANNED,1,HIGH_PRIORITY,RELIABLE_ORDERED,0,RakNet::UNASSIGNED_SYSTEM_ADDRESS,true);
 			return false;
 		}
 
@@ -99,90 +117,6 @@ bool Authentification::_HandleLogonChallenge( Packet *packet)
 
 
 	}
-
-
-/*
-	                    ///- Get the password from the account table, upper it, and make the SRP6 calculation
-	                    std::string rI = res2->GetString(0);
-
-	                    ///- Don't calculate (v, s) if there are already some in the database
-	                    std::string databaseV = res2->GetString(5);
-	                    std::string databaseS = res2->GetString(6);
-
-	                    sLog.outDebug("database authentication values: v='%s' s='%s'", databaseV.c_str(), databaseS.c_str());
-
-	                    // multiply with 2, bytes are stored as hexstring
-	                    if (databaseV.size() != s_BYTE_SIZE*2 || databaseS.size() != s_BYTE_SIZE*2)
-	                        _SetVSFields(rI);
-	                    else
-	                    {
-	                        s.SetHexStr(databaseS.c_str());
-	                        v.SetHexStr(databaseV.c_str());
-	                    }
-
-	                    b.SetRand(19 * 8);
-	                    BigNumber gmod = g.ModExp(b, N);
-	                    B = ((v * 3) + gmod) % N;
-
-	                    ASSERT(gmod.GetNumBytes() <= 32);
-
-	                    BigNumber unk3;
-	                    unk3.SetRand(16 * 8);
-
-	                    ///- Fill the response packet with the result
-	                    pkt << uint8(WOW_SUCCESS);
-
-	                    // B may be calculated < 32B so we force minimal length to 32B
-	                    pkt.append(B.AsByteArray(32), 32);      // 32 bytes
-	                    pkt << uint8(1);
-	                    pkt.append(g.AsByteArray(), 1);
-	                    pkt << uint8(32);
-	                    pkt.append(N.AsByteArray(32), 32);
-	                    pkt.append(s.AsByteArray(), s.GetNumBytes());   // 32 bytes
-	                    pkt.append(unk3.AsByteArray(16), 16);
-	                    uint8 securityFlags = 0;
-	                    pkt << uint8(securityFlags);            // security flags (0x0...0x04)
-
-	                    if (securityFlags & 0x01)                // PIN input
-	                    {
-	                        pkt << uint32(0);
-	                        pkt << uint64(0) << uint64(0);      // 16 bytes hash?
-	                    }
-
-	                    if (securityFlags & 0x02)                // Matrix input
-	                    {
-	                        pkt << uint8(0);
-	                        pkt << uint8(0);
-	                        pkt << uint8(0);
-	                        pkt << uint8(0);
-	                        pkt << uint64(0);
-	                    }
-
-	                    if (securityFlags & 0x04)                // Security token input
-	                        pkt << uint8(1);
-
-	                    uint8 secLevel = res2->GetUInt8(4);
-	                    _accountSecurityLevel = secLevel <= SEC_ADMINISTRATOR ? AccountTypes(secLevel) : SEC_ADMINISTRATOR;
-
-	                    _localizationName.resize(4);
-	                    for (int i = 0; i < 4; ++i)
-	                        _localizationName[i] = ch->country[4-i-1];
-
-	                    sLog.outBasic("[AuthChallenge] account %s is using '%c%c%c%c' locale (%u)", _login.c_str (), ch->country[3], ch->country[2], ch->country[1], ch->country[0], GetLocaleByName(_localizationName));
-	                }
-	            }
-	        }
-	        else                                            //no account
-	        {
-	            pkt<< (uint8) WOW_FAIL_UNKNOWN_ACCOUNT;
-	        }
-	    }
-
-	    socket().send((char const*)pkt.contents(), pkt.size());
-
-	*/
-
-
 	return true;
 }
 
