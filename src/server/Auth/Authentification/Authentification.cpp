@@ -8,7 +8,7 @@
 #include "Authentification.h"
 
 Authentification::Authentification(RakPeerInterface* peer) {
-	//peer2 = peer;
+	//peer2 = peer; // erreur de pointeur
 	realms = new LoginDatabase();
 	config = Configuration::getInstance();
 	log = Log::getInstance();
