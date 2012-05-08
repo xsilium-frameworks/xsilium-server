@@ -8,7 +8,7 @@
 #ifndef SERVER_H_
 #define SERVER_H_
 
-#include <string>;
+#include <string>
 #include "RakPeerInterface.h"
 
 
@@ -47,7 +47,7 @@ typedef struct sClient
     std::string lastIP; /*!< derniere IP du compte  */
     uint8_t gmlevel[50] ; /*!<Niveau de MJ*/
     int accountUnBanDate ; /*!<si le compte est bannie date de debanne du compte*/
-};
+} sclient_s ;
 
 
 

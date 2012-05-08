@@ -2,9 +2,9 @@
 
 int main()
 {
-	    authServer::authServer * authServer = new authServer::authServer();
-	    authServer->startServer();
-	    delete authServer;
+	    authServer * authserver = new authServer();
+	    authserver->startServer();
+	    delete authserver;
 }
 
 

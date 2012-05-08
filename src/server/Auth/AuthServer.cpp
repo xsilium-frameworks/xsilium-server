@@ -26,12 +26,14 @@ RAK_THREAD_DECLARATION(SocketThread)
 	config->Get("clientMax",numClient);
 	socketDescriptor.port=(unsigned short) serverPort;
 	bool b = peer->Startup((unsigned short) numClient,&socketDescriptor,1)==RAKNET_STARTED;
+	if (b == false)
+	{
+		log->Write(Log::ERROR,"Impossible d'ouvrir le socket");
+		endthread = false;
+
+	}
 	RakAssert(b);
 	peer->SetMaximumIncomingConnections(numClient);
-
-
-
-
 
 	while(!endthread)
 	{
@@ -82,6 +84,7 @@ void authServer::startServer()
 {
 	try
 	{
+		signalHandler->setupSignalHandlers();
 		if (!config->Load("/Users/joda/workspace/xsilium/Debug/auth.config"))
 		{}
 		int logLevel;
