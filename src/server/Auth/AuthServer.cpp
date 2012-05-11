@@ -126,4 +126,9 @@ authServer::~authServer() {
 
 }
 
-
+int main()
+{
+	    authServer * authserver = new authServer();
+	    authserver->startServer();
+	    delete authserver;
+}

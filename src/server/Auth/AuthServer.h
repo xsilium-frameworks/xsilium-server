@@ -22,6 +22,12 @@
 
 #include "Authentification/Authentification.h"
 
+enum {
+   ID_MYPROJECT_MSG_1 = ID_USER_PACKET_ENUM,
+   ID_MYPROJECT_MSG_2,
+};
+
+
   /*! \class authServer
    * \brief Permet de faire la liaison entre la reception des packets
    * et le traitement des données

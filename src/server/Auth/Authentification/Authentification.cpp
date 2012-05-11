@@ -8,7 +8,7 @@
 #include "Authentification.h"
 
 Authentification::Authentification(RakPeerInterface* peerTmp) {
-	peer = peerTmp; // erreur de pointeur
+	peer = peerTmp;
 	realms = new LoginDatabase();
 	config = Configuration::getInstance();
 	log = Log::getInstance();
@@ -80,6 +80,9 @@ bool Authentification::_HandleLogonChallenge( Packet *packet)
 
 	printf("Nom du client : %s\n",login.c_str());
 
+	AUTH_LOGON_PROOF_S error;
+	RakNet::BitStream * sendMessage;
+
 	bool resultsGetBan;
 	realms->setIPBan();
 	client->IP = packet->systemAddress.ToString(false);
@@ -87,9 +90,13 @@ bool Authentification::_HandleLogonChallenge( Packet *packet)
 	{
 		if(resultsGetBan)
 		{
+			error.typeId = ID_CONNECTION_BANNED ;
+			error.error = 1;
 			printf("[AuthChallenge] L'ip %s est bannie !\n",client->IP.c_str());
 
-			//peer->Send(ID_CONNECTION_BANNED,1,HIGH_PRIORITY,RELIABLE_ORDERED,0,RakNet::UNASSIGNED_SYSTEM_ADDRESS,true);
+			sendMessage->Write(error);
+			this->peer->Send(sendMessage,HIGH_PRIORITY,RELIABLE_ORDERED,0,RakNet::UNASSIGNED_SYSTEM_ADDRESS,true);
+
 			return false;
 		}
 
@@ -97,6 +104,8 @@ bool Authentification::_HandleLogonChallenge( Packet *packet)
 		{
 			if(client->idLogin == 0)
 			{
+				error.typeId = ID_INVALID_PASSWORD ;
+				error.error = 1;
 				printf("[AuthChallenge] Le compte %s n'existe pas \n",login.c_str());
 				return false;
 			}

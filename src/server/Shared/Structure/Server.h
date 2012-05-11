@@ -19,11 +19,11 @@
      *
      *  \param
      */
-typedef struct AUTH_LOGON_PROOF_S
+struct AUTH_LOGON_PROOF_S
 {
-    uint8_t   cmd; /*!< correspond au type de packet que l'on envoi */
+	unsigned char typeId;  /*!< correspond au type de packet que l'on envoi */
     int   error; /*!< correspond a l'erreur qui a ete detecter */
-} sAuthLogonProof_S;
+};
 
 
 /*!
@@ -33,7 +33,7 @@ typedef struct AUTH_LOGON_PROOF_S
  *
  *  \param
  */
-typedef struct sClient
+struct sClient
 {
 	RakNet::RakNetGUID 	guid; /*!< Numero unique generer lors de la connection au socket  */
 	std::string IP ; /*!< L'ip du client       */
@@ -47,8 +47,7 @@ typedef struct sClient
     std::string lastIP; /*!< derniere IP du compte  */
     uint8_t gmlevel[50] ; /*!<Niveau de MJ*/
     int accountUnBanDate ; /*!<si le compte est bannie date de debanne du compte*/
-} sclient_s ;
-
+};
 
 
 
