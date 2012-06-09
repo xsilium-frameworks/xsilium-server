@@ -58,6 +58,16 @@ RAK_THREAD_DECLARATION(SocketThread)
 	 			if(!auth->_HandleLogonChallenge(packet))
 	 				log->Write(Log::ERROR,"Impossible d'authentifier le client");
 	 			break;
+	 		case ID_SEND_REPONSE:
+	 			log->Write(Log::DEBUG,"Packet de reponse recu");
+	 			// if(!auth->_HandleLogonChallenge(packet))
+	 				log->Write(Log::ERROR,"Mauvaise reponse, impossible d'authentifier le client");
+	 			break;
+	 		case ID_GET_ROYAUME:
+	 			log->Write(Log::DEBUG,"Packet demande de royaume");
+	 			// if(!auth->_HandleLogonChallenge(packet))
+	 				log->Write(Log::ERROR,"Impossible d'envoyer le royaume");
+	 			break;
 			}
 			peer->DeallocatePacket(packet);
 			packet = peer->Receive();
@@ -82,7 +92,7 @@ void authServer::startServer()
 	try
 	{
 		signalHandler->setupSignalHandlers();
-		if (!config->Load("/Users/joda/workspace/xsilium/Debug/auth.config"))
+		if (!config->Load("/home/mathieu/git/xsilium-server/Debug/auth.config"))
 		{}
 		int logLevel;
 		config->Get("LogLevel",logLevel);
