@@ -95,7 +95,7 @@ bool Authentification::_HandleLogonChallenge( Packet *packet)
 			printf("[AuthChallenge] L'ip %s est bannie !\n",client->IP.c_str());
 
 			sendMessage->Write(error);
-			this->peer->Send(sendMessage,HIGH_PRIORITY,RELIABLE_ORDERED,0,RakNet::UNASSIGNED_SYSTEM_ADDRESS,true);
+			this->peer->Send(sendMessage,HIGH_PRIORITY,RELIABLE_ORDERED,0,packet->systemAddress,true);
 
 			return false;
 		}

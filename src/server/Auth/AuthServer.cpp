@@ -64,7 +64,6 @@ RAK_THREAD_DECLARATION(SocketThread)
 			peer->DeallocatePacket(packet);
 			packet = peer->Receive();
 		}
-		//log->Write(Log::DEBUG,"attente de 0,003s");
 		RakSleep(30);
 	}
 

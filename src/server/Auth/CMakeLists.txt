@@ -46,7 +46,7 @@ if( UNIX )
 endif()
 
 if( CMAKE_SYSTEM_NAME MATCHES "Darwin" )
-  set(authserver_LINK_FLAGS "-framework Carbon ${authserver_LINK_FLAGS} ")
+  set(authserver_LINK_FLAGS "-framework Carbon ${authserver_LINK_FLAGS} -c ")
 endif()
 
 
