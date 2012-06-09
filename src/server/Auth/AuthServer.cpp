@@ -60,7 +60,7 @@ RAK_THREAD_DECLARATION(SocketThread)
 	 			break;
 	 		case ID_SEND_REPONSE:
 	 			log->Write(Log::DEBUG,"Packet de reponse recu");
-	 			// if(!auth->_HandleLogonChallenge(packet))
+	 			if(!auth->_HandleLogonProof(packet))
 	 				log->Write(Log::ERROR,"Mauvaise reponse, impossible d'authentifier le client");
 	 			break;
 	 		case ID_GET_ROYAUME:

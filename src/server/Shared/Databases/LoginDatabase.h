@@ -76,6 +76,19 @@ public:
      */
 
 	bool setIPBan();
+
+    /*!
+     *  \brief setIPBan
+     *
+     *   Met le user en ban
+     *
+     *  \param
+     */
+
+
+	bool setAccountBan(sClient *client);
+
+
 };
 
 #endif /* LOGINDATABASE_H_ */

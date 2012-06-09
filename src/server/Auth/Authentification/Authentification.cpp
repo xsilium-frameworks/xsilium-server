@@ -134,19 +134,25 @@ bool Authentification::_HandleLogonChallenge( Packet *packet)
 bool Authentification::_HandleLogonProof(RakNet::Packet *packet)
 {
 	FindClient(packet->guid);
+	client->passage +=1;
 	AUTH_LOGON_PROOF_C *data = (AUTH_LOGON_PROOF_C *) &packet->data ;
 	if (strcmp(data->A, client->shaPassHash) == 1)
 	{
 		log->Write(Log::INFO,"Erreur de mot de passe");
-		client->passage +=1;
+		if(client->passage == 3)
+		{
+			//Bannir le client
+
+		}
 	}
 	else
 	{
 		log->Write(Log::INFO,"Mot de passe valider");
 		client->passage = 0;
 	}
+
 	return true;
-	}
+}
 
 /*/// Logon Challenge command handler
 bool Authentification::_HandleLogonChallenge()

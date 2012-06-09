@@ -1,7 +1,7 @@
 /*
  * LoginDatabase.cpp
  *
- *  Created on: 18 fŽvr. 2012
+ *  Created on: 18 fï¿½vr. 2012
  *      Author: joda2
  */
 
@@ -85,4 +85,17 @@ bool LoginDatabase::setIPBan()
 	return true ;
 }
 
+bool LoginDatabase::setAccountBan(sClient *client)
+{
+	sprintf(query, "INSERT into account_banned value (id, now()");
+	if (ExecuteBlockingCommand(query, &result, false)==false)
+	{
+		PQclear(result);
+		return false;
+	}
+
+	PQclear(result);
+	return true
+
+}
 
