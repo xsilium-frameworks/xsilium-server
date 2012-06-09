@@ -87,7 +87,8 @@ bool LoginDatabase::setIPBan()
 
 bool LoginDatabase::setAccountBan(sClient *client)
 {
-	sprintf(query, "INSERT into account_banned value (id, now()");
+	PGresult *result;
+	char query[512] = "DELETE FROM ip_banned WHERE unbandate<=now() AND unbandate<>bandate" ;
 	if (ExecuteBlockingCommand(query, &result, false)==false)
 	{
 		PQclear(result);
@@ -95,7 +96,7 @@ bool LoginDatabase::setAccountBan(sClient *client)
 	}
 
 	PQclear(result);
-	return true
+	return true ;
 
 }
 

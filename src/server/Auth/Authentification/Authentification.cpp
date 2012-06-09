@@ -136,7 +136,7 @@ bool Authentification::_HandleLogonProof(RakNet::Packet *packet)
 	FindClient(packet->guid);
 	client->passage +=1;
 	AUTH_LOGON_PROOF_C *data = (AUTH_LOGON_PROOF_C *) &packet->data ;
-	if (strcmp(data->A, client->shaPassHash) == 1)
+	if (strcmp(data->A.c_str()  , client->shaPassHash.c_str()) == 1)
 	{
 		log->Write(Log::INFO,"Erreur de mot de passe");
 		if(client->passage == 3)
