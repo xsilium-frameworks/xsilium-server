@@ -39,7 +39,7 @@ typedef struct AUTH_LOGON_CHALLENGE_C
 typedef struct AUTH_LOGON_PROOF_C
 {
     int   cmd;
-    int   A[32];
+    std::string   A;
     int   M1[20];
     int   crc_hash[20];
     int   number_of_keys;

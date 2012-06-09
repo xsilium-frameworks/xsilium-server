@@ -106,10 +106,8 @@ public:
 	void ConnexionDB();
 
     bool _HandleLogonChallenge( RakNet::Packet *packet);
-    bool _HandleLogonProof();
-    bool _HandleReconnectChallenge();
-    bool _HandleReconnectProof();
-    bool _HandleRealmList();
+    bool _HandleLogonProof(RakNet::Packet *packet);
+    bool _HandleRealmList(RakNet::Packet *packet);
 
 private:
 

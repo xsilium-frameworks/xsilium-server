@@ -1,7 +1,7 @@
 /*
  * Authentification.cpp
  *
- *  Created on: 7 fŽvr. 2012
+ *  Created on: 7 fï¿½vr. 2012
  *      Author: joda2
  */
 
@@ -112,11 +112,11 @@ bool Authentification::_HandleLogonChallenge( Packet *packet)
 			if(client->locked)
 			{
 				printf("[AuthChallenge] Le compte %s est lier a l'IP %s \n",login.c_str(),client->lastIP.c_str());
-				printf("[AuthChallenge] Le client ˆ pour l'IP %s \n",client->IP.c_str());
+				printf("[AuthChallenge] Le client ï¿½ pour l'IP %s \n",client->IP.c_str());
 
 				if(client->IP != client->lastIP)
 				{
-					printf("[AuthChallenge] L'IP %s ne correspond pas ˆ la derniere IP %s \n",client->IP.c_str(),client->lastIP.c_str());
+					printf("[AuthChallenge] L'IP %s ne correspond pas ï¿½ la derniere IP %s \n",client->IP.c_str(),client->lastIP.c_str());
 					return false;
 				}
 				else
@@ -131,7 +131,22 @@ bool Authentification::_HandleLogonChallenge( Packet *packet)
 }
 
 
-
+bool Authentification::_HandleLogonProof(RakNet::Packet *packet)
+{
+	FindClient(packet->guid);
+	AUTH_LOGON_PROOF_C *data = (AUTH_LOGON_PROOF_C *) &packet->data ;
+	if (strcmp(data->A, client->shaPassHash) == 1)
+	{
+		log->Write(Log::INFO,"Erreur de mot de passe");
+		client->passage +=1;
+	}
+	else
+	{
+		log->Write(Log::INFO,"Mot de passe valider");
+		client->passage = 0;
+	}
+	return true;
+	}
 
 /*/// Logon Challenge command handler
 bool Authentification::_HandleLogonChallenge()
