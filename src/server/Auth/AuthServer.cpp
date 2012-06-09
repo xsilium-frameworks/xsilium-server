@@ -53,12 +53,10 @@ RAK_THREAD_DECLARATION(SocketThread)
 				if(!auth->DeleteClient(packet))
 					log->Write(Log::ERROR,"Impossible de supprimer le client");
 				break;
-	 		case ID_USER_PACKET_ENUM:
+	 		case ID_SEND_USER:
 	 			log->Write(Log::DEBUG,"Packet recu");
 	 			if(!auth->_HandleLogonChallenge(packet))
 	 				log->Write(Log::ERROR,"Impossible d'authentifier le client");
-	 			break;
-	 		default:
 	 			break;
 			}
 			peer->DeallocatePacket(packet);

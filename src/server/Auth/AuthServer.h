@@ -21,11 +21,7 @@
 #include "SignalHandler/SignalHandler.h"
 
 #include "Authentification/Authentification.h"
-
-enum {
-   ID_MYPROJECT_MSG_1 = ID_USER_PACKET_ENUM,
-   ID_MYPROJECT_MSG_2,
-};
+#include "AuthCodes/AuthCodes.h"
 
 
   /*! \class authServer
