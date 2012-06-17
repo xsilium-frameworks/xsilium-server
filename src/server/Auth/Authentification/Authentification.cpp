@@ -7,8 +7,7 @@
 
 #include "Authentification.h"
 
-Authentification::Authentification(RakPeerInterface* peerTmp) {
-	peer = peerTmp;
+Authentification::Authentification() {
 	realms = new LoginDatabase();
 	config = Configuration::getInstance();
 	log = Log::getInstance();
@@ -20,13 +19,18 @@ Authentification::~Authentification() {
 	delete this->realms ;
 }
 
-bool Authentification::FindClient(RakNet::RakNetGUID guid)
+bool Authentification::FindClient(ENetAddress address)
 {
 
 	for (client=listOfClient.begin() ; client!=listOfClient.end() ; ++client)
 	{
-	  if ( client->guid == guid )
-		  return true;
+	  if ( client->IP == address.host )
+	  {
+		  if(client->port == address.port)
+		  {
+			  return true;
+		  }
+	  }
 	}
 
 	return false;
@@ -41,24 +45,25 @@ void Authentification::ConnexionDB()
 	config->Get("postgresUser",user);
 	config->Get("postgresPassword",password);
 	connectionString = "host=" + host + " port=" + port + " dbname=" + dbname + " user=" + user + " password=" + password;
-	isDBConnect = realms->Connect(connectionString.c_str());
+	//isDBConnect = realms->Connect(connectionString.c_str());
 
 
 }
 
 
-bool Authentification::CreateClient(Packet *packet)
+bool Authentification::CreateClient(ENetEvent *packet)
 {
 	sClient clientTemp ;
-	clientTemp.guid = packet->guid ;
+	clientTemp.IP = packet->peer->address.host ;
+	clientTemp.port = packet->peer->address.port ;
 	listOfClient.push_back(clientTemp);
 
 	return true;
 }
 
-bool Authentification::DeleteClient(Packet *packet)
+bool Authentification::DeleteClient(ENetEvent *packet)
 {
-	FindClient(packet->guid);
+	FindClient(packet->peer->address);
 
 	listOfClient.erase(client);
 	return true;
@@ -66,12 +71,12 @@ bool Authentification::DeleteClient(Packet *packet)
 
 
 
-bool Authentification::_HandleLogonChallenge( Packet *packet)
+bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 {
 	//if (packet->length < sizeof(sAuthLogonChallenge_C))
 	//	return false;
 
-	FindClient(packet->guid);
+	FindClient(packet->peer->address);
 
 	sAuthLogonChallenge_C *data = (sAuthLogonChallenge_C *) &packet->data ;
 
@@ -81,7 +86,7 @@ bool Authentification::_HandleLogonChallenge( Packet *packet)
 	printf("Nom du client : %s\n",login.c_str());
 
 	AUTH_LOGON_PROOF_S error;
-	RakNet::BitStream * sendMessage;
+	/*RakNet::BitStream * sendMessage;
 
 	bool resultsGetBan;
 	realms->setIPBan();
@@ -126,14 +131,14 @@ bool Authentification::_HandleLogonChallenge( Packet *packet)
 		}
 
 
-	}
+	}*/
 	return true;
 }
 
 
-bool Authentification::_HandleLogonProof(RakNet::Packet *packet)
+bool Authentification::_HandleLogonProof(ENetEvent *packet)
 {
-	FindClient(packet->guid);
+	/*FindClient(packet->peer->address);
 	client->passage +=1;
 	AUTH_LOGON_PROOF_C *data = (AUTH_LOGON_PROOF_C *) &packet->data ;
 	if (strcmp(data->A.c_str()  , client->shaPassHash.c_str()) == 1)
@@ -150,8 +155,9 @@ bool Authentification::_HandleLogonProof(RakNet::Packet *packet)
 		log->Write(Log::INFO,"Mot de passe valider");
 		client->passage = 0;
 	}
-
+	*/
 	return true;
+
 }
 
 /*/// Logon Challenge command handler

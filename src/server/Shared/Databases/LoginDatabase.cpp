@@ -8,7 +8,6 @@
 #include "LoginDatabase.h"
 // #include "SHA1.h"
 #include <stdlib.h>
-#include "LinuxStrings.h"
 // localtime
 #include <time.h>
 
@@ -25,6 +24,7 @@ LoginDatabase::~LoginDatabase() {
 
 bool LoginDatabase::selectAccount(const char * userName,sClient *client)
 {
+	/*
 	PGresult *result;
 	char query[512];
 	if (strlen(userName)>32)
@@ -50,13 +50,14 @@ bool LoginDatabase::selectAccount(const char * userName,sClient *client)
 		client->accountUnBanDate = atoi(PQgetvalue(result,0,PQfnumber(result, "unbandate")));
 	}
 	PQclear(result);
-
+	*/
 	return true ;
 }
 
 
 bool LoginDatabase::getIPBan(std::string *IP, bool *results)
 {
+	/*
 	PGresult *result;
 	char query[512];
 	sprintf(query, "SELECT 1 FROM ip_banned WHERE ip = '%s'", IP->c_str() );
@@ -67,12 +68,14 @@ bool LoginDatabase::getIPBan(std::string *IP, bool *results)
 	}
 
 	results = (bool*)PQntuples(result);
+	*/
 	return true;
 
 }
 
 bool LoginDatabase::setIPBan()
 {
+	/*
 	PGresult *result;
 	char query[512] = "DELETE FROM ip_banned WHERE unbandate<=now() AND unbandate<>bandate" ;
 	if (ExecuteBlockingCommand(query, &result, false)==false)
@@ -82,11 +85,13 @@ bool LoginDatabase::setIPBan()
 	}
 
 	PQclear(result);
+	*/
 	return true ;
 }
 
 bool LoginDatabase::setAccountBan(sClient *client)
 {
+/*
 	PGresult *result;
 	char query[512] = "DELETE FROM ip_banned WHERE unbandate<=now() AND unbandate<>bandate" ;
 	if (ExecuteBlockingCommand(query, &result, false)==false)
@@ -96,6 +101,7 @@ bool LoginDatabase::setAccountBan(sClient *client)
 	}
 
 	PQclear(result);
+	*/
 	return true ;
 
 }

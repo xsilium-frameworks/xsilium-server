@@ -19,10 +19,7 @@
 #include <stdio.h>
 #include <vector>
 
-
-#include "BitStream.h"
-#include "MessageIdentifiers.h"
-#include "RakSleep.h"
+#include <enet/enet.h>
 
 
 #include "../resource.h"
@@ -31,7 +28,7 @@
 #include "Logging/Log.h"
 #include "Config/Configuration.h"
 
-using namespace RakNet;
+
 using namespace std;
 
 
@@ -48,7 +45,7 @@ public:
      *  \param
      */
 
-	Authentification(RakPeerInterface *peerTmp);
+	Authentification();
 
     /*!
      *  \brief Constructeur
@@ -70,7 +67,7 @@ public:
      *  \param
      */
 
-	bool CreateClient(Packet *packet);
+	bool CreateClient(ENetEvent *packet);
 
     /*!
      *  \brief DeleteClient
@@ -81,7 +78,7 @@ public:
      *  \param
      */
 
-	bool DeleteClient(Packet *packet);
+	bool DeleteClient(ENetEvent *packet);
 
     /*!
      *  \brief FindClient
@@ -92,7 +89,7 @@ public:
      *  \param
      */
 
-	bool FindClient(RakNetGUID guid);
+	bool FindClient(ENetAddress guid);
 
     /*!
      *  \brief _HandleLogonChallenge
@@ -105,9 +102,9 @@ public:
 
 	void ConnexionDB();
 
-    bool _HandleLogonChallenge( RakNet::Packet *packet);
-    bool _HandleLogonProof(RakNet::Packet *packet);
-    bool _HandleRealmList(RakNet::Packet *packet);
+    bool _HandleLogonChallenge( ENetEvent *packet);
+    bool _HandleLogonProof(ENetEvent *packet);
+    bool _HandleRealmList(ENetEvent *packet);
 
 private:
 
@@ -116,7 +113,6 @@ private:
     LoginDatabase * realms ;
     Log * log;
     Configuration * config ;
-    RakPeerInterface *peer;
 
 
      string connectionString;

@@ -15,7 +15,7 @@
 #ifndef LOGINDATABASE_H_
 #define LOGINDATABASE_H_
 
-#include "PostgreSQLInterface/PostgreSQLInterface.h"
+//#include "PostgreSQLInterface/PostgreSQLInterface.h"
 #include "Structure/Server.h"
 
   /*! \class LoginDatabase
@@ -23,7 +23,8 @@
    *
    */
 
-class LoginDatabase : public PostgreSQLInterface {
+//class LoginDatabase : public PostgreSQLInterface {
+class LoginDatabase {
 public:
 
     /*!

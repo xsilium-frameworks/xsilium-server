@@ -15,14 +15,13 @@
 #ifndef AUTHSERVER_H_
 #define AUTHSERVER_H_
 
-#include "RakThread.h"
+#include <pthread.h>
 #include "Config/Configuration.h"
 #include "Logging/Log.h"
 #include "SignalHandler/SignalHandler.h"
 
 #include "Authentification/Authentification.h"
 #include "AuthCodes/AuthCodes.h"
-
 
   /*! \class authServer
    * \brief Permet de faire la liaison entre la reception des packets
@@ -72,6 +71,7 @@ private:
 	SignalHandler * signalHandler;
 	Configuration * config ;
 	Log * log;
+	pthread_t thread;
 
 };
 

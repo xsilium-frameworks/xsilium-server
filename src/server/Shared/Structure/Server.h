@@ -9,7 +9,6 @@
 #define SERVER_H_
 
 #include <string>
-#include "RakPeerInterface.h"
 
 
     /*!
@@ -35,8 +34,8 @@ struct AUTH_LOGON_PROOF_S
  */
 struct sClient
 {
-	RakNet::RakNetGUID 	guid; /*!< Numero unique generer lors de la connection au socket  */
-	std::string IP ; /*!< L'ip du client       */
+	uint32_t IP ; /*!< L'ip du client       */
+	uint16_t port;
     uint8_t idLogin; /*!< numero unique du compte dans la base de donn�e      */
     uint16_t  build; /*!< version du client      */
     uint8_t   platform[4]; /*!< la platform du client      */
