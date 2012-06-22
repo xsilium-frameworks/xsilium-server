@@ -73,14 +73,18 @@ bool Authentification::DeleteClient(ENetEvent *packet)
 
 bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 {
-	//if (packet->length < sizeof(sAuthLogonChallenge_C))
+	//if (packet->packet->dataLength < sizeof(sAuthLogonChallenge_C))
 	//	return false;
 
 	FindClient(packet->peer->address);
 
-	sAuthLogonChallenge_C *data = (sAuthLogonChallenge_C *) &packet->data ;
+	sAuthLogonChallenge_C *data = (sAuthLogonChallenge_C *) packet->packet->data ;
 
-	string login = (const char*) data->login ;
+	string login = (const char *) data->login ;
+	if (data->login_len != strlen(login.c_str()))
+		printf("erreur avec le nom\n");
+
+
 	client->build = data->build;
 
 	printf("Nom du client : %s\n",login.c_str());

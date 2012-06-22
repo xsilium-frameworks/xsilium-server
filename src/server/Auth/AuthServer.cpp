@@ -55,7 +55,17 @@ void* threadConnexion(void* arguments)
 
 			        case ENET_EVENT_TYPE_RECEIVE:
 
-			        	switch(eventServer.packet->data[0])
+			        	printf ("A packet of length %u containing %s was received from %s on channel %u. \n",
+			        			eventServer.packet -> dataLength,
+			        			eventServer.packet -> data,
+			        			eventServer.peer -> data,
+			        			eventServer.channelID
+			        	);
+
+			        	char dudul ;
+			        	dudul = eventServer.packet -> data[0];
+
+			        	switch(atoi(&dudul))
 			        	{
 			        		case ID_SEND_USER:
 			        			log->Write(Log::DEBUG,"Packet recu");
@@ -111,7 +121,7 @@ void authServer::startServer()
 		{}
 		int logLevel;
 		config->Get("LogLevel",logLevel);
-		log->Start((Log::Priority)logLevel,"");
+		log->Start((Log::Priority)logLevel,"authserver.log");
 		log->Write(Log::DEBUG,"Demarrage du thread d'authentification");
 		pthread_create(&thread,NULL,threadConnexion,&this->endThread);
 
