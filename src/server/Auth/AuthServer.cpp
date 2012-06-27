@@ -84,6 +84,8 @@ void* threadConnexion(void* arguments)
 			       		 			break;
 			        	}
 
+			    	    /* One could just use enet_host_service() instead. */
+			    	    enet_host_flush (server);
 			            /* Clean up the packet now that we're done using it. */
 			            enet_packet_destroy (eventServer.packet);
 

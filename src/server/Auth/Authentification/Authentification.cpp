@@ -89,6 +89,15 @@ bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 
 	printf("Nom du client : %s\n",login.c_str());
 
+	  ENetPacket * dudul = enet_packet_create ("packet",strlen ("packet") + 1,ENET_PACKET_FLAG_RELIABLE);
+
+	    /* Send the packet to the peer over channel id 0. */
+	    /* One could also broadcast the packet by         */
+	    /* enet_host_broadcast (host, 0, packet);         */
+	    enet_peer_send (packet->peer, 0, dudul);
+
+
+
 	AUTH_LOGON_PROOF_S error;
 	/*RakNet::BitStream * sendMessage;
 
