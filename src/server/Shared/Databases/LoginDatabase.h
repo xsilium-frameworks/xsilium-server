@@ -17,6 +17,7 @@
 
 //#include "PostgreSQLInterface/PostgreSQLInterface.h"
 #include "Structure/Server.h"
+#include <pqxx/pqxx>
 
   /*! \class LoginDatabase
    * \brief
