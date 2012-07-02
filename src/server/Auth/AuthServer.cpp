@@ -55,13 +55,6 @@ void* threadConnexion(void* arguments)
 
 			        case ENET_EVENT_TYPE_RECEIVE:
 
-			        	printf ("A packet of length %u containing %s was received from %s on channel %u. \n",
-			        			eventServer.packet -> dataLength,
-			        			eventServer.packet -> data,
-			        			eventServer.peer -> data,
-			        			eventServer.channelID
-			        	);
-
 			        	char dudul ;
 			        	dudul = eventServer.packet -> data[0];
 

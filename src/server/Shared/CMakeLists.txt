@@ -9,14 +9,11 @@ file(GLOB_RECURSE sources_Singleton Singleton/*.cpp Singleton/*.h)
 
 file(GLOB_RECURSE sources_Structure Structure/*.cpp Structure/*.h)
 
-file(GLOB sources_localdir *.cpp *.h)
-
 #
 # Build shared sourcelist
 #
 
 set(shared_STAT_SRCS
-  ${shared_STAT_SRCS}
   ${sources_Configuration}
   ${sources_Database}
   ${sources_Logging}
@@ -28,7 +25,6 @@ set(shared_STAT_SRCS
 
 include_directories(
   ${CMAKE_BINARY_DIR}
-  ${CMAKE_SOURCE_DIR}/Dep/Raknet
   ${CMAKE_SOURCE_DIR}/src/server
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/Config
@@ -42,6 +38,6 @@ include_directories(
   ${POSTGRESQL_INCLUDE_DIR}
 )
 
-add_library(shared STATIC ${shared_STAT_SRCS})
+add_library(${SHARED} STATIC ${shared_STAT_SRCS})
 
 

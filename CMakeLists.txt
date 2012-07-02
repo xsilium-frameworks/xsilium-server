@@ -33,9 +33,6 @@ find_package(PostgreSQL)
 # print out the results before continuing
 include(cmake/showoptions.cmake)
 
-# add dependencies
-add_subdirectory(dep)
-
 # add core sources
 add_subdirectory(src)
 

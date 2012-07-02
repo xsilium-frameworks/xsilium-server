@@ -73,8 +73,8 @@ bool Authentification::DeleteClient(ENetEvent *packet)
 
 bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 {
-	//if (packet->packet->dataLength < sizeof(sAuthLogonChallenge_C))
-	//	return false;
+	if (packet->packet->dataLength < sizeof(sAuthLogonChallenge_C))
+		return false;
 
 	FindClient(packet->peer->address);
 
@@ -86,6 +86,7 @@ bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 
 
 	client->build = data->build;
+	char hostip[256];
 
 	printf("Nom du client : %s\n",login.c_str());
 
@@ -94,6 +95,9 @@ bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 	    /* Send the packet to the peer over channel id 0. */
 	    /* One could also broadcast the packet by         */
 	    /* enet_host_broadcast (host, 0, packet);         */
+
+	  enet_address_get_host_ip(&packet->peer->address,hostip,sizeof(hostip));
+	  printf("adresse cleint et port : %s:%i\n",hostip,packet->peer->address.port);
 	    enet_peer_send (packet->peer, 0, dudul);
 
 
