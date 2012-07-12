@@ -27,9 +27,6 @@ include(cmake/options.cmake)
 
 include(CheckPlatform)
 
-# basic packagesearching and setup (further support will be needed, this is a preliminary release!)
-find_package(PostgreSQL)
-
 # print out the results before continuing
 include(cmake/showoptions.cmake)
 

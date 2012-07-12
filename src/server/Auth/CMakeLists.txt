@@ -1,8 +1,10 @@
 ########### authserver ###############
 
-file(GLOB_RECURSE sources_authentication Authentication/*.cpp Authentication/*.h)
+file(GLOB_RECURSE sources_authentication Authentification/*.cpp Authentification/*.h)
 file(GLOB_RECURSE sources_realms realms/*.cpp realms/*.h)
 file(GLOB sources_localdir *.cpp *.h)
+
+
 
 set(authserver_SRCS
   ${sources_authentication}
@@ -11,26 +13,24 @@ set(authserver_SRCS
 )
 
 include_directories(
-  .
-  ${CMAKE_BINARY_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}/Authentication
-  ${CMAKE_CURRENT_SOURCE_DIR}/realms
-  ${PGSQL_INCLUDE_DIR}
-  ${shared_STAT_SRCS}
+	${CMAKE_BINARY_DIR}
+	${CMAKE_CURRENT_SOURCE_DIR}
+	${CMAKE_CURRENT_SOURCE_DIR}/Authentication
+	${CMAKE_CURRENT_SOURCE_DIR}/realms
+	${CMAKE_SOURCE_DIR}/src/server/shared
 )
 
 
 find_library(ENET_LIB enet)
+find_library(PQXX_LIB pqxx)
 
 
 link_libraries(
+	SHARED
 	${OSX_LIBS}
-	${PGSQL_LIBRARIES}
-	${ENET_LIB}
-	${SHARED}	
+	${PQXX_LIB}
+	${ENET_LIB}	
 )
-
 
 set(authserver_LINK_FLAGS "-pthread")
 
@@ -50,5 +50,5 @@ add_executable(authserver
 set_target_properties(authserver PROPERTIES LINK_FLAGS "${authserver_LINK_FLAGS}" )
 
   install(TARGETS authserver DESTINATION bin)
-  #install(FILES  authserver.conf.dist DESTINATION etc)
+  install(FILES  auth.config DESTINATION etc)
 

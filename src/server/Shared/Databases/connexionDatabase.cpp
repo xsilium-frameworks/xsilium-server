@@ -6,7 +6,6 @@
  */
 
 #include "connexionDatabase.h"
-#include <pqxx/pqxx>
 
 
 connexionDatabase::connexionDatabase( ) {
@@ -18,25 +17,24 @@ connexionDatabase::~connexionDatabase() {
 	// TODO Auto-generated destructor stub
 }
 
-connexionDatabase::connexionDB()
+void connexionDatabase::connexionDB()
 {
 	pqxx::connection c("dbname=company user=accounting");
 	pqxx::work txn(c);
 }
 
-connexionDatabase::connexionDB()
+void connexionDatabase::deconnexionDB()
 {
-	pqxx::connectionpolicy::do_disconnect();
 }
 
-connexionDatabase::executionDB();
+void connexionDatabase::executionDB()
 {
-	PGresult *PQexecParams(PGconn *conn,
+	/*PGresult *PQexecParams(PGconn *conn,
 	                       const char *command,
 	                       int nParams,
 	                       const Oid *paramTypes,
 	                       const char * const *paramValues,
 	                       const int *paramLengths,
 	                       const int *paramFormats,
-	                       int resultFormat);
+	                       int resultFormat);*/
 }

@@ -38,6 +38,6 @@ include_directories(
   ${POSTGRESQL_INCLUDE_DIR}
 )
 
-add_library(${SHARED} STATIC ${shared_STAT_SRCS})
+add_library(SHARED STATIC ${shared_STAT_SRCS})
 
 

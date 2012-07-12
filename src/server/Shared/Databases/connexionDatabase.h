@@ -15,9 +15,9 @@ public:
 	connexionDatabase();
 	virtual ~connexionDatabase();
 
-	connexionDB();
-	deconnexionDB();
-	executionDB();
+	void connexionDB();
+	void deconnexionDB();
+	void executionDB();
 };
 
 #endif /* CONNEXIONDATABASE_H_ */

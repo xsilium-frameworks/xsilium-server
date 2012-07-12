@@ -112,7 +112,7 @@ void authServer::startServer()
 	try
 	{
 		signalHandler->setupSignalHandlers();
-		if (!config->Load("Debug/auth.config"))
+		if (!config->Load("../etc/auth.config"))
 		{}
 		int logLevel;
 		config->Get("LogLevel",logLevel);
