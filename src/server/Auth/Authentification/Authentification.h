@@ -27,6 +27,7 @@
 #include "Structure/Client.h"
 #include "Logging/Log.h"
 #include "Config/Configuration.h"
+#include "../AuthCodes/AuthCodes.h"
 
 
 using namespace std;
@@ -100,11 +101,11 @@ public:
      *  \param
      */
 
-	void ConnexionDB();
-
     bool _HandleLogonChallenge( ENetEvent *packet);
     bool _HandleLogonProof(ENetEvent *packet);
     bool _HandleRealmList(ENetEvent *packet);
+
+    void setclient(pqxx::result resultsql);
 
 private:
 

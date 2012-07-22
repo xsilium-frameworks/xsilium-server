@@ -21,7 +21,6 @@
 #include "SignalHandler/SignalHandler.h"
 
 #include "Authentification/Authentification.h"
-#include "AuthCodes/AuthCodes.h"
 
   /*! \class authServer
    * \brief Permet de faire la liaison entre la reception des packets

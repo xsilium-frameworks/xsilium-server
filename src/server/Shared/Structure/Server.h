@@ -9,6 +9,7 @@
 #define SERVER_H_
 
 #include <string>
+#include <time.h>
 
 
     /*!
@@ -43,10 +44,10 @@ struct sClient
     uint8_t   country[4]; /*!< le pays du client      */
     std::string shaPassHash; /*!< Le mot de passe crypter */
     bool locked; /*!< Si le client lock sont compte sur l'ip*/
-    uint8_t passage; /*!<Le nombre d'essais que fait un clien */
+    uint8_t nbPassage; /*!<Le nombre d'essais que fait un clien */
     std::string lastIP; /*!< derniere IP du compte  */
     uint8_t gmlevel[50] ; /*!<Niveau de MJ*/
-    int accountUnBanDate ; /*!<si le compte est bannie date de debanne du compte*/
+    time_t accountUnBanDate ; /*!<si le compte est bannie date de debanne du compte*/
 };
 
 

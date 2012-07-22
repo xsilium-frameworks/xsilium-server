@@ -6,8 +6,9 @@ file(GLOB_RECURSE sources_Logging Logging/*.cpp Logging/*.h)
 file(GLOB_RECURSE sources_PostgreSQLInterface PostgreSQLInterface/*.cpp PostgreSQLInterface/*.h)
 file(GLOB_RECURSE sources_SignalHandler SignalHandler/*.cpp SignalHandler/*.h)
 file(GLOB_RECURSE sources_Singleton Singleton/*.cpp Singleton/*.h)
-
+file(GLOB_RECURSE sources_Threading Threading/*.cpp Threading/*.h)
 file(GLOB_RECURSE sources_Structure Structure/*.cpp Structure/*.h)
+file(GLOB_RECURSE sources_Utilities Utilities/*.cpp Utilities/*.h)
 
 #
 # Build shared sourcelist
@@ -21,6 +22,8 @@ set(shared_STAT_SRCS
   ${sources_SignalHandler}
   ${sources_Singleton}
   ${sources_Structure}
+  ${sources_Threading}
+  ${sources_Utilities}
 )
 
 include_directories(
@@ -34,7 +37,8 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/SignalHandler
   ${CMAKE_CURRENT_SOURCE_DIR}/Singleton
   ${CMAKE_CURRENT_SOURCE_DIR}/Structure
-  ${CMAKE_SOURCE_DIR}/src/server/game/Entities/Object
+  ${CMAKE_CURRENT_SOURCE_DIR}/Threading
+  ${CMAKE_CURRENT_SOURCE_DIR}/Utilities
   ${POSTGRESQL_INCLUDE_DIR}
 )
 

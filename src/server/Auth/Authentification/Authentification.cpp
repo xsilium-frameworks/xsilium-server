@@ -8,10 +8,13 @@
 #include "Authentification.h"
 
 Authentification::Authentification() {
-	realms = new LoginDatabase();
 	config = Configuration::getInstance();
 	log = Log::getInstance();
-	this->ConnexionDB();
+
+	string infoDB;
+	config->Get("LoginDatabaseInfo",infoDB);
+	realms = LoginDatabase::getInstance();
+	realms->connexionDB(infoDB);
 
 }
 
@@ -36,17 +39,31 @@ bool Authentification::FindClient(ENetAddress address)
 	return false;
 }
 
-void Authentification::ConnexionDB()
+void Authentification::setclient(pqxx::result resultsql)
 {
-	string host,port,dbname,user,password;
-	config->Get("postgresHost",host);
-	config->Get("postgresPort",port);
-	config->Get("postgresDBname",dbname);
-	config->Get("postgresUser",user);
-	config->Get("postgresPassword",password);
-	connectionString = "host=" + host + " port=" + port + " dbname=" + dbname + " user=" + user + " password=" + password;
-	//isDBConnect = realms->Connect(connectionString.c_str());
+	client->shaPassHash = resultsql[0][0].as<std::string>();
+	client->idLogin = resultsql[0][1].as<int>();
+	client->locked = resultsql[0][2].as<bool>();
+	client->lastIP = resultsql[0][3].as<std::string>();
 
+	for(pqxx::result::const_iterator row = resultsql.begin(); row != resultsql.end(); row++)
+	{
+		if (client->idLogin == row[1].as<int>() )
+		{
+			if(!resultsql[0][4].is_null())
+			{
+				client->gmlevel[row[5].as<int>()] = row[4].as<int>();
+			}
+		}
+	}
+
+	if(!resultsql[0][6].is_null())
+	{
+		struct tm tm;
+		std::string time = resultsql[0][6].as<std::string>() ;
+		strptime((resultsql[0][6].as<std::string>()).c_str(), "%Y-%m-%d %H:%M:%S", &tm);
+		client->accountUnBanDate = mktime(&tm);
+	}
 
 }
 
@@ -86,69 +103,62 @@ bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 
 
 	client->build = data->build;
-	char hostip[256];
+	char hostip[16];
 
 	printf("Nom du client : %s\n",login.c_str());
-
-	  ENetPacket * dudul = enet_packet_create ("packet",strlen ("packet") + 1,ENET_PACKET_FLAG_RELIABLE);
-
-	    /* Send the packet to the peer over channel id 0. */
-	    /* One could also broadcast the packet by         */
-	    /* enet_host_broadcast (host, 0, packet);         */
-
-	  enet_address_get_host_ip(&packet->peer->address,hostip,sizeof(hostip));
-	  printf("adresse cleint et port : %s:%i\n",hostip,packet->peer->address.port);
-	    enet_peer_send (packet->peer, 0, dudul);
+	enet_address_get_host_ip(&packet->peer->address,hostip,sizeof(hostip));
+	printf("adresse cleint et port : %s:%i\n",hostip,packet->peer->address.port);
 
 
 
 	AUTH_LOGON_PROOF_S error;
-	/*RakNet::BitStream * sendMessage;
 
-	bool resultsGetBan;
-	realms->setIPBan();
-	client->IP = packet->systemAddress.ToString(false);
-	if(realms->getIPBan(&client->IP,&resultsGetBan))
-	{
-		if(resultsGetBan)
+	pqxx::result resultsql;
+	realms->executionPrepareStatement(LOGIN_SET_EXPIREDIPBANS);
+	resultsql = realms->executionPrepareStatement(LOGIN_GET_IPBANNED,1,hostip);
+	if(!resultsql.empty())
 		{
 			error.typeId = ID_CONNECTION_BANNED ;
 			error.error = 1;
-			printf("[AuthChallenge] L'ip %s est bannie !\n",client->IP.c_str());
+			printf("[AuthChallenge] L'ip %s est bannie !\n",hostip);
 
-			sendMessage->Write(error);
-			this->peer->Send(sendMessage,HIGH_PRIORITY,RELIABLE_ORDERED,0,packet->systemAddress,true);
+			ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
+		    enet_peer_send (packet->peer, 0, message);
 
 			return false;
 		}
 
-		if (realms->selectAccount(login.c_str(),client.base()))
+	resultsql = realms->executionPrepareStatement(LOGIN_GET_ACCIDBYNAME,1,login.c_str());
+	if(resultsql.empty())
 		{
-			if(client->idLogin == 0)
+			error.typeId = ID_INVALID_PASSWORD ;
+			error.error = 1;
+			printf("[AuthChallenge] Le compte %s n'existe pas \n",login.c_str());
+			return false;
+		}
+	setclient(resultsql);
+
+	if(client->accountUnBanDate > time(0))
+	{
+		error.typeId = ID_COMPTE_BANNIE ;
+		error.error = 1;
+		printf("[AuthChallenge] Le compte %s est banni jusqu'au %s \n",login.c_str(),ctime(&client->accountUnBanDate));
+		return false;
+	}
+
+	if(client->locked)
+		{
+		printf("[AuthChallenge] Le compte %s est lier a l'IP %s \n",login.c_str(),client->lastIP.c_str());
+		printf("[AuthChallenge] Le client � pour l'IP %s \n",hostip);
+		if(hostip != client->lastIP.c_str())
 			{
-				error.typeId = ID_INVALID_PASSWORD ;
-				error.error = 1;
-				printf("[AuthChallenge] Le compte %s n'existe pas \n",login.c_str());
+				printf("[AuthChallenge] L'IP %s ne correspond pas � la derniere IP %s \n",hostip,client->lastIP.c_str());
 				return false;
 			}
-			if(client->locked)
-			{
-				printf("[AuthChallenge] Le compte %s est lier a l'IP %s \n",login.c_str(),client->lastIP.c_str());
-				printf("[AuthChallenge] Le client � pour l'IP %s \n",client->IP.c_str());
-
-				if(client->IP != client->lastIP)
-				{
-					printf("[AuthChallenge] L'IP %s ne correspond pas � la derniere IP %s \n",client->IP.c_str(),client->lastIP.c_str());
-					return false;
-				}
-				else
-					printf("[AuthChallenge] Les IPs correspondent \n");
-			}
-
+			else
+				printf("[AuthChallenge] Les IPs correspondent \n");
 		}
 
-
-	}*/
 	return true;
 }
 

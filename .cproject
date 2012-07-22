@@ -124,7 +124,10 @@
 					</target>
 					<target name="Clean" path="[Targets]/[lib] SHARED" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 						<buildCommand>/Applications/CMake 2.8-7.app/Contents/bin/cmake</buildCommand>
-						<buildArguments>-E chdir "/Users/joda/workspace/build/server/src/server/Shared" "/Applications/CMake 2.8-7.app/Contents/bin/cmake" -P "CMakeFiles/SHARED.dir/cmake_clean.cmake"</buildArguments>
+						<buildArguments>-E chdir
+							"/Users/joda/workspace/build/server/src/server/Shared"
+							"/Applications/CMake 2.8-7.app/Contents/bin/cmake" -P
+							"CMakeFiles/SHARED.dir/cmake_clean.cmake"</buildArguments>
 						<buildTarget/>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>false</useDefaultCommand>
@@ -271,7 +274,10 @@
 					</target>
 					<target name="Clean" path="[Targets]/[exe] authserver" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 						<buildCommand>/Applications/CMake 2.8-7.app/Contents/bin/cmake</buildCommand>
-						<buildArguments>-E chdir "/Users/joda/workspace/build/server/src/server/Auth" "/Applications/CMake 2.8-7.app/Contents/bin/cmake" -P "CMakeFiles/authserver.dir/cmake_clean.cmake"</buildArguments>
+						<buildArguments>-E chdir
+							"/Users/joda/workspace/build/server/src/server/Auth"
+							"/Applications/CMake 2.8-7.app/Contents/bin/cmake" -P
+							"CMakeFiles/authserver.dir/cmake_clean.cmake"</buildArguments>
 						<buildTarget/>
 						<stopOnError>true</stopOnError>
 						<useDefaultCommand>false</useDefaultCommand>
@@ -362,6 +368,43 @@
 					</target>
 				</buildTargets>
 			</storageModule>
+		</cconfiguration>
+		<buildSystem id="preference.org.eclipse.cdt.managedbuilder.core.configurationDataProvider.405665679">
+			<storageModule id="preference.org.eclipse.cdt.managedbuilder.core.configurationDataProvider.405665679" moduleId="org.eclipse.cdt.core.settings"/>
+		</buildSystem>
+		<cconfiguration id="preference.org.eclipse.cdt.managedbuilder.core.configurationDataProvider.405665679">
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration buildProperties="" description="" id="preference.org.eclipse.cdt.managedbuilder.core.configurationDataProvider.405665679" name="Preference Configuration" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+					<folderInfo id="preference.org.eclipse.cdt.managedbuilder.core.configurationDataProvider.405665679." name="/" resourcePath="">
+						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.841467396" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
+							<targetPlatform id="org.eclipse.cdt.build.core.prefbase.toolchain.841467396.842958533" name=""/>
+							<builder id="org.eclipse.cdt.build.core.settings.default.builder.1556126958" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.523805334" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.2125689404" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.2083439703" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.926980680" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1961872722" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.365884653" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1950127661" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="preference.org.eclipse.cdt.managedbuilder.core.configurationDataProvider.405665679" moduleId="org.eclipse.cdt.core.settings" name="Preference Configuration">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">

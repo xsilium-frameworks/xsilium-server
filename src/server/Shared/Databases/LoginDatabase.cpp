@@ -8,21 +8,42 @@
 #include "LoginDatabase.h"
 // #include "SHA1.h"
 #include <stdlib.h>
-// localtime
-#include <time.h>
+#include <sstream>
 
 
 LoginDatabase::LoginDatabase() {
-	// TODO Auto-generated constructor stub
 
 }
 
 LoginDatabase::~LoginDatabase() {
-	// TODO Auto-generated destructor stub
+}
+
+void LoginDatabase::connexionDB(std::string infoString)
+{
+	connexionDatabase::connexionDB(infoString);
+
+	connexionDatabase::suffix = "Login";
+
+	//PrepareStatement(LOGIN_GET_REALMLIST, "SELECT id, name, address, port, icon, color, timezone, allowedSecurityLevel, population, gamebuild FROM realmlist WHERE color <> 3 ORDER BY name");
+    connexionDatabase::PrepareStatement(LOGIN_SET_EXPIREDIPBANS, "DELETE FROM ip_banned WHERE unbandate<=now() AND unbandate<>bandate");
+    //PrepareStatement(LOGIN_SET_EXPIREDACCBANS, "UPDATE account_banned SET active = 0 WHERE unbandate<=UNIX_TIMESTAMP() AND unbandate<>bandate");
+    connexionDatabase::PrepareStatement(LOGIN_GET_IPBANNED, "SELECT * FROM ip_banned WHERE ip = $1");
+    //PrepareStatement(LOGIN_SET_IPAUTOBANNED, "INSERT INTO ip_banned VALUES (?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP()+?,'Trinity realmd', 'Failed login autoban')");
+    //PrepareStatement(LOGIN_GET_ACCBANNED, "SELECT bandate,unbandate FROM account_banned WHERE id = ? AND active = 1");
+    //PrepareStatement(LOGIN_SET_ACCAUTOBANNED, "INSERT INTO account_banned VALUES (?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP()+?, 'Trinity realmd', 'Failed login autoban', 1)");
+    //PrepareStatement(LOGIN_GET_SESSIONKEY, "SELECT sessionkey FROM account WHERE username = ?");
+    //PrepareStatement(LOGIN_SET_VS, "UPDATE account SET v = ?, s = ? WHERE username = ?");
+    //PrepareStatement(LOGIN_SET_LOGONPROOF, "UPDATE account SET sessionkey = ?, last_ip = ?, last_login = NOW(), locale = ?, failed_logins = 0 WHERE username = ?");
+    //PrepareStatement(LOGIN_SET_FAILEDLOGINS, "UPDATE account SET failed_logins = failed_logins + 1 WHERE username = ?");
+    //PrepareStatement(LOGIN_GET_FAILEDLOGINS, "SELECT id, failed_logins FROM account WHERE username = ?");
+
+    connexionDatabase::PrepareStatement(LOGIN_GET_ACCIDBYNAME, "SELECT a.sha_pass_hash,a.id,a.locked,a.last_ip,aa.gmlevel,aa.realmID,ab.unbandate FROM account a LEFT outer JOIN account_access aa ON (a.id = aa.id) Left outer join account_banned ab on a.id = ab.id WHERE a.username = $1");
+    //PrepareStatement(LOGIN_GET_NUMCHARSONREALM, "SELECT numchars FROM realmcharacters WHERE realmid = ? AND acctid= ?");
+
 }
 
 
-bool LoginDatabase::selectAccount(const char * userName,sClient *client)
+/*bool LoginDatabase::selectAccount(const char * userName,sClient *client)
 {
 	/*
 	PGresult *result;
@@ -50,14 +71,14 @@ bool LoginDatabase::selectAccount(const char * userName,sClient *client)
 		client->accountUnBanDate = atoi(PQgetvalue(result,0,PQfnumber(result, "unbandate")));
 	}
 	PQclear(result);
-	*/
+
 	return true ;
 }
 
 
 bool LoginDatabase::getIPBan(std::string *IP, bool *results)
 {
-	/*
+
 	PGresult *result;
 	char query[512];
 	sprintf(query, "SELECT 1 FROM ip_banned WHERE ip = '%s'", IP->c_str() );
@@ -68,14 +89,14 @@ bool LoginDatabase::getIPBan(std::string *IP, bool *results)
 	}
 
 	results = (bool*)PQntuples(result);
-	*/
+
 	return true;
 
 }
 
 bool LoginDatabase::setIPBan()
 {
-	/*
+
 	PGresult *result;
 	char query[512] = "DELETE FROM ip_banned WHERE unbandate<=now() AND unbandate<>bandate" ;
 	if (ExecuteBlockingCommand(query, &result, false)==false)
@@ -85,13 +106,13 @@ bool LoginDatabase::setIPBan()
 	}
 
 	PQclear(result);
-	*/
+
 	return true ;
 }
 
 bool LoginDatabase::setAccountBan(sClient *client)
 {
-/*
+
 	PGresult *result;
 	char query[512] = "DELETE FROM ip_banned WHERE unbandate<=now() AND unbandate<>bandate" ;
 	if (ExecuteBlockingCommand(query, &result, false)==false)
@@ -101,8 +122,8 @@ bool LoginDatabase::setAccountBan(sClient *client)
 	}
 
 	PQclear(result);
-	*/
+
 	return true ;
 
-}
+}*/
 

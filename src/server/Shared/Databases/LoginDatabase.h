@@ -15,17 +15,51 @@
 #ifndef LOGINDATABASE_H_
 #define LOGINDATABASE_H_
 
-//#include "PostgreSQLInterface/PostgreSQLInterface.h"
+#include "PostgreSQLInterface/connexionDatabase.h"
 #include "Structure/Server.h"
-#include <pqxx/pqxx>
+#include "Singleton/Singleton.h"
+
+enum LoginDatabaseStatements
+{
+    /*  Naming standard for defines:
+        {DB}_{SET/DEL/ADD/REP}_{Summary of data changed}
+        When updating more than one field, consider looking at the calling function
+        name for a suiting suffix.
+    */
+
+    LOGIN_GET_REALMLIST,
+    LOGIN_SET_EXPIREDIPBANS,
+    LOGIN_SET_EXPIREDACCBANS,
+    LOGIN_GET_IPBANNED,
+    LOGIN_SET_IPAUTOBANNED,
+    LOGIN_GET_ACCBANNED,
+    LOGIN_SET_ACCAUTOBANNED,
+    LOGIN_GET_SESSIONKEY,
+    LOGIN_SET_VS,
+    LOGIN_SET_LOGONPROOF,
+    LOGIN_GET_LOGONCHALLENGE,
+    LOGIN_SET_FAILEDLOGINS,
+    LOGIN_GET_FAILEDLOGINS,
+
+    LOGIN_GET_ACCIDBYNAME,
+    LOGIN_GET_NUMCHARSONREALM,
+
+    MAX_LOGINDATABASE_STATEMENTS,
+};
+
+
+
 
   /*! \class LoginDatabase
    * \brief
    *
    */
 
-//class LoginDatabase : public PostgreSQLInterface {
-class LoginDatabase {
+class LoginDatabase : public Singleton<LoginDatabase>, public connexionDatabase {
+
+	friend class Singleton<LoginDatabase>;
+
+
 public:
 
     /*!
@@ -48,47 +82,9 @@ public:
 
 	virtual ~LoginDatabase();
 
-    /*!
-     *  \brief selectAccount
-     *
-     *  Destructeur de la classe LoginDatabase
-     *
-     *  \param
-     */
+	void connexionDB(std::string infoString);
 
-
-	bool selectAccount(const char *userName,sClient *client);
-
-    /*!
-     *  \brief getIPBan
-     *
-     *   Reception Ip bannis
-     *
-     *  \param
-     */
-
-	bool getIPBan(std::string *IP, bool *results);
-
-    /*!
-     *  \brief setIPBan
-     *
-     *   supprime l'Ip bannis dans la table ip_banned
-     *
-     *  \param
-     */
-
-	bool setIPBan();
-
-    /*!
-     *  \brief setIPBan
-     *
-     *   Met le user en ban
-     *
-     *  \param
-     */
-
-
-	bool setAccountBan(sClient *client);
+private:
 
 
 };
