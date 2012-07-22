@@ -9,6 +9,7 @@
 #define SERVER_H_
 
 #include <string>
+#include <stdint.h>
 #include <time.h>
 
 
