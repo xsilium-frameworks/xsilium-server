@@ -99,16 +99,15 @@ bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 
 	string login = (const char *) data->login ;
 	if (data->login_len != strlen(login.c_str()))
-		printf("erreur avec le nom\n");
+	log->Write(Log::ERROR,"erreur avec le nom\n");
 
 
 	client->build = data->build;
 	char hostip[16];
 
-	printf("Nom du client : %s\n",login.c_str());
+	log->Write(Log::INFO,"Nom du client : %s\n",login.c_str());
 	enet_address_get_host_ip(&packet->peer->address,hostip,sizeof(hostip));
-	printf("adresse cleint et port : %s:%i\n",hostip,packet->peer->address.port);
-
+	log->Write(Log::INFO,"adresse cleint et port : %s:%i\n",hostip,packet->peer->address.port);
 
 
 	AUTH_LOGON_PROOF_S error;
@@ -120,7 +119,7 @@ bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 		{
 			error.typeId = ID_CONNECTION_BANNED ;
 			error.error = 1;
-			printf("[AuthChallenge] L'ip %s est bannie !\n",hostip);
+			log->Write(Log::INFO,"[AuthChallenge] L'ip %s est bannie !\n",hostip);
 
 			ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
 		    enet_peer_send (packet->peer, 0, message);
@@ -133,7 +132,8 @@ bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 		{
 			error.typeId = ID_INVALID_PASSWORD ;
 			error.error = 1;
-			printf("[AuthChallenge] Le compte %s n'existe pas \n",login.c_str());
+			log->Write(Log::INFO,"[AuthChallenge] Le compte %s n'existe pas \n",login.c_str());
+
 			return false;
 		}
 	setclient(resultsql);
@@ -142,21 +142,23 @@ bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 	{
 		error.typeId = ID_COMPTE_BANNIE ;
 		error.error = 1;
-		printf("[AuthChallenge] Le compte %s est banni jusqu'au %s \n",login.c_str(),ctime(&client->accountUnBanDate));
+		log->Write(Log::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s \n",login.c_str(),ctime(&client->accountUnBanDate));
+
 		return false;
 	}
 
 	if(client->locked)
 		{
-		printf("[AuthChallenge] Le compte %s est lier a l'IP %s \n",login.c_str(),client->lastIP.c_str());
-		printf("[AuthChallenge] Le client � pour l'IP %s \n",hostip);
+		log->Write(Log::INFO,"[AuthChallenge] Le compte %s est lier a l'IP %s \n",login.c_str(),client->lastIP.c_str());
+		log->Write(Log::INFO,"[AuthChallenge] Le client � pour l'IP %s \n",hostip);
+
 		if(hostip != client->lastIP.c_str())
 			{
-				printf("[AuthChallenge] L'IP %s ne correspond pas � la derniere IP %s \n",hostip,client->lastIP.c_str());
+				log->Write(Log::INFO,"[AuthChallenge] L'IP %s ne correspond pas � la derniere IP %s \n",hostip,client->lastIP.c_str());
 				return false;
 			}
 			else
-				printf("[AuthChallenge] Les IPs correspondent \n");
+				log->Write(Log::INFO,"[AuthChallenge] Les IPs correspondent \n");
 		}
 
 	return true;
