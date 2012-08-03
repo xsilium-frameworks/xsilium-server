@@ -50,7 +50,7 @@ void Authentification::setclient(pqxx::result resultsql)
 	{
 		if (client->idLogin == row[1].as<int>() )
 		{
-			if(!resultsql[0][4].is_null())
+			if(!row[4].is_null())
 			{
 				client->gmlevel[row[5].as<int>()] = row[4].as<int>();
 			}
