@@ -27,7 +27,8 @@
 #include "Structure/Client.h"
 #include "Logging/Log.h"
 #include "Config/Configuration.h"
-#include "../AuthCodes/AuthCodes.h"
+#include "Opcode/Opcode.h"
+#include "Connexion/Connexion.h"
 
 
 using namespace std;
@@ -68,7 +69,7 @@ public:
      *  \param
      */
 
-	bool CreateClient(ENetEvent *packet);
+	void CreateClient();
 
     /*!
      *  \brief DeleteClient
@@ -79,7 +80,7 @@ public:
      *  \param
      */
 
-	bool DeleteClient(ENetEvent *packet);
+	void DeleteClient();
 
     /*!
      *  \brief FindClient
@@ -101,9 +102,9 @@ public:
      *  \param
      */
 
-    bool _HandleLogonChallenge( ENetEvent *packet);
-    bool _HandleLogonProof(ENetEvent *packet);
-    bool _HandleRealmList(ENetEvent *packet);
+	void _HandleLogonChallenge();
+	void _HandleLogonProof();
+	void _HandleRealmList();
 
     void setclient(pqxx::result resultsql);
 
@@ -114,6 +115,7 @@ private:
     LoginDatabase * realms ;
     Log * log;
     Configuration * config ;
+    Connexion * connexion;
 
 
      string connectionString;

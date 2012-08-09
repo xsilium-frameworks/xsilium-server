@@ -40,7 +40,7 @@ private:
 	void setCompleted();
 	// stores return value from run()
 	void* result;
-	virtual void* run() {}
+	virtual void* run() {};
 	static void* startThreadRunnable(void* pVoid);
 	static void* startThread(void* pVoid);
 };

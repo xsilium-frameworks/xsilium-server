@@ -45,7 +45,7 @@ void LoginDatabase::connexionDB(std::string infoString)
 
 /*bool LoginDatabase::selectAccount(const char * userName,sClient *client)
 {
-	/*
+
 	PGresult *result;
 	char query[512];
 	if (strlen(userName)>32)

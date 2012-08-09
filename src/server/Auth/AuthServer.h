@@ -15,10 +15,10 @@
 #ifndef AUTHSERVER_H_
 #define AUTHSERVER_H_
 
-#include <pthread.h>
 #include "Config/Configuration.h"
 #include "Logging/Log.h"
 #include "SignalHandler/SignalHandler.h"
+#include "Connexion/Connexion.h"
 
 #include "Authentification/Authentification.h"
 
@@ -65,12 +65,12 @@ public:
 	void stopThread();
 
 private:
-	bool endThread;
-
 	SignalHandler * signalHandler;
 	Configuration * config ;
 	Log * log;
-	pthread_t thread;
+	Authentification * auth;
+	ENetAddress adresse;
+	Connexion * connexion;
 
 };
 

@@ -10,6 +10,7 @@
 Authentification::Authentification() {
 	config = Configuration::getInstance();
 	log = Log::getInstance();
+	connexion = Connexion::getInstance();
 
 	string infoDB;
 	config->Get("LoginDatabaseInfo",infoDB);
@@ -68,31 +69,40 @@ void Authentification::setclient(pqxx::result resultsql)
 }
 
 
-bool Authentification::CreateClient(ENetEvent *packet)
+void Authentification::CreateClient()
 {
+	log->Write(Log::INFO,"Creation d'un nouveaux client \n");
 	sClient clientTemp ;
+	ENetEvent * packet;
+	packet = connexion->getPacket();
+
 	clientTemp.IP = packet->peer->address.host ;
 	clientTemp.port = packet->peer->address.port ;
 
 	listOfClient.push_back(clientTemp);
 
-	return true;
 }
 
-bool Authentification::DeleteClient(ENetEvent *packet)
+void Authentification::DeleteClient()
 {
+	log->Write(Log::INFO,"Suppression d'un client \n");
+	ENetEvent * packet;
+	packet = connexion->getPacket();
+
+
 	FindClient(packet->peer->address);
 
 	listOfClient.erase(client);
-	return true;
 }
 
 
 
-bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
+void Authentification::_HandleLogonChallenge()
 {
-	if (packet->packet->dataLength < sizeof(sAuthLogonChallenge_C))
-		return false;
+	ENetEvent * packet;
+	packet = connexion->getPacket();
+
+	//if (packet.packet->dataLength < sizeof(sAuthLogonChallenge_C))
 
 	FindClient(packet->peer->address);
 
@@ -100,10 +110,10 @@ bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 
 	string login = (const char *) data->login ;
 	if (data->login_len != strlen(login.c_str()))
-	log->Write(Log::ERROR,"erreur avec le nom\n");
+	log->Write(Log::ERROR,"erreur avec le nom \n");
 
 
-	client->build = data->build;
+	//client->build = data->build;
 	char hostip[16];
 
 	//log->Write(Log::INFO,"Nom du client : " + login.c_str() + "\n");
@@ -124,8 +134,6 @@ bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 
 			ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
 		    enet_peer_send (packet->peer, 0, message);
-
-			return false;
 		}
 
 	resultsql = realms->executionPrepareStatement(LOGIN_GET_ACCIDBYNAME,1,login.c_str());
@@ -134,8 +142,6 @@ bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 			error.typeId = ID_INVALID_PASSWORD ;
 			error.error = 1;
 			//log->Write(Log::INFO,"[AuthChallenge] Le compte %s n'existe pas \n",login.c_str());
-
-			return false;
 		}
 	setclient(resultsql);
 
@@ -144,8 +150,6 @@ bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 		error.typeId = ID_COMPTE_BANNIE ;
 		error.error = 1;
 		//log->Write(Log::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s \n",login.c_str(),ctime(&client->accountUnBanDate));
-
-		return false;
 	}
 
 	if(client->locked)
@@ -156,18 +160,20 @@ bool Authentification::_HandleLogonChallenge( ENetEvent *packet)
 		if(hostip != client->lastIP.c_str())
 			{
 				//log->Write(Log::INFO,"[AuthChallenge] L'IP %s ne correspond pas � la derniere IP %s \n",hostip,client->lastIP.c_str());
-				return false;
+
 			}
 			else
 				log->Write(Log::INFO,"[AuthChallenge] Les IPs correspondent \n");
 		}
 
-	return true;
 }
 
 
-bool Authentification::_HandleLogonProof(ENetEvent *packet)
+void Authentification::_HandleLogonProof()
 {
+	ENetEvent * packet;
+	packet = connexion->getPacket();
+
 	/*FindClient(packet->peer->address);
 	client->passage +=1;
 	AUTH_LOGON_PROOF_C *data = (AUTH_LOGON_PROOF_C *) &packet->data ;
@@ -186,7 +192,6 @@ bool Authentification::_HandleLogonProof(ENetEvent *packet)
 		client->passage = 0;
 	}
 	*/
-	return true;
 
 }
 

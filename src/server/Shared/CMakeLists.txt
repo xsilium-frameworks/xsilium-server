@@ -1,6 +1,8 @@
 
 
 file(GLOB_RECURSE sources_Configuration Config/*.cpp Config/*.h)
+file(GLOB_RECURSE sources_Connexion Connexion/*.cpp Connexion/*.h)
+file(GLOB_RECURSE sources_Callback Callback/*.cpp Callback/*.h)
 file(GLOB_RECURSE sources_Database Databases/*.cpp Databases/*.h)
 file(GLOB_RECURSE sources_Logging Logging/*.cpp Logging/*.h)
 file(GLOB_RECURSE sources_PostgreSQLInterface PostgreSQLInterface/*.cpp PostgreSQLInterface/*.h)
@@ -16,6 +18,8 @@ file(GLOB_RECURSE sources_Utilities Utilities/*.cpp Utilities/*.h)
 
 set(shared_STAT_SRCS
   ${sources_Configuration}
+  ${sources_Callback}
+  ${sources_Connexion}
   ${sources_Database}
   ${sources_Logging}
   ${sources_PostgreSQLInterface}
@@ -24,6 +28,7 @@ set(shared_STAT_SRCS
   ${sources_Structure}
   ${sources_Threading}
   ${sources_Utilities}
+  
 )
 
 include_directories(
@@ -31,6 +36,8 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/src/server
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/Config
+  ${CMAKE_CURRENT_SOURCE_DIR}/Connexion
+  ${CMAKE_CURRENT_SOURCE_DIR}/Callback
   ${CMAKE_CURRENT_SOURCE_DIR}/Databases
   ${CMAKE_CURRENT_SOURCE_DIR}/Logging
   ${CMAKE_CURRENT_SOURCE_DIR}/PostgreSQLInterface
