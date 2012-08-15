@@ -18,6 +18,7 @@
 typedef struct AUTH_LOGON_CHALLENGE_C
 {
     uint8_t   cmd;
+    uint8_t   opcode;
     uint8_t   error;
     uint16_t  size;
     uint8_t   version1;
@@ -38,12 +39,10 @@ typedef struct AUTH_LOGON_CHALLENGE_C
  */
 typedef struct AUTH_LOGON_PROOF_C
 {
-    int   cmd;
-    std::string   A;
-    int   M1[20];
-    int   crc_hash[20];
-    int   number_of_keys;
-    int   securityFlags;                                  // 0x00-0x04
+	uint8_t   cmd;
+	uint8_t   opcode;
+    uint8_t   A[1];
+
 } sAuthLogonProof_C;
 
 

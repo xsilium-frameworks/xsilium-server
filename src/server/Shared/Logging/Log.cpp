@@ -28,7 +28,7 @@ Log::~Log() {
 	// TODO Auto-generated destructor stub
 }
 
-void Log::Start(Priority maxPriority,const string& logFile)
+void Log::Start(Priority maxPriority,string logFile)
 {
     active = true;
     this->maxPriority = maxPriority;
@@ -47,11 +47,18 @@ void Log::Stop()
     }
 }
 
-void Log::Write(Priority priority, const string& message)
+void Log::Write(Priority priority,string message,...)
 {
+	char buffer[512];
 	time(&temps);
 	strcpy(date,ctime(&temps));
 	date[strlen(date)-1]='\0';
+
+	va_list Params;
+	va_start(Params, message);
+	std::vsprintf(buffer, message.c_str()  , Params);
+	va_end(Params);
+
 
 	if (priority <= this->maxPriority)
 	{
@@ -63,7 +70,7 @@ void Log::Write(Priority priority, const string& message)
 						   << " - "
 						   << PRIORITY_NAMES[priority]
 						   << ": "
-						   << message
+						   << buffer
 						   << endl;
 			}
 		}
@@ -71,7 +78,7 @@ void Log::Write(Priority priority, const string& message)
 			 << " - "
 			 << PRIORITY_NAMES[priority]
 			 << ": "
-			 << message
+			 << buffer
 			 << endl;
 	}
 }

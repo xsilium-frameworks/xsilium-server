@@ -12,6 +12,11 @@ Authentification::Authentification() {
 	log = Log::getInstance();
 	connexion = Connexion::getInstance();
 
+	connexion->addlistenneur(XSILIUM_AUTH,ID_CONNEXION,this,&Authentification::CreateClient );
+	connexion->addlistenneur(XSILIUM_AUTH,ID_DECONEXION,this,&Authentification::DeleteClient );
+	connexion->addlistenneur(XSILIUM_AUTH,ID_SEND_USER,this,&Authentification::_HandleLogonChallenge );
+	connexion->addlistenneur(XSILIUM_AUTH,ID_SEND_REPONSE,this,&Authentification::_HandleLogonProof );
+
 	string infoDB;
 	config->Get("LoginDatabaseInfo",infoDB);
 	realms = LoginDatabase::getInstance();
@@ -32,11 +37,12 @@ bool Authentification::FindClient(ENetAddress address)
 	  {
 		  if(client->port == address.port)
 		  {
+			  log->Write(Log::INFO,"Le client avec l'IP : %d, Port : %d a ete trouv ",client->IP,client->port);
 			  return true;
 		  }
 	  }
 	}
-
+	log->Write(Log::INFO,"Le client avec l'IP : %d, Port : %d n'a pas t trouv ",client->IP,client->port);
 	return false;
 }
 
@@ -71,28 +77,33 @@ void Authentification::setclient(pqxx::result resultsql)
 
 void Authentification::CreateClient()
 {
-	log->Write(Log::INFO,"Creation d'un nouveaux client \n");
 	sClient clientTemp ;
 	ENetEvent * packet;
 	packet = connexion->getPacket();
 
 	clientTemp.IP = packet->peer->address.host ;
 	clientTemp.port = packet->peer->address.port ;
+	clientTemp.etape = 1;
 
+	log->Write(Log::INFO,"Creation d'un nouveaux client avec IP : %d , Port: %d",clientTemp.IP,clientTemp.port);
 	listOfClient.push_back(clientTemp);
 
 }
 
 void Authentification::DeleteClient()
 {
-	log->Write(Log::INFO,"Suppression d'un client \n");
+
 	ENetEvent * packet;
 	packet = connexion->getPacket();
 
 
-	FindClient(packet->peer->address);
-
-	listOfClient.erase(client);
+	if (FindClient(packet->peer->address))
+	{
+		log->Write(Log::INFO,"deconnexion du client IP : %d, Port : %d ",client->IP,client->port);
+		listOfClient.erase(client);
+	}
+	else
+		log->Write(Log::INFO,"Le client avec IP : %d et Port : %d",packet->peer->address.host,packet->peer->address.port);
 }
 
 
@@ -102,9 +113,15 @@ void Authentification::_HandleLogonChallenge()
 	ENetEvent * packet;
 	packet = connexion->getPacket();
 
-	//if (packet.packet->dataLength < sizeof(sAuthLogonChallenge_C))
+	if (packet->packet->dataLength < sizeof(sAuthLogonChallenge_C))
+	{
 
-	FindClient(packet->peer->address);
+	}
+
+	if (!FindClient(packet->peer->address))
+	{
+		return ;
+	}
 
 	sAuthLogonChallenge_C *data = (sAuthLogonChallenge_C *) packet->packet->data ;
 
@@ -113,85 +130,119 @@ void Authentification::_HandleLogonChallenge()
 	log->Write(Log::ERROR,"erreur avec le nom \n");
 
 
-	//client->build = data->build;
+	client->build = data->build;
 	char hostip[16];
 
-	//log->Write(Log::INFO,"Nom du client : " + login.c_str() + "\n");
+	log->Write(Log::INFO,"Nom du client : %s ",login.c_str());
 	enet_address_get_host_ip(&packet->peer->address,hostip,sizeof(hostip));
-	//log->Write(Log::INFO,"adresse cleint et port : %s:%i\n",hostip,packet->peer->address.port);
+	log->Write(Log::INFO,"adresse client et port : %s:%i",hostip,packet->peer->address.port);
 
-
-	AUTH_LOGON_PROOF_S error;
 
 	pqxx::result resultsql;
 	realms->executionPrepareStatement(LOGIN_SET_EXPIREDIPBANS);
 	resultsql = realms->executionPrepareStatement(LOGIN_GET_IPBANNED,1,hostip);
 	if(!resultsql.empty())
 		{
-			error.typeId = ID_CONNECTION_BANNED ;
-			error.error = 1;
-			//log->Write(Log::INFO,"[AuthChallenge] L'ip %s est bannie !\n",hostip);
+			AUTH_LOGON_ERROR error;
+			error.cmd = XSILIUM_AUTH;
+			error.opcode = ID_CONNECTION_BANNED ;
+			error.error = 0;
+			log->Write(Log::INFO,"[AuthChallenge] L'ip %s est bannie !",hostip);
 
 			ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
 		    enet_peer_send (packet->peer, 0, message);
+		    return;
 		}
 
 	resultsql = realms->executionPrepareStatement(LOGIN_GET_ACCIDBYNAME,1,login.c_str());
 	if(resultsql.empty())
 		{
-			error.typeId = ID_INVALID_PASSWORD ;
-			error.error = 1;
-			//log->Write(Log::INFO,"[AuthChallenge] Le compte %s n'existe pas \n",login.c_str());
+			AUTH_LOGON_ERROR error;
+			error.cmd = XSILIUM_AUTH;
+			error.opcode = ID_UNKNOWN_ACCOUNT ;
+			error.error = 0;
+			log->Write(Log::INFO,"[AuthChallenge] Le compte %s n'existe pas",login.c_str());
+
+			ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
+		    enet_peer_send (packet->peer, 0, message);
+			return;
 		}
 	setclient(resultsql);
 
 	if(client->accountUnBanDate > time(0))
 	{
-		error.typeId = ID_COMPTE_BANNIE ;
+		AUTH_LOGON_ERROR error;
+		error.cmd = XSILIUM_AUTH;
+		error.opcode = ID_COMPTE_BANNIE ;
 		error.error = 1;
-		//log->Write(Log::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s \n",login.c_str(),ctime(&client->accountUnBanDate));
+		log->Write(Log::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s ",login.c_str(),ctime(&client->accountUnBanDate));
+
+		ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send (packet->peer, 0, message);
+		return;
 	}
 
 	if(client->locked)
 		{
-		//log->Write(Log::INFO,"[AuthChallenge] Le compte %s est lier a l'IP %s \n",login.c_str(),client->lastIP.c_str());
-		//log->Write(Log::INFO,"[AuthChallenge] Le client ˆ pour l'IP " + hostip + " \n");
+		log->Write(Log::INFO,"[AuthChallenge] Le compte %s est lier a l'IP %s ",login.c_str(),client->lastIP.c_str());
+		log->Write(Log::INFO,"[AuthChallenge] Le client ˆ pour l'IP : %s ",hostip);
 
 		if(hostip != client->lastIP.c_str())
 			{
-				//log->Write(Log::INFO,"[AuthChallenge] L'IP %s ne correspond pas ï¿½ la derniere IP %s \n",hostip,client->lastIP.c_str());
+				log->Write(Log::INFO,"[AuthChallenge] L'IP %s ne correspond pas ï¿½ la derniere IP %s ",hostip,client->lastIP.c_str());
 
 			}
 			else
-				log->Write(Log::INFO,"[AuthChallenge] Les IPs correspondent \n");
+				log->Write(Log::INFO,"[AuthChallenge] Les IPs correspondent ");
 		}
+
+	client->etape = 2;
+	AUTH_LOGON_CHALLENGE messageRetour;
+	messageRetour.cmd = XSILIUM_AUTH;
+	messageRetour.opcode = ID_SEND_CHALLENGE;
+	messageRetour.key = 1234567;
+
+	ENetPacket * message = enet_packet_create ((const char *)&messageRetour,sizeof(messageRetour) + 1,ENET_PACKET_FLAG_RELIABLE);
+	enet_peer_send (packet->peer, 0, message);
+
+
 
 }
 
 
 void Authentification::_HandleLogonProof()
 {
+
 	ENetEvent * packet;
 	packet = connexion->getPacket();
 
-	/*FindClient(packet->peer->address);
-	client->passage +=1;
-	AUTH_LOGON_PROOF_C *data = (AUTH_LOGON_PROOF_C *) &packet->data ;
-	if (strcmp(data->A.c_str()  , client->shaPassHash.c_str()) == 1)
+	if(FindClient(packet->peer->address))
 	{
-		log->Write(Log::INFO,"Erreur de mot de passe");
-		if(client->passage == 3)
-		{
-			//Bannir le client
+		if(client->etape < 2 )
+			return;
 
+		client->nbPassage +=1;
+		AUTH_LOGON_PROOF_C *data = (AUTH_LOGON_PROOF_C *) packet->packet->data ;
+
+		log->Write(Log::INFO,"packet recu %s",packet->packet->data);
+
+		string keyPWD = (const char *) data->A ;
+
+		if (keyPWD.compare(client->shaPassHash) != 0)
+		{
+			log->Write(Log::INFO,"Erreur de mot de passe");
+			if(client->nbPassage == 3)
+			{
+				//Bannir le client
+
+			}
+		}
+		else
+		{
+			log->Write(Log::INFO,"Mot de passe valider");
+			client->nbPassage = 0;
 		}
 	}
-	else
-	{
-		log->Write(Log::INFO,"Mot de passe valider");
-		client->passage = 0;
-	}
-	*/
 
 }
 

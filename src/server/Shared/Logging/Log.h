@@ -13,6 +13,8 @@
 #include <fstream>
 #include <iostream>
 #include <time.h>
+#include <cstdarg>
+#include <sstream>
 #include "Singleton/Singleton.h"
 
 /*
@@ -33,10 +35,10 @@ public:
 			DEBUG
 	    };
 
-	void Start(Priority maxPriority,const std::string& logFile);
+	void Start(Priority maxPriority,std::string logFile);
 	void Stop();
 
-	void Write(Priority priority, const std::string& message);
+	void Write(Priority priority,std::string message,...);
 
 
 private:

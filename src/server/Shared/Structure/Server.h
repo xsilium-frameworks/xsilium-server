@@ -20,9 +20,10 @@
      *
      *  \param
      */
-struct AUTH_LOGON_PROOF_S
+struct AUTH_LOGON_ERROR
 {
-	unsigned char typeId;  /*!< correspond au type de packet que l'on envoi */
+	uint8_t   cmd;  /*!< correspond au type de packet que l'on envoi */
+	uint8_t   opcode;
     int   error; /*!< correspond a l'erreur qui a ete detecter */
 };
 
@@ -49,9 +50,16 @@ struct sClient
     std::string lastIP; /*!< derniere IP du compte  */
     uint8_t gmlevel[50] ; /*!<Niveau de MJ*/
     time_t accountUnBanDate ; /*!<si le compte est bannie date de debanne du compte*/
+    uint8_t	etape;
 };
 
-
+struct AUTH_LOGON_CHALLENGE
+{
+	uint8_t   cmd;  /*!< correspond au type de packet que l'on envoi */
+	uint8_t   opcode;
+	uint32_t	key;
+	uint32_t	key2;
+};
 
 
 

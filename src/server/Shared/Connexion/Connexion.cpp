@@ -17,7 +17,7 @@ Connexion::~Connexion()
 {
 	for (listenner=listOfListenner.begin() ; listenner!=listOfListenner.end() ; ++listenner)
 		{
-			delete listenner->callback;
+			delete listenner->callback ;
 		}
 		delete server;
 		delete peer;
@@ -53,30 +53,10 @@ void* Connexion::threadConnexion(void* arguments)
 		        break;
 		    case ENET_EVENT_TYPE_RECEIVE:
 
-		    	//connexion->callback(connexion->eventServer.packet->data[0],connexion->eventServer.packet->data[1]);
-		    	connexion->callback(XSILIUM_AUTH,ID_SEND_USER);
-
-		        	//switch(atoi(&dudul))
-		        	//{
-		        	//	case ID_SEND_USER:
-		        	//		log->Write(Log::DEBUG,"Packet recu");
-		        	//		if(!auth->_HandleLogonChallenge(&eventServer))
-		        	//			log->Write(Log::ERROR,"Impossible d'authentifier le client");
-		        	//		break;
-		        	//	 	case ID_SEND_REPONSE:
-		        	//	 		log->Write(Log::DEBUG,"Packet de reponse recu");
-		        	//	 		if(!auth->_HandleLogonProof(&eventServer))
-		        	//	 			log->Write(Log::ERROR,"Mauvaise reponse, impossible d'authentifier le client");
-		        	//	 		break;
-		        	//		case ID_GET_ROYAUME:
-		        	// 			log->Write(Log::DEBUG,"Packet demande de royaume");
-		       		 			// if(!auth->_HandleLogonChallenge(&eventServer))
-		       		// 				log->Write(Log::ERROR,"Impossible d'envoyer le royaume");
-		       		// 			break;
-		        	//}
+		    	connexion->callback((typerequete)connexion->eventServer.packet->data[0],(Opcode)connexion->eventServer.packet->data[1]);
 
 		    	    /* One could just use enet_host_service() instead. */
-		    	    //enet_host_flush (server);
+		    	    enet_host_flush (connexion->server);
 		            /* Clean up the packet now that we're done using it. */
 		            enet_packet_destroy (connexion->eventServer.packet);
 

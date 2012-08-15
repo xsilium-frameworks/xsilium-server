@@ -35,10 +35,6 @@ void authServer::startServer()
 			//erreur
 		}
 
-		connexion->addlistenneur(XSILIUM_AUTH,ID_CONNEXION,auth,&Authentification::CreateClient );
-		connexion->addlistenneur(XSILIUM_AUTH,ID_DECONEXION,auth,&Authentification::DeleteClient );
-		connexion->addlistenneur(XSILIUM_AUTH,ID_SEND_USER,auth,&Authentification::_HandleLogonChallenge );
-
 
 		while(!signalHandler->gotExitSignal())
 		        sleep(1);
