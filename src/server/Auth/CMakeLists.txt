@@ -17,7 +17,7 @@ include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CMAKE_CURRENT_SOURCE_DIR}/Authentication
 	${CMAKE_CURRENT_SOURCE_DIR}/realms
-	${CMAKE_SOURCE_DIR}/src/server/shared
+	${CMAKE_SOURCE_DIR}/src/server/Shared
 )
 
 
