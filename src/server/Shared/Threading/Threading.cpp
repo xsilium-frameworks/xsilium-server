@@ -16,7 +16,7 @@ Thread::Thread(auto_ptr<Runnable> r, bool isDetached) :
 		cout << "Thread::Thread(auto_ptr<Runnable> r, bool isDetached)"\
 		"failed at " << " " << __FILE__ <<":" << __LINE__ << "-" <<
 		" runnable is NULL" << endl;
-		exit(-1);
+		return(-1);
 	}
 }
 
@@ -48,7 +48,7 @@ void Thread::start() {
 	if(status) {
 		//printError("pthread_attr_init failed at", status,
 			//__FILE__, __LINE__);
-		exit(status);
+		return(status);
 	}
 
 	// set the scheduling scope attribute
@@ -57,7 +57,7 @@ void Thread::start() {
 	if(status) {
 		//printError("pthread_attr_setscope failed at", status,
 			//__FILE__, __LINE__);
-		exit(status);
+		return(status);
 	}
 
 	if(!detached) {
@@ -67,7 +67,7 @@ void Thread::start() {
 			if(status) {
 				//printError("pthread_create failed at", status,
 					//__FILE__, __LINE__);
-				exit(status);
+				return(status);
 			}
 		}
 		else {
@@ -76,7 +76,7 @@ void Thread::start() {
 			if(status) {
 				//printError("pthread_create failed at", status,
 					//__FILE__, __LINE__);
-				exit(status);
+				return(status);
 			}
 		}
 	}
@@ -87,7 +87,7 @@ void Thread::start() {
 		if(status) {
 			//printError("pthread_attr_setdetachstate failed at", status,
 			//__FILE__, __LINE__);
-			exit(status);
+			return(status);
 		}
 
 		if(!runnable.get()) {
@@ -96,7 +96,7 @@ void Thread::start() {
 			if(status) {
 				//printError("pthread_create failed at", status,
 					//__FILE__, __LINE__);
-				exit(status);
+				return(status);
 			}
 		}
 		else {
@@ -105,7 +105,7 @@ void Thread::start() {
 			if(status) {
 				//printError("pthread_create failed at", status,
 					//__FILE__, __LINE__);
-				exit(status);
+				return(status);
 			}
 		}
 	}
@@ -113,7 +113,7 @@ void Thread::start() {
 	if(status) {
 		//printError("pthread_attr_destroy failed at", status,
 			//__FILE__, __LINE__);
-		exit(status);
+		return(status);
 	}
 }
 
@@ -125,7 +125,7 @@ void* Thread::join() {
 	if(status) {
 		//printError("pthread_join failed at", status,
 		//	__FILE__, __LINE__);
-		exit(status);
+		return(status);
 	}
 	return result;
 }
