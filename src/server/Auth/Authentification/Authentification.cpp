@@ -37,12 +37,12 @@ bool Authentification::FindClient(ENetAddress address)
 	  {
 		  if(client->port == address.port)
 		  {
-			  log->Write(Log::INFO,"Le client avec l'IP : %d, Port : %d a ete trouv ",client->IP,client->port);
+			  log->Write(Log::INFO,"Le client avec l'IP : %d, Port : %d a ete trouvï¿½ ",client->IP,client->port);
 			  return true;
 		  }
 	  }
 	}
-	log->Write(Log::INFO,"Le client avec l'IP : %d, Port : %d n'a pas t trouv ",client->IP,client->port);
+	log->Write(Log::INFO,"Le client avec l'IP : %d, Port : %d n'a pas ï¿½tï¿½ trouvï¿½ ",client->IP,client->port);
 	return false;
 }
 
@@ -185,7 +185,7 @@ void Authentification::_HandleLogonChallenge()
 	if(client->locked)
 		{
 		log->Write(Log::INFO,"[AuthChallenge] Le compte %s est lier a l'IP %s ",login.c_str(),client->lastIP.c_str());
-		log->Write(Log::INFO,"[AuthChallenge] Le client ˆ pour l'IP : %s ",hostip);
+		log->Write(Log::INFO,"[AuthChallenge] Le client ï¿½ pour l'IP : %s ",hostip);
 
 		if(hostip != client->lastIP.c_str())
 			{
@@ -219,8 +219,17 @@ void Authentification::_HandleLogonProof()
 	if(FindClient(packet->peer->address))
 	{
 		if(client->etape < 2 )
-			return;
+		{
+			AUTH_LOGON_ERROR msg_error;
+			msg_error.cmd = XSILIUM_AUTH;
+			msg_error.opcode = ID_INVALID_PASSWORD ;
+			msg_error.error = 1;
 
+			ENetPacket * message = enet_packet_create ((const char *)&msg_error,sizeof(msg_error) + 1,ENET_PACKET_FLAG_RELIABLE);
+			enet_peer_send (packet->peer, 0, message);
+
+			return;
+		}
 		client->nbPassage +=1;
 		AUTH_LOGON_PROOF_C *data = (AUTH_LOGON_PROOF_C *) packet->packet->data ;
 
@@ -234,6 +243,12 @@ void Authentification::_HandleLogonProof()
 			if(client->nbPassage == 3)
 			{
 				//Bannir le client
+				AUTH_LOGON_ERROR msg_error;
+				msg_error.cmd = XSILIUM_AUTH;
+				msg_error.opcode =ID_COMPTE_BANNIE;
+				msg_error.error = 1;
+				ENetPacket * message = enet_packet_create ((const char *)&msg_error,sizeof(msg_error) + 1,ENET_PACKET_FLAG_RELIABLE);
+				enet_peer_send (packet->peer, 0, message);
 
 			}
 		}
