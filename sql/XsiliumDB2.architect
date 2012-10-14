@@ -16,8 +16,8 @@
    <property key="ca.sqlpower.architect.etl.kettle.repos.password" value="" />
   </data-source>
   <data-source id="DS0">
-   <property key="Connection Type" value="PostgreSQL" />
    <property key="Logical" value="Serveur Distant" />
+   <property key="Connection Type" value="PostgreSQL" />
    <property key="JDBC URL" value="jdbc:postgresql://85.25.251.81:5432/realms" />
    <property key="UID" value="postgres" />
    <property key="PWD" value="2m1jreokf" />
@@ -230,7 +230,7 @@
    </relationship>
   </relationships>
  </target-database>
- <ddl-generator type="ca.sqlpower.architect.ddl.PostgresDDLGenerator" allow-connection="false" target-schema="public"> </ddl-generator>
+ <ddl-generator type="ca.sqlpower.architect.ddl.PostgresDDLGenerator" allow-connection="true" target-schema="public"> </ddl-generator>
  <liquibase-settings useSeparateChangeSets="false" generateId="false" idStart="1"/>
  <create-kettle-job-settings filePath="" jobName="" schemaName="" kettleJoinType="0" savingToFile="true" />
  <play-pen zoom="1.0" viewportX="0" viewportY="258" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
