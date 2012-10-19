@@ -11,6 +11,7 @@
 
 #include <string>
 #include <vector>
+#include <time.h>
 
 typedef std::vector<std::string> Tokens;
 
@@ -23,6 +24,8 @@ public:
 	virtual ~Utils();
 
 	Tokens StrSplit(const std::string &src, const std::string &sep);
+	time_t convertToDate(std::string valeur);
+
 };
 
 #endif /* UTILS_H_ */

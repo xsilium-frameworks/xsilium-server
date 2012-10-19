@@ -35,4 +35,14 @@ protected:
 
 };
 
+template <typename T>
+  std::string ToString ( T variable )
+  {
+     std::ostringstream ss;
+
+     ss << variable;
+
+     return ss.str();
+  }
+
 #endif /* CONNEXIONDATABASE_H_ */

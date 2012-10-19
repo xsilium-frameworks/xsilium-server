@@ -36,3 +36,11 @@ Tokens Utils::StrSplit(const std::string &src, const std::string &sep)
     if (s.length()) r.push_back(s);
     return r;
 }
+
+time_t Utils::convertToDate(std::string valeur)
+{
+	struct tm tm;
+	strptime(valeur.c_str(), "%Y-%m-%d %H:%M:%S", &tm);
+	return mktime(&tm);
+}
+

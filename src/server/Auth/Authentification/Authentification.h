@@ -106,8 +106,6 @@ public:
 	void _HandleLogonProof();
 	void _HandleRealmList();
 
-    void setclient(pqxx::result resultsql);
-
 private:
 
     vector<sClient> listOfClient ;

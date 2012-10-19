@@ -46,35 +46,6 @@ bool Authentification::FindClient(ENetAddress address)
 	return false;
 }
 
-void Authentification::setclient(pqxx::result resultsql)
-{
-	client->shaPassHash = resultsql[0][0].as<std::string>();
-	client->idLogin = resultsql[0][1].as<int>();
-	client->locked = resultsql[0][2].as<bool>();
-	client->lastIP = resultsql[0][3].as<std::string>();
-
-	for(pqxx::result::const_iterator row = resultsql.begin(); row != resultsql.end(); row++)
-	{
-		if (client->idLogin == row[1].as<int>() )
-		{
-			if(!row[4].is_null())
-			{
-				client->gmlevel[row[5].as<int>()] = row[4].as<int>();
-			}
-		}
-	}
-
-	if(!resultsql[0][6].is_null())
-	{
-		struct tm tm;
-		std::string time = resultsql[0][6].as<std::string>() ;
-		strptime((resultsql[0][6].as<std::string>()).c_str(), "%Y-%m-%d %H:%M:%S", &tm);
-		client->accountUnBanDate = mktime(&tm);
-	}
-
-}
-
-
 void Authentification::CreateClient()
 {
 	sClient clientTemp ;
@@ -115,7 +86,15 @@ void Authentification::_HandleLogonChallenge()
 
 	if (packet->packet->dataLength < sizeof(sAuthLogonChallenge_C))
 	{
+		AUTH_LOGON_ERROR error;
+		error.cmd = XSILIUM_AUTH;
+		error.opcode = ID_ERROR ;
+		error.error = 1;
+		log->Write(Log::INFO,"Le message venant de %d:%d est illisible ",packet->peer->address.host,packet->peer->address.port);
 
+		ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send (packet->peer, 0, message);
+		return;
 	}
 
 	if (!FindClient(packet->peer->address))
@@ -154,6 +133,7 @@ void Authentification::_HandleLogonChallenge()
 		    return;
 		}
 
+	realms->executionPrepareStatement(LOGIN_SET_EXPIREDACCBANS);
 	resultsql = realms->executionPrepareStatement(LOGIN_GET_ACCIDBYNAME,1,login.c_str());
 	if(resultsql.empty())
 		{
@@ -167,15 +147,33 @@ void Authentification::_HandleLogonChallenge()
 		    enet_peer_send (packet->peer, 0, message);
 			return;
 		}
-	setclient(resultsql);
+	client->shaPassHash = resultsql[0][0].as<std::string>();
+	client->idLogin = resultsql[0][1].as<int>();
+	client->locked = resultsql[0][2].as<bool>();
+	client->lastIP = resultsql[0][3].as<std::string>();
+	client->nbPassage = resultsql[0][4].as<int>();
 
-	if(client->accountUnBanDate > time(0))
+	resultsql = realms->executionPrepareStatement(LOGIN_GET_ACCBANNED,1,ToString((int)client->idLogin).c_str());
+	if(resultsql.empty())
+	{
+		client->accountUnBanDate = 0;
+	}
+	else
+	{
+
+		struct tm tm;
+		strptime((resultsql[0][0].as<std::string>()).c_str(), "%Y-%m-%d %H:%M:%S", &tm);
+
+		client->accountUnBanDate = mktime(&tm);
+	}
+
+	if(client->accountUnBanDate > time(0) )
 	{
 		AUTH_LOGON_ERROR error;
 		error.cmd = XSILIUM_AUTH;
 		error.opcode = ID_COMPTE_BANNIE ;
 		error.error = 1;
-		log->Write(Log::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s ",login.c_str(),ctime(&client->accountUnBanDate));
+		log->Write(Log::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s ",login.c_str(),(resultsql[0][0].as<std::string>()).c_str());
 
 		ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
 		enet_peer_send (packet->peer, 0, message);
@@ -189,7 +187,14 @@ void Authentification::_HandleLogonChallenge()
 
 		if(hostip != client->lastIP.c_str())
 			{
-				log->Write(Log::INFO,"[AuthChallenge] L'IP %s ne correspond pas � la derniere IP %s ",hostip,client->lastIP.c_str());
+				log->Write(Log::INFO,"[AuthChallenge] L'IP %s ne correspond pas a la derniere IP %s ",hostip,client->lastIP.c_str());
+				AUTH_LOGON_ERROR error;
+				error.cmd = XSILIUM_AUTH;
+				error.opcode = ID_INVALID_IP ;
+				error.error = 1;
+				ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
+				enet_peer_send (packet->peer, 0, message);
+				return;
 
 			}
 			else
@@ -216,13 +221,27 @@ void Authentification::_HandleLogonProof()
 	ENetEvent * packet;
 	packet = connexion->getPacket();
 
+	if (packet->packet->dataLength < sizeof(sAuthLogonChallenge_C))
+	{
+		AUTH_LOGON_ERROR error;
+		error.cmd = XSILIUM_AUTH;
+		error.opcode = ID_ERROR ;
+		error.error = 1;
+		log->Write(Log::INFO,"Le message venant de %d:%d est illisible ",packet->peer->address.host,packet->peer->address.port);
+
+		ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
+		enet_peer_send (packet->peer, 0, message);
+		return;
+	}
+
+
 	if(FindClient(packet->peer->address))
 	{
 		if(client->etape < 2 )
 		{
 			AUTH_LOGON_ERROR msg_error;
 			msg_error.cmd = XSILIUM_AUTH;
-			msg_error.opcode = ID_INVALID_PASSWORD ;
+			msg_error.opcode = ID_ERROR ;
 			msg_error.error = 1;
 
 			ENetPacket * message = enet_packet_create ((const char *)&msg_error,sizeof(msg_error) + 1,ENET_PACKET_FLAG_RELIABLE);
@@ -230,18 +249,28 @@ void Authentification::_HandleLogonProof()
 
 			return;
 		}
+
 		client->nbPassage +=1;
 		AUTH_LOGON_PROOF_C *data = (AUTH_LOGON_PROOF_C *) packet->packet->data ;
 
 		log->Write(Log::INFO,"packet recu %s",packet->packet->data);
 
+		log->Write(Log::INFO,"nombre de passage %d",client->nbPassage);
+
 		string keyPWD = (const char *) data->A ;
 
 		if (keyPWD.compare(client->shaPassHash) != 0)
 		{
+			realms->executionPrepareStatement(LOGIN_SET_FAILEDLOGINS,2,ToString((int)client->idLogin).c_str(),ToString((int)client->nbPassage).c_str());
+
 			log->Write(Log::INFO,"Erreur de mot de passe");
 			if(client->nbPassage == 3)
 			{
+
+				realms->executionPrepareStatement(LOGIN_SET_ACCAUTOBANNED,1,ToString((int)client->idLogin).c_str());
+				realms->executionPrepareStatement(LOGIN_SET_FAILEDLOGINS,2,ToString((int)client->idLogin).c_str(),"0");
+
+
 				//Bannir le client
 				AUTH_LOGON_ERROR msg_error;
 				msg_error.cmd = XSILIUM_AUTH;
