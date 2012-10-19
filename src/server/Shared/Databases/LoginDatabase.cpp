@@ -32,7 +32,7 @@ void LoginDatabase::connexionDB(std::string infoString)
     connexionDatabase::PrepareStatement(LOGIN_SET_ACCAUTOBANNED, "INSERT INTO account_banned VALUES ($1, now(), now() + INTERVAL  '20 minute', 'Xsilium Auth', 'Failed login autoban', true)");
     //PrepareStatement(LOGIN_SET_LOGONPROOF, "UPDATE account SET sessionkey = ?, last_ip = ?, last_login = NOW(), locale = ?, failed_logins = 0 WHERE username = ?");
     connexionDatabase::PrepareStatement(LOGIN_SET_FAILEDLOGINS, "UPDATE account SET failed_logins = $2 WHERE id = $1");
-    connexionDatabase::PrepareStatement(LOGIN_GET_ACCBANNED, "SELECT unbandate FROM account_banned WHERE unbandate<>bandate AND active = true AND bandate <=now() AND id = $1");
+    connexionDatabase::PrepareStatement(LOGIN_GET_ACCBANNED, "SELECT unbandate FROM account_banned WHERE unbandate >now() and unbandate<>bandate AND active = true AND bandate <=now() AND id = $1");
 
     connexionDatabase::PrepareStatement(LOGIN_GET_ACCIDBYNAME, "SELECT a.sha_pass_hash,a.id,a.locked,a.last_ip,a.failed_logins FROM account a WHERE a.username = $1");
     //PrepareStatement(LOGIN_GET_NUMCHARSONREALM, "SELECT numchars FROM realmcharacters WHERE realmid = ? AND acctid= ?");
