@@ -61,6 +61,13 @@ struct AUTH_LOGON_CHALLENGE
 	uint32_t	key2;
 };
 
+struct AUTH_LOGON_PROOF
+{
+    uint8_t   cmd;
+	uint8_t   opcode;
+    uint8_t   Key[20];
+};
+
 
 
 #endif /* SERVER_H_ */

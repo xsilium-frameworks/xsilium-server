@@ -102,9 +102,9 @@ public:
      *  \param
      */
 
-	void _HandleLogonChallenge();
-	void _HandleLogonProof();
-	void _HandleRealmList();
+	void HandleLogonChallenge();
+	void HandleLogonProof();
+	void HandleRealmList();
 
 private:
 
