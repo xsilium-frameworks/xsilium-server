@@ -29,7 +29,9 @@ void LoginDatabase::connexionDB(std::string infoString)
 //requete qui met a jour la table des bans ip lorsque la date de ban est passee -- Nico le 13-11-2012
 	connexionDatabase::PrepareStatement(LOGIN_SET_EXPIREDIPBANS, "Update ip_banned set ban_actif=false WHERE unbandate<=now() AND ban_actif=true");
  //connexionDatabase::PrepareStatement(LOGIN_SET_EXPIREDIPBANS, "DELETE FROM ip_banned WHERE unbandate<=now() AND unbandate<>bandate");
-//    connexionDatabase::PrepareStatement(LOGIN_SET_EXPIREDACCBANS, "UPDATE account_banned SET active = false WHERE unbandate<=now() AND unbandate<>bandate");
+
+//requete qui deban automatiquement l'account aprés une date de deban passée --Nico - le 16-11-2012
+    connexionDatabase::PrepareStatement(LOGIN_SET_EXPIREDACCBANS, "UPDATE account_banned SET active = false WHERE unbandate<=now() AND active=true");
 
 
 // requete qui va chercher les infos sur l'ip dans la table ip_banned
