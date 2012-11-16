@@ -25,8 +25,6 @@ void LoginDatabase::connexionDB(std::string infoString)
 
 	connexionDatabase::suffix = "Login";
 
-	//PrepareStatement(LOGIN_GET_REALMLIST, "SELECT id, name, address, port, icon, color, timezone, allowedSecurityLevel, population, gamebuild FROM realmlist WHERE color <> 3 ORDER BY name");
-
 
 //requete qui met a jour la table des bans ip lorsque la date de ban est passee -- Nico le 13-11-2012
 	connexionDatabase::PrepareStatement(LOGIN_SET_EXPIREDIPBANS, "Update ip_banned set ban_actif=false WHERE unbandate<=now() AND ban_actif=true");
@@ -72,7 +70,7 @@ connexionDatabase::PrepareStatement(AJOUT_AVERTISSEMENT, "INSERT INTO Avertissem
 connexionDatabase::PrepareStatement(MAJ_AVERTISSEMENTS, "UPDATE account SET N_avertissements = $2 WHERE util_numero = $1");
 
 //requete auto_ban pour nombre d'avertissements --Nico le 15-11-2012
-connexionDatabase::PrepareStatement(AUTO_BAN_AVERTO,"INSERT INTO account_banned  VALUES (now(), "9999-12-31 00:00:00.000000", 'AutoBan pour avertissement ', true, $1, $2)");
+connexionDatabase::PrepareStatement(AUTO_BAN_AVERTO,"INSERT INTO account_banned  VALUES (now(), '9999-12-31 00:00:00.000000', 'AutoBan pour avertissement ', true, $1, $2)");
 
 //requete deban d'un compte --Nico le 15-11-2012
 connexionDatabase::PrepareStatement(DEBAN_COMPTE, "UPDATE account_banned SET active = false WHERE id_user_ban = $1");
