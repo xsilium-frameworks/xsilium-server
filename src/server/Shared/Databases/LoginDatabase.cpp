@@ -4,7 +4,7 @@
  *  Created on: 18 fevrier. 2012
  *      Author: joda2
  */
-// Derniere maj par nico le 15-11-2012
+// Derniere maj par nico le 16-11-2012
 
 #include "LoginDatabase.h"
 // #include "SHA1.h"
@@ -30,7 +30,7 @@ void LoginDatabase::connexionDB(std::string infoString)
 	connexionDatabase::PrepareStatement(LOGIN_SET_EXPIREDIPBANS, "Update ip_banned set ban_actif=false WHERE unbandate<=now() AND ban_actif=true");
  //connexionDatabase::PrepareStatement(LOGIN_SET_EXPIREDIPBANS, "DELETE FROM ip_banned WHERE unbandate<=now() AND unbandate<>bandate");
 
-//requete qui deban automatiquement l'account aprés une date de deban passée --Nico - le 16-11-2012
+//requete qui deban automatiquement l'account apres une date de deban passee --Nico - le 16-11-2012
     connexionDatabase::PrepareStatement(LOGIN_SET_EXPIREDACCBANS, "UPDATE account_banned SET active = false WHERE unbandate<=now() AND active=true");
 
 
@@ -85,5 +85,8 @@ connexionDatabase::PrepareStatement(MAJ_GM_LEVEL, "UPDATE account_access SET gml
 
 //requete deban d'une ip --Nico le 15-11-2012
 connexionDatabase::PrepareStatement(DEBAN_IP, "UPDATE ip_banned SET ban_actif = false WHERE ip = $1");
+
+//requete de ban auto d'une ip --Nico le 16-11-2012
+connexionDatabase::PrepareStatement(REALMS_INS_BANIP_BANAUTOIP,"INSERT INTO ip_banned VALUES ($1, now(), now() + INTERVAL  '20 minute', 'AutoBan pour erreur authentification ', $2, true)");
 
 }
