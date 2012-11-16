@@ -49,6 +49,7 @@ enum LoginDatabaseStatements
     LISTE_SERVER,
     MAJ_GM_LEVEL,
     DEBAN_IP,
+    REALMS_INS_BANIP_BANAUTOIP,
     MAX_LOGINDATABASE_STATEMENTS
 };
 
