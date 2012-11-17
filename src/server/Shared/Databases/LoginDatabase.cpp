@@ -5,7 +5,7 @@
  *      Author: joda2
  */
 // Derniere maj par nico le 17-11-2012
-/*Normalisation nom requete : {nom base}_{type requete}_{tableimpactée}_{resume requete}
+/*Normalisation nom requete : {nom base}_{type requete}_{tableimpactee}_{resume requete}
 */
 
 #include "LoginDatabase.h"
@@ -115,7 +115,7 @@ connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJPASS,"UPDATE account S
 connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTACCESS_CREATIONACCESS,"INSERT INTO account_access VALUES ($1, '0', SELECT MAX(Util_numero) from account, $4, $5, true)");
 
 //requete qui liste les avertissements d'un compte
-connexionDatabase::PrepareStatement(REALMS_SEL_AVERTISSEMENTS_LISTEAVERTOS,"SELECT avertissement_date, avertissements_raison, username from Avertissements, account WHERE avertissements_numero_util = $1 and avertissements.avertissements_id_gm = account.util_numero)");
+connexionDatabase::PrepareStatement --nico le 18-11-2012(REALMS_SEL_AVERTISSEMENTS_LISTEAVERTOS,"SELECT avertissement_date, avertissements_raison, username from Avertissements, account WHERE avertissements_numero_util = $1 and avertissements.avertissements_id_gm = account.util_numero)");
 
 
 }

@@ -119,8 +119,12 @@ void Authentification::HandleLogonChallenge()
 
 
 	pqxx::result resultsql;
-	realms->executionPrepareStatement(LOGIN_SET_EXPIREDIPBANS);
-	resultsql = realms->executionPrepareStatement(LOGIN_GET_IPBANNED,1,hostip);
+//changement car normalisation nom requete nico le 18-11-2012
+realms->executionPrepareStatement(REALMS_UPD_IPBANNED_DEBANAUTOIP);
+	//realms->executionPrepareStatement(LOGIN_SET_EXPIREDIPBANS);
+//changement car normalisation nom requete nico le 18-11-2012
+resultsql = realms->executionPrepareStatement(REALMS_SEL_IPBANNED_INFOSSURIPBANNIES,1,hostip);
+	//resultsql = realms->executionPrepareStatement(LOGIN_GET_IPBANNED,1,hostip);
 	if(!resultsql.empty())
 		{
 			AUTH_LOGON_ERROR error;
@@ -133,9 +137,12 @@ void Authentification::HandleLogonChallenge()
 		    enet_peer_send (packet->peer, 0, message);
 		    return;
 		}
-
-	realms->executionPrepareStatement(LOGIN_SET_EXPIREDACCBANS);
-	resultsql = realms->executionPrepareStatement(LOGIN_GET_ACCIDBYNAME,1,login.c_str());
+//changement car normalisation nom requete nico le 18-11-2012
+realms->executionPrepareStatement(REALMS_UPD_ACCOUNTBANNED_DEBANAUTOCOMPTE);
+	//realms->executionPrepareStatement(LOGIN_SET_EXPIREDACCBANS);
+//changement car normalisation nom requete nico le 18-11-2012
+resultsql = realms->executionPrepareStatement(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPTE,1,login.c_str());
+	//resultsql = realms->executionPrepareStatement(LOGIN_GET_ACCIDBYNAME,1,login.c_str());
 	if(resultsql.empty())
 		{
 			AUTH_LOGON_ERROR error;
@@ -262,13 +269,16 @@ void Authentification::HandleLogonProof()
 
 		if (keyPWD.compare(client->shaPassHash) != 0)
 		{
-			realms->executionPrepareStatement(LOGIN_SET_FAILEDLOGINS,2,ToString((int)client->idLogin).c_str(),ToString((int)client->nbPassage).c_str());
+//changement car normalisation nom requete --nico le 18-11-2012
+realms->executionPrepareStatement(REALMS_UPD_ACCOUNT_MAJERREURSAUTH,2,ToString((int)client->idLogin).c_str(),ToString((int)client->nbPassage).c_str());
+//realms->executionPrepareStatement(LOGIN_SET_FAILEDLOGINS,2,ToString((int)client->idLogin).c_str(),ToString((int)client->nbPassage).c_str());
 
 			log->Write(Log::INFO,"Erreur de mot de passe");
 			if(client->nbPassage % 3 == 0)
 			{
-
-				realms->executionPrepareStatement(LOGIN_SET_ACCAUTOBANNED,1,ToString((int)client->idLogin).c_str());
+//changement car normalisation nom requete -- nico le 18-11-2012				
+realms->executionPrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH,1,ToString((int)client->idLogin).c_str());
+				//realms->executionPrepareStatement(LOGIN_SET_ACCAUTOBANNED,1,ToString((int)client->idLogin).c_str());
 
 
 				//Bannir le client
@@ -296,8 +306,9 @@ void Authentification::HandleLogonProof()
 			log->Write(Log::INFO,"Mot de passe valider");
 			client->nbPassage = 0;
 			client->etape = 3 ;
-
-			realms->executionPrepareStatement(LOGIN_SET_FAILEDLOGINS,2,ToString((int)client->idLogin).c_str(),"0");
+//changement car normalisation nom requete -- nico le 18-11-2012
+			realms->executionPrepareStatement(REALMS_UPD_ACCOUNT_MAJERREURSAUTH,2,ToString((int)client->idLogin).c_str(),"0");
+			//realms->executionPrepareStatement(LOGIN_SET_FAILEDLOGINS,2,ToString((int)client->idLogin).c_str(),"0");
 
 			AUTH_LOGON_PROOF messageValidation;
 			messageValidation.cmd = XSILIUM_AUTH;
@@ -329,8 +340,9 @@ void Authentification::HandleRealmList()
 
     ///- Get the user id (else close the connection)
     // No SQL injection (prepared statement)
-
-    PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_GET_ACCIDBYNAME);
+//changement car normalisation nom requete -- nico le 18-11-2012	
+PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPTE);
+    //PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_GET_ACCIDBYNAME);
     stmt->setString(0, _login);
     PreparedQueryResult result = LoginDatabase.Query(stmt);
     if (!result)
