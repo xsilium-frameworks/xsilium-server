@@ -41,7 +41,7 @@ void LoginDatabase::connexionDB(std::string infoString)
 
 
 //requete d'autoban apres erreur d'authentification -- Nico le 13-11-2012 modifiee le 15-11-2012 pour erreur de variables
-connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH, "INSERT INTO account_banned VALUES (now(), now() + INTERVAL  '20 minute', 'AutoBan erreur authentification', true, $1, $2)");
+connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH, "INSERT INTO account_banned VALUES (DEFAULT, now(), now() + INTERVAL  '20 minute', 'AutoBan erreur authentification', true, $1, $2)");
 //connexionDatabase::PrepareStatement(LOGIN_SET_ACCAUTOBANNED, "INSERT INTO account_banned VALUES ($1, now(), now() + INTERVAL  '20 minute', 'AutoBan erreur authentification', 'Xsilium Auth', 1)");
 //    connexionDatabase::PrepareStatement(LOGIN_SET_IPAUTOBANNED, "INSERT INTO ip_banned VALUES ($1, now(), now()+$2,'Xsilium Auth', 'Failed login autoban')");
 //connexionDatabase::PrepareStatement(LOGIN_SET_ACCAUTOBANNED, "INSERT INTO account_banned VALUES ($1, now(), now() + INTERVAL  '20 minute', 'Xsilium Auth', 'Failed login autoban', true)");
@@ -68,13 +68,13 @@ connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH, 
     //PrepareStatement(LOGIN_GET_NUMCHARSONREALM, "SELECT numchars FROM realmcharacters WHERE realmid = ? AND acctid= ?");
 
 //requete d'ajout d'avertissement sur un compte -- Nico le 15-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_AVERTISSEMENTS_AJOUTAVERTISSEMENTS, "INSERT INTO Avertissements VALUES ($1, $2, $3, now())");
+connexionDatabase::PrepareStatement(REALMS_INS_AVERTISSEMENTS_AJOUTAVERTISSEMENTS, "INSERT INTO Avertissements VALUES (DEFAULT, $1, $2, $3, now())");
 
 //requete de mise a jour du nombre d'avertissements sur un compte -- Nico le 15-11-2012
 connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJAVERTISSEMENTSCOMPTE, "UPDATE account SET \"N_avertissements\" = $2 WHERE \"util_numero\" = $1");
 
 //requete auto_ban pour nombre d'avertissements --Nico le 15-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEPOURAVERTISSEMENTS,"INSERT INTO account_banned VALUES (now(), '9999-12-31 00:00:00.000000', 'AutoBan pour avertissement ', true, $1, $2)");
+connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEPOURAVERTISSEMENTS,"INSERT INTO account_banned VALUES (DEFAULT, now(), '9999-12-31 00:00:00.000000', 'AutoBan pour avertissement ', true, $1, $2)");
 
 //requete deban d'un compte --Nico le 15-11-2012
 connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNTBANNED_DEBANCOMPTE, "UPDATE account_banned SET \"active\" = false WHERE \"id_user_ban\" = $1");
@@ -89,19 +89,19 @@ connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNTACCESS_MAJGMLEVELCOMPTE, "
 connexionDatabase::PrepareStatement(REALMS_UPD_IPBANNED_DEBANIP, "UPDATE ip_banned SET \"ban_actif\" = false WHERE \"ip\" = $1");
 
 //requete de ban auto d'une ip --Nico le 16-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_BANIP_BANAUTOIP,"INSERT INTO ip_banned VALUES ($1, now(), now() + INTERVAL  '20 minute', 'AutoBan pour erreur authentification ', $2, true)");
+connexionDatabase::PrepareStatement(REALMS_INS_BANIP_BANAUTOIP,"INSERT INTO ip_banned VALUES ($1, now(), now() + INTERVAL  '20 minute', 'AutoBan pour erreur authentification ', DEFAULT, $2, true)");
 
 //requete qui met a jour le nombre de comptes online sur un serveur --nico le 17-11-2012
 connexionDatabase::PrepareStatement(REALMS_UPD_LISTESERVEUR_MAJCOMPTEONLINE,"UPDATE Liste_serveur SET \"serveur_n_online\" = $1 WHERE \"id_serveur\" = $2");
 
 //requete qui cree un nouveau serveur --nico le 17-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_LISTESERVEUR_CREATIONSERVEUR,"INSERT INTO Liste_serveur VALUES ($1, $2, $3, $4, '0', $5)");
+connexionDatabase::PrepareStatement(REALMS_INS_LISTESERVEUR_CREATIONSERVEUR,"INSERT INTO Liste_serveur VALUES (DEFAULT, $1, $2, $3, $4, '0', $5)");
 
 //requete qui ban un compte --nico le 17-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_BANCOMPTE,"INSERT INTO account_banned VALUES ($1, $2, $3, true, $4, $5)");
+connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_BANCOMPTE,"INSERT INTO account_banned VALUES (DEFAULT, $1, $2, $3, true, $4, $5)");
 
 //requete qui ban une ip --nico le 17-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_IPBANNED_BANIP,"INSERT INTO ip_banned VALUES ($1, $2, $3, $4, $5, true)");
+connexionDatabase::PrepareStatement(REALMS_INS_IPBANNED_BANIP,"INSERT INTO ip_banned VALUES ($1, $2, $3, $4, DEFAULT, $5, true)");
 
 //requete qui passe le compte online a la connexion, remet le failed login à zero, loggue son ip de connexion--nico le 17-11-2012
 connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_LOGCONNEXIONCOMPTE,"UPDATE account SET \"last_ip\" = $1, \"failed_logins\" = '0', \"last_login\" = now(), \"online\" = true WHERE \"Util_numero\" = $2");
@@ -113,13 +113,13 @@ connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJMAIL,"UPDATE account S
 connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJPASS,"UPDATE account SET \"sha_pass_hash\" = $1 WHERE \"Util_numero\" = $2");
 
 //requete qui cree l'acces du compte a la creation du compte gm level a zero par defaut -- nico le 17-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTACCESS_CREATIONACCESS,"INSERT INTO account_access VALUES ($1, '0', SELECT MAX(Util_numero) from account, $4, $5, true)");
+connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTACCESS_CREATIONACCESS,"INSERT INTO account_access VALUES (DEFAULT, $1, '0', SELECT MAX(Util_numero) from account, $4, $5, true)");
 
 //requete qui liste les avertissements d'un compte --nico le 18-11-2012
 connexionDatabase::PrepareStatement(REALMS_SEL_AVERTISSEMENTS_LISTEAVERTOS,"SELECT \"avertissement_date\", \"avertissements_raison\", \"username\" from Avertissements, account WHERE \"avertissements_numero_util\" = $1 and \"avertissements.avertissements_id_gm\" = \"account.util_numero\"");
 
 //requete qui stocke l'ip temporairement en cas d'erreur d'authentification --nico le 18-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE,"INSERT INTO ip_temporaire VALUES (,$1, '1')");
+connexionDatabase::PrepareStatement(REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE,"INSERT INTO ip_temporaire VALUES (DEFAULT, $1, '1')");
 
 //requete qui met a jour le nombre d'erreurs sur l'ip temporaire --nico le 18-11-2012
 connexionDatabase::PrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,"UPDATE ip_temporaire SET \"ip_temp_nessais\" = $1 WHERE \"ip_temp_ip\" = $2");
