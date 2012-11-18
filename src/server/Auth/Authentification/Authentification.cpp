@@ -83,6 +83,7 @@ void Authentification::DeleteClient()
 void Authentification::HandleLogonChallenge()
 {
 	ENetEvent * packet;
+	uint8_t ipNBEssai;
 	packet = connexion->getPacket();
 
 	if (packet->packet->dataLength < sizeof(sAuthLogonChallenge_C))
@@ -119,11 +120,19 @@ void Authentification::HandleLogonChallenge()
 
 
 	pqxx::result resultsql;
-//changement car normalisation nom requete nico le 18-11-2012
-realms->executionPrepareStatement(REALMS_UPD_IPBANNED_DEBANAUTOIP);
+	realms->executionPrepareStatement(REALMS_DEL_IPTEMPORAIRE_SUPPRLIGNEIP);
+	resultsql = realms->executionPrepareStatement(REALMS_SEL_IPTEMPORAIRE_LECTURENERREURS,1,hostip);
+	if(resultsql.empty())
+		ipNBEssai = 0;
+	else
+		ipNBEssai = resultsql[0][0].as<int>();
+
+
+	//changement car normalisation nom requete nico le 18-11-2012
+	realms->executionPrepareStatement(REALMS_UPD_IPBANNED_DEBANAUTOIP);
 	//realms->executionPrepareStatement(LOGIN_SET_EXPIREDIPBANS);
-//changement car normalisation nom requete nico le 18-11-2012
-resultsql = realms->executionPrepareStatement(REALMS_SEL_IPBANNED_INFOSSURIPBANNIES,1,hostip);
+	//changement car normalisation nom requete nico le 18-11-2012
+	resultsql = realms->executionPrepareStatement(REALMS_SEL_IPBANNED_INFOSSURIPBANNIES,1,hostip);
 	//resultsql = realms->executionPrepareStatement(LOGIN_GET_IPBANNED,1,hostip);
 	if(!resultsql.empty())
 		{
@@ -137,14 +146,27 @@ resultsql = realms->executionPrepareStatement(REALMS_SEL_IPBANNED_INFOSSURIPBANN
 		    enet_peer_send (packet->peer, 0, message);
 		    return;
 		}
-//changement car normalisation nom requete nico le 18-11-2012
-realms->executionPrepareStatement(REALMS_UPD_ACCOUNTBANNED_DEBANAUTOCOMPTE);
+	//changement car normalisation nom requete nico le 18-11-2012
+	realms->executionPrepareStatement(REALMS_UPD_ACCOUNTBANNED_DEBANAUTOCOMPTE);
 	//realms->executionPrepareStatement(LOGIN_SET_EXPIREDACCBANS);
-//changement car normalisation nom requete nico le 18-11-2012
-resultsql = realms->executionPrepareStatement(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPTE,1,login.c_str());
+	//changement car normalisation nom requete nico le 18-11-2012
+	resultsql = realms->executionPrepareStatement(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPTE,1,login.c_str());
 	//resultsql = realms->executionPrepareStatement(LOGIN_GET_ACCIDBYNAME,1,login.c_str());
 	if(resultsql.empty())
 		{
+			if(ipNBEssai == 0 )
+				realms->executionPrepareStatement(REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE,1,hostip);
+			else if (ipNBEssai == 8 )
+			{
+				realms->executionPrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,2,hostip,0);
+				realms->executionPrepareStatement(REALMS_INS_BANIP_BANAUTOIP,2,hostip,0);
+			}
+			else
+			{
+				realms->executionPrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,2,hostip,(ipNBEssai + 1));
+			}
+
+
 			AUTH_LOGON_ERROR error;
 			error.cmd = XSILIUM_AUTH;
 			error.opcode = ID_INVALID_ACCOUNT_OR_PASSWORD ;
@@ -208,6 +230,8 @@ resultsql = realms->executionPrepareStatement(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPT
 			else
 				log->Write(Log::INFO,"[AuthChallenge] Les IPs correspondent ");
 		}
+	if(ipNBEssai > 0)
+		realms->executionPrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,2,hostip,0);
 
 	client->etape = 2;
 	AUTH_LOGON_CHALLENGE messageRetour;

@@ -119,16 +119,13 @@ connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTACCESS_CREATIONACCESS,"INS
 connexionDatabase::PrepareStatement(REALMS_SEL_AVERTISSEMENTS_LISTEAVERTOS,"SELECT \"avertissement_date\", \"avertissements_raison\", \"username\" from Avertissements, account WHERE \"avertissements_numero_util\" = $1 and \"avertissements.avertissements_id_gm\" = \"account.util_numero\"");
 
 //requete qui stocke l'ip temporairement en cas d'erreur d'authentification --nico le 18-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE,"INSERT INTO ip_temporaire VALUES ($1, '1')");
+connexionDatabase::PrepareStatement(REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE,"INSERT INTO ip_temporaire VALUES (,$1, '1')");
 
 //requete qui met a jour le nombre d'erreurs sur l'ip temporaire --nico le 18-11-2012
 connexionDatabase::PrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,"UPDATE ip_temporaire SET \"ip_temp_nessais\" = $1 WHERE \"ip_temp_ip\" = $2");
 
 //requete qui lit le nombre d'erreurs d'authentificatio sur l'ip temporaire --nico le 18-11-2012
 connexionDatabase::PrepareStatement(REALMS_SEL_IPTEMPORAIRE_LECTURENERREURS,"SELECT \"ip_temp_nessais\" FROM ip_temporaire where \"ip_temp_ip\" = $1");
-
-//requete qui lit si l'ip a deja ete logguee sur l'ip temporaire --nico le 18-11-2012
-connexionDatabase::PrepareStatement(REALMS_SEL_IPTEMPORAIRE_RECHERCHEIP,"SELECT \"ip_temp_ip\" FROM ip_temporaire where \"ip_temp_ip\" = $1");
 
 //requete qui detruit la ligne des ip sur authentification correcte sur l'ip temporaire --nico le 18-11-2012
 connexionDatabase::PrepareStatement(REALMS_DEL_IPTEMPORAIRE_SUPPRLIGNEIP,"DELETE FROM ip_temporaire where \"ip_temp_nessais\" = '0'");
