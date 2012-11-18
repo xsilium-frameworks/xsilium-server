@@ -56,7 +56,7 @@ connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH, 
 
 
 //requete qui donne la date de fin de bannissement d'un compte donc le ban est actif --nico - le 13-11-2012
-    connexionDatabase::PrepareStatement(REALMS_SEL_ACCOUNTBANNED_RECUPDATEFINBANCOMPTE, "SELECT \"unbandate\" FROM account_banned WHERE \"active\" = true AND \"bandate\" <=now() AND \"id\" = $1");
+    connexionDatabase::PrepareStatement(REALMS_SEL_ACCOUNTBANNED_RECUPDATEFINBANCOMPTE, "SELECT \"unbandate\" FROM account_banned WHERE \"active\" = true AND \"bandate\" <=now() AND \"id_user_ban\" = $1");
     //connexionDatabase::PrepareStatement(LOGIN_GET_ACCBANNED, "SELECT unbandate FROM account_banned WHERE unbandate >now() and unbandate<>bandate AND active = true AND bandate <=now() AND id = $1");
 
 
