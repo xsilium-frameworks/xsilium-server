@@ -114,8 +114,8 @@ connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJPASS,"UPDATE account S
 //requete qui cree l'acces du compte a la creation du compte gm level a zero par defaut -- nico le 17-11-2012
 connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTACCESS_CREATIONACCESS,"INSERT INTO account_access VALUES ($1, '0', SELECT MAX(Util_numero) from account, $4, $5, true)");
 
-//requete qui liste les avertissements d'un compte
-connexionDatabase::PrepareStatement --nico le 18-11-2012(REALMS_SEL_AVERTISSEMENTS_LISTEAVERTOS,"SELECT avertissement_date, avertissements_raison, username from Avertissements, account WHERE avertissements_numero_util = $1 and avertissements.avertissements_id_gm = account.util_numero)");
+//requete qui liste les avertissements d'un compte --nico le 18-11-2012
+connexionDatabase::PrepareStatement(REALMS_SEL_AVERTISSEMENTS_LISTEAVERTOS,"SELECT avertissement_date, avertissements_raison, username from Avertissements, account WHERE avertissements_numero_util = $1 and avertissements.avertissements_id_gm = account.util_numero)");
 
 
 }
