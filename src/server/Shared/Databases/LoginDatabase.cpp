@@ -54,13 +54,14 @@ connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH, 
  //connexionDatabase::PrepareStatement(LOGIN_SET_FAILEDLOGINS, "UPDATE account SET failed_logins = $2 WHERE id = $1");
 
 
-//a voir cette requete --nico - le 13-11-2012
-    connexionDatabase::PrepareStatement(LOGIN_GET_ACCBANNED, "SELECT unbandate FROM account_banned WHERE unbandate >now() and unbandate<>bandate AND active = true AND bandate <=now() AND id = $1");
+//requete qui donne la date de fin de bannissement d'un compte donc le ban est actif --nico - le 13-11-2012
+    connexionDatabase::PrepareStatement(REALMS_SEL_ACCOUNTBANNED_RECUPDATEFINBANCOMPTE, "SELECT unbandate FROM account_banned WHERE active = true AND bandate <=now() AND id = $1");
+    //connexionDatabase::PrepareStatement(LOGIN_GET_ACCBANNED, "SELECT unbandate FROM account_banned WHERE unbandate >now() and unbandate<>bandate AND active = true AND bandate <=now() AND id = $1");
 
 
 //requete qui recupere les infos en fonction du username --nico le 13-11-2012
- connexionDatabase::PrepareStatement(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPTE, "SELECT sha_pass_hash,Util_numero,locked,last_ip,failed_logins FROM account WHERE username = $1");
-// connexionDatabase::PrepareStatement(LOGIN_GET_ACCIDBYNAME, "SELECT a.sha_pass_hash,a.id,a.locked,a.last_ip,a.failed_logins FROM account a WHERE a.username = $1");
+     connexionDatabase::PrepareStatement(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPTE, "SELECT sha_pass_hash,Util_numero,locked,last_ip,failed_logins FROM account WHERE username = $1");
+    // connexionDatabase::PrepareStatement(LOGIN_GET_ACCIDBYNAME, "SELECT a.sha_pass_hash,a.id,a.locked,a.last_ip,a.failed_logins FROM account a WHERE a.username = $1");
 
 
     //PrepareStatement(LOGIN_GET_NUMCHARSONREALM, "SELECT numchars FROM realmcharacters WHERE realmid = ? AND acctid= ?");
@@ -125,10 +126,10 @@ connexionDatabase::PrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,"UPD
 //requete qui lit le nombre d'erreurs d'authentificatio sur l'ip temporaire --nico le 18-11-2012
 connexionDatabase::PrepareStatement(REALMS_SEL_IPTEMPORAIRE_LECTURENERREURS,"SELECT ip_temp_nessais FROM ip_temporaire where ip_temp_ip = $1");
 
-//requete qui lit si l'ip a deja étè logguée sur l'ip temporaire --nico le 18-11-2012
+//requete qui lit si l'ip a deja ete logguee sur l'ip temporaire --nico le 18-11-2012
 connexionDatabase::PrepareStatement(REALMS_SEL_IPTEMPORAIRE_RECHERCHEIP,"SELECT ip_temp_ip FROM ip_temporaire where ip_temp_ip = $1");
 
-//requete qui détruit la ligne des ip sur authentification correcte sur l'ip temporaire --nico le 18-11-2012
+//requete qui detruit la ligne des ip sur authentification correcte sur l'ip temporaire --nico le 18-11-2012
 connexionDatabase::PrepareStatement(REALMS_DEL_IPTEMPORAIRE_SUPPRLIGNEIP,"DELETE FROM ip_temporaire where ip_temp_nessais = '0'");
 
 }

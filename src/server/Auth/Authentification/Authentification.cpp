@@ -161,7 +161,7 @@ resultsql = realms->executionPrepareStatement(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPT
 	client->lastIP = resultsql[0][3].as<std::string>();
 	client->nbPassage = resultsql[0][4].as<int>();
 
-	resultsql = realms->executionPrepareStatement(LOGIN_GET_ACCBANNED,1,ToString((int)client->idLogin).c_str());
+	resultsql = realms->executionPrepareStatement(REALMS_SEL_ACCOUNTBANNED_RECUPDATEFINBANCOMPTE,1,ToString((int)client->idLogin).c_str());
 	if(resultsql.empty())
 	{
 		client->accountUnBanDate = 0;
