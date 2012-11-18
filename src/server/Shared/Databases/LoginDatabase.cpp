@@ -29,7 +29,7 @@ void LoginDatabase::connexionDB(std::string infoString)
 
 
 //requete qui met a jour la table des bans ip lorsque la date de ban est passee -- Nico le 13-11-2012
-	connexionDatabase::PrepareStatement(REALMS_UPD_IPBANNED_DEBANAUTOIP, "Update ip_banned set ban_actif=false WHERE unbandate<=now() AND ban_actif=true");
+	connexionDatabase::PrepareStatement(REALMS_UPD_IPBANNED_DEBANAUTOIP, "Update ip_banned set Ban_actif=false WHERE unbandate<=now() AND Ban_actif=true");
  //connexionDatabase::PrepareStatement(LOGIN_SET_EXPIREDIPBANS, "DELETE FROM ip_banned WHERE unbandate<=now() AND unbandate<>bandate");
 
 //requete qui deban automatiquement l'account apres une date de deban passee --Nico - le 16-11-2012
@@ -51,7 +51,7 @@ connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH, 
 
 
 //Requete de mise a jour du nombre d'erreurs d'authentification -- nico - le 13-11-2012
-	connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJERREURSAUTH, "UPDATE account SET failed_logins = $2 WHERE util_numero = $1");
+	connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJERREURSAUTH, "UPDATE account SET failed_logins = $2 WHERE Util_numero = $1");
  //connexionDatabase::PrepareStatement(LOGIN_SET_FAILEDLOGINS, "UPDATE account SET failed_logins = $2 WHERE id = $1");
 
 
@@ -60,7 +60,7 @@ connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH, 
 
 
 //requete qui recupere les infos en fonction du username --nico le 13-11-2012
- connexionDatabase::PrepareStatement(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPTE, "SELECT sha_pass_hash,util_numero,locked,last_ip,failed_logins FROM account WHERE username = $1");
+ connexionDatabase::PrepareStatement(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPTE, "SELECT sha_pass_hash,Util_numero,locked,last_ip,failed_logins FROM account WHERE username = $1");
 // connexionDatabase::PrepareStatement(LOGIN_GET_ACCIDBYNAME, "SELECT a.sha_pass_hash,a.id,a.locked,a.last_ip,a.failed_logins FROM account a WHERE a.username = $1");
 
 
