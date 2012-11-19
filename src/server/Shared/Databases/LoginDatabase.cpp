@@ -68,19 +68,19 @@ connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH, 
     //PrepareStatement(LOGIN_GET_NUMCHARSONREALM, "SELECT numchars FROM realmcharacters WHERE realmid = ? AND acctid= ?");
 
 //requete d'ajout d'avertissement sur un compte -- Nico le 15-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_AVERTISSEMENTS_AJOUTAVERTISSEMENTS, "INSERT INTO Avertissements VALUES (DEFAULT, $1, $2, $3, now())");
+connexionDatabase::PrepareStatement(REALMS_INS_avertissements_AJOUTavertissements, "INSERT INTO avertissements VALUES (DEFAULT, $1, $2, $3, now())");
 
 //requete de mise a jour du nombre d'avertissements sur un compte -- Nico le 15-11-2012
-connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJAVERTISSEMENTSCOMPTE, "UPDATE account SET \"N_avertissements\" = $2 WHERE \"util_numero\" = $1");
+connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJavertissementsCOMPTE, "UPDATE account SET \"N_avertissements\" = $2 WHERE \"util_numero\" = $1");
 
 //requete auto_ban pour nombre d'avertissements --Nico le 15-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEPOURAVERTISSEMENTS,"INSERT INTO account_banned VALUES (DEFAULT, now(), '9999-12-31 00:00:00.000000', 'AutoBan pour avertissement ', true, $1, $2)");
+connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEPOURavertissements,"INSERT INTO account_banned VALUES (DEFAULT, now(), '9999-12-31 00:00:00.000000', 'AutoBan pour avertissement ', true, $1, $2)");
 
 //requete deban d'un compte --Nico le 15-11-2012
 connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNTBANNED_DEBANCOMPTE, "UPDATE account_banned SET \"active\" = false WHERE \"id_user_ban\" = $1");
 
 //requete listing des infos de la liste des serveurs --Nico le 15-11-2012
-connexionDatabase::PrepareStatement(REALMS_SEL_LISTESERVEUR_RECUPLISTESERVEUR, "SELECT \"id_serveur\", \"serveur_nom_serveur\", \"serveur_domain_name\", \"serveur_port\", \"serveur_level_requis\", \"serveur_n_online\", \"serveur_version_client_mini\", \"serveur_serveur_online\" FROM Liste_serveur");
+connexionDatabase::PrepareStatement(REALMS_SEL_LISTESERVEUR_RECUPLISTESERVEUR, "SELECT \"id_serveur\", \"serveur_nom_serveur\", \"serveur_domain_name\", \"serveur_port\", \"serveur_level_requis\", \"serveur_n_online\", \"serveur_version_client_mini\", \"serveur_serveur_online\" FROM liste_serveur");
 
 //requete mise a jour du gm_level d'un compte --nico le 15-11-2012
 connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNTACCESS_MAJGMLEVELCOMPTE, "UPDATE account_access SET \"gmlevel\" = $2 WHERE \"id_user\" = $1");
@@ -92,10 +92,10 @@ connexionDatabase::PrepareStatement(REALMS_UPD_IPBANNED_DEBANIP, "UPDATE ip_bann
 connexionDatabase::PrepareStatement(REALMS_INS_BANIP_BANAUTOIP,"INSERT INTO ip_banned VALUES ($1, now(), now() + INTERVAL  '20 minute', 'AutoBan pour erreur authentification ', DEFAULT, $2, true)");
 
 //requete qui met a jour le nombre de comptes online sur un serveur --nico le 17-11-2012
-connexionDatabase::PrepareStatement(REALMS_UPD_LISTESERVEUR_MAJCOMPTEONLINE,"UPDATE Liste_serveur SET \"serveur_n_online\" = $1 WHERE \"id_serveur\" = $2");
+connexionDatabase::PrepareStatement(REALMS_UPD_LISTESERVEUR_MAJCOMPTEONLINE,"UPDATE liste_serveur SET \"serveur_n_online\" = $1 WHERE \"id_serveur\" = $2");
 
 //requete qui cree un nouveau serveur --nico le 17-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_LISTESERVEUR_CREATIONSERVEUR,"INSERT INTO Liste_serveur VALUES (DEFAULT, $1, $2, $3, $4, '0', $5, DEFAULT)");
+connexionDatabase::PrepareStatement(REALMS_INS_LISTESERVEUR_CREATIONSERVEUR,"INSERT INTO liste_serveur VALUES (DEFAULT, $1, $2, $3, $4, '0', $5, DEFAULT)");
 
 //requete qui ban un compte --nico le 17-11-2012
 connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_BANCOMPTE,"INSERT INTO account_banned VALUES (DEFAULT, $1, $2, $3, true, $4, $5)");
@@ -116,7 +116,7 @@ connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJPASS,"UPDATE account S
 connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTACCESS_CREATIONACCESS,"INSERT INTO account_access VALUES (DEFAULT, $1, '0', SELECT MAX(Util_numero) from account, $4, $5, true)");
 
 //requete qui liste les avertissements d'un compte --nico le 18-11-2012
-connexionDatabase::PrepareStatement(REALMS_SEL_AVERTISSEMENTS_LISTEAVERTOS,"SELECT \"avertissement_date\", \"avertissements_raison\", \"username\" from Avertissements, account WHERE \"avertissements_numero_util\" = $1 and \"avertissements.avertissements_id_gm\" = \"account.util_numero\"");
+connexionDatabase::PrepareStatement(REALMS_SEL_avertissements_LISTEAVERTOS,"SELECT \"avertissement_date\", \"avertissements_raison\", \"username\" from avertissements, account WHERE \"avertissements_numero_util\" = $1 and \"avertissements.avertissements_id_gm\" = \"account.util_numero\"");
 
 //requete qui stocke l'ip temporairement en cas d'erreur d'authentification --nico le 18-11-2012
 connexionDatabase::PrepareStatement(REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE,"INSERT INTO ip_temporaire VALUES (DEFAULT, $1, '1')");
@@ -131,9 +131,9 @@ connexionDatabase::PrepareStatement(REALMS_SEL_IPTEMPORAIRE_LECTURENERREURS,"SEL
 connexionDatabase::PrepareStatement(REALMS_DEL_IPTEMPORAIRE_SUPPRLIGNEIP,"DELETE FROM ip_temporaire where \"ip_temp_nessais\" = '0'");
 
 //requete qui permet de mettre un serveur online --nico le 19-11-2012
-connexionDatabase::PrepareStatement(REALMS_UPD_LISTESERVEUR_MISEONLINESERVEUR,"UPDATE Liste_serveur set \"serveur_serveur_online\"=true WHERE \"serveur_nom_serveur\"=$1");
+connexionDatabase::PrepareStatement(REALMS_UPD_LISTESERVEUR_MISEONLINESERVEUR,"UPDATE liste_serveur set \"serveur_serveur_online\"=true WHERE \"serveur_nom_serveur\"=$1");
 
 //requete qui permet de mettre un serveur offline --nico le 19-11-2012
-connexionDatabase::PrepareStatement(REALMS_UPD_LISTESERVEUR_MISEOFFLINESERVEUR,"UPDATE Liste_serveur set \"serveur_serveur_online\"=false WHERE \"serveur_nom_serveur\"=$1");
+connexionDatabase::PrepareStatement(REALMS_UPD_LISTESERVEUR_MISEOFFLINESERVEUR,"UPDATE liste_serveur set \"serveur_serveur_online\"=false WHERE \"serveur_nom_serveur\"=$1");
 
 }
