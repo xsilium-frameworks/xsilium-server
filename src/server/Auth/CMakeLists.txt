@@ -1,7 +1,7 @@
 ########### authserver ###############
 
 file(GLOB_RECURSE sources_authentication Authentification/*.cpp Authentification/*.h)
-file(GLOB_RECURSE sources_realms realms/*.cpp realms/*.h)
+file(GLOB_RECURSE sources_realms ListServeur/*.cpp ListServeur/*.h)
 file(GLOB sources_localdir *.cpp *.h)
 
 
@@ -16,7 +16,7 @@ include_directories(
 	${CMAKE_BINARY_DIR}
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CMAKE_CURRENT_SOURCE_DIR}/Authentication
-	${CMAKE_CURRENT_SOURCE_DIR}/realms
+	${CMAKE_CURRENT_SOURCE_DIR}/ListServeur
 	${CMAKE_SOURCE_DIR}/src/server/Shared
 )
 

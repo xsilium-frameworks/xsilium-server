@@ -29,6 +29,7 @@
 #include "Config/Configuration.h"
 #include "Opcode/Opcode.h"
 #include "Connexion/Connexion.h"
+#include "ListServeur/ListServeur.h"
 
 
 using namespace std;
@@ -114,6 +115,7 @@ private:
     Log * log;
     Configuration * config ;
     Connexion * connexion;
+    ListServeur * listServeur;
 
 
      string connectionString;

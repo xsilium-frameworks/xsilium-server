@@ -23,6 +23,8 @@ Authentification::Authentification() {
 	realms = LoginDatabase::getInstance();
 	realms->connexionDB(infoDB);
 
+	listServeur = new ListServeur();
+	listServeur->Initialize(30);
 }
 
 Authentification::~Authentification() {
@@ -349,7 +351,7 @@ realms->executionPrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH,1,T
 
 void Authentification::HandleRealmList()
 {
-
+	listServeur->UpdateIfNeed();
 }
 
 
