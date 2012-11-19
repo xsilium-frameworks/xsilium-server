@@ -80,7 +80,7 @@ connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEPOURAV
 connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNTBANNED_DEBANCOMPTE, "UPDATE account_banned SET \"active\" = false WHERE \"id_user_ban\" = $1");
 
 //requete listing des infos de la liste des serveurs --Nico le 15-11-2012
-connexionDatabase::PrepareStatement(REALMS_SEL_LISTESERVEUR_RECUPLISTESERVEUR, "SELECT * FROM Liste_serveur");
+connexionDatabase::PrepareStatement(REALMS_SEL_LISTESERVEUR_RECUPLISTESERVEUR, "SELECT \"id_serveur\", \"serveur_nom_serveur\", \"serveur_domain_name\", \"serveur_port\", \"serveur_level_requis\", \"serveur_n_online\", \"serveur_version_client_mini\", \"serveur_serveur_online\" FROM Liste_serveur");
 
 //requete mise a jour du gm_level d'un compte --nico le 15-11-2012
 connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNTACCESS_MAJGMLEVELCOMPTE, "UPDATE account_access SET \"gmlevel\" = $2 WHERE \"id_user\" = $1");
@@ -95,7 +95,7 @@ connexionDatabase::PrepareStatement(REALMS_INS_BANIP_BANAUTOIP,"INSERT INTO ip_b
 connexionDatabase::PrepareStatement(REALMS_UPD_LISTESERVEUR_MAJCOMPTEONLINE,"UPDATE Liste_serveur SET \"serveur_n_online\" = $1 WHERE \"id_serveur\" = $2");
 
 //requete qui cree un nouveau serveur --nico le 17-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_LISTESERVEUR_CREATIONSERVEUR,"INSERT INTO Liste_serveur VALUES (DEFAULT, $1, $2, $3, $4, '0', $5)");
+connexionDatabase::PrepareStatement(REALMS_INS_LISTESERVEUR_CREATIONSERVEUR,"INSERT INTO Liste_serveur VALUES (DEFAULT, $1, $2, $3, $4, '0', $5, DEFAULT)");
 
 //requete qui ban un compte --nico le 17-11-2012
 connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_BANCOMPTE,"INSERT INTO account_banned VALUES (DEFAULT, $1, $2, $3, true, $4, $5)");
@@ -129,5 +129,11 @@ connexionDatabase::PrepareStatement(REALMS_SEL_IPTEMPORAIRE_LECTURENERREURS,"SEL
 
 //requete qui detruit la ligne des ip sur authentification correcte sur l'ip temporaire --nico le 18-11-2012
 connexionDatabase::PrepareStatement(REALMS_DEL_IPTEMPORAIRE_SUPPRLIGNEIP,"DELETE FROM ip_temporaire where \"ip_temp_nessais\" = '0'");
+
+//requete qui permet de mettre un serveur online --nico le 19-11-2012
+connexionDatabase::PrepareStatement(REALMS_UPD_LISTESERVEUR_MISEONLINESERVEUR,"UPDATE Liste_serveur set \"serveur_serveur_online\"=true WHERE \"serveur_nom_serveur\"=$1");
+
+//requete qui permet de mettre un serveur offline --nico le 19-11-2012
+connexionDatabase::PrepareStatement(REALMS_UPD_LISTESERVEUR_MISEOFFLINESERVEUR,"UPDATE Liste_serveur set \"serveur_serveur_online\"=false WHERE \"serveur_nom_serveur\"=$1");
 
 }
