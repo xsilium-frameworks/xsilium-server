@@ -85,7 +85,7 @@ void Authentification::DeleteClient()
 void Authentification::HandleLogonChallenge()
 {
 	ENetEvent * packet;
-	uint8_t ipNBEssai;
+	int ipNBEssai;
 	packet = connexion->getPacket();
 
 	if (packet->packet->dataLength < sizeof(sAuthLogonChallenge_C))
@@ -160,12 +160,12 @@ void Authentification::HandleLogonChallenge()
 				realms->executionPrepareStatement(REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE,1,hostip);
 			else if (ipNBEssai == 8 )
 			{
-				realms->executionPrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,2,hostip,0);
-				realms->executionPrepareStatement(REALMS_INS_BANIP_BANAUTOIP,2,hostip,0);
+				realms->executionPrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,2,'0',hostip);
+				realms->executionPrepareStatement(REALMS_INS_BANIP_BANAUTOIP,2,'0',hostip);
 			}
 			else
 			{
-				realms->executionPrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,2,hostip,(ipNBEssai + 1));
+				realms->executionPrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,2,ToString((ipNBEssai + 1)).c_str(),hostip);
 			}
 
 
@@ -233,7 +233,7 @@ void Authentification::HandleLogonChallenge()
 				log->Write(Log::INFO,"[AuthChallenge] Les IPs correspondent ");
 		}
 	if(ipNBEssai > 0)
-		realms->executionPrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,2,hostip,0);
+		realms->executionPrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,2,'0',hostip);
 
 	client->etape = 2;
 	AUTH_LOGON_CHALLENGE messageRetour;
