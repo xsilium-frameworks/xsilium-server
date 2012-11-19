@@ -68,13 +68,13 @@ connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH, 
     //PrepareStatement(LOGIN_GET_NUMCHARSONREALM, "SELECT numchars FROM realmcharacters WHERE realmid = ? AND acctid= ?");
 
 //requete d'ajout d'avertissement sur un compte -- Nico le 15-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_avertissements_AJOUTavertissements, "INSERT INTO avertissements VALUES (DEFAULT, $1, $2, $3, now())");
+connexionDatabase::PrepareStatement(REALMS_INS_AVERTISSEMENTS_AJOUTAVERTISSEMENTS, "INSERT INTO avertissements VALUES (DEFAULT, $1, $2, $3, now())");
 
 //requete de mise a jour du nombre d'avertissements sur un compte -- Nico le 15-11-2012
-connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJavertissementsCOMPTE, "UPDATE account SET \"N_avertissements\" = $2 WHERE \"util_numero\" = $1");
+connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJAVERTISSEMENTSCOMPTE, "UPDATE account SET \"N_avertissements\" = $2 WHERE \"util_numero\" = $1");
 
 //requete auto_ban pour nombre d'avertissements --Nico le 15-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEPOURavertissements,"INSERT INTO account_banned VALUES (DEFAULT, now(), '9999-12-31 00:00:00.000000', 'AutoBan pour avertissement ', true, $1, $2)");
+connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEPOURAVERTISSEMENTS,"INSERT INTO account_banned VALUES (DEFAULT, now(), '9999-12-31 00:00:00.000000', 'AutoBan pour avertissement ', true, $1, $2)");
 
 //requete deban d'un compte --Nico le 15-11-2012
 connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNTBANNED_DEBANCOMPTE, "UPDATE account_banned SET \"active\" = false WHERE \"id_user_ban\" = $1");
@@ -116,7 +116,7 @@ connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJPASS,"UPDATE account S
 connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTACCESS_CREATIONACCESS,"INSERT INTO account_access VALUES (DEFAULT, $1, '0', SELECT MAX(Util_numero) from account, $4, $5, true)");
 
 //requete qui liste les avertissements d'un compte --nico le 18-11-2012
-connexionDatabase::PrepareStatement(REALMS_SEL_avertissements_LISTEAVERTOS,"SELECT \"avertissement_date\", \"avertissements_raison\", \"username\" from avertissements, account WHERE \"avertissements_numero_util\" = $1 and \"avertissements.avertissements_id_gm\" = \"account.util_numero\"");
+connexionDatabase::PrepareStatement(REALMS_SEL_AVERTISSEMENTS_LISTEAVERTOS,"SELECT \"avertissement_date\", \"avertissements_raison\", \"username\" from avertissements, account WHERE \"avertissements_numero_util\" = $1 and \"avertissements.avertissements_id_gm\" = \"account.util_numero\"");
 
 //requete qui stocke l'ip temporairement en cas d'erreur d'authentification --nico le 18-11-2012
 connexionDatabase::PrepareStatement(REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE,"INSERT INTO ip_temporaire VALUES (DEFAULT, $1, '1')");
