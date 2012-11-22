@@ -24,6 +24,7 @@ struct Serveur
     uint32_t NBJoueur;
     std::string version;
 };
+typedef std::map<std::string, Serveur> ListeServeur;
 
 
 class ListServeur {
@@ -33,10 +34,10 @@ public:
 
 	void Initialize(uint32_t updateInterval);
 	void UpdateIfNeed();
+	ListeServeur getListServeur();
 
 
 private:
-	typedef std::map<std::string, Serveur> ListeServeur;
 	ListeServeur listeServeur;
     uint32_t   m_UpdateInterval;
     time_t   m_NextUpdateTime;
