@@ -21,7 +21,6 @@ ListServeur::~ListServeur() {
 void ListServeur::Initialize(uint32_t updateInterval)
 {
     m_UpdateInterval = updateInterval;
-
     ///- Get the content of the realmlist table in the database
     UpdateRealms();
 }

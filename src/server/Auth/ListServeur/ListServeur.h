@@ -5,6 +5,13 @@
  *      Author: \author joda
  *  \brief :
  */
+/*!
+ * \file Authentification.h
+ * \brief ListServeur
+ * \author joda2
+ *
+ */
+
 
 #ifndef LISTSERVEUR_H_
 #define LISTSERVEUR_H_
@@ -28,10 +35,41 @@ struct Serveur
 
 class ListServeur {
 public:
+
+
+    /*!
+     *  \brief Constructeur
+     *
+     *  Constructeur de la classe ListServeur
+     *	\param
+     */
+
 	ListServeur();
+
+    /*!
+     *  \brief Destructeur
+     *
+     *  Destructeur de la classe ListServeur
+     *  \param
+     */
 	virtual ~ListServeur();
 
+    /*!
+     *  \brief Initialize
+     *
+     *  Reception du contenu de la table Realmlist
+     *  \param
+     */
+
 	void Initialize(uint32_t updateInterval);
+
+    /*!
+     *  \brief UpdateIfNeed
+     *
+     *  Reception du contenu de la table Realmlist
+     *  \param
+     */
+
 	void UpdateIfNeed();
 
 
