@@ -1,11 +1,13 @@
 /*
  * \file Callback.h
  *
- *  Created on: \date 8 aožt 2012
+ *  Created on: \date 8 aoï¿½t 2012
  *      Author: \author joda
  *  \brief :
  */
-
+ /*! \class callback
+   * \brief
+   */
 #ifndef CALLBACK_H_
 #define CALLBACK_H_
 
@@ -16,6 +18,9 @@
 class CallbackMaster
 {
 public:
+
+
+
 virtual ~CallbackMaster(){};
 virtual void Call()=0;
 };
