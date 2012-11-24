@@ -160,8 +160,8 @@ void Authentification::HandleLogonChallenge()
 				realms->executionPrepareStatement(REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE,1,hostip);
 			else if (ipNBEssai == 8 )
 			{
-				realms->executionPrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,2,'0',hostip);
-				realms->executionPrepareStatement(REALMS_INS_BANIP_BANAUTOIP,2,'0',hostip);
+				realms->executionPrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,2,"0",hostip);
+				realms->executionPrepareStatement(REALMS_INS_BANIP_BANAUTOIP,2,hostip,"0");
 			}
 			else
 			{
@@ -233,7 +233,7 @@ void Authentification::HandleLogonChallenge()
 				log->Write(Log::INFO,"[AuthChallenge] Les IPs correspondent ");
 		}
 	if(ipNBEssai > 0)
-		realms->executionPrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,2,'0',hostip);
+		realms->executionPrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,2,"0",hostip);
 
 	client->etape = 2;
 	AUTH_LOGON_CHALLENGE messageRetour;
