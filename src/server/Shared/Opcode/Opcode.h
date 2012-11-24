@@ -1,12 +1,19 @@
 /*
  * AuthCodes.h
  *
- *  Created on: 24 fŽvr. 2012
+ *  Created on: 24 fï¿½vr. 2012
  *      Author: joda2
  */
 
 #ifndef AUTHCODES_H_
 #define AUTHCODES_H_
+
+    /*!
+     *  \brief Opcode
+     *
+     *  Declaration des Opcode pour chaque cas d'une connexion
+     *  \param
+     */
 
 enum Opcode
 {
