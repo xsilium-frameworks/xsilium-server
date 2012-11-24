@@ -67,3 +67,8 @@ void ListServeur::UpdateRealms()
     	 }
     }
 }
+
+ListeServeur ListServeur::getListServeur()
+{
+	return listeServeur;
+}
