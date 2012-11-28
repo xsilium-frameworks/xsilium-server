@@ -10,7 +10,13 @@
 #define SINGLETON_H_
 
 #include "stdlib.h"
-
+   /*!
+     *  \brief Singleton
+     *
+     * ??
+     *
+     *  \param
+     */
 template <typename Tsingleton>
 class Singleton
 {

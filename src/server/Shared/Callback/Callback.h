@@ -19,9 +19,24 @@ class CallbackMaster
 {
 public:
 
-
-
+    /*!
+     *  \brief Destructeur
+     *
+     *  Destructeur de la classe CallbackMaster
+     *
+     *  \param
+     */
 virtual ~CallbackMaster(){};
+
+/*!
+ *  \brief Call
+ *
+ *  brief ???
+ *
+ *  \param
+ */
+
+
 virtual void Call()=0;
 };
 

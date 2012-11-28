@@ -20,10 +20,42 @@ typedef std::vector<std::string> Tokens;
  */
 class Utils {
 public:
+
+	/*!
+	 *  \brief Utils
+	 *
+	 *  brief Constructeur
+	 *
+	 *  \param
+	 */
+
 	Utils();
+	/*!
+	 *  \brief ~Utils
+	 *
+	 *  brief Destructeur
+	 *
+	 *  \param
+	 */
 	virtual ~Utils();
 
+
+	/*!
+	 *  \brief QtrSplit
+	 *
+	 *  brief ???
+	 *
+	 *  \param
+	 */
 	Tokens StrSplit(const std::string &src, const std::string &sep);
+
+	/*!
+	 *  \brief convertToDate
+	 *
+	 *  brief permet d'obtenir la date sous cette forme %Y-%m-%d %H:%M:%S
+	 *
+	 *  \param
+	 */
 	time_t convertToDate(std::string valeur);
 
 };

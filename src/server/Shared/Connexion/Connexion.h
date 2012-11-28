@@ -1,7 +1,7 @@
 /*
  * \file Connexion.h
  *
- *  Created on: \date 8 aožt 2012
+ *  Created on: \date 8 aoï¿½t 2012
  *      Author: \author joda
  *  \brief :
  */
@@ -34,10 +34,44 @@ class Connexion : public Singleton<Connexion> {
 	friend class Singleton<Connexion>;
 
 public:
+
+    /*!
+     *  \brief Connexion
+     *
+     *  brief Constructeur de la classe Connexion
+     *
+     *  \param
+     */
+
 	Connexion();
+
+    /*!
+     *  \brief ~Connexion
+     *
+     *  brief Destructeur de la classe Connexion
+     *
+     *  \param
+     */
 	virtual ~Connexion();
 
+
+    /*!
+     *  \brief createConnexion
+     *
+     *  brief crÃ©er un connexion
+     *
+     *  \param
+     */
+
 bool createConnexion(ENetAddress adresse,int MaxClient);
+
+	/*!
+	 *  \brief deleteConnexion
+	 *
+	 *  brief Supprime la connexion
+	 *
+	 *  \param
+	 */
 
 bool deleteConnexion();
 

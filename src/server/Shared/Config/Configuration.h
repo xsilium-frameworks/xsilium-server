@@ -26,16 +26,46 @@ class Configuration : public Singleton<Configuration>
 	friend class Singleton<Configuration>;
 
 public:
-	// clear all values
+
+    	/*!
+     	 *  \brief Clear
+     	 *
+     	 *  brief clear all values
+     	 *
+     	 *  \param
+     	 */
 	    void Clear();
 
-	    // load a configuration file
+
+	    /*!
+	     *  \brief Load
+	     *
+	     *  brief load a configuration file
+	     *
+	     *  \param
+	     */
+
 	    bool Load(const string& File);
 
-	    // check if value associated with given key exists
+	    /*!
+	     *  \brief Contains
+	     *
+	     *  brief check if value associated with given key exists
+	     *
+	     *  \param
+	     */
+
 	    bool Contains(const string& key) const;
 
-	    // get value associated with given key
+
+	    /*!
+	     *  \brief Get
+	     *
+	     *  brief get value associated with given key
+	     *
+	     *  \param
+	     */
+
 	    bool Get(const string& key, string& value) const;
 	    bool Get(const string& key, int&    value) const;
 	    bool Get(const string& key, long&   value) const;

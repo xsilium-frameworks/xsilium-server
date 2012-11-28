@@ -17,13 +17,61 @@
 class connexionDatabase {
 
 public:
+
+	/*!
+	 *  \brief connexionDatabase
+	 *
+	 *  brief Constructeur
+	 *
+	 *  \param
+	 */
+
 	connexionDatabase();
+
+	/*!
+	 *  \brief ~connexionDatabase
+	 *
+	 *  brief Destructeur de la classe
+	 *
+	 *  \param
+	 */
 	virtual ~connexionDatabase();
 
+	/*!
+	 *  \brief connexionDB
+	 *
+	 *  brief Permet de ce connectera la DB souhaitee
+	 *
+	 *  \param
+	 */
 	void connexionDB(std::string infoString);
+
+
+	/*!
+	 *  \brief deconnexionDB
+	 *
+	 *  brief Ferme la connexion a la DB
+	 *
+	 *  \param
+	 */
 	void deconnexionDB();
 
+	/*!
+	 *  \brief PrepareStatement
+	 *
+	 *  brief ??
+	 *
+	 *  \param
+	 */
 	void PrepareStatement(int index, const char* sql);
+
+	/*!
+	 *  \brief executionPrepareStatement
+	 *
+	 *  brief ??
+	 *
+	 *  \param
+	 */
 	pqxx::result executionPrepareStatement(int index,int nombreArgument = 0,...);
 
 protected:
