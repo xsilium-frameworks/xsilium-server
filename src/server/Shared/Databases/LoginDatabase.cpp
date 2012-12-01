@@ -28,7 +28,7 @@ void LoginDatabase::connexionDB(std::string infoString)
 
 
 //requete qui met a jour la table des bans ip lorsque la date de ban est passee -- Nico le 13-11-2012
-    connexionDatabase::PrepareStatement(REALMS_UPD_IPBANNED_DEBANAUTOIP, "Update ip_banned set \"Ban_actif\"=false WHERE \"unbandate\"<=now() AND \"Ban_actif\"=true");
+    connexionDatabase::PrepareStatement(REALMS_UPD_IPBANNED_DEBANAUTOIP, "Update ip_banned set \"ban_actif\"=false WHERE \"unbandate\"<=now() AND \"ban_actif\"=true");
     //connexionDatabase::PrepareStatement(REALMS_UPD_IPBANNED_DEBANAUTOIP, "Update ip_banned set Ban_actif=false WHERE unbandate<=now() AND Ban_actif=true");
     //connexionDatabase::PrepareStatement(LOGIN_SET_EXPIREDIPBANS, "DELETE FROM ip_banned WHERE unbandate<=now() AND unbandate<>bandate");
 
@@ -51,7 +51,7 @@ connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH, 
 
 
 //Requete de mise a jour du nombre d'erreurs d'authentification -- nico - le 13-11-2012
-	connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJERREURSAUTH, "UPDATE account SET \"failed_logins\" = $2 WHERE \"Util_numero\" = $1");
+	connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJERREURSAUTH, "UPDATE account SET \"failed_logins\" = $2 WHERE \"util_numero\" = $1");
  //connexionDatabase::PrepareStatement(LOGIN_SET_FAILEDLOGINS, "UPDATE account SET failed_logins = $2 WHERE id = $1");
 
 
@@ -61,7 +61,7 @@ connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH, 
 
 
 //requete qui recupere les infos en fonction du username --nico le 13-11-2012
-     connexionDatabase::PrepareStatement(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPTE, "SELECT \"sha_pass_hash\",\"Util_numero\",\"locked\",\"last_ip\",\"failed_logins\" FROM account WHERE \"username\" = $1");
+     connexionDatabase::PrepareStatement(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPTE, "SELECT \"sha_pass_hash\",\"util_numero\",\"locked\",\"last_ip\",\"failed_logins\" FROM account WHERE \"username\" = $1");
     // connexionDatabase::PrepareStatement(LOGIN_GET_ACCIDBYNAME, "SELECT a.sha_pass_hash,a.id,a.locked,a.last_ip,a.failed_logins FROM account a WHERE a.username = $1");
 
 
@@ -71,7 +71,7 @@ connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH, 
 connexionDatabase::PrepareStatement(REALMS_INS_AVERTISSEMENTS_AJOUTAVERTISSEMENTS, "INSERT INTO avertissements VALUES (DEFAULT, $1, $2, $3, now())");
 
 //requete de mise a jour du nombre d'avertissements sur un compte -- Nico le 15-11-2012
-connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJAVERTISSEMENTSCOMPTE, "UPDATE account SET \"N_avertissements\" = $2 WHERE \"util_numero\" = $1");
+connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJAVERTISSEMENTSCOMPTE, "UPDATE account SET \"n_avertissements\" = $2 WHERE \"util_numero\" = $1");
 
 //requete auto_ban pour nombre d'avertissements --Nico le 15-11-2012
 connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEPOURAVERTISSEMENTS,"INSERT INTO account_banned VALUES (DEFAULT, now(), '9999-12-31 00:00:00.000000', 'AutoBan pour avertissement ', true, $1, $2)");
@@ -104,16 +104,16 @@ connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTBANNED_BANCOMPTE,"INSERT I
 connexionDatabase::PrepareStatement(REALMS_INS_IPBANNED_BANIP,"INSERT INTO ip_banned VALUES ($1, $2, $3, $4, DEFAULT, $5, true)");
 
 //requete qui passe le compte online a la connexion, remet le failed login à zero, loggue son ip de connexion--nico le 17-11-2012
-connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_LOGCONNEXIONCOMPTE,"UPDATE account SET \"last_ip\" = $1, \"failed_logins\" = '0', \"last_login\" = now(), \"online\" = true WHERE \"Util_numero\" = $2");
+connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_LOGCONNEXIONCOMPTE,"UPDATE account SET \"last_ip\" = $1, \"failed_logins\" = '0', \"last_login\" = now(), \"online\" = true WHERE \"util_numero\" = $2");
 
 //requete qui met a jour l'adresse mail associee a un compte --nico le 17-11-2012
-connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJMAIL,"UPDATE account SET \"email\" = $1 WHERE \"Util_numero\" = $2");
+connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJMAIL,"UPDATE account SET \"email\" = $1 WHERE \"util_numero\" = $2");
 
 //requete qui met a jour le mot de passe d'un compte --nico le 17-11-2012
-connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJPASS,"UPDATE account SET \"sha_pass_hash\" = $1 WHERE \"Util_numero\" = $2");
+connexionDatabase::PrepareStatement(REALMS_UPD_ACCOUNT_MAJPASS,"UPDATE account SET \"sha_pass_hash\" = $1 WHERE \"util_numero\" = $2");
 
 //requete qui cree l'acces du compte a la creation du compte gm level a zero par defaut -- nico le 17-11-2012
-connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTACCESS_CREATIONACCESS,"INSERT INTO account_access VALUES (DEFAULT, $1, '0', SELECT MAX(Util_numero) from account, $4, $5, true)");
+connexionDatabase::PrepareStatement(REALMS_INS_ACCOUNTACCESS_CREATIONACCESS,"INSERT INTO account_access VALUES (DEFAULT, $1, '0', SELECT MAX(util_numero) from account, $4, $5, true)");
 
 //requete qui liste les avertissements d'un compte --nico le 18-11-2012
 connexionDatabase::PrepareStatement(REALMS_SEL_AVERTISSEMENTS_LISTEAVERTOS,"SELECT \"avertissement_date\", \"avertissements_raison\", \"username\" from avertissements, account WHERE \"avertissements_numero_util\" = $1 and \"avertissements.avertissements_id_gm\" = \"account.util_numero\"");
