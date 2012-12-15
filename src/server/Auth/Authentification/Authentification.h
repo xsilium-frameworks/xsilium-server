@@ -19,8 +19,6 @@
 #include <stdio.h>
 #include <vector>
 
-#include <enet/enet.h>
-
 
 #include "../resource.h"
 #include "Databases/LoginDatabase.h"

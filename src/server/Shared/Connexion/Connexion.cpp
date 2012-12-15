@@ -10,7 +10,6 @@
 
 Connexion::Connexion() {
 enet_initialize();
-endThread = false;
 }
 
 Connexion::~Connexion()
@@ -21,10 +20,12 @@ Connexion::~Connexion()
 		}
 		delete server;
 		delete peer;
+	enet_deinitialize();
 }
 
 bool Connexion::createConnexion(ENetAddress adresse,int MaxClient)
 {
+	endThread = false;
 	server = enet_host_create (&adresse /* the address to bind the server host to */,
 							   (size_t)MaxClient      /* allow up to 32 clients and/or outgoing connections */,
 	                                  2      /* allow up to 2 channels to be used, 0 and 1 */,
@@ -55,10 +56,8 @@ void* Connexion::threadConnexion(void* arguments)
 
 		    	connexion->callback((typerequete)connexion->eventServer.packet->data[0],(Opcode)connexion->eventServer.packet->data[1]);
 
-		    	    /* One could just use enet_host_service() instead. */
-		    	    enet_host_flush (connexion->server);
-		            /* Clean up the packet now that we're done using it. */
-		            enet_packet_destroy (connexion->eventServer.packet);
+		    	/* Clean up the packet now that we're done using it. */
+		        enet_packet_destroy (connexion->eventServer.packet);
 
 		        break;
 
@@ -75,7 +74,8 @@ void* Connexion::threadConnexion(void* arguments)
 
 bool Connexion::deleteConnexion()
 {
-	enet_deinitialize();
+	endThread = true;
+	pthread_join(thread,NULL);
 	return true;
 
 }
@@ -97,5 +97,19 @@ void Connexion::callback(typerequete requete, Opcode opcode)
 			}
 		}
 	}
+}
+
+bool Connexion::removelistenneur(typerequete requete,Opcode opcode)
+{
+	for (listenner=listOfListenner.begin() ; listenner!=listOfListenner.end() ; ++listenner)
+		{
+			if(listenner->requete == requete && listenner->opcode == opcode )
+			{
+				delete listenner->callback;
+				listOfListenner.erase(listenner);
+				return true;
+			}
+		}
+	return false;
 }
 

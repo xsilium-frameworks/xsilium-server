@@ -87,6 +87,7 @@ bool addlistenneur(typerequete requete,Opcode opcode,templeteListener * object, 
 	listOfListenner.push_back(newcallback);
 	return true;
 };
+bool removelistenneur(typerequete requete,Opcode opcode);
 
 void callback(typerequete requete, Opcode opcode);
 

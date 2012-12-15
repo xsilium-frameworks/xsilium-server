@@ -17,8 +17,11 @@
 
 enum Opcode
 {
+	// partie generique
 	ID_CONNEXION = 0,
 	ID_DECONEXION,
+
+	// partie authentification
     ID_SEND_USER,
     ID_SEND_CHALLENGE,
     ID_SEND_REPONSE,
@@ -30,12 +33,20 @@ enum Opcode
     ID_COMPTE_BANNIE,
     ID_SEND_CANCEL,
     ID_INVALID_IP,
-    ID_ERROR
+    ID_ERROR,
+
+    //partie royaume
+    ID_REC_CHAT,
+    ID_SEND_CHAT
+
+
+
 };
 
 enum typerequete
 {
-   XSILIUM_AUTH = 0
+   XSILIUM_AUTH = 0,
+   XSILIUM_KINGDOM
 };
 
 #endif /* AUTHCODES_H_ */

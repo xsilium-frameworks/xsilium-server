@@ -28,6 +28,11 @@ Authentification::Authentification() {
 }
 
 Authentification::~Authentification() {
+	connexion->removelistenneur(XSILIUM_AUTH,ID_CONNEXION);
+	connexion->removelistenneur(XSILIUM_AUTH,ID_DECONEXION);
+	connexion->removelistenneur(XSILIUM_AUTH,ID_SEND_USER);
+	connexion->removelistenneur(XSILIUM_AUTH,ID_SEND_REPONSE);
+	connexion->removelistenneur(XSILIUM_AUTH,ID_GET_ROYAUME);
 	delete this->realms ;
 }
 
@@ -161,7 +166,7 @@ void Authentification::HandleLogonChallenge()
 			else if (ipNBEssai == 8 )
 			{
 				realms->executionPrepareStatement(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,2,"0",hostip);
-				realms->executionPrepareStatement(REALMS_INS_BANIP_BANAUTOIP,2,hostip,"0");
+				realms->executionPrepareStatement(REALMS_INS_BANIP_BANAUTOIP,2,hostip,"1");
 			}
 			else
 			{

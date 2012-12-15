@@ -52,6 +52,7 @@ void authServer::startServer()
 void authServer::stopThread()
 {
 	log->Write(Log::DEBUG,"Arret du thread d'authentification");
+	connexion->deleteConnexion();
 	log->Stop();
 }
 
@@ -64,10 +65,11 @@ authServer::authServer() {
 }
 
 authServer::~authServer() {
+	delete auth;
 	Configuration::DestroyInstance();
 	Log::DestroyInstance();
 	Connexion::DestroyInstance();
-	delete auth;
+
 
 }
 
