@@ -12,6 +12,8 @@ file(GLOB_RECURSE sources_Semaphore Semaphore/*.cpp Semaphore/*.h)
 file(GLOB_RECURSE sources_Structure Structure/*.cpp Structure/*.h)
 file(GLOB_RECURSE sources_Utilities Utilities/*.cpp Utilities/*.h)
 
+file(GLOB_RECURSE sources_Test *Test.cpp *Test.h)
+
 #
 # Build shared sourcelist
 #
@@ -30,6 +32,10 @@ set(shared_STAT_SRCS
   ${sources_Utilities}
   
 )
+
+list(REMOVE_ITEM shared_STAT_SRCS "${sources_Test}")
+
+message(" ${shared_STAT_SRCS} ")
 
 include_directories(
   ${CMAKE_BINARY_DIR}
