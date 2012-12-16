@@ -53,13 +53,17 @@ void* Connexion::threadConnexion(void* arguments)
 				connexion->callback(XSILIUM_AUTH,ID_CONNEXION);
 		        break;
 		    case ENET_EVENT_TYPE_RECEIVE:
+		    {
 
-		    	connexion->callback((typerequete)connexion->eventServer.packet->data[0],(Opcode)connexion->eventServer.packet->data[1]);
+		    	structure_opcodeT * typePacket = (structure_opcodeT *) connexion->eventServer.packet->data ;
+
+		    	connexion->callback((typerequete) typePacket->cmd,(Opcode) typePacket->opcode);
 
 		    	/* Clean up the packet now that we're done using it. */
 		        enet_packet_destroy (connexion->eventServer.packet);
 
 		        break;
+		    }
 
 		    case ENET_EVENT_TYPE_DISCONNECT:
 		    	connexion->callback(XSILIUM_AUTH,ID_DECONEXION);

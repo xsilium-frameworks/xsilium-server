@@ -8,6 +8,8 @@
 #ifndef CLIENT_H_
 #define CLIENT_H_
 
+#include "Packet.h"
+
     /*!
      *  \brief structure AUTH_LOGON_CHALLENGE_C
      *
@@ -15,10 +17,10 @@
      *
      *  \param
      */
+
 typedef struct AUTH_LOGON_CHALLENGE_C
 {
-    uint8_t   cmd;
-    uint8_t   opcode;
+	structure_opcodeT structure_opcode;
     uint8_t   error;
     uint16_t  size;
     uint8_t   version1;
@@ -39,8 +41,7 @@ typedef struct AUTH_LOGON_CHALLENGE_C
  */
 typedef struct AUTH_LOGON_PROOF_C
 {
-	uint8_t   cmd;
-	uint8_t   opcode;
+	structure_opcodeT structure_opcode;
     uint8_t   A[1];
 
 } sAuthLogonProof_C;

@@ -35,8 +35,6 @@ set(shared_STAT_SRCS
 
 list(REMOVE_ITEM shared_STAT_SRCS "${sources_Test}")
 
-message(" ${shared_STAT_SRCS} ")
-
 include_directories(
   ${CMAKE_BINARY_DIR}
   ${CMAKE_SOURCE_DIR}/src/server

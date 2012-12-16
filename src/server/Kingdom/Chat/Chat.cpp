@@ -53,7 +53,7 @@ void* Chat::threadChat(void* arguments)
 {
 	Chat * chat = (Chat *) arguments ;
 
-	while(chat->endThread == false)
+	while(!chat->endThread)
 	{
 		if(!chat->ListOfTchatPacket.empty())
 		{

@@ -96,8 +96,8 @@ void Authentification::HandleLogonChallenge()
 	if (packet->packet->dataLength < sizeof(sAuthLogonChallenge_C))
 	{
 		AUTH_LOGON_ERROR error;
-		error.cmd = XSILIUM_AUTH;
-		error.opcode = ID_ERROR ;
+		error.structure_opcode.cmd = XSILIUM_AUTH;
+		error.structure_opcode.opcode = ID_ERROR ;
 		error.error = 1;
 		log->Write(Log::INFO,"Le message venant de %d:%d est illisible ",packet->peer->address.host,packet->peer->address.port);
 
@@ -144,8 +144,8 @@ void Authentification::HandleLogonChallenge()
 	if(!resultsql.empty())
 		{
 			AUTH_LOGON_ERROR error;
-			error.cmd = XSILIUM_AUTH;
-			error.opcode = ID_CONNECTION_BANNED ;
+			error.structure_opcode.cmd = XSILIUM_AUTH;
+			error.structure_opcode.opcode = ID_CONNECTION_BANNED ;
 			error.error = 0;
 			log->Write(Log::INFO,"[AuthChallenge] L'ip %s est bannie !",hostip);
 
@@ -175,8 +175,8 @@ void Authentification::HandleLogonChallenge()
 
 
 			AUTH_LOGON_ERROR error;
-			error.cmd = XSILIUM_AUTH;
-			error.opcode = ID_INVALID_ACCOUNT_OR_PASSWORD ;
+			error.structure_opcode.cmd = XSILIUM_AUTH;
+			error.structure_opcode.opcode = ID_INVALID_ACCOUNT_OR_PASSWORD ;
 			error.error = 0;
 			log->Write(Log::INFO,"[AuthChallenge] Le compte %s n'existe pas",login.c_str());
 
@@ -207,8 +207,8 @@ void Authentification::HandleLogonChallenge()
 	if(client->accountUnBanDate > time(0) )
 	{
 		AUTH_LOGON_ERROR error;
-		error.cmd = XSILIUM_AUTH;
-		error.opcode = ID_COMPTE_BANNIE ;
+		error.structure_opcode.cmd = XSILIUM_AUTH;
+		error.structure_opcode.opcode = ID_COMPTE_BANNIE ;
 		error.error = 1;
 		log->Write(Log::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s ",login.c_str(),(resultsql[0][0].as<std::string>()).c_str());
 
@@ -226,8 +226,8 @@ void Authentification::HandleLogonChallenge()
 			{
 				log->Write(Log::INFO,"[AuthChallenge] L'IP %s ne correspond pas a la derniere IP %s ",hostip,client->lastIP.c_str());
 				AUTH_LOGON_ERROR error;
-				error.cmd = XSILIUM_AUTH;
-				error.opcode = ID_INVALID_IP ;
+				error.structure_opcode.cmd = XSILIUM_AUTH;
+				error.structure_opcode.opcode = ID_INVALID_IP ;
 				error.error = 1;
 				ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
 				enet_peer_send (packet->peer, 0, message);
@@ -242,8 +242,8 @@ void Authentification::HandleLogonChallenge()
 
 	client->etape = 2;
 	AUTH_LOGON_CHALLENGE messageRetour;
-	messageRetour.cmd = XSILIUM_AUTH;
-	messageRetour.opcode = ID_SEND_CHALLENGE;
+	messageRetour.structure_opcode.cmd = XSILIUM_AUTH;
+	messageRetour.structure_opcode.opcode = ID_SEND_CHALLENGE;
 	messageRetour.key = 1234567;
 
 	ENetPacket * message = enet_packet_create ((const char *)&messageRetour,sizeof(messageRetour) + 1,ENET_PACKET_FLAG_RELIABLE);
@@ -263,8 +263,8 @@ void Authentification::HandleLogonProof()
 	if (packet->packet->dataLength < sizeof(sAuthLogonChallenge_C))
 	{
 		AUTH_LOGON_ERROR error;
-		error.cmd = XSILIUM_AUTH;
-		error.opcode = ID_ERROR ;
+		error.structure_opcode.cmd = XSILIUM_AUTH;
+		error.structure_opcode.opcode = ID_ERROR ;
 		error.error = 1;
 		log->Write(Log::INFO,"Le message venant de %d:%d est illisible ",packet->peer->address.host,packet->peer->address.port);
 
@@ -279,8 +279,8 @@ void Authentification::HandleLogonProof()
 		if(client->etape < 2 )
 		{
 			AUTH_LOGON_ERROR msg_error;
-			msg_error.cmd = XSILIUM_AUTH;
-			msg_error.opcode = ID_ERROR ;
+			msg_error.structure_opcode.cmd = XSILIUM_AUTH;
+			msg_error.structure_opcode.opcode = ID_ERROR ;
 			msg_error.error = 1;
 
 			ENetPacket * message = enet_packet_create ((const char *)&msg_error,sizeof(msg_error) + 1,ENET_PACKET_FLAG_RELIABLE);
@@ -314,8 +314,8 @@ realms->executionPrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH,1,T
 
 				//Bannir le client
 				AUTH_LOGON_ERROR msg_error;
-				msg_error.cmd = XSILIUM_AUTH;
-				msg_error.opcode =ID_COMPTE_BANNIE;
+				msg_error.structure_opcode.cmd = XSILIUM_AUTH;
+				msg_error.structure_opcode.opcode =ID_COMPTE_BANNIE;
 				msg_error.error = 1;
 				ENetPacket * message = enet_packet_create ((const char *)&msg_error,sizeof(msg_error) + 1,ENET_PACKET_FLAG_RELIABLE);
 				enet_peer_send (packet->peer, 0, message);
@@ -324,8 +324,8 @@ realms->executionPrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH,1,T
 			}
 
 			AUTH_LOGON_ERROR error;
-			error.cmd = XSILIUM_AUTH;
-			error.opcode = ID_INVALID_ACCOUNT_OR_PASSWORD ;
+			error.structure_opcode.cmd = XSILIUM_AUTH;
+			error.structure_opcode.opcode = ID_INVALID_ACCOUNT_OR_PASSWORD ;
 			error.error = 0;
 
 			ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
@@ -342,8 +342,8 @@ realms->executionPrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH,1,T
 			//realms->executionPrepareStatement(LOGIN_SET_FAILEDLOGINS,2,ToString((int)client->idLogin).c_str(),"0");
 
 			AUTH_LOGON_PROOF messageValidation;
-			messageValidation.cmd = XSILIUM_AUTH;
-			messageValidation.opcode = ID_SEND_VALIDATION ;
+			messageValidation.structure_opcode.cmd = XSILIUM_AUTH;
+			messageValidation.structure_opcode.opcode = ID_SEND_VALIDATION ;
 
 			ENetPacket * message = enet_packet_create ((const char *)&messageValidation,sizeof(messageValidation) + 1,ENET_PACKET_FLAG_RELIABLE);
 		    enet_peer_send (packet->peer, 0, message);

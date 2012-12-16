@@ -11,7 +11,7 @@
 #include <string>
 #include <stdint.h>
 #include <time.h>
-
+#include "Packet.h"
 
     /*!
      *  \brief struct AUTH_LOGON_PROOF_S
@@ -22,8 +22,7 @@
      */
 struct AUTH_LOGON_ERROR
 {
-	uint8_t   cmd;  /*!< correspond au type de packet que l'on envoi */
-	uint8_t   opcode;
+	structure_opcodeT structure_opcode;
     int   error; /*!< correspond a l'erreur qui a ete detecter */
 };
 
@@ -55,16 +54,14 @@ struct sClient
 
 struct AUTH_LOGON_CHALLENGE
 {
-	uint8_t   cmd;  /*!< correspond au type de packet que l'on envoi */
-	uint8_t   opcode;
+	structure_opcodeT structure_opcode;
 	uint32_t	key;
 	uint32_t	key2;
 };
 
 struct AUTH_LOGON_PROOF
 {
-    uint8_t   cmd;
-	uint8_t   opcode;
+	structure_opcodeT structure_opcode;
     uint8_t   Key[20];
 };
 
