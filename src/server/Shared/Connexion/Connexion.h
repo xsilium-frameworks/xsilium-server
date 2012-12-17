@@ -15,7 +15,7 @@
 #include "Singleton/Singleton.h"
 #include "Callback/Callback.h"
 #include "Opcode/Opcode.h"
-#include "Structure/packet.h"
+#include "Structure/Packet.h"
 
 
 struct struct_callback
