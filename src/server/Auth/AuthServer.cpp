@@ -16,25 +16,13 @@ void authServer::startServer()
 		if (!config->Load("../etc/auth.config"))
 		{}
 		int logLevel;
-		auth = new Authentification();
 
 
 		config->Get("LogLevel",logLevel);
 		log->Start((Log::Priority)logLevel,"authserver.log");
 		log->Write(Log::DEBUG,"Demarrage du serveur d'authentification");
 
-		int serverPort, numClient ;
-
-		config->Get("port",serverPort);
-		config->Get("clientMax",numClient);
-		adresse.host = ENET_HOST_ANY;
-		adresse.port  = (enet_uint16) serverPort;
-
-		if(!connexion->createConnexion(adresse,numClient))
-		{
-			//erreur
-		}
-
+		auth = new Authentification();
 
 		while(!signalHandler->gotExitSignal())
 		        sleep(1);
@@ -52,7 +40,6 @@ void authServer::startServer()
 void authServer::stopThread()
 {
 	log->Write(Log::DEBUG,"Arret du thread d'authentification");
-	connexion->deleteConnexion();
 	log->Stop();
 }
 
@@ -60,7 +47,6 @@ void authServer::stopThread()
 authServer::authServer() {
 	config = Configuration::getInstance();
 	log = Log::getInstance();
-	connexion = Connexion::getInstance();
 
 }
 
@@ -68,7 +54,6 @@ authServer::~authServer() {
 	delete auth;
 	Configuration::DestroyInstance();
 	Log::DestroyInstance();
-	Connexion::DestroyInstance();
 
 
 }

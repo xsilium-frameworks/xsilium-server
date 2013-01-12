@@ -32,6 +32,8 @@ public:
 	void setPacket();
 	ENetEvent * getPacket();
 
+	void setConnexionLogin(Connexion * connexion );
+
 private:
 
 	static void * threadChat(void * arguments);

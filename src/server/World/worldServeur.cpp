@@ -11,7 +11,7 @@
 worldServeur::worldServeur() {
 	config = Configuration::getInstance();
 	log = Log::getInstance();
-	connexion = Connexion::getInstance();
+	connexion = new Connexion();
 	chat = new Chat();
 
 }
@@ -20,7 +20,7 @@ worldServeur::~worldServeur() {
 	delete chat;
 	Configuration::DestroyInstance();
 	Log::DestroyInstance();
-	Connexion::DestroyInstance();
+	delete connexion;
 
 }
 
@@ -46,9 +46,16 @@ void worldServeur::run()
 			adresse.port  = (enet_uint16) serverPort;
 
 			if(!connexion->createConnexion(adresse,numClient))
-			{}
+			{
+				log->Write(Log::DEBUG,"erreur lors de l'ouverture du socket");
+				return ;
+			}
+
+			log->Write(Log::DEBUG,"Demarrage du gestionnaire de session");
+			gestionnaireSession = new GestionnaireSession(connexion);
 
 			log->Write(Log::DEBUG,"Demarrage du systeme de Tchat");
+			chat->setConnexionLogin(connexion);
 			chat->run();
 
 

@@ -10,7 +10,23 @@
 Authentification::Authentification() {
 	config = Configuration::getInstance();
 	log = Log::getInstance();
-	connexion = Connexion::getInstance();
+	connexion = new Connexion();
+
+	int serverPort, numClient ;
+
+	config->Get("port",serverPort);
+	config->Get("clientMax",numClient);
+	adresse.host = ENET_HOST_ANY;
+	adresse.port  = (enet_uint16) serverPort;
+
+	if(!connexion->createConnexion(adresse,numClient))
+	{
+		log->Write(Log::DEBUG,"Impossible d'ouvrir la connexion ");
+		return;
+	}
+
+
+
 
 	connexion->addlistenneur(XSILIUM_AUTH,ID_CONNEXION,this,&Authentification::CreateClient );
 	connexion->addlistenneur(XSILIUM_AUTH,ID_DECONEXION,this,&Authentification::DeleteClient );
@@ -28,12 +44,14 @@ Authentification::Authentification() {
 }
 
 Authentification::~Authentification() {
+	connexion->deleteConnexion();
 	connexion->removelistenneur(XSILIUM_AUTH,ID_CONNEXION);
 	connexion->removelistenneur(XSILIUM_AUTH,ID_DECONEXION);
 	connexion->removelistenneur(XSILIUM_AUTH,ID_SEND_USER);
 	connexion->removelistenneur(XSILIUM_AUTH,ID_SEND_REPONSE);
 	connexion->removelistenneur(XSILIUM_AUTH,ID_GET_ROYAUME);
 	delete this->realms ;
+	delete connexion;
 }
 
 bool Authentification::FindClient(ENetAddress address)

@@ -115,8 +115,10 @@ private:
     Connexion * connexion;
     ListServeur * listServeur;
 
+	ENetAddress adresse;
 
-     string connectionString;
+
+    string connectionString;
 
     bool isDBConnect ;
 

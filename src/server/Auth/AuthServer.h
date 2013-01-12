@@ -18,7 +18,6 @@
 #include "Config/Configuration.h"
 #include "Logging/Log.h"
 #include "SignalHandler/SignalHandler.h"
-#include "Connexion/Connexion.h"
 
 #include "Authentification/Authentification.h"
 
@@ -69,8 +68,6 @@ private:
 	Configuration * config ;
 	Log * log;
 	Authentification * auth;
-	ENetAddress adresse;
-	Connexion * connexion;
 
 };
 

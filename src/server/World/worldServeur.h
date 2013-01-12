@@ -14,6 +14,7 @@
 #include "SignalHandler/SignalHandler.h"
 #include "Connexion/Connexion.h"
 #include "Chat/Chat.h"
+#include "Session/GestionnaireSession.h"
 
 /*
  *
@@ -35,6 +36,7 @@ private :
 
 	//Kingdom principal
 	Chat * chat;
+	GestionnaireSession * gestionnaireSession ;
 
 };
 

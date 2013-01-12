@@ -9,7 +9,6 @@
 #include "Chat.h"
 
 Chat::Chat() {
-	connexion = Connexion::getInstance();
 	pthread_mutex_init(&mutexList,NULL);
 
 	endThread = false;
@@ -19,6 +18,11 @@ Chat::Chat() {
 
 Chat::~Chat() {
 	connexion->removelistenneur(XSILIUM_KINGDOM,ID_REC_CHAT);
+}
+
+void Chat::setConnexionLogin(Connexion * connexion )
+{
+	this->connexion = connexion ;
 }
 
 void Chat::setPacket()

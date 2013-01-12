@@ -30,10 +30,8 @@ struct struct_callback
 /*
  *
  */
-class Connexion : public Singleton<Connexion> {
-
-	friend class Singleton<Connexion>;
-
+class Connexion
+{
 public:
 
     /*!
