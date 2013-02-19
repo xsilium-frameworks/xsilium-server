@@ -90,8 +90,6 @@ void Chat::threadChat(void* arguments)
 				convert>> std::hex >> 	messageData.message;
 				convert.clear();
 
-				//messageData.perso = data->perso;
-				messageData.message[0] = data->message[0];
 				ENetPacket * message = enet_packet_create ((const char *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
 				enet_host_broadcast (chat->connexion->getServer(), 0, message);
 			}
