@@ -51,8 +51,8 @@ void GestionnaireSession::supprimerSession()
 
 	if( trouverSession(packet->peer->address) != NULL)
 	{
-		listOfSession.erase(session);
 		delete *session;
+		session = listOfSession.erase(session);
 	}
 
 }
