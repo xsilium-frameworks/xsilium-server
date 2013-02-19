@@ -9,7 +9,7 @@
 #ifndef CONNEXION_H_
 #define CONNEXION_H_
 
-#include <pthread.h>
+#include <boost/thread.hpp>
 #include "enet/enet.h"
 #include <vector>
 #include "Singleton/Singleton.h"
@@ -90,13 +90,16 @@ bool removelistenneur(typerequete requete,Opcode opcode);
 
 void callback(typerequete requete, Opcode opcode);
 
+
+ENetHost * getServer();
+
 private :
 
 	static void * threadConnexion(void * arguments);
 
 	bool endThread;
 
-	pthread_t thread;
+	boost::thread thread;
 	ENetHost * server;
 	ENetEvent eventServer;
 	ENetEvent * packet;

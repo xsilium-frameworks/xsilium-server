@@ -10,8 +10,6 @@
 
 
 connexionDatabase::connexionDatabase() {
-	//mutex1 = PTHREAD_MUTEX_INITIALIZER;
-
 }
 
 connexionDatabase::~connexionDatabase() {
@@ -22,7 +20,7 @@ void connexionDatabase::connexionDB(std::string infoString)
 
 	//if (!conn->is_open())
 	//{
-		pthread_mutex_lock( &mutex1 );
+	    boost::mutex::scoped_lock lock(mutex1);
 		Tokens tokens = utils.StrSplit(infoString, ";");
 		Tokens::iterator iter;
 		std::string host, port_or_socket, user, password , database ,connectionString ;
@@ -43,7 +41,6 @@ void connexionDatabase::connexionDB(std::string infoString)
 
 		connectionString = "host=" + host + " port=" + port_or_socket + " user=" + user + " password=" + password + " dbname=" + database;
 		conn = new pqxx::lazyconnection(connectionString.c_str());
-		pthread_mutex_unlock( &mutex1 );
 	//}
 
 
@@ -60,20 +57,19 @@ void connexionDatabase::deconnexionDB()
 
 void connexionDatabase::PrepareStatement(int index, const char* sql)
 {
-	pthread_mutex_lock( &mutex1 );
+	boost::mutex::scoped_lock lock(mutex1);
 
 	std::ostringstream oss;
 	oss << index;
 	std::string indexDB = suffix + oss.str() ;
 
 	conn->prepare(indexDB.c_str(), sql);
-    pthread_mutex_unlock( &mutex1 );
 
 }
 
 pqxx::result connexionDatabase::executionPrepareStatement(int index,int nombreArgument,...)
 {
-	pthread_mutex_lock( &mutex1 );
+	boost::mutex::scoped_lock lock(mutex1);
 
 	std::ostringstream oss;
 	oss << index;
@@ -106,7 +102,6 @@ pqxx::result connexionDatabase::executionPrepareStatement(int index,int nombreAr
        }
 	va_end(listOfArgument);
     delete txn;
-    pthread_mutex_unlock( &mutex1 );
     return resultat;
 
 }

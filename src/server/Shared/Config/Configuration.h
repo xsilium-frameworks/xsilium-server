@@ -14,7 +14,7 @@
 #include <fstream>
 #include <iostream>
 #include "Singleton/Singleton.h"
-#include "pthread.h"
+#include <boost/thread.hpp>
 
 using namespace std;
 
@@ -79,7 +79,7 @@ public:
 	    // the container
 	    map<string,string> data;
 
-	    pthread_mutex_t mutex1 ;
+	    boost::mutex mutex1 ;
 
 	    // remove leading and trailing tabs and spaces
 	    static string Trim(const string& str);

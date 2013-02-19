@@ -26,10 +26,8 @@ link_libraries(
 	${OSX_LIBS}
 	${PQXX_LIB}
 	${ENET_LIB}
-	${CPPUNIT_LIBRARIES}
+	${Boost_LIBRARIES}
 )
-
-set(worldserver_LINK_FLAGS "-pthread")
 
 if( UNIX )
   set(worldserver_LINK_FLAGS "${worldserver_LINK_FLAGS}")

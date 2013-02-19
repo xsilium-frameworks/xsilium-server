@@ -34,7 +34,7 @@ bool Connexion::createConnexion(ENetAddress adresse,int MaxClient)
 	if (server == NULL)
 		return false ;
 
-	pthread_create(&thread,NULL,Connexion::threadConnexion,(void *)this);
+	thread = boost::thread(&Connexion::threadConnexion, (void *) this);
 
 	return true ;
 }
@@ -50,11 +50,10 @@ void* Connexion::threadConnexion(void* arguments)
 		switch (connexion->eventServer.type)
 		{
 			case ENET_EVENT_TYPE_CONNECT:
-				connexion->callback(XSILIUM_AUTH,ID_CONNEXION);
+				connexion->callback(XSILIUM_ALL,ID_CONNEXION);
 		        break;
 		    case ENET_EVENT_TYPE_RECEIVE:
 		    {
-
 		    	structure_opcodeT * typePacket = (structure_opcodeT *) connexion->eventServer.packet->data ;
 
 		    	connexion->callback((typerequete) typePacket->cmd,(Opcode) typePacket->opcode);
@@ -66,7 +65,7 @@ void* Connexion::threadConnexion(void* arguments)
 		    }
 
 		    case ENET_EVENT_TYPE_DISCONNECT:
-		    	connexion->callback(XSILIUM_AUTH,ID_DECONEXION);
+		    	connexion->callback(XSILIUM_ALL,ID_DECONEXION);
 		        break;
 		    default:
 		        break;
@@ -79,7 +78,7 @@ void* Connexion::threadConnexion(void* arguments)
 bool Connexion::deleteConnexion()
 {
 	endThread = true;
-	pthread_join(thread,NULL);
+	thread.join();
 	return true;
 
 }
@@ -117,3 +116,7 @@ bool Connexion::removelistenneur(typerequete requete,Opcode opcode)
 	return false;
 }
 
+ENetHost * Connexion::getServer()
+{
+	return server ;
+}

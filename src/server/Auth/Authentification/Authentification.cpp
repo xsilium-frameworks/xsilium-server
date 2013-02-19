@@ -28,8 +28,8 @@ Authentification::Authentification() {
 
 
 
-	connexion->addlistenneur(XSILIUM_AUTH,ID_CONNEXION,this,&Authentification::CreateClient );
-	connexion->addlistenneur(XSILIUM_AUTH,ID_DECONEXION,this,&Authentification::DeleteClient );
+	connexion->addlistenneur(XSILIUM_ALL,ID_CONNEXION,this,&Authentification::CreateClient );
+	connexion->addlistenneur(XSILIUM_ALL,ID_DECONEXION,this,&Authentification::DeleteClient );
 	connexion->addlistenneur(XSILIUM_AUTH,ID_SEND_USER,this,&Authentification::HandleLogonChallenge );
 	connexion->addlistenneur(XSILIUM_AUTH,ID_SEND_REPONSE,this,&Authentification::HandleLogonProof );
 	connexion->addlistenneur(XSILIUM_AUTH,ID_GET_ROYAUME,this,&Authentification::HandleRealmList );
@@ -375,6 +375,8 @@ realms->executionPrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH,1,T
 void Authentification::HandleRealmList()
 {
 	listServeur->UpdateIfNeed();
+
+	ListeServeur::const_iterator test;
 }
 
 

@@ -9,15 +9,12 @@
 #include "Chat.h"
 
 Chat::Chat() {
-	pthread_mutex_init(&mutexList,NULL);
-
 	endThread = false;
-
-
+	gestionnaireSession = GestionnaireSession::getInstance();
 }
 
 Chat::~Chat() {
-	connexion->removelistenneur(XSILIUM_KINGDOM,ID_REC_CHAT);
+	connexion->removelistenneur(XSILIUM_KINGDOM,ID_CHAT);
 }
 
 void Chat::setConnexionLogin(Connexion * connexion )
@@ -27,45 +24,79 @@ void Chat::setConnexionLogin(Connexion * connexion )
 
 void Chat::setPacket()
 {
-	pthread_mutex_lock( &mutexList );
-	ListOfTchatPacket.push(connexion->getPacket());
-	pthread_mutex_unlock( &mutexList );
+	boost::mutex::scoped_lock lock(mutexList);
+	ListOfTchatPacket.push(*(connexion->getPacket()));
+	lock.unlock();
+	condition_Queue.notify_one();
 }
 
-ENetEvent * Chat::getPacket()
+ENetEvent Chat::getPacket()
 {
-	pthread_mutex_lock( &mutexList );
-	ENetEvent * packet = ListOfTchatPacket.front();
+	ENetEvent packet = ListOfTchatPacket.front();
 	ListOfTchatPacket.pop();
 	return packet;
-	pthread_mutex_unlock( &mutexList );
 }
 
 void Chat::stopThread()
 {
 	endThread = true;
-	pthread_join(thread,NULL);
+	for(uint8_t i = 0;i< 4;i++)
+	{
+		condition_Queue.notify_one();
+	}
 }
 
 void Chat::run()
 {
-	connexion->addlistenneur(XSILIUM_KINGDOM,ID_REC_CHAT,this,&Chat::setPacket );
-	pthread_create(&thread,NULL,Chat::threadChat,(void *)this);
+	connexion->addlistenneur(XSILIUM_KINGDOM,ID_CHAT,this,&Chat::setPacket );
+	for(uint8_t i = 0;i< 4;i++)
+	{
+		thread[i] = boost::thread(&Chat::threadChat, (void *) this);
+	}
 }
 
-void* Chat::threadChat(void* arguments)
+void Chat::threadChat(void* arguments)
 {
 	Chat * chat = (Chat *) arguments ;
 
 	while(!chat->endThread)
 	{
-		if(!chat->ListOfTchatPacket.empty())
-		{
+		boost::mutex::scoped_lock lock(chat->mutexList);
 
+		if(chat->ListOfTchatPacket.empty())
+		{
+			chat->condition_Queue.wait(lock);
 		}
 		else
-			sleep(0.1);
-	}
+		{
+			ENetEvent packet = chat->getPacket();
+			Session * session = chat->gestionnaireSession->trouverSession(packet.peer->address) ;
+			sChatPacket_C *data = (sChatPacket_C *) packet.packet->data ;
+			if( data->typeChat == 0)
+			{
+				sChatPacket_C messageData;
+				std::stringstream convert;
 
-	return NULL;
+
+				messageData.structure_opcode.cmd = XSILIUM_KINGDOM ;
+				messageData.structure_opcode.opcode = ID_CHAT ;
+				messageData.typeChat = 0;
+				convert.str((const char *)data->perso);
+				convert>> std::hex >> 	messageData.perso;
+				convert.clear();
+
+
+				convert.str((const char *)data->message);
+				convert>> std::hex >> 	messageData.message;
+				convert.clear();
+
+				//messageData.perso = data->perso;
+				messageData.message[0] = data->message[0];
+				ENetPacket * message = enet_packet_create ((const char *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
+				enet_host_broadcast (chat->connexion->getServer(), 0, message);
+			}
+
+		}
+		lock.unlock();
+	}
 }

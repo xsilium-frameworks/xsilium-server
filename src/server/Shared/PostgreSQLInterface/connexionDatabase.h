@@ -10,7 +10,7 @@
 
 #include <pqxx/pqxx>
 #include "Utilities/Utils.h"
-#include <pthread.h>
+#include <boost/thread.hpp>
 #include <iostream>
 #include <stdarg.h>
 
@@ -78,7 +78,7 @@ protected:
 	Utils utils;
 	pqxx::lazyconnection * conn;
 	pqxx::work * txn;
-	pthread_mutex_t mutex1;
+	boost::mutex mutex1;
 	std::string suffix;
 
 };

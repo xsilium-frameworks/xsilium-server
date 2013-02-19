@@ -8,16 +8,12 @@
 
 #include "GestionnaireSession.h"
 
-GestionnaireSession::GestionnaireSession(Connexion * connexion) {
-	this->connexion = connexion ;
-	connexion->addlistenneur(XSILIUM_KINGDOM,ID_CONNEXION,this,&GestionnaireSession::creerSession );
-	connexion->addlistenneur(XSILIUM_KINGDOM,ID_DECONEXION,this,&GestionnaireSession::supprimerSession );
-
-
+GestionnaireSession::GestionnaireSession() {
 }
 
 GestionnaireSession::~GestionnaireSession() {
-	// TODO Auto-generated destructor stub
+	connexion->removelistenneur(XSILIUM_KINGDOM,ID_CONNEXION);
+	connexion->removelistenneur(XSILIUM_KINGDOM,ID_DECONEXION);
 }
 
 Session * GestionnaireSession::trouverSession(ENetAddress address)
@@ -33,7 +29,7 @@ Session * GestionnaireSession::trouverSession(ENetAddress address)
 		}
 
 	}
-	return 0;
+	return NULL;
 }
 
 void GestionnaireSession::creerSession()
@@ -53,9 +49,17 @@ void GestionnaireSession::supprimerSession()
 	ENetEvent * packet = connexion->getPacket();
 
 
-	if( trouverSession(packet->peer->address) != 0)
+	if( trouverSession(packet->peer->address) != NULL)
 	{
 		listOfSession.erase(session);
+		delete *session;
 	}
 
+}
+
+void GestionnaireSession::setConnexion(Connexion * connexion)
+{
+	this->connexion = connexion ;
+	connexion->addlistenneur(XSILIUM_ALL,ID_CONNEXION,this,&GestionnaireSession::creerSession );
+	connexion->addlistenneur(XSILIUM_ALL,ID_DECONEXION,this,&GestionnaireSession::supprimerSession );
 }

@@ -30,6 +30,9 @@ include(CheckPlatform)
 # print out the results before continuing
 include(cmake/showoptions.cmake)
 
+find_path(ENET_INCLUDE_DIR NAMES "enet/enet.h" )
+include_directories("${ENET_INCLUDE_DIR}")
+
 # add core sources
 add_subdirectory(src)
 

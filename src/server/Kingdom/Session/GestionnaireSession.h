@@ -15,12 +15,16 @@
 #include "Connexion/Connexion.h"
 #include "Session/Session.h"
 
+#include "Singleton/Singleton.h"
+
 /*
  *
  */
-class GestionnaireSession {
+class GestionnaireSession : public Singleton<GestionnaireSession>
+{
+	friend class Singleton<GestionnaireSession>;
 public:
-	GestionnaireSession(Connexion * connexion);
+	GestionnaireSession();
 	virtual ~GestionnaireSession();
 
     /*!
@@ -52,6 +56,8 @@ public:
      */
 
 	Session * trouverSession(ENetAddress address);
+
+	void setConnexion(Connexion * connexion);
 private:
 
     std::vector<Session *> listOfSession ;

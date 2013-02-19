@@ -21,7 +21,7 @@ include_directories(
 )
 
 
-find_library(ENET_LIB enet)
+find_library(ENET_LIB enet PATHS )
 find_library(PQXX_LIB pqxx)
 
 
@@ -29,10 +29,9 @@ link_libraries(
 	SHARED
 	${OSX_LIBS}
 	${PQXX_LIB}
-	${ENET_LIB}	
+	${ENET_LIB}
+	${Boost_LIBRARIES}	
 )
-
-set(authserver_LINK_FLAGS "-pthread")
 
 if( UNIX )
   set(authserver_LINK_FLAGS "${authserver_LINK_FLAGS}")

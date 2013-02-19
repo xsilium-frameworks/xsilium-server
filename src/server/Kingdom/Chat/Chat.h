@@ -14,7 +14,11 @@
 #include "Opcode/Opcode.h"
 
 #include <queue>
-#include <pthread.h>
+#include <boost/thread.hpp>
+
+#include "Session/GestionnaireSession.h"
+
+#include "StructurePacket/PacketChat.h"
 
 
 /*
@@ -30,20 +34,23 @@ public:
 	void stopThread();
 
 	void setPacket();
-	ENetEvent * getPacket();
+	ENetEvent getPacket();
 
 	void setConnexionLogin(Connexion * connexion );
 
 private:
 
-	static void * threadChat(void * arguments);
+	static void  threadChat(void * arguments);
 
 	bool endThread;
 
 	Connexion * connexion;
-	pthread_t thread;
-	std::queue<ENetEvent *> ListOfTchatPacket;
-	pthread_mutex_t mutexList;
+	boost::thread thread[4];
+	std::queue<ENetEvent> ListOfTchatPacket;
+	boost::mutex mutexList;
+	boost::condition_variable condition_Queue;
+
+	GestionnaireSession * gestionnaireSession ;
 };
 
 #endif /* CHAT_H_ */

@@ -36,8 +36,7 @@ enum Opcode
     ID_ERROR,
 
     //partie royaume
-    ID_REC_CHAT,
-    ID_SEND_CHAT
+    ID_CHAT
 
 
 
@@ -46,7 +45,8 @@ enum Opcode
 enum typerequete
 {
    XSILIUM_AUTH = 0,
-   XSILIUM_KINGDOM
+   XSILIUM_KINGDOM,
+   XSILIUM_ALL
 };
 
 #endif /* AUTHCODES_H_ */

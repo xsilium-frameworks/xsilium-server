@@ -10,7 +10,6 @@
 
 Configuration::Configuration()
 {
-	//this->mutex1 = PTHREAD_MUTEX_INITIALIZER ;
 }
 
 Configuration::~Configuration() {
@@ -25,7 +24,7 @@ void Configuration::Clear()
 bool Configuration::Load(const string& file)
 {
 
-	pthread_mutex_lock( &mutex1 );
+	boost::mutex::scoped_lock lock(mutex1);
 
     ifstream inFile(file.c_str());
 
@@ -68,8 +67,6 @@ bool Configuration::Load(const string& file)
             }
         }
     }
-
-    pthread_mutex_unlock( &mutex1 );
 
     return true;
 }

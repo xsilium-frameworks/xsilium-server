@@ -20,6 +20,7 @@ worldServeur::~worldServeur() {
 	delete chat;
 	Configuration::DestroyInstance();
 	Log::DestroyInstance();
+	GestionnaireSession::DestroyInstance();
 	delete connexion;
 
 }
@@ -52,7 +53,8 @@ void worldServeur::run()
 			}
 
 			log->Write(Log::DEBUG,"Demarrage du gestionnaire de session");
-			gestionnaireSession = new GestionnaireSession(connexion);
+			gestionnaireSession = GestionnaireSession::getInstance();
+			gestionnaireSession->setConnexion(connexion);
 
 			log->Write(Log::DEBUG,"Demarrage du systeme de Tchat");
 			chat->setConnexionLogin(connexion);
