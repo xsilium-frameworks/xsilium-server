@@ -25,6 +25,7 @@ void Chat::setConnexionLogin(Connexion * connexion )
 void Chat::setPacket()
 {
 	boost::mutex::scoped_lock lock(mutexList);
+
 	ListOfTchatPacket.push(*(connexion->getPacket()));
 	lock.unlock();
 	condition_Queue.notify_one();
@@ -33,6 +34,7 @@ void Chat::setPacket()
 ENetEvent Chat::getPacket()
 {
 	ENetEvent packet = ListOfTchatPacket.front();
+
 	ListOfTchatPacket.pop();
 	return packet;
 }
@@ -72,6 +74,8 @@ void Chat::threadChat(void* arguments)
 			ENetEvent packet = chat->getPacket();
 			Session * session = chat->gestionnaireSession->trouverSession(packet.peer->address) ;
 			sChatPacket_C *data = (sChatPacket_C *) packet.packet->data ;
+
+			printf("message recu : %s \n",(const char *) data->message);
 			if( data->typeChat == 0)
 			{
 				sChatPacket_C messageData;
@@ -82,16 +86,17 @@ void Chat::threadChat(void* arguments)
 				messageData.structure_opcode.opcode = ID_CHAT ;
 				messageData.typeChat = 0;
 				convert.str((const char *)data->perso);
-				convert>> std::hex >> 	messageData.perso;
+				convert>> messageData.perso;
 				convert.clear();
 
 
 				convert.str((const char *)data->message);
-				convert>> std::hex >> 	messageData.message;
+				convert>> messageData.message;
 				convert.clear();
 
-				ENetPacket * message = enet_packet_create ((const char *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
+				ENetPacket * message = enet_packet_create ((const void *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
 				enet_host_broadcast (chat->connexion->getServer(), 0, message);
+				chat->connexion->deletePacket(packet.packet);
 			}
 
 		}

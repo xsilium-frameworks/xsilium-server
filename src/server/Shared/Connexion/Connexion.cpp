@@ -58,9 +58,6 @@ void* Connexion::threadConnexion(void* arguments)
 
 		    	connexion->callback((typerequete) typePacket->cmd,(Opcode) typePacket->opcode);
 
-		    	/* Clean up the packet now that we're done using it. */
-		        enet_packet_destroy (connexion->eventServer.packet);
-
 		        break;
 		    }
 
@@ -119,4 +116,10 @@ bool Connexion::removelistenneur(typerequete requete,Opcode opcode)
 ENetHost * Connexion::getServer()
 {
 	return server ;
+}
+
+void Connexion::deletePacket(ENetPacket * packet)
+{
+	/* Clean up the packet now that we're done using it. */
+    enet_packet_destroy (packet);
 }

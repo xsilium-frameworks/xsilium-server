@@ -93,6 +93,8 @@ void callback(typerequete requete, Opcode opcode);
 
 ENetHost * getServer();
 
+void deletePacket(ENetPacket * packet);
+
 private :
 
 	static void * threadConnexion(void * arguments);

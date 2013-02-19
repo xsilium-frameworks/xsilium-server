@@ -119,13 +119,16 @@ void Authentification::HandleLogonChallenge()
 		error.error = 1;
 		log->Write(Log::INFO,"Le message venant de %d:%d est illisible ",packet->peer->address.host,packet->peer->address.port);
 
-		ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
+		ENetPacket * message = enet_packet_create ((const void *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
 		enet_peer_send (packet->peer, 0, message);
+
+		connexion->deletePacket(packet->packet);
 		return;
 	}
 
 	if (!FindClient(packet->peer->address))
 	{
+		connexion->deletePacket(packet->packet);
 		return ;
 	}
 
@@ -167,8 +170,9 @@ void Authentification::HandleLogonChallenge()
 			error.error = 0;
 			log->Write(Log::INFO,"[AuthChallenge] L'ip %s est bannie !",hostip);
 
-			ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
+			ENetPacket * message = enet_packet_create ((const void *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
 		    enet_peer_send (packet->peer, 0, message);
+			connexion->deletePacket(packet->packet);
 		    return;
 		}
 	//changement car normalisation nom requete nico le 18-11-2012
@@ -198,8 +202,9 @@ void Authentification::HandleLogonChallenge()
 			error.error = 0;
 			log->Write(Log::INFO,"[AuthChallenge] Le compte %s n'existe pas",login.c_str());
 
-			ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
+			ENetPacket * message = enet_packet_create ((const void *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
 		    enet_peer_send (packet->peer, 0, message);
+			connexion->deletePacket(packet->packet);
 			return;
 		}
 	client->shaPassHash = resultsql[0][0].as<std::string>();
@@ -230,8 +235,9 @@ void Authentification::HandleLogonChallenge()
 		error.error = 1;
 		log->Write(Log::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s ",login.c_str(),(resultsql[0][0].as<std::string>()).c_str());
 
-		ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
+		ENetPacket * message = enet_packet_create ((const void *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
 		enet_peer_send (packet->peer, 0, message);
+		connexion->deletePacket(packet->packet);
 		return;
 	}
 
@@ -247,8 +253,9 @@ void Authentification::HandleLogonChallenge()
 				error.structure_opcode.cmd = XSILIUM_AUTH;
 				error.structure_opcode.opcode = ID_INVALID_IP ;
 				error.error = 1;
-				ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
+				ENetPacket * message = enet_packet_create ((const void *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
 				enet_peer_send (packet->peer, 0, message);
+				connexion->deletePacket(packet->packet);
 				return;
 
 			}
@@ -264,8 +271,9 @@ void Authentification::HandleLogonChallenge()
 	messageRetour.structure_opcode.opcode = ID_SEND_CHALLENGE;
 	messageRetour.key = 1234567;
 
-	ENetPacket * message = enet_packet_create ((const char *)&messageRetour,sizeof(messageRetour) + 1,ENET_PACKET_FLAG_RELIABLE);
+	ENetPacket * message = enet_packet_create ((const void *)&messageRetour,sizeof(messageRetour) + 1,ENET_PACKET_FLAG_RELIABLE);
 	enet_peer_send (packet->peer, 0, message);
+	connexion->deletePacket(packet->packet);
 
 
 
@@ -286,8 +294,9 @@ void Authentification::HandleLogonProof()
 		error.error = 1;
 		log->Write(Log::INFO,"Le message venant de %d:%d est illisible ",packet->peer->address.host,packet->peer->address.port);
 
-		ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
+		ENetPacket * message = enet_packet_create ((const void *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
 		enet_peer_send (packet->peer, 0, message);
+		connexion->deletePacket(packet->packet);
 		return;
 	}
 
@@ -301,9 +310,9 @@ void Authentification::HandleLogonProof()
 			msg_error.structure_opcode.opcode = ID_ERROR ;
 			msg_error.error = 1;
 
-			ENetPacket * message = enet_packet_create ((const char *)&msg_error,sizeof(msg_error) + 1,ENET_PACKET_FLAG_RELIABLE);
+			ENetPacket * message = enet_packet_create ((const void *)&msg_error,sizeof(msg_error) + 1,ENET_PACKET_FLAG_RELIABLE);
 			enet_peer_send (packet->peer, 0, message);
-
+			connexion->deletePacket(packet->packet);
 			return;
 		}
 
@@ -335,8 +344,9 @@ realms->executionPrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH,1,T
 				msg_error.structure_opcode.cmd = XSILIUM_AUTH;
 				msg_error.structure_opcode.opcode =ID_COMPTE_BANNIE;
 				msg_error.error = 1;
-				ENetPacket * message = enet_packet_create ((const char *)&msg_error,sizeof(msg_error) + 1,ENET_PACKET_FLAG_RELIABLE);
+				ENetPacket * message = enet_packet_create ((const void *)&msg_error,sizeof(msg_error) + 1,ENET_PACKET_FLAG_RELIABLE);
 				enet_peer_send (packet->peer, 0, message);
+				connexion->deletePacket(packet->packet);
 				return;
 
 			}
@@ -346,8 +356,9 @@ realms->executionPrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH,1,T
 			error.structure_opcode.opcode = ID_INVALID_ACCOUNT_OR_PASSWORD ;
 			error.error = 0;
 
-			ENetPacket * message = enet_packet_create ((const char *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
+			ENetPacket * message = enet_packet_create ((const void *)&error,sizeof(error) + 1,ENET_PACKET_FLAG_RELIABLE);
 		    enet_peer_send (packet->peer, 0, message);
+			connexion->deletePacket(packet->packet);
 
 		}
 		else
@@ -363,8 +374,9 @@ realms->executionPrepareStatement(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH,1,T
 			messageValidation.structure_opcode.cmd = XSILIUM_AUTH;
 			messageValidation.structure_opcode.opcode = ID_SEND_VALIDATION ;
 
-			ENetPacket * message = enet_packet_create ((const char *)&messageValidation,sizeof(messageValidation) + 1,ENET_PACKET_FLAG_RELIABLE);
+			ENetPacket * message = enet_packet_create ((const void *)&messageValidation,sizeof(messageValidation) + 1,ENET_PACKET_FLAG_RELIABLE);
 		    enet_peer_send (packet->peer, 0, message);
+			connexion->deletePacket(packet->packet);
 
 
 		}
