@@ -31,10 +31,9 @@ void Chat::setPacket()
 	condition_Queue.notify_one();
 }
 
-ENetEvent Chat::getPacket()
+ENetEvent  Chat::getPacket()
 {
-	ENetEvent packet = ListOfTchatPacket.front();
-
+	ENetEvent  packet = ListOfTchatPacket.front();
 	ListOfTchatPacket.pop();
 	return packet;
 }
@@ -75,24 +74,17 @@ void Chat::threadChat(void* arguments)
 			Session * session = chat->gestionnaireSession->trouverSession(packet.peer->address) ;
 			sChatPacket_C *data = (sChatPacket_C *) packet.packet->data ;
 
-			printf("message recu : %s \n",(const char *) data->message);
 			if( data->typeChat == 0)
 			{
 				sChatPacket_C messageData;
-				std::stringstream convert;
 
 
 				messageData.structure_opcode.cmd = XSILIUM_KINGDOM ;
 				messageData.structure_opcode.opcode = ID_CHAT ;
 				messageData.typeChat = 0;
-				convert.str((const char *)data->perso);
-				convert>> messageData.perso;
-				convert.clear();
 
-
-				convert.str((const char *)data->message);
-				convert>> messageData.message;
-				convert.clear();
+				std::strcpy(messageData.perso,data->perso);
+				std::strcpy(messageData.message,data->message);
 
 				ENetPacket * message = enet_packet_create ((const void *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
 				enet_host_broadcast (chat->connexion->getServer(), 0, message);
