@@ -15,6 +15,9 @@ Chat::Chat() {
 
 Chat::~Chat() {
 	connexion->removelistenneur(XSILIUM_KINGDOM,ID_CHAT);
+	while(ListOfTchatPacket.size() != 0 )
+		ListOfTchatPacket.pop();
+
 }
 
 void Chat::setConnexionLogin(Connexion * connexion )

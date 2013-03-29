@@ -18,7 +18,7 @@
 
 #include "Session/GestionnaireSession.h"
 
-#include "StructurePacket/PacketChat.h"
+#include "StructurePacket/StructureChat.h"
 
 
 /*

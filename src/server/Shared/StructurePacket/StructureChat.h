@@ -1,13 +1,13 @@
 /*
- * \file PacketChat.h
+ * \file StructureChat.h
  *
  *  Created on: \date 18 févr. 2013
  *      Author: \author joda
  *  \brief :
  */
 
-#ifndef PACKETCHAT_H_
-#define PACKETCHAT_H_
+#ifndef STRUCTURECHAT_H_
+#define STRUCTURECHAT_H_
 
 
 typedef struct CHATPACKET_C
@@ -20,4 +20,4 @@ typedef struct CHATPACKET_C
 
 
 
-#endif /* PACKETCHAT_H_ */
+#endif /* STRUCTURECHAT_H_ */

@@ -10,6 +10,7 @@ file(GLOB_RECURSE sources_SignalHandler SignalHandler/*.cpp SignalHandler/*.h)
 file(GLOB_RECURSE sources_Singleton Singleton/*.cpp Singleton/*.h)
 file(GLOB_RECURSE sources_Semaphore Semaphore/*.cpp Semaphore/*.h)
 file(GLOB_RECURSE sources_Structure Structure/*.cpp Structure/*.h)
+file(GLOB_RECURSE sources_StructurePacket StructurePacket/*.cpp StructurePacket/*.h)
 file(GLOB_RECURSE sources_Utilities Utilities/*.cpp Utilities/*.h)
 
 file(GLOB_RECURSE sources_Test *Test.cpp *Test.h)
@@ -28,6 +29,7 @@ set(shared_STAT_SRCS
   ${sources_SignalHandler}
   ${sources_Singleton}
   ${sources_Structure}
+  ${sources_StructurePacket}
   ${sources_Semaphore}
   ${sources_Utilities}
   
@@ -48,6 +50,7 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/SignalHandler
   ${CMAKE_CURRENT_SOURCE_DIR}/Singleton
   ${CMAKE_CURRENT_SOURCE_DIR}/Structure
+  ${CMAKE_CURRENT_SOURCE_DIR}/StructurePacket
   ${CMAKE_CURRENT_SOURCE_DIR}/Semaphore
   ${CMAKE_CURRENT_SOURCE_DIR}/Utilities
   ${POSTGRESQL_INCLUDE_DIR}
