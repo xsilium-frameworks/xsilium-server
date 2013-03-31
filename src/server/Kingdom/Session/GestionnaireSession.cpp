@@ -12,8 +12,8 @@ GestionnaireSession::GestionnaireSession() {
 }
 
 GestionnaireSession::~GestionnaireSession() {
-	connexion->removelistenneur(XSILIUM_KINGDOM,ID_CONNEXION);
-	connexion->removelistenneur(XSILIUM_KINGDOM,ID_DECONEXION);
+	connexion->removelistenneur((XSILIUM_ALL * 10 ) + ID_CONNEXION);
+	connexion->removelistenneur((XSILIUM_ALL * 10 ) + ID_DECONEXION);
 }
 
 Session * GestionnaireSession::trouverSession(ENetAddress address)
@@ -60,6 +60,6 @@ void GestionnaireSession::supprimerSession()
 void GestionnaireSession::setConnexion(Connexion * connexion)
 {
 	this->connexion = connexion ;
-	connexion->addlistenneur(XSILIUM_ALL,ID_CONNEXION,this,&GestionnaireSession::creerSession );
-	connexion->addlistenneur(XSILIUM_ALL,ID_DECONEXION,this,&GestionnaireSession::supprimerSession );
+	connexion->addlistenneur((XSILIUM_ALL * 10 ) + ID_CONNEXION,	boost::bind(&GestionnaireSession::creerSession, this) );
+	connexion->addlistenneur((XSILIUM_ALL * 10 ) + ID_DECONEXION,	boost::bind(&GestionnaireSession::supprimerSession, this));
 }

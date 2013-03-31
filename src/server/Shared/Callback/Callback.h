@@ -11,56 +11,33 @@
 #ifndef CALLBACK_H_
 #define CALLBACK_H_
 
+#include <boost/signals2.hpp>
+#include <boost/bind.hpp>
+#include <map>
+
+
 /*
  *
  */
 
-class CallbackMaster
-{
+	typedef boost::function<void(void)> Function;
+
+class Callback {
 public:
+	Callback();
+	virtual ~Callback();
 
-    /*!
-     *  \brief Destructeur
-     *
-     *  Destructeur de la classe CallbackMaster
-     *
-     *  \param
-     */
-virtual ~CallbackMaster(){};
+	bool addlistenneur(int identifiant,Function function);
+	bool removelistenneur(int identifiant);
+	void callback(int identifiant);
 
-/*!
- *  \brief Call
- *
- *  brief ???
- *
- *  \param
- */
-
-
-virtual void Call()=0;
-};
-
-
-template <class TClass>
-
-class Callback : public CallbackMaster {
-public:
-	Callback(TClass* _Object, void(TClass::*_fpt)())
-	{
-		Object = _Object;
-		fpt=_fpt;
-	};
-	virtual ~Callback(){};
-
-	virtual void Call()
-	{
-		(*Object.*fpt)();
-	};
+protected:
+	typedef boost::signals2::signal<void (void)> ContactSignal;
 
 private:
 
-	void (TClass::*fpt)();
-	TClass* Object;
+    std::map<int,ContactSignal*> listOfListenner ;
+    std::map<int,ContactSignal*>::iterator listenner ;
 
 
 };

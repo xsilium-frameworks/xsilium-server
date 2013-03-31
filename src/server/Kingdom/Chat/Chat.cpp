@@ -14,7 +14,7 @@ Chat::Chat() {
 }
 
 Chat::~Chat() {
-	connexion->removelistenneur(XSILIUM_KINGDOM,ID_CHAT);
+	connexion->removelistenneur((XSILIUM_KINGDOM * 10 ) + ID_CHAT);
 	while(ListOfTchatPacket.size() != 0 )
 		ListOfTchatPacket.pop();
 
@@ -52,7 +52,7 @@ void Chat::stopThread()
 
 void Chat::run()
 {
-	connexion->addlistenneur(XSILIUM_KINGDOM,ID_CHAT,this,&Chat::setPacket );
+	connexion->addlistenneur((XSILIUM_KINGDOM * 10 )+ ID_CHAT,boost::bind(&Chat::setPacket, this));
 	for(uint8_t i = 0;i< 4;i++)
 	{
 		thread[i] = boost::thread(&Chat::threadChat, (void *) this);

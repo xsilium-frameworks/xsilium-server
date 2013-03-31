@@ -28,11 +28,16 @@ Authentification::Authentification() {
 
 
 
-	connexion->addlistenneur(XSILIUM_ALL,ID_CONNEXION,this,&Authentification::CreateClient );
-	connexion->addlistenneur(XSILIUM_ALL,ID_DECONEXION,this,&Authentification::DeleteClient );
-	connexion->addlistenneur(XSILIUM_AUTH,ID_SEND_USER,this,&Authentification::HandleLogonChallenge );
-	connexion->addlistenneur(XSILIUM_AUTH,ID_SEND_REPONSE,this,&Authentification::HandleLogonProof );
-	connexion->addlistenneur(XSILIUM_AUTH,ID_GET_ROYAUME,this,&Authentification::HandleRealmList );
+
+
+
+
+
+	connexion->addlistenneur((XSILIUM_ALL * 10) + ID_CONNEXION,boost::bind(&Authentification::CreateClient, this));
+	connexion->addlistenneur((XSILIUM_ALL * 10) + ID_DECONEXION,boost::bind(&Authentification::DeleteClient, this) );
+	connexion->addlistenneur((XSILIUM_AUTH * 10) + ID_SEND_USER,boost::bind(&Authentification::HandleLogonChallenge, this) );
+	connexion->addlistenneur((XSILIUM_AUTH * 10) + ID_SEND_REPONSE,boost::bind(&Authentification::HandleLogonProof, this) );
+	connexion->addlistenneur((XSILIUM_AUTH * 10) + ID_GET_ROYAUME,boost::bind(&Authentification::HandleRealmList, this) );
 
 	string infoDB;
 	config->Get("LoginDatabaseInfo",infoDB);
@@ -45,11 +50,11 @@ Authentification::Authentification() {
 
 Authentification::~Authentification() {
 	connexion->deleteConnexion();
-	connexion->removelistenneur(XSILIUM_AUTH,ID_CONNEXION);
-	connexion->removelistenneur(XSILIUM_AUTH,ID_DECONEXION);
-	connexion->removelistenneur(XSILIUM_AUTH,ID_SEND_USER);
-	connexion->removelistenneur(XSILIUM_AUTH,ID_SEND_REPONSE);
-	connexion->removelistenneur(XSILIUM_AUTH,ID_GET_ROYAUME);
+	connexion->removelistenneur((XSILIUM_ALL * 10) + ID_CONNEXION);
+	connexion->removelistenneur((XSILIUM_ALL * 10) + ID_DECONEXION);
+	connexion->removelistenneur((XSILIUM_AUTH * 10) + ID_SEND_USER);
+	connexion->removelistenneur((XSILIUM_AUTH * 10) + ID_SEND_REPONSE);
+	connexion->removelistenneur((XSILIUM_AUTH * 10) + ID_GET_ROYAUME);
 	delete this->realms ;
 	delete connexion;
 }

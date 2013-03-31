@@ -1,7 +1,7 @@
 find_package(CppUnit REQUIRED)
 
 set(Boost_ADDITIONAL_VERSIONS "1.52.0")
-set(BOOST_COMPONENTS thread date_time system)
+set(BOOST_COMPONENTS thread date_time system signals)
 find_package(Boost COMPONENTS ${BOOST_COMPONENTS} QUIET)
 	
 include_directories(

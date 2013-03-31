@@ -31,14 +31,14 @@ void worldServeur::run()
 	try
 		{
 			signalHandler->setupSignalHandlers();
-			if (!config->Load("../etc/world.config"))
+			if (!config->Load("../etc/Kingdom.config"))
 			{
 				return;
 			}
 			int logLevel;
 
 			config->Get("LogLevel",logLevel);
-			log->Start((Log::Priority)logLevel,"world.log");
+			log->Start((Log::Priority)logLevel,"Kingdom.log");
 			log->Write(Log::DEBUG,"Demarrage du gestionnaire de royaume");
 
 			config->Get("port",serverPort);

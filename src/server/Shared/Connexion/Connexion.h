@@ -11,26 +11,17 @@
 
 #include <boost/thread.hpp>
 #include "enet/enet.h"
-#include <vector>
 #include "Singleton/Singleton.h"
 #include "Callback/Callback.h"
 #include "Opcode/Opcode.h"
 #include "Structure/Packet.h"
 
 
-struct struct_callback
-{
-	typerequete requete;
-	Opcode opcode;
-	CallbackMaster * callback;
-};
-
-
 
 /*
  *
  */
-class Connexion
+class Connexion : public Callback
 {
 public:
 
@@ -75,21 +66,6 @@ bool createConnexion(ENetAddress adresse,int MaxClient);
 bool deleteConnexion();
 
 ENetEvent * getPacket();
-template <typename templeteListener>
-bool addlistenneur(typerequete requete,Opcode opcode,templeteListener * object, void(templeteListener::*fpt)())
-{
-	struct_callback newcallback;
-	Callback<templeteListener> * callback = new Callback<templeteListener>(object,fpt);
-	newcallback.requete = requete;
-	newcallback.opcode = opcode;
-	newcallback.callback = callback ;
-	listOfListenner.push_back(newcallback);
-	return true;
-};
-bool removelistenneur(typerequete requete,Opcode opcode);
-
-void callback(typerequete requete, Opcode opcode);
-
 
 ENetHost * getServer();
 
@@ -106,10 +82,6 @@ private :
 	ENetEvent eventServer;
 	ENetEvent * packet;
 	ENetPeer *peer;
-
-
-    std::vector<struct_callback> listOfListenner ;
-    std::vector<struct_callback>::iterator listenner ;
 
 
 };
