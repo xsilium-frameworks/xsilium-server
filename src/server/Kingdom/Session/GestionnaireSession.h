@@ -66,6 +66,7 @@ private:
 
     Connexion * connexion;
 
+	boost::mutex mutexSession;
 
 };
 

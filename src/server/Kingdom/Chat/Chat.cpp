@@ -66,7 +66,6 @@ void Chat::threadChat(void* arguments)
 	while(!chat->endThread)
 	{
 		boost::mutex::scoped_lock lock(chat->mutexList);
-
 		if(chat->ListOfTchatPacket.empty())
 		{
 			chat->condition_Queue.wait(lock);
@@ -74,9 +73,9 @@ void Chat::threadChat(void* arguments)
 		else
 		{
 			ENetEvent packet = chat->getPacket();
+			lock.unlock();
 			Session * session = chat->gestionnaireSession->trouverSession(packet.peer->address) ;
 			sChatPacket_C *data = (sChatPacket_C *) packet.packet->data ;
-
 			if( data->typeChat == 0)
 			{
 				sChatPacket_C messageData;
@@ -90,11 +89,10 @@ void Chat::threadChat(void* arguments)
 				std::strcpy(messageData.message,data->message);
 
 				ENetPacket * message = enet_packet_create ((const void *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
-				enet_host_broadcast (chat->connexion->getServer(), 0, message);
-				chat->connexion->deletePacket(packet.packet);
+				chat->connexion->sendPacket(chat->connexion->getServer(), 0, message);
 			}
-
+			chat->connexion->deletePacket(packet.packet);
 		}
-		lock.unlock();
+
 	}
 }

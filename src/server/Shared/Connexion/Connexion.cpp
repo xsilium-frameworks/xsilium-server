@@ -88,6 +88,19 @@ ENetHost * Connexion::getServer()
 
 void Connexion::deletePacket(ENetPacket * packet)
 {
+	boost::mutex::scoped_lock lock(mutexDelete);
 	/* Clean up the packet now that we're done using it. */
 	enet_packet_destroy (packet);
+}
+
+void Connexion::sendPacket(ENetHost * host, enet_uint8 channel, ENetPacket * packet)
+{
+	boost::mutex::scoped_lock lock(mutexSend);
+	enet_host_broadcast (host,channel,packet);
+}
+
+void Connexion::sendPacket(ENetPeer * peer, enet_uint8 channel, ENetPacket * packet)
+{
+	boost::mutex::scoped_lock lock(mutexSend);
+	enet_peer_send(peer,channel,packet);
 }

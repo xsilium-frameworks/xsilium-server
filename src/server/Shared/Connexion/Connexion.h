@@ -71,6 +71,10 @@ ENetHost * getServer();
 
 void deletePacket(ENetPacket * packet);
 
+void sendPacket(ENetHost * host, enet_uint8 channel, ENetPacket * packet);
+
+void sendPacket(ENetPeer * peer, enet_uint8 channel, ENetPacket * packet);
+
 private :
 
 	static void * threadConnexion(void * arguments);
@@ -82,6 +86,9 @@ private :
 	ENetEvent eventServer;
 	ENetEvent * packet;
 	ENetPeer *peer;
+
+	boost::mutex mutexSend;
+	boost::mutex mutexDelete;
 
 
 };
