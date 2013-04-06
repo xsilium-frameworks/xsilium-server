@@ -8,54 +8,28 @@
 
 #include "Chat.h"
 
-Chat::Chat() {
+Chat::Chat(Connexion * connexion) : ModuleActif(connexion) {
 	endThread = false;
 	gestionnaireSession = GestionnaireSession::getInstance();
 }
 
 Chat::~Chat() {
 	connexion->removelistenneur((XSILIUM_KINGDOM * 10 ) + ID_CHAT);
-	while(ListOfTchatPacket.size() != 0 )
-		ListOfTchatPacket.pop();
-
-}
-
-void Chat::setConnexionLogin(Connexion * connexion )
-{
-	this->connexion = connexion ;
-}
-
-void Chat::setPacket()
-{
-	boost::mutex::scoped_lock lock(mutexList);
-
-	ListOfTchatPacket.push(*(connexion->getPacket()));
-	lock.unlock();
-	condition_Queue.notify_one();
-}
-
-ENetEvent  Chat::getPacket()
-{
-	ENetEvent  packet = ListOfTchatPacket.front();
-	ListOfTchatPacket.pop();
-	return packet;
 }
 
 void Chat::stopThread()
 {
 	endThread = true;
-	for(uint8_t i = 0;i< 4;i++)
-	{
-		condition_Queue.notify_one();
-	}
+	condition_Queue.notify_all();
+	groupThread.join_all();
 }
 
 void Chat::run()
 {
 	connexion->addlistenneur((XSILIUM_KINGDOM * 10 )+ ID_CHAT,boost::bind(&Chat::setPacket, this));
-	for(uint8_t i = 0;i< 4;i++)
+	for(uint8_t i = 0;i< NUM_THREAD_MODULE;i++)
 	{
-		thread[i] = boost::thread(&Chat::threadChat, (void *) this);
+		groupThread.add_thread(new boost::thread(&Chat::threadChat, (void *) this) );
 	}
 }
 
@@ -65,15 +39,9 @@ void Chat::threadChat(void* arguments)
 
 	while(!chat->endThread)
 	{
-		boost::mutex::scoped_lock lock(chat->mutexList);
-		if(chat->ListOfTchatPacket.empty())
-		{
-			chat->condition_Queue.wait(lock);
-		}
-		else
+		if(chat->isEmpty())
 		{
 			ENetEvent packet = chat->getPacket();
-			lock.unlock();
 			Session * session = chat->gestionnaireSession->trouverSession(packet.peer->address) ;
 			sChatPacket_C *data = (sChatPacket_C *) packet.packet->data ;
 			if( data->typeChat == 0)
@@ -93,6 +61,5 @@ void Chat::threadChat(void* arguments)
 			}
 			chat->connexion->deletePacket(packet.packet);
 		}
-
 	}
 }

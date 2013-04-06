@@ -12,7 +12,7 @@ worldServeur::worldServeur() {
 	config = Configuration::getInstance();
 	log = Log::getInstance();
 	connexion = new Connexion();
-	chat = new Chat();
+	chat = new Chat(connexion);
 
 }
 
@@ -57,7 +57,6 @@ void worldServeur::run()
 			gestionnaireSession->setConnexion(connexion);
 
 			log->Write(Log::DEBUG,"Demarrage du systeme de Tchat");
-			chat->setConnexionLogin(connexion);
 			chat->run();
 
 
@@ -77,8 +76,8 @@ void worldServeur::run()
 void worldServeur::stopThread()
 {
 	log->Write(Log::DEBUG,"Arret du thread d'authentification");
-	chat->stopThread();
 	connexion->deleteConnexion();
+	chat->stopThread();
 	log->Stop();
 }
 

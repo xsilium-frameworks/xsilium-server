@@ -9,12 +9,7 @@
 #ifndef CHAT_H_
 #define CHAT_H_
 
-#include "Connexion/Connexion.h"
-
-#include "Opcode/Opcode.h"
-
-#include <queue>
-#include <boost/thread.hpp>
+#include "ModuleActif/ModuleActif.h"
 
 #include "Session/GestionnaireSession.h"
 
@@ -24,32 +19,17 @@
 /*
  *
  */
-class Chat {
+class Chat : public ModuleActif {
 public:
-	Chat();
+	Chat(Connexion * connexion);
 	virtual ~Chat();
 
 	void run();
 
 	void stopThread();
 
-	void setPacket();
-	ENetEvent getPacket();
-
-	void setConnexionLogin(Connexion * connexion );
-
 private:
-
 	static void  threadChat(void * arguments);
-
-	bool endThread;
-
-	Connexion * connexion;
-	boost::thread thread[4];
-	std::queue<ENetEvent> ListOfTchatPacket;
-	boost::mutex mutexList;
-	boost::condition_variable condition_Queue;
-
 	GestionnaireSession * gestionnaireSession ;
 };
 

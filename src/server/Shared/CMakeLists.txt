@@ -5,6 +5,7 @@ file(GLOB_RECURSE sources_Connexion Connexion/*.cpp Connexion/*.h)
 file(GLOB_RECURSE sources_Callback Callback/*.cpp Callback/*.h)
 file(GLOB_RECURSE sources_Database Databases/*.cpp Databases/*.h)
 file(GLOB_RECURSE sources_Logging Logging/*.cpp Logging/*.h)
+file(GLOB_RECURSE sources_ModuleActifs ModuleActif/*.cpp ModuleActif/*.h)
 file(GLOB_RECURSE sources_PostgreSQLInterface PostgreSQLInterface/*.cpp PostgreSQLInterface/*.h)
 file(GLOB_RECURSE sources_SignalHandler SignalHandler/*.cpp SignalHandler/*.h)
 file(GLOB_RECURSE sources_Singleton Singleton/*.cpp Singleton/*.h)
@@ -32,6 +33,7 @@ set(shared_STAT_SRCS
   ${sources_StructurePacket}
   ${sources_Semaphore}
   ${sources_Utilities}
+  ${sources_ModuleActifs}
   
 )
 
@@ -46,6 +48,7 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/Callback
   ${CMAKE_CURRENT_SOURCE_DIR}/Databases
   ${CMAKE_CURRENT_SOURCE_DIR}/Logging
+  ${CMAKE_CURRENT_SOURCE_DIR}/ModuleActifs
   ${CMAKE_CURRENT_SOURCE_DIR}/PostgreSQLInterface
   ${CMAKE_CURRENT_SOURCE_DIR}/SignalHandler
   ${CMAKE_CURRENT_SOURCE_DIR}/Singleton
