@@ -14,14 +14,15 @@ ModuleActif::ModuleActif(Connexion * connexion) {
 
 ModuleActif::~ModuleActif() {
 
-	while(ListOfTchatPacket.size() != 0 )
-		ListOfTchatPacket.pop();
+	while(!ListOfPacket.empty())
+		ListOfPacket.pop();
 }
 
 ENetEvent ModuleActif::getPacket()
 {
-	ENetEvent  packet = ListOfTchatPacket.front();
-	ListOfTchatPacket.pop();
+	boost::mutex::scoped_lock lock(mutexList);
+	ENetEvent  packet = ListOfPacket.front();
+	ListOfPacket.pop();
 	return packet;
 }
 
@@ -29,7 +30,7 @@ void ModuleActif::setPacket()
 {
 	boost::mutex::scoped_lock lock(mutexList);
 
-	ListOfTchatPacket.push(*(connexion->getPacket()));
+	ListOfPacket.push(*(connexion->getPacket()));
 	lock.unlock();
 	condition_Queue.notify_one();
 }
@@ -37,7 +38,7 @@ void ModuleActif::setPacket()
 bool ModuleActif::isEmpty()
 {
 	boost::mutex::scoped_lock lock(mutexList);
-	if(ListOfTchatPacket.empty())
+	if(ListOfPacket.empty())
 	{
 		condition_Queue.wait(lock);
 		return false;

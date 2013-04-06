@@ -41,7 +41,7 @@ protected:
 	bool endThread;
 
 private:
-	std::queue<ENetEvent> ListOfTchatPacket;
+	std::queue<ENetEvent> ListOfPacket;
 	boost::mutex mutexList;
 
 };
