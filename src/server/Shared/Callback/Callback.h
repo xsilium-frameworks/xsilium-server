@@ -5,7 +5,7 @@
  *      Author: \author joda
  *  \brief :
  */
- /*! \class callback
+ /*! \class Callback
    * \brief
    */
 #ifndef CALLBACK_H_
