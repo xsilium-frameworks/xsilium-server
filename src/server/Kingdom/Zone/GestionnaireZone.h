@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "Singleton/Singleton.h"
-
+#include "Config/Configuration.h"
 #include "Connexion/Connexion.h"
 
 #include "Zone/Zone.h"
@@ -30,6 +30,9 @@ public:
 	GestionnaireZone(Connexion * connexionToClient);
 	virtual ~GestionnaireZone();
 
+	bool run ();
+	void stop();
+
 
 	void creeZone();
 	Zone * trouveZone(ENetAddress address);
@@ -41,6 +44,8 @@ public:
 private:
 	std::vector<Zone *> listOfZone ;
 	std::vector<Zone *>::iterator zone ;
+
+	Configuration * config ;
 
 
 	Connexion * connexionToClient;

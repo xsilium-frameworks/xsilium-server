@@ -26,3 +26,8 @@ ENetAddress * Zone::getZoneID()
 {
 	return &peer->address ;
 }
+
+ENetPeer * Zone::getZonePeer()
+{
+	return peer ;
+}

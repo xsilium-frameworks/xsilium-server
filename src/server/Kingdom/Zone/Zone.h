@@ -20,6 +20,7 @@ public:
 	virtual ~Zone();
 
 	void setZonePeer(ENetPeer * peer);
+	ENetPeer * getZonePeer();
 	ENetAddress * getZoneID();
 
 private:

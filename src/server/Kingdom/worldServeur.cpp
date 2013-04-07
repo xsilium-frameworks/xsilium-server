@@ -41,17 +41,6 @@ void worldServeur::run()
 			log->Start((Log::Priority)logLevel,"Kingdom.log");
 			log->Write(Log::DEBUG,"Demarrage du gestionnaire de royaume");
 
-			config->Get("port",serverPort);
-			config->Get("clientMax",numClient);
-			adresse.host = ENET_HOST_ANY;
-			adresse.port  = (enet_uint16) serverPort;
-
-			if(!connexion->createConnexion(adresse,numClient))
-			{
-				log->Write(Log::DEBUG,"erreur lors de l'ouverture du socket");
-				return ;
-			}
-
 			log->Write(Log::DEBUG,"Demarrage du gestionnaire de session");
 			gestionnaireSession = GestionnaireSession::getInstance();
 			gestionnaireSession->setConnexion(connexion);
@@ -59,6 +48,17 @@ void worldServeur::run()
 			log->Write(Log::DEBUG,"Demarrage du systeme de Tchat");
 			chat->run();
 
+			config->Get("portClient",serverPort);
+			config->Get("clientMax",numClient);
+			adresse.host = ENET_HOST_ANY;
+			adresse.port  = (enet_uint16) serverPort;
+
+			log->Write(Log::DEBUG,"Demarrage du la connexion");
+			if(!connexion->createConnexion(adresse,numClient))
+			{
+				log->Write(Log::DEBUG,"erreur lors de l'ouverture du socket");
+				return ;
+			}
 
 
 			while(!signalHandler->gotExitSignal())

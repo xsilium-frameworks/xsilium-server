@@ -10,6 +10,8 @@
 
 GestionnaireZone::GestionnaireZone(Connexion * connexionToClient) {
 	this->connexionToClient = connexionToClient ;
+	config = Configuration::getInstance();
+	connexionToZone = new Connexion();
 }
 
 GestionnaireZone::~GestionnaireZone() {
@@ -54,6 +56,27 @@ void GestionnaireZone::supprimerZone()
 
 void GestionnaireZone::sendToZone(Zone * zone, ENetPacket * packet)
 {
-
+	connexionToZone->sendPacket(zone->getZonePeer(), 0, packet);
 }
 
+bool GestionnaireZone::run()
+{
+	int serverPort, numZone ;
+	ENetAddress adresse;
+	config->Get("portZone",serverPort);
+	config->Get("clientMax",numZone);
+	adresse.host = ENET_HOST_ANY;
+	adresse.port  = (enet_uint16) serverPort;
+
+	if(!connexionToZone->createConnexion(adresse,numZone))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void GestionnaireZone::stop()
+{
+
+}
