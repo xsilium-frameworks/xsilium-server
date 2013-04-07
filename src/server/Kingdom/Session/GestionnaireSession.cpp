@@ -35,24 +35,21 @@ Session * GestionnaireSession::trouverSession(ENetAddress address)
 
 void GestionnaireSession::creerSession()
 {
-	boost::mutex::scoped_lock lock(mutexSession);
 	Session * sessionTemp = new Session();
-	ENetEvent * packet;
-	packet = connexion->getPacket();
-	sessionTemp->setSessionID(&packet->peer->address);
+	ENetEvent * packet = connexion->getPacket();
+	sessionTemp->setSessionPeer(packet->peer);
 
+	boost::mutex::scoped_lock lock(mutexSession);
 	listOfSession.push_back(sessionTemp);
 
 }
 
 void GestionnaireSession::supprimerSession()
 {
-	boost::mutex::scoped_lock lock(mutexSession);
 	ENetEvent * packet = connexion->getPacket();
-
-
 	if( trouverSession(packet->peer->address) != NULL)
 	{
+		boost::mutex::scoped_lock lock(mutexSession);
 		delete *session;
 		session = listOfSession.erase(session);
 	}

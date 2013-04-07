@@ -2,6 +2,7 @@
 
 file(GLOB_RECURSE sources_Chat Chat/*.cpp Chat/*.h)
 file(GLOB_RECURSE sources_Session Session/*.cpp Session/*.h)
+file(GLOB_RECURSE sources_Zone Zone/*.cpp Zone/*.h)
 file(GLOB sources_localdir *.cpp *.h)
 
 
@@ -13,6 +14,7 @@ set(kingdom_STAT_SRCS
   ${sources_localdir}
   ${sources_Chat}
   ${sources_Session}
+  ${sources_Zone}
 )
 
 include_directories(

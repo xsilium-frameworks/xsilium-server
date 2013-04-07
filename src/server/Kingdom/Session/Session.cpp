@@ -17,12 +17,12 @@ Session::~Session() {
 	// TODO Auto-generated destructor stub
 }
 
-void Session::setSessionID(ENetAddress * adresseID)
+void Session::setSessionPeer(ENetPeer * peer)
 {
-	this->adresseID = adresseID;
+	this->peer = peer;
 }
 
 ENetAddress * Session::getSessionID()
 {
-	return adresseID ;
+	return &peer->address ;
 }

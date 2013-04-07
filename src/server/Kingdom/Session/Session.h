@@ -19,13 +19,12 @@ public:
 	Session();
 	virtual ~Session();
 
-	void setSessionID(ENetAddress * adresseID);
+	void setSessionPeer(ENetPeer * peer);
 	ENetAddress * getSessionID();
 
 
 private:
-
-	ENetAddress * adresseID;
+	ENetPeer * peer;
 };
 
 #endif /* SESSION_H_ */
