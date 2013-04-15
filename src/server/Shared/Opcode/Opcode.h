@@ -36,10 +36,10 @@ enum Opcode
     ID_ERROR,
 
     //partie royaume
-    ID_CHAT
+    ID_CHAT,
 
-
-
+    //partie ticket
+    ID__TICKET
 };
 
 enum typerequete
