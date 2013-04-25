@@ -1,12 +1,12 @@
 ﻿/*
- * GestTicket.h
+ * PersoDatabase.h
  *
  *  Created on: 25 avril. 2013
  *      Author: nico
  */
 
 /*!
- * \file GestTicket.h
+ * \file GPersoDatabase.h
  * \brief Login Database
  * \author joda2
  *
@@ -28,7 +28,7 @@ enum LoginDatabaseStatements
     */
 
 
-
+};
 
 
   /*! \class LoginDatabase
@@ -36,9 +36,9 @@ enum LoginDatabaseStatements
    *
    */
 
-class LoginDatabase : public Singleton<LoginDatabase>, public connexionDatabase {
+class PersoDatabase : public Singleton<PersoDatabase>, public connexionDatabase {
 
-	friend class Singleton<LoginDatabase>;
+	friend class Singleton<PersoDatabase>;
 
 
 public:
@@ -50,7 +50,7 @@ public:
      *
      *  \param
      */
-	LoginDatabase();
+	PersoDatabase();
 
     /*!
      *  \brief Destructeur
@@ -61,7 +61,7 @@ public:
      */
 
 
-	virtual ~LoginDatabase();
+	virtual ~PersoDatabase();
 
 	void connexionDB(std::string infoString);
 
