@@ -66,7 +66,7 @@ void PersoDatabase::connexionDB(std::string infoString)
    //requete pour recuperer la liste des tickets sans tri (renvoie id du ticket, id de l'expediteur, et sujet), ne liste que les tickets
 	connexionDatabase::PrepareStatement(MAINSERVEUR_SEL_TICKET_LISTETICKETS, "Select \"id_ticket\", \"ticket_id_expediteur\", \"ticket_sujet\" FROM ticket");
 	//requete pour recuperer la liste des tickets venant d'une personne en particulie (renvoie id du ticket, sujet et date soumission)
-	connexionDatabase::PrepareStatement(MAINSERVEUR_SEL_TICKET_LISTETICKETS, "Select \"id_ticket\",\"ticket_sujet\", \"ticket_dateheure_soumission\" FROM ticket where \"ticket_id_expediteur\" = $1");
+	connexionDatabase::PrepareStatement(MAINSERVEUR_SEL_TICKET_LISTETICKETSEXPEDITEUR, "Select \"id_ticket\",\"ticket_sujet\", \"ticket_dateheure_soumission\" FROM ticket where \"ticket_id_expediteur\" = $1");
    //requete qui donne tous les détails d'un ticket choisi
 	connexionDatabase::PrepareStatement(MAINSERVEUR_SEL_TICKET_DETAILSTICKET, "Select * from ticket where \"id_ticket\" = $1");
    //requete qui renvoie la liste des tickets d'une certaine rubrique (renvoie id du ticket, id de l'expediteur, et sujet)
