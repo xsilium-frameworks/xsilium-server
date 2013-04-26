@@ -1,4 +1,4 @@
-=/*
+/*
  * PersoDatabase.cpp
  *
  *  Created on: 25 avril. 2013
