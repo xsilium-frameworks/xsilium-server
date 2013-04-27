@@ -30,6 +30,7 @@ bool Connexion::createConnexion(ENetAddress adresse,int MaxClient)
 	if (server == NULL)
 		return false ;
 
+	enet_host_compress_with_range_coder(server);
 	thread = boost::thread(&Connexion::threadConnexion, (void *) this);
 
 	return true ;

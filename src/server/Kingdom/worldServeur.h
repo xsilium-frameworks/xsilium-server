@@ -15,6 +15,7 @@
 #include "Connexion/Connexion.h"
 #include "Chat/Chat.h"
 #include "Session/GestionnaireSession.h"
+#include "Zone/GestionnaireZone.h"
 
 /*
  *
@@ -32,11 +33,12 @@ private :
 	Configuration * config ;
 	Log * log;
 	ENetAddress adresse;
-	Connexion * connexion;
+	Connexion * connexiontToClient;
 
 	//Kingdom principal
 	Chat * chat;
 	GestionnaireSession * gestionnaireSession ;
+	GestionnaireZone * gestionnaireZone ;
 
 };
 

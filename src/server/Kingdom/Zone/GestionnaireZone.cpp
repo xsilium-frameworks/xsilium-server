@@ -8,15 +8,26 @@
 
 #include "GestionnaireZone.h"
 
-GestionnaireZone::GestionnaireZone(Connexion * connexionToClient) {
-	this->connexionToClient = connexionToClient ;
+GestionnaireZone::GestionnaireZone() {
 	config = Configuration::getInstance();
 	connexionToZone = new Connexion();
+	connexionToZone->addlistenneur((XSILIUM_ALL * 10 ) + ID_CONNEXION,	boost::bind(&GestionnaireZone::creeZone, this) );
+	connexionToZone->addlistenneur((XSILIUM_ALL * 10 ) + ID_DECONEXION,	boost::bind(&GestionnaireZone::supprimerZone, this));
+
 }
 
 GestionnaireZone::~GestionnaireZone() {
-	// TODO Auto-generated destructor stub
+	connexionToZone->removelistenneur((XSILIUM_ALL * 10 ) + ID_CONNEXION);
+	connexionToZone->removelistenneur((XSILIUM_ALL * 10 ) + ID_DECONEXION);
+
+	delete connexionToZone;
 }
+
+void GestionnaireZone::setConnexionClient(Connexion * connexionToClient)
+{
+	this->connexionToClient = connexionToClient ;
+}
+
 
 void GestionnaireZone::creeZone()
 {
@@ -78,5 +89,5 @@ bool GestionnaireZone::run()
 
 void GestionnaireZone::stop()
 {
-
+	connexionToZone->deleteConnexion();
 }

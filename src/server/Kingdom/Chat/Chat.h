@@ -12,8 +12,19 @@
 #include "ModuleActif/ModuleActif.h"
 
 #include "Session/GestionnaireSession.h"
+#include "Zone/GestionnaireZone.h"
 
 #include "StructurePacket/StructureChat.h"
+
+enum typeFormessage
+{
+	ALLMESSAGE = 0,
+	ZONEMESSAGE,
+	GUILDMESSAGE,
+	GROUPEMESSAGE,
+	PERSOMESSAGE
+
+};
 
 
 /*
@@ -28,9 +39,13 @@ public:
 
 	void stopThread();
 
+
+	void messageToAll(sChatPacket_C *data);
+
 private:
 	static void  threadChat(void * arguments);
 	GestionnaireSession * gestionnaireSession ;
+	GestionnaireZone * gestionnaireZone ;
 };
 
 #endif /* CHAT_H_ */

@@ -11,6 +11,7 @@
 Chat::Chat(Connexion * connexion) : ModuleActif(connexion) {
 	endThread = false;
 	gestionnaireSession = GestionnaireSession::getInstance();
+	gestionnaireZone = GestionnaireZone::getInstance();
 }
 
 Chat::~Chat() {
@@ -33,31 +34,40 @@ void Chat::run()
 	}
 }
 
+void Chat::messageToAll(sChatPacket_C *data)
+{
+	sChatPacket_C messageData;
+
+
+	messageData.structure_opcode.cmd = XSILIUM_KINGDOM ;
+	messageData.structure_opcode.opcode = ID_CHAT ;
+	messageData.typeChat = 0;
+
+	std::strcpy(messageData.perso,data->perso);
+	std::strcpy(messageData.message,data->message);
+
+	ENetPacket * message = enet_packet_create ((const void *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
+	connexion->sendPacket(connexion->getServer(), 0, message);
+}
+
 void Chat::threadChat(void* arguments)
 {
 	Chat * chat = (Chat *) arguments ;
 
 	while(!chat->endThread)
 	{
-		if(chat->isEmpty())
+		if(!chat->isEmpty())
 		{
 			ENetEvent packet = chat->getPacket();
 			Session * session = chat->gestionnaireSession->trouverSession(packet.peer->address) ;
 			sChatPacket_C *data = (sChatPacket_C *) packet.packet->data ;
-			if( data->typeChat == 0)
+			switch(data->typeChat)
 			{
-				sChatPacket_C messageData;
-
-
-				messageData.structure_opcode.cmd = XSILIUM_KINGDOM ;
-				messageData.structure_opcode.opcode = ID_CHAT ;
-				messageData.typeChat = 0;
-
-				std::strcpy(messageData.perso,data->perso);
-				std::strcpy(messageData.message,data->message);
-
-				ENetPacket * message = enet_packet_create ((const void *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
-				chat->connexion->sendPacket(chat->connexion->getServer(), 0, message);
+			case ALLMESSAGE :
+				chat->messageToAll(data);
+				break;
+			default:
+				break;
 			}
 			chat->connexion->deletePacket(packet.packet);
 		}

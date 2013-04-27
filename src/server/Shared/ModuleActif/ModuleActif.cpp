@@ -41,8 +41,8 @@ bool ModuleActif::isEmpty()
 	if(ListOfPacket.empty())
 	{
 		condition_Queue.wait(lock);
-		return false;
+		return true;
 	}
 	else
-		return true;
+		return false;
 }

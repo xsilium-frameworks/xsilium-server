@@ -27,11 +27,13 @@ class GestionnaireZone : public Singleton<GestionnaireZone>
 	friend class Singleton<GestionnaireZone>;
 
 public:
-	GestionnaireZone(Connexion * connexionToClient);
+	GestionnaireZone();
 	virtual ~GestionnaireZone();
 
 	bool run ();
 	void stop();
+
+	void setConnexionClient(Connexion * connexionToClient);
 
 
 	void creeZone();
