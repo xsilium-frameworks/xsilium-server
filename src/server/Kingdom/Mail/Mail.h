@@ -22,7 +22,7 @@ enum typeMail
 };
 
 
-class Mail {
+class Mail : public ModuleActif {
 public:
 	Mail(Connexion * connexion);
 	virtual ~Mail();
@@ -32,6 +32,10 @@ public:
 	void stopThread();
 
 	void sendMail(sMailPacket_C  *data); //gerrer la gestion de la suppression des items dans l'inventaire de la source ? via cpp ?
+
+	void messageSimple(sMailPacket_C  *data);
+	void messageMailPJ(sMailPacket_C *data);
+	void messageMailContreRemb(sMailPacket_C *data);
 
 private:
 	static void  threadMail(void * arguments);

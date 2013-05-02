@@ -1,6 +1,7 @@
 
 
 file(GLOB_RECURSE sources_Chat Chat/*.cpp Chat/*.h)
+file(GLOB_RECURSE sources_Mail Mail/*.cpp Mail/*.h)
 file(GLOB_RECURSE sources_Session Session/*.cpp Session/*.h)
 file(GLOB_RECURSE sources_Zone Zone/*.cpp Zone/*.h)
 file(GLOB sources_localdir *.cpp *.h)
@@ -13,6 +14,7 @@ file(GLOB sources_localdir *.cpp *.h)
 set(kingdom_STAT_SRCS
   ${sources_localdir}
   ${sources_Chat}
+  ${sources_Mail}
   ${sources_Session}
   ${sources_Zone}
 )

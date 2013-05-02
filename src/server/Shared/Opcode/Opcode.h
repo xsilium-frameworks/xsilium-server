@@ -39,7 +39,7 @@ enum Opcode
     ID_CHAT,
 
     //partie ticket
-    ID__TICKET,
+    ID_TICKET,
 
     //Partie message
     ID_MAIL
