@@ -39,7 +39,10 @@ enum Opcode
     ID_CHAT,
 
     //partie ticket
-    ID__TICKET
+    ID__TICKET,
+
+    //Partie message
+    ID_MAIL
 };
 
 enum typerequete
