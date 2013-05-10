@@ -20,7 +20,8 @@ const string Log::PRIORITY_NAMES[] =
 };
 
 Log::Log() {
-	// TODO Auto-generated constructor stub
+	active = false;
+	maxPriority = ERROR;
 
 }
 
@@ -40,7 +41,7 @@ void Log::Start(Priority maxPriority,string logFile)
 
 void Log::Stop()
 {
-    this->active = false;
+    active = false;
     if (fileStream.is_open())
     {
         fileStream.close();

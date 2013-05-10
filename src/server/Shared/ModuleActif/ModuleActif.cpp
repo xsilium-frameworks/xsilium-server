@@ -10,6 +10,7 @@
 
 ModuleActif::ModuleActif(Connexion * connexion) {
 	this->connexion = connexion ;
+	endThread = false;
 }
 
 ModuleActif::~ModuleActif() {

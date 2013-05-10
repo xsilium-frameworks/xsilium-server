@@ -120,8 +120,6 @@ private:
 
     string connectionString;
 
-    bool isDBConnect ;
-
 
 };
 

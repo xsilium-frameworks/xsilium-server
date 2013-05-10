@@ -10,6 +10,8 @@
 
 
 connexionDatabase::connexionDatabase() {
+	conn = NULL;
+	txn = NULL;
 }
 
 connexionDatabase::~connexionDatabase() {

@@ -16,6 +16,9 @@ worldServeur::worldServeur() {
 	gestionnaireZone = GestionnaireZone::getInstance();
 	gestionnaireZone->setConnexionClient(connexiontToClient);
 
+	gestionnaireSession = NULL;
+	signalHandler = NULL;
+
 }
 
 worldServeur::~worldServeur() {

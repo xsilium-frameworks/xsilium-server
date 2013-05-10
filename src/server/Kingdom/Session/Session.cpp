@@ -9,7 +9,7 @@
 #include "Session.h"
 
 Session::Session() {
-	// TODO Auto-generated constructor stub
+	peer = NULL;
 
 }
 

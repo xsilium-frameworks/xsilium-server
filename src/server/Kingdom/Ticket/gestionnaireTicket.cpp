@@ -74,6 +74,7 @@ void gestionnaireTicket::threadTicket(void* arguments)
 
 					// appelle de ajouterTicket
 				}
+				break;
 				case 1:
 				{
 					//reçois la demander d'un ticket
@@ -86,6 +87,7 @@ void gestionnaireTicket::threadTicket(void* arguments)
 					std::strcpy(messageData.idTicket,data->idTicket);
 
 				}
+				break;
 				case 2:
 				{
 					//envoi la liste des ticket enfonction de: perso
@@ -94,6 +96,7 @@ void gestionnaireTicket::threadTicket(void* arguments)
 					messageData.structure_opcode.opcode = ID_TICKET ;
 					messageData.typeTicket = 2;
 				}
+				break;
 				case 3:
 				{
 					//reçois ordre de suppression de ticket
@@ -104,6 +107,7 @@ void gestionnaireTicket::threadTicket(void* arguments)
 					std::strcpy(messageData.perso,data->perso);
 					std::strcpy(messageData.idTicket,data->idTicket);
 				}
+				break;
 
 			}
 			gestionnaireTicket->connexion->deletePacket(packet.packet);

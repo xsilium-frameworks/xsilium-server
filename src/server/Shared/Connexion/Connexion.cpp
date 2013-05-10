@@ -10,6 +10,11 @@
 
 Connexion::Connexion() {
 	enet_initialize();
+	server = NULL;
+	peer = NULL;
+	packet = NULL;
+	endThread = false;
+
 }
 
 Connexion::~Connexion()

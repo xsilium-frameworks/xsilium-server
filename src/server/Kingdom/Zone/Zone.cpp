@@ -9,7 +9,7 @@
 #include "Zone.h"
 
 Zone::Zone() {
-	// TODO Auto-generated constructor stub
+	peer = NULL;
 
 }
 

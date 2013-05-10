@@ -47,6 +47,8 @@ void authServer::stopThread()
 authServer::authServer() {
 	config = Configuration::getInstance();
 	log = Log::getInstance();
+	auth = NULL;
+	signalHandler = NULL;
 
 }
 

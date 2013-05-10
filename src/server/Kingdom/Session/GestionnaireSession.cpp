@@ -9,6 +9,7 @@
 #include "GestionnaireSession.h"
 
 GestionnaireSession::GestionnaireSession() {
+	connexion = NULL;
 }
 
 GestionnaireSession::~GestionnaireSession() {
