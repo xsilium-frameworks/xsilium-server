@@ -1,6 +1,6 @@
 ENABLE_TESTING()
 
-file(GLOB_RECURSE sources_Test ../server/Shared/*Test.cpp ../server/Shared/*Test.h)
+file(GLOB_RECURSE sources_Test ../server/*Test.cpp ../server/*Test.h)
 
 
 # Unit testing driver

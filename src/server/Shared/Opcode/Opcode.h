@@ -42,13 +42,17 @@ enum Opcode
     ID_TICKET,
 
     //Partie message
-    ID_MAIL
+    ID_MAIL,
+
+
+    ID_ALL
 };
 
 enum typerequete
 {
    XSILIUM_AUTH = 0,
    XSILIUM_KINGDOM,
+   XSILIUM_ZONE,
    XSILIUM_ALL
 };
 

@@ -10,9 +10,15 @@
 #define STRUCTURECHAT_H_
 
 
-typedef struct CHATPACKET_C
+typedef struct CHATTYPEPACKET
 {
 	structure_opcodeT structure_opcode;
+    uint8_t           typeChat;
+}charTypePacketT;
+
+typedef struct CHATPACKET_C
+{
+	charTypePacketT charTypePacket;
     uint8_t           typeChat;
     char     perso[64];
     char      message[512];

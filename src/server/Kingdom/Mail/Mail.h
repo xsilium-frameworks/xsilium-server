@@ -16,8 +16,8 @@
 enum typeMail
 {
 	MAIL_S = 0,		//Mail simple,sans pièces jointes
-	MAIL_PJ = 1,	//Mail avec pièces Jointes
-	MAIL_CR = 2,	//Mail Contre remboursement
+	MAIL_PJ,	//Mail avec pièces Jointes
+	MAIL_CR	//Mail Contre remboursement
 
 };
 

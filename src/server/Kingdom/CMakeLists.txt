@@ -6,6 +6,8 @@ file(GLOB_RECURSE sources_Session Session/*.cpp Session/*.h)
 file(GLOB_RECURSE sources_Zone Zone/*.cpp Zone/*.h)
 file(GLOB sources_localdir *.cpp *.h)
 
+file(GLOB_RECURSE sources_Test *Test.cpp *Test.h)
+
 
 #
 # Build kingdom sourcelist
@@ -18,6 +20,8 @@ set(kingdom_STAT_SRCS
   ${sources_Session}
   ${sources_Zone}
 )
+
+list(REMOVE_ITEM kingdom_STAT_SRCS "${sources_Test}")
 
 include_directories(
 	${CMAKE_BINARY_DIR}

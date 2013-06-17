@@ -34,20 +34,19 @@ void Chat::run()
 	}
 }
 
-void Chat::messageToAll(sChatPacket_C *data)
+ENetPacket * Chat::messageToAll(sChatPacket_C *data)
 {
 	sChatPacket_C messageData;
 
 
-	messageData.structure_opcode.cmd = XSILIUM_KINGDOM ;
-	messageData.structure_opcode.opcode = ID_CHAT ;
-	messageData.typeChat = 0;
+	messageData.charTypePacket.structure_opcode.cmd = XSILIUM_KINGDOM ;
+	messageData.charTypePacket.structure_opcode.opcode = ID_CHAT ;
+	messageData.charTypePacket.typeChat = 0;
 
 	std::strcpy(messageData.perso,data->perso);
 	std::strcpy(messageData.message,data->message);
 
-	ENetPacket * message = enet_packet_create ((const void *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
-	connexion->sendPacket(connexion->getServer(), 0, message);
+	return enet_packet_create ((const void *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
 }
 
 void Chat::threadChat(void* arguments)
@@ -61,13 +60,18 @@ void Chat::threadChat(void* arguments)
 			ENetEvent packet = chat->getPacket();
 			Session * session = chat->gestionnaireSession->trouverSession(packet.peer->address) ;
 			sChatPacket_C *data = (sChatPacket_C *) packet.packet->data ;
+			ENetPacket * message = NULL;
 			switch(data->typeChat)
 			{
 			case ALLMESSAGE :
-				chat->messageToAll(data);
+				message = chat->messageToAll(data);
 				break;
 			default:
 				break;
+			}
+			if(message != NULL)
+			{
+				chat->connexion->sendPacket(chat->connexion->getServer(), 0, message);
 			}
 			chat->connexion->deletePacket(packet.packet);
 		}

@@ -40,7 +40,7 @@ public:
 	void stopThread();
 
 
-	void messageToAll(sChatPacket_C *data);
+	ENetPacket * messageToAll(sChatPacket_C *data);
 
 private:
 	static void  threadChat(void * arguments);
