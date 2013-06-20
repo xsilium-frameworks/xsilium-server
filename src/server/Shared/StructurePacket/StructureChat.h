@@ -19,7 +19,6 @@ typedef struct CHATTYPEPACKET
 typedef struct CHATPACKET_C
 {
 	charTypePacketT charTypePacket;
-    uint8_t           typeChat;
     char     perso[64];
     char      message[512];
 } sChatPacket_C;
