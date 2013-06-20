@@ -95,7 +95,7 @@ void Chat::threadChat(void* arguments)
 		if(!chat->isEmpty())
 		{
 			ENetEvent packet = chat->getPacket();
-			sChatPacket_C *data = (sChatPacket_C *) packet.packet->data ;
+			charTypePacketT *data = (charTypePacketT *) packet.packet->data ;
 			ENetPacket * message = NULL;
 			switch(data->typeChat)
 			{
