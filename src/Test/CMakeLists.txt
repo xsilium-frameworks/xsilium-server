@@ -6,6 +6,9 @@ file(GLOB_RECURSE sources_Test ../server/*Test.cpp ../server/*Test.h)
 # Unit testing driver
 include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}
+	${CMAKE_SOURCE_DIR}/src/server/Shared
+	${CMAKE_SOURCE_DIR}/src/server/Auth
+	${CMAKE_SOURCE_DIR}/src/server/Kingdom
 )
 set(UnitTests_SRCS 
 TestRunnerClient.cpp
@@ -14,6 +17,7 @@ TestRunnerClient.cpp
 add_executable(UnitTester ${UnitTests_SRCS} ${sources_Test} )
 TARGET_LINK_LIBRARIES(UnitTester 
 	${CPPUNIT_LIBRARY}
+	${Boost_LIBRARIES}
 	SHARED	
 )
 

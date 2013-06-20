@@ -11,9 +11,11 @@
 #define TEST_ChatTest
 #include "cppunit/extensions/HelperMacros.h"
 
+#include "Chat.h"
+
 class ChatTest : public CppUnit::TestFixture {
 public:
-	void testchat__createConnexion()
+	void testChat__createConnexion()
 	{
 		CPPUNIT_ASSERT(true);
 	}
@@ -21,7 +23,7 @@ public:
 	{
 		CPPUNIT_ASSERT(true);
 	}
-	CPPUNIT_TEST_SUITE(ConnexionTest);
+	CPPUNIT_TEST_SUITE(ChatTest);
 	CPPUNIT_TEST(testChat__createConnexion);
 	CPPUNIT_TEST(testChat__deleteConnexion);
 	CPPUNIT_TEST_SUITE_END();

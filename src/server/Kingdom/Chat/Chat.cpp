@@ -34,19 +34,56 @@ void Chat::run()
 	}
 }
 
-ENetPacket * Chat::messageToAll(sChatPacket_C *data)
+ENetPacket * Chat::messageToAll(ENetEvent * packet)
 {
-	sChatPacket_C messageData;
+	if (packet->packet->dataLength >= sizeof(sChatPacket_C))
+	{
+		Session * session = gestionnaireSession->trouverSession(packet->peer->address) ;
 
 
-	messageData.charTypePacket.structure_opcode.cmd = XSILIUM_KINGDOM ;
-	messageData.charTypePacket.structure_opcode.opcode = ID_CHAT ;
-	messageData.charTypePacket.typeChat = 0;
+		sChatPacket_C *data = (sChatPacket_C *) packet->packet->data ;
+		sChatPacket_C messageData;
 
-	std::strcpy(messageData.perso,data->perso);
-	std::strcpy(messageData.message,data->message);
 
-	return enet_packet_create ((const void *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
+		messageData.charTypePacket.structure_opcode.cmd = XSILIUM_KINGDOM ;
+		messageData.charTypePacket.structure_opcode.opcode = ID_CHAT ;
+		messageData.charTypePacket.typeChat = 0;
+
+		std::strcpy(messageData.perso,data->perso);
+		std::strcpy(messageData.message,data->message);
+
+		return enet_packet_create ((const void *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+ENetPacket * Chat::messageToPerso(ENetEvent * packet)
+{
+	if (packet->packet->dataLength >= sizeof(sChatPacket_C))
+	{
+		Session * session = gestionnaireSession->trouverSession(packet->peer->address) ;
+
+
+		sChatPacket_C *data = (sChatPacket_C *) packet->packet->data ;
+		sChatPacket_C messageData;
+
+
+		messageData.charTypePacket.structure_opcode.cmd = XSILIUM_KINGDOM ;
+		messageData.charTypePacket.structure_opcode.opcode = ID_CHAT ;
+		messageData.charTypePacket.typeChat = 0;
+
+		std::strcpy(messageData.perso,data->perso);
+		std::strcpy(messageData.message,data->message);
+
+		return enet_packet_create ((const void *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
+	}
+	else
+	{
+		return NULL;
+	}
 }
 
 void Chat::threadChat(void* arguments)
@@ -58,13 +95,15 @@ void Chat::threadChat(void* arguments)
 		if(!chat->isEmpty())
 		{
 			ENetEvent packet = chat->getPacket();
-			Session * session = chat->gestionnaireSession->trouverSession(packet.peer->address) ;
 			sChatPacket_C *data = (sChatPacket_C *) packet.packet->data ;
 			ENetPacket * message = NULL;
 			switch(data->typeChat)
 			{
 			case ALLMESSAGE :
-				message = chat->messageToAll(data);
+				message = chat->messageToAll(&packet);
+				break;
+			case PERSOMESSAGE :
+				message = chat->messageToPerso(&packet);
 				break;
 			default:
 				break;
