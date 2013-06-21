@@ -18,7 +18,10 @@ add_executable(UnitTester ${UnitTests_SRCS} ${sources_Test} )
 TARGET_LINK_LIBRARIES(UnitTester 
 	${CPPUNIT_LIBRARY}
 	${Boost_LIBRARIES}
-	SHARED	
+	${ENET_LIB}
+	SHARED
+	KS	
+	Auth
 )
 
 install(TARGETS UnitTester DESTINATION test)

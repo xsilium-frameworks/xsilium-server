@@ -11,7 +11,6 @@ file(GLOB_RECURSE sources_Test *Test.cpp *Test.h)
 set(authserver_SRCS
   ${sources_authentication}
   ${sources_realms}
-  ${sources_localdir}
 )
 
 list(REMOVE_ITEM authserver_SRCS "${sources_Test}")
@@ -45,10 +44,10 @@ if( CMAKE_SYSTEM_NAME MATCHES "Darwin" )
   set(authserver_LINK_FLAGS "${authserver_LINK_FLAGS}")
 endif()
 
+add_library(Auth STATIC ${authserver_SRCS})
 
-add_executable(authserver
-  ${authserver_SRCS}
-)
+add_executable(authserver ${sources_localdir})
+target_link_libraries(authserver Auth)
 
 set_target_properties(authserver PROPERTIES LINK_FLAGS "${authserver_LINK_FLAGS}" )
 

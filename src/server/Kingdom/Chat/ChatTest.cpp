@@ -15,16 +15,32 @@
 
 class ChatTest : public CppUnit::TestFixture {
 public:
-	void testChat__createConnexion()
+	void SendMessageToAll()
 	{
-		CPPUNIT_ASSERT(true);
+		Connexion * connexion = new Connexion();
+		Chat * chat = new Chat(connexion);
+
+		ENetEvent packet ;
+
+		if ( chat->messageToAll(&packet) == NULL )
+		{
+			delete chat;
+			delete connexion;
+			CPPUNIT_ASSERT(true);
+		}
+		else
+		{
+			delete chat;
+			delete connexion;
+			CPPUNIT_ASSERT(false);
+		}
 	}
 	void testChat__deleteConnexion()
 	{
 		CPPUNIT_ASSERT(true);
 	}
 	CPPUNIT_TEST_SUITE(ChatTest);
-	CPPUNIT_TEST(testChat__createConnexion);
+	CPPUNIT_TEST(SendMessageToAll);
 	CPPUNIT_TEST(testChat__deleteConnexion);
 	CPPUNIT_TEST_SUITE_END();
 };
