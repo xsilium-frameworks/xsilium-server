@@ -20,14 +20,14 @@
 #include <vector>
 
 
-#include "../resource.h"
 #include "Databases/LoginDatabase.h"
 #include "Structure/Client.h"
 #include "Logging/Log.h"
 #include "Config/Configuration.h"
-#include "Opcode/Opcode.h"
 #include "Connexion/Connexion.h"
 #include "ListServeur/ListServeur.h"
+
+#include "ModuleActif/ModuleActif.h"
 
 
 using namespace std;
@@ -46,7 +46,7 @@ public:
      *  \param
      */
 
-	Authentification();
+	Authentification(Connexion * connexion);
 
     /*!
      *  \brief Constructeur

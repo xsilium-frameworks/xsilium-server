@@ -68,6 +68,8 @@ private:
 	Configuration * config ;
 	Log * log;
 	Authentification * auth;
+	Connexion * connexion;
+	ENetAddress adresse;
 
 };
 

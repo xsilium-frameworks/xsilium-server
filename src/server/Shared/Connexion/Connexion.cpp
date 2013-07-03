@@ -52,19 +52,19 @@ void* Connexion::threadConnexion(void* arguments)
 		switch (connexion->eventServer.type)
 		{
 		case ENET_EVENT_TYPE_CONNECT:
-			connexion->callback((XSILIUM_ALL * 10) + ID_CONNEXION);
+			connexion->callback((XSILIUM_ALL * 1000) + ID_CONNEXION);
 			break;
 		case ENET_EVENT_TYPE_RECEIVE:
 		{
 			structure_opcodeT * typePacket = (structure_opcodeT *) connexion->eventServer.packet->data ;
 
-			connexion->callback( (typePacket->cmd * 10 ) +  (typePacket->opcode ));
+			connexion->callback( (typePacket->cmd * 1000 ) +  (typePacket->opcode ));
 
 			break;
 		}
 
 		case ENET_EVENT_TYPE_DISCONNECT:
-			connexion->callback((XSILIUM_ALL * 10 ) + ID_DECONEXION);
+			connexion->callback((XSILIUM_ALL * 1000 ) + ID_DECONEXION);
 			break;
 		default:
 			break;

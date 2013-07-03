@@ -22,13 +22,12 @@ worldServeur::worldServeur() {
 }
 
 worldServeur::~worldServeur() {
+	delete connexiontToClient;
 	delete chat;
 	Configuration::DestroyInstance();
 	Log::DestroyInstance();
 	GestionnaireSession::DestroyInstance();
 	GestionnaireZone::DestroyInstance();
-	delete connexiontToClient;
-
 }
 
 void worldServeur::run()

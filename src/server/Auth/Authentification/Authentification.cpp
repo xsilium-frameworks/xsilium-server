@@ -7,28 +7,16 @@
 
 #include "Authentification.h"
 
-Authentification::Authentification() {
+Authentification::Authentification(Connexion * connexion) {
 	config = Configuration::getInstance();
 	log = Log::getInstance();
-	connexion = new Connexion();
+	this->connexion = connexion;
 
-	int serverPort, numClient ;
-
-	config->Get("port",serverPort);
-	config->Get("clientMax",numClient);
-	adresse.host = ENET_HOST_ANY;
-	adresse.port  = (enet_uint16) serverPort;
-
-	if(!connexion->createConnexion(adresse,numClient))
-	{
-		log->Write(Log::DEBUG,"Impossible d'ouvrir la connexion ");
-		return;
-	}
-	connexion->addlistenneur((XSILIUM_ALL * 10) + ID_CONNEXION,boost::bind(&Authentification::CreateClient, this));
-	connexion->addlistenneur((XSILIUM_ALL * 10) + ID_DECONEXION,boost::bind(&Authentification::DeleteClient, this) );
-	connexion->addlistenneur((XSILIUM_AUTH * 10) + ID_SEND_USER,boost::bind(&Authentification::HandleLogonChallenge, this) );
-	connexion->addlistenneur((XSILIUM_AUTH * 10) + ID_SEND_REPONSE,boost::bind(&Authentification::HandleLogonProof, this) );
-	connexion->addlistenneur((XSILIUM_AUTH * 10) + ID_GET_ROYAUME,boost::bind(&Authentification::HandleRealmList, this) );
+	connexion->addlistenneur((XSILIUM_ALL * 1000) + ID_CONNEXION,boost::bind(&Authentification::CreateClient, this));
+	connexion->addlistenneur((XSILIUM_ALL * 1000) + ID_DECONEXION,boost::bind(&Authentification::DeleteClient, this) );
+	connexion->addlistenneur((XSILIUM_AUTH * 1000) + ID_SEND_USER,boost::bind(&Authentification::HandleLogonChallenge, this) );
+	connexion->addlistenneur((XSILIUM_AUTH * 1000) + ID_SEND_REPONSE,boost::bind(&Authentification::HandleLogonProof, this) );
+	connexion->addlistenneur((XSILIUM_AUTH * 1000) + ID_GET_ROYAUME,boost::bind(&Authentification::HandleRealmList, this) );
 
 	string infoDB;
 	config->Get("LoginDatabaseInfo",infoDB);
@@ -41,11 +29,11 @@ Authentification::Authentification() {
 
 Authentification::~Authentification() {
 	connexion->deleteConnexion();
-	connexion->removelistenneur((XSILIUM_ALL * 10) + ID_CONNEXION);
-	connexion->removelistenneur((XSILIUM_ALL * 10) + ID_DECONEXION);
-	connexion->removelistenneur((XSILIUM_AUTH * 10) + ID_SEND_USER);
-	connexion->removelistenneur((XSILIUM_AUTH * 10) + ID_SEND_REPONSE);
-	connexion->removelistenneur((XSILIUM_AUTH * 10) + ID_GET_ROYAUME);
+	connexion->removelistenneur((XSILIUM_ALL * 1000) + ID_CONNEXION);
+	connexion->removelistenneur((XSILIUM_ALL * 1000) + ID_DECONEXION);
+	connexion->removelistenneur((XSILIUM_AUTH * 1000) + ID_SEND_USER);
+	connexion->removelistenneur((XSILIUM_AUTH * 1000) + ID_SEND_REPONSE);
+	connexion->removelistenneur((XSILIUM_AUTH * 1000) + ID_GET_ROYAUME);
 	delete this->realms ;
 	delete connexion;
 }
