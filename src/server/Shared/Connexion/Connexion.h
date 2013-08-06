@@ -14,7 +14,7 @@
 #include "Singleton/Singleton.h"
 #include "Callback/Callback.h"
 #include "Opcode/Opcode.h"
-#include "Structure/Packet.h"
+#include "StructurePacket/StructureGeneral.h"
 
 
 

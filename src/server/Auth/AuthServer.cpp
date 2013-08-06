@@ -8,6 +8,30 @@
 
 #include "AuthServer.h"
 
+authServer::authServer() {
+	config = Configuration::getInstance();
+	log = Log::getInstance();
+	connexiontToClient = new Connexion();
+	auth = NULL;
+	signalHandler = NULL;
+	gestionnaireSession = NULL;
+	gestionnaireCompte = NULL;
+	connexionSQLRealms = NULL;
+
+}
+
+authServer::~authServer() {
+	delete auth;
+	delete connexiontToClient ;
+	LoginDatabase::DestroyInstance();
+	Configuration::DestroyInstance();
+	GestionnaireSession::DestroyInstance();
+	GestionnaireCompte::DestroyInstance();
+	Log::DestroyInstance();
+
+
+}
+
 void authServer::startServer()
 {
 	try
@@ -18,13 +42,29 @@ void authServer::startServer()
 			return ;
 		}
 		int logLevel,serverPort,numClient;
+		std::string infoDB;
 
 
 		config->Get("LogLevel",logLevel);
 		log->Start((Log::Priority)logLevel,"authserver.log");
-		log->Write(Log::DEBUG,"Demarrage du serveur d'authentification");
 
-		auth = new Authentification(connexion);
+
+		log->Write(Log::DEBUG,"Demarrage de la connexion SQL (loginDB) ");
+		config->Get("LoginDatabaseInfo",infoDB);
+		connexionSQLRealms = LoginDatabase::getInstance();
+		connexionSQLRealms->connexionDB(infoDB);
+
+		log->Write(Log::DEBUG,"Demarrage du gestionnaire de compte");
+		gestionnaireCompte = GestionnaireCompte::getInstance();
+
+		log->Write(Log::DEBUG,"Demarrage du gestionnaire de session");
+		gestionnaireSession = GestionnaireSession::getInstance();
+		gestionnaireSession->setConnexion(connexiontToClient);
+
+
+		log->Write(Log::DEBUG,"Demarrage du serveur d'authentification");
+		auth = new Authentification(connexiontToClient);
+		auth->run();
 
 		config->Get("port",serverPort);
 		config->Get("clientMax",numClient);
@@ -33,7 +73,7 @@ void authServer::startServer()
 
 		log->Write(Log::DEBUG,"Demarrage du socket d'authentification");
 
-		if(!connexion->createConnexion(adresse,numClient))
+		if(!connexiontToClient->createConnexion(adresse,numClient))
 		{
 			log->Write(Log::DEBUG,"Impossible d'ouvrir la connexion ");
 			return;
@@ -54,27 +94,14 @@ void authServer::startServer()
 
 void authServer::stopThread()
 {
+	log->Write(Log::DEBUG,"Arret du socket de connexion");
+	connexiontToClient->deleteConnexion();
+	log->Write(Log::DEBUG,"Arret du serveur d'authentification");
+	auth->stopThread();
+	log->Write(Log::DEBUG,"Arret de la connexion SQL (loginDB)");
+	connexionSQLRealms->deconnexionDB();
 	log->Write(Log::DEBUG,"Arret du thread d'authentification");
 	log->Stop();
-}
-
-
-authServer::authServer() {
-	config = Configuration::getInstance();
-	log = Log::getInstance();
-	connexion = new Connexion();
-	auth = NULL;
-	signalHandler = NULL;
-
-}
-
-authServer::~authServer() {
-	delete connexion ;
-	delete auth;
-	Configuration::DestroyInstance();
-	Log::DestroyInstance();
-
-
 }
 
 int main()

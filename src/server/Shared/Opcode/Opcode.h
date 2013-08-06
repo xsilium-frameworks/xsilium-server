@@ -22,18 +22,7 @@ enum Opcode
 	ID_DECONEXION,
 
 	// partie authentification
-    ID_SEND_USER,
-    ID_SEND_CHALLENGE,
-    ID_SEND_REPONSE,
-    ID_SEND_VALIDATION,
-    ID_GET_ROYAUME,
-    ID_SEND_ROYAUME,
-    ID_CONNECTION_BANNED,
-    ID_INVALID_ACCOUNT_OR_PASSWORD,
-    ID_COMPTE_BANNIE,
-    ID_SEND_CANCEL,
-    ID_INVALID_IP,
-    ID_ERROR,
+	ID_AUTH,
 
     //partie royaume
     ID_CHAT,
@@ -43,7 +32,6 @@ enum Opcode
 
     //Partie message
     ID_MAIL,
-
 
     ID_ALL
 };

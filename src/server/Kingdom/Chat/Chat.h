@@ -40,8 +40,8 @@ public:
 	void stopThread();
 
 
-	ENetPacket * messageToAll(ENetEvent * packet);
-	ENetPacket * messageToPerso(ENetEvent * packet);
+	bool messageToAll(ENetEvent * packet, bool cppUnit = false);
+	bool messageToPerso(ENetEvent * packet, bool cppUnit = false);
 
 private:
 	static void  threadChat(void * arguments);

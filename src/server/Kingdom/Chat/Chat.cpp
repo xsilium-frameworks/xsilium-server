@@ -34,7 +34,7 @@ void Chat::run()
 	}
 }
 
-ENetPacket * Chat::messageToAll(ENetEvent * packet)
+bool Chat::messageToAll(ENetEvent * packet,bool cppUnit)
 {
 	if (packet->packet->dataLength >= sizeof(sChatPacket_C))
 	{
@@ -52,21 +52,25 @@ ENetPacket * Chat::messageToAll(ENetEvent * packet)
 		std::strcpy(messageData.perso,data->perso);
 		std::strcpy(messageData.message,data->message);
 
-		return enet_packet_create ((const void *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
+		if(!cppUnit)
+		{
+			ENetPacket * message = NULL;
+			message =  enet_packet_create ((const void *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
+			connexion->sendPacket(connexion->getServer(), 0, message);
+		}
+		return true;
 	}
 	else
 	{
-		return NULL;
+		return false;
 	}
 }
 
-ENetPacket * Chat::messageToPerso(ENetEvent * packet)
+bool Chat::messageToPerso(ENetEvent * packet,bool cppUnit)
 {
 	if (packet->packet->dataLength >= sizeof(sChatPacket_C))
 	{
 		Session * session = gestionnaireSession->trouverSession(packet->peer->address) ;
-
-
 		sChatPacket_C *data = (sChatPacket_C *) packet->packet->data ;
 		sChatPacket_C messageData;
 
@@ -78,11 +82,17 @@ ENetPacket * Chat::messageToPerso(ENetEvent * packet)
 		std::strcpy(messageData.perso,data->perso);
 		std::strcpy(messageData.message,data->message);
 
-		return enet_packet_create ((const void *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
+		if(!cppUnit)
+		{
+			ENetPacket * message = NULL;
+			message =  enet_packet_create ((const void *)&messageData,sizeof(messageData) + 1,ENET_PACKET_FLAG_RELIABLE);
+			connexion->sendPacket(connexion->getServer(), 0, message);
+		}
+		return true ;
 	}
 	else
 	{
-		return NULL;
+		return false;
 	}
 }
 
@@ -95,22 +105,17 @@ void Chat::threadChat(void* arguments)
 		if(!chat->isEmpty())
 		{
 			ENetEvent packet = chat->getPacket();
-			charTypePacketT *data = (charTypePacketT *) packet.packet->data ;
-			ENetPacket * message = NULL;
+			CHATTYPEPACKET *data = (CHATTYPEPACKET *) packet.packet->data ;
 			switch(data->typeChat)
 			{
 			case ALLMESSAGE :
-				message = chat->messageToAll(&packet);
+				chat->messageToAll(&packet);
 				break;
 			case PERSOMESSAGE :
-				message = chat->messageToPerso(&packet);
+				chat->messageToPerso(&packet);
 				break;
 			default:
 				break;
-			}
-			if(message != NULL)
-			{
-				chat->connexion->sendPacket(chat->connexion->getServer(), 0, message);
 			}
 			chat->connexion->deletePacket(packet.packet);
 		}

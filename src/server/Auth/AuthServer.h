@@ -16,9 +16,10 @@
 #define AUTHSERVER_H_
 
 #include "Config/Configuration.h"
-#include "Logging/Log.h"
 #include "SignalHandler/SignalHandler.h"
 
+#include "Session/GestionnaireSession.h"
+#include "Compte/GestionnaireCompte.h"
 #include "Authentification/Authentification.h"
 
   /*! \class authServer
@@ -67,8 +68,12 @@ private:
 	SignalHandler * signalHandler;
 	Configuration * config ;
 	Log * log;
+
+	GestionnaireSession * gestionnaireSession ;
+	GestionnaireCompte * gestionnaireCompte ;
 	Authentification * auth;
-	Connexion * connexion;
+	Connexion * connexiontToClient;
+	LoginDatabase * connexionSQLRealms ;
 	ENetAddress adresse;
 
 };

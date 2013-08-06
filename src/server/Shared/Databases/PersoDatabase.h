@@ -16,7 +16,6 @@
 #define LOGINDATABASE_H_
 
 #include "PostgreSQLInterface/connexionDatabase.h"
-#include "Structure/Server.h"
 #include "Singleton/Singleton.h"
 
 enum LoginDatabaseStatements

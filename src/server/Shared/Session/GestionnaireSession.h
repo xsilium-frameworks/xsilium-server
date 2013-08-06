@@ -14,6 +14,8 @@
 
 #include "Connexion/Connexion.h"
 #include "Session/Session.h"
+#include "Logging/Log.h"
+
 
 #include "Singleton/Singleton.h"
 
@@ -65,6 +67,7 @@ private:
 
 
     Connexion * connexion;
+    Log * log;
 
 	boost::mutex mutexSession;
 

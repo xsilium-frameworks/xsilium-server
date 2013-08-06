@@ -21,7 +21,11 @@ typedef struct structure_opcode
 	uint8_t   opcode;
 } structure_opcodeT ;
 
-
+typedef struct structure_erreur
+{
+	structure_opcodeT structure_opcode;
+    int   error; /*!< correspond a l'erreur qui a ete detecter */
+}structure_erreurT;
 
 
 
