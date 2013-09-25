@@ -96,7 +96,7 @@ int  Authentification::HandleLogonChallenge(ENetEvent * packet,bool cppUnit)
 		messageErreur.authTypePacket.typeAuth = ID_ERREUR ;
 		messageErreur.errorID = ID_CONNECTION_BANNED;
 
-		log->Write(Log::INFO,"[AuthChallenge] L'ip %s est bannie !",session->getSessionID()->host);
+		log->Write(Log::INFO,"[AuthChallenge] L'ip %d est bannie !",session->getSessionID()->host);
 		if(!cppUnit)
 		{
 			ENetPacket * message = enet_packet_create ((const void *)&messageErreur,sizeof(messageErreur) + 1,ENET_PACKET_FLAG_RELIABLE);
@@ -108,7 +108,6 @@ int  Authentification::HandleLogonChallenge(ENetEvent * packet,bool cppUnit)
 	session->ajoutIPTemps();
 
 	string login = (const char *) data->login ;
-	//std::string login(data->login);
 	if (data->login_len != strlen(login.c_str()))
 	{
 		log->Write(Log::ERROR,"Le nom ne n'a pas la meme longueur que login_len");
