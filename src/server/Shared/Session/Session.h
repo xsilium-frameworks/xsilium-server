@@ -13,7 +13,6 @@
 #include "Compte/Compte.h"
 
 #include "Databases/LoginDatabase.h"
-#include "Compte/GestionnaireCompte.h"
 
 
 /*
@@ -49,7 +48,6 @@ private:
 	time_t unbandate;
 	int ipNBEssai;
     LoginDatabase * compteDB ;
-    GestionnaireCompte * gestionnaireCompte;
     Compte * compte;
 };
 

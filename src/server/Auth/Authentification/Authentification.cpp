@@ -314,7 +314,8 @@ int Authentification::HandleLogonProof(ENetEvent * packet,bool cppUnit)
 
 	AUTHPACKET_P_C messageValidation;
 	messageValidation.authTypePacket.structure_opcode.cmd = XSILIUM_AUTH;
-	messageValidation.authTypePacket.structure_opcode.opcode = ID_REPONSE ;
+	messageValidation.authTypePacket.structure_opcode.opcode = ID_AUTH ;
+	messageValidation.authTypePacket.typeAuth = ID_REPONSE;
 	if(!cppUnit)
 	{
 		ENetPacket * message = enet_packet_create ((const void *)&messageValidation,sizeof(messageValidation) + 1,ENET_PACKET_FLAG_RELIABLE);

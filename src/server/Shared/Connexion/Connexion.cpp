@@ -79,7 +79,6 @@ bool Connexion::deleteConnexion()
 	endThread = true;
 	thread.join();
 	return true;
-
 }
 
 ENetEvent * Connexion::getPacket()

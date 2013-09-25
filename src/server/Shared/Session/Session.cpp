@@ -11,7 +11,6 @@
 Session::Session() {
 	peer = NULL;
 	compteDB = LoginDatabase::getInstance();
-	gestionnaireCompte = GestionnaireCompte::getInstance();
 	unbandate = 0;
 	ipNBEssai = 0;
 	compte = NULL;
@@ -19,11 +18,6 @@ Session::Session() {
 }
 
 Session::~Session() {
-
-	if(compte != NULL)
-	{
-		gestionnaireCompte->supprimerCompte(compte->getNomCompte()->c_str());
-	}
 }
 
 void Session::setSessionPeer(ENetPeer * peer)

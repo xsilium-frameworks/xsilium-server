@@ -16,6 +16,8 @@
 #include "Session/Session.h"
 #include "Logging/Log.h"
 
+#include "Compte/GestionnaireCompte.h"
+
 
 #include "Singleton/Singleton.h"
 
@@ -68,6 +70,7 @@ private:
 
     Connexion * connexion;
     Log * log;
+    GestionnaireCompte * gestionnaireCompte;
 
 	boost::mutex mutexSession;
 

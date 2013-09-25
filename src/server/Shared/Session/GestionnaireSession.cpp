@@ -11,6 +11,7 @@
 GestionnaireSession::GestionnaireSession() {
 	connexion = NULL;
 	log = Log::getInstance();
+	gestionnaireCompte = GestionnaireCompte::getInstance();
 }
 
 GestionnaireSession::~GestionnaireSession() {
@@ -55,6 +56,10 @@ void GestionnaireSession::supprimerSession()
 	{
 		boost::mutex::scoped_lock lock(mutexSession);
 		log->Write(Log::INFO,"deconnexion de la Session avec IP : %d, Port : %d ",packet->peer->address.host,packet->peer->address.port);
+		if((*session)->getCompte() != NULL)
+		{
+			gestionnaireCompte->supprimerCompte((*session)->getCompte()->getNomCompte()->c_str());
+		}
 		delete *session;
 		session = listOfSession.erase(session);
 	}

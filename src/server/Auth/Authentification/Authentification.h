@@ -103,9 +103,6 @@ private:
 	ListServeur * listServeur;
 
 
-	string connectionString;
-
-
 };
 
 #endif /* AUTHENTIFICATION_H_ */

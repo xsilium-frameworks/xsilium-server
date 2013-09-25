@@ -139,7 +139,7 @@ void Compte::setNombreEssai(uint8_t essai)
 {
 	pqxx::result resultsql;
 	nbPassage = essai;
-	realms->executionPrepareStatement(REALMS_UPD_ACCOUNT_MAJERREURSAUTH,2,ToString(idCompte).c_str(),ToString(nbPassage).c_str());
+	realms->executionPrepareStatement(REALMS_UPD_ACCOUNT_MAJERREURSAUTH,2,ToString(idCompte).c_str(),ToString((int)nbPassage).c_str());
 }
 
 uint8_t Compte::getNombreEssai()
