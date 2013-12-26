@@ -14,6 +14,10 @@ set(UnitTests_SRCS
 TestRunnerClient.cpp
 )
 
+SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage -fPIC")
+
+add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
+
 add_executable(UnitTester ${UnitTests_SRCS} ${sources_Test} )
 TARGET_LINK_LIBRARIES(UnitTester 
 	${CPPUNIT_LIBRARY}
