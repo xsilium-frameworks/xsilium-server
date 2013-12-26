@@ -26,6 +26,7 @@ TARGET_LINK_LIBRARIES(UnitTester
 	SHARED
 	KS	
 	Auth
+	gcov
 )
 
 install(TARGETS UnitTester DESTINATION test)
