@@ -20,14 +20,6 @@ gestionnaireTicket::~gestionnaireTicket() {
 }
 
 
-/*Pour recevoir les tickets*/
-ENetEvent  gestionnaireTicket::getPacket()
-{
-	ENetEvent  packet = ListOfTicketPacket.front();
-	ListOfTicketPacket.pop();
-	return packet;
-}
-
 void gestionnaireTicket::ajouterTicket()
 {
 

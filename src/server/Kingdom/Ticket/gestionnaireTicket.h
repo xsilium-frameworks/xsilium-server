@@ -19,9 +19,12 @@ class gestionnaireTicket {
 public:
 	gestionnaireTicket();
 	virtual ~gestionnaireTicket();
-	void ajouterTicket();
 
-	ENetEvent getPacket();
+	void run();
+
+	void stopThread();
+
+	void ajouterTicket();
 
 private:
 
