@@ -1,6 +1,6 @@
 ENABLE_TESTING()
 
-#include(CodeCoverage)
+include(CodeCoverage)
 
 file(GLOB_RECURSE sources_Test ../server/*Test.cpp ../server/*Test.h)
 
