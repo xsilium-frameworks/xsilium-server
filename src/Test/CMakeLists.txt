@@ -1,5 +1,7 @@
 ENABLE_TESTING()
 
+#include(CodeCoverage)
+
 file(GLOB_RECURSE sources_Test ../server/*Test.cpp ../server/*Test.h)
 
 
@@ -14,10 +16,6 @@ set(UnitTests_SRCS
 TestRunnerClient.cpp
 )
 
-SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage -fPIC")
-
-add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
-
 add_executable(UnitTester ${UnitTests_SRCS} ${sources_Test} )
 TARGET_LINK_LIBRARIES(UnitTester 
 	${CPPUNIT_LIBRARY}
@@ -26,7 +24,15 @@ TARGET_LINK_LIBRARIES(UnitTester
 	SHARED
 	KS	
 	Auth
-	gcov
 )
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+    SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+    target_link_libraries(UnitTester gcov)
+endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+	setup_target_for_coverage(UnitTester_coverage UnitTester coverage)
+endif()
 
 install(TARGETS UnitTester DESTINATION test)
