@@ -32,7 +32,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-	setup_target_for_coverage(UnitTester_coverage UnitTester coverage)
+	SETUP_TARGET_FOR_COVERAGE_COBERTURA(UnitTester_coverage UnitTester coverage)
 endif()
 
 install(TARGETS UnitTester DESTINATION test)
