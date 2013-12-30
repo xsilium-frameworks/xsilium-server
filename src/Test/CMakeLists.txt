@@ -1,6 +1,11 @@
 ENABLE_TESTING()
 
-include(CodeCoverage)
+if(CMAKE_COMPILER_IS_GNUCXX)
+    include(CodeCoverage)
+    SETUP_TARGET_FOR_COVERAGE_COBERTURA(UnitTester_coverage UnitTester coverage)
+	SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+    SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+endif()
 
 file(GLOB_RECURSE sources_Test ../server/*Test.cpp ../server/*Test.h)
 
@@ -27,12 +32,8 @@ TARGET_LINK_LIBRARIES(UnitTester
 )
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
     target_link_libraries(UnitTester gcov)
 endif()
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-	SETUP_TARGET_FOR_COVERAGE_COBERTURA(UnitTester_coverage UnitTester coverage)
-endif()
 
 install(TARGETS UnitTester DESTINATION test)
