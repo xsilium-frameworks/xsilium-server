@@ -13,18 +13,19 @@ public:
 
 		Connexion *connexiontToClient = new Connexion();
 		adresse.host = ENET_HOST_ANY;
-		adresse.port  = (enet_uint16) 60004;
+		adresse.port  = (enet_uint16) 60000;
 
 		flagTest = connexiontToClient->createConnexion(adresse,100);
 
 		if(!flagTest)
-			CPPUNIT_ASSERT(false);
+			CPPUNIT_ASSERT(flagTest);
+		else
+		{
+			flagTest = connexiontToClient->deleteConnexion();
 
-		flagTest = connexiontToClient->deleteConnexion();
-
-		if(!flagTest)
-			CPPUNIT_ASSERT(false);
-
+			if(!flagTest)
+				CPPUNIT_ASSERT(flagTest);
+		}
 		delete connexiontToClient;
 	}
 
