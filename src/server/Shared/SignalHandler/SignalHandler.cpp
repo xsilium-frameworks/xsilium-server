@@ -63,6 +63,6 @@ void SignalHandler::setupSignalHandlers()
 {
     if (signal((int) SIGINT, SignalHandler::exitSignalHandler) == SIG_ERR)
     {
-       // throw SignalException("!!!!! Error setting up signal handlers !!!!!");
+        throw SignalException("!!!!! Error setting up signal handlers !!!!!");
     }
 }
