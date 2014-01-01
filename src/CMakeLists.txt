@@ -9,6 +9,11 @@ include_directories(
 	${Boost_INCLUDE_DIR}
 )	
 
+if(CMAKE_COMPILER_IS_GNUCXX)
+	SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+    SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+endif()
+
 
 add_subdirectory(server)
 add_subdirectory(Test)
