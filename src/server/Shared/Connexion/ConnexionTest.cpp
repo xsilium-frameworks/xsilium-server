@@ -5,33 +5,49 @@
 #include "Connexion.h"
 
 class ConnexionTest : public CppUnit::TestFixture {
+
+private:
+	Connexion * connexiontToClient;
+
 public:
-	void createConnexionDeconnexion()
+    //~ Call before tests
+    void setUp(void)
+    {
+    	connexiontToClient = new Connexion();
+    }
+    //~ Call after tests
+    void tearDown(void)
+    {
+    	delete connexiontToClient;
+    }
+
+	void createConnexion()
 	{
 		ENetAddress adresse;
-		bool flagTest = true;
+		bool flagTest = false;
 
-		Connexion *connexiontToClient = new Connexion();
+
 		adresse.host = ENET_HOST_ANY;
 		adresse.port  = (enet_uint16) 60000;
 
 		flagTest = connexiontToClient->createConnexion(adresse,100);
 
-		if(!flagTest)
-			CPPUNIT_ASSERT(flagTest);
-		else
-		{
-			flagTest = connexiontToClient->deleteConnexion();
-
-			if(!flagTest)
-				CPPUNIT_ASSERT(flagTest);
-		}
-		delete connexiontToClient;
+		CPPUNIT_ASSERT(flagTest);
 	}
 
+	void deleteConnexion()
+	{
+		bool flagTest = false;
+		flagTest = connexiontToClient->deleteConnexion();
+		CPPUNIT_ASSERT(flagTest);
+	}
+
+
 	CPPUNIT_TEST_SUITE(ConnexionTest);
-	CPPUNIT_TEST(createConnexionDeconnexion);
+	CPPUNIT_TEST(createConnexion);
+	CPPUNIT_TEST(deleteConnexion);
 	CPPUNIT_TEST_SUITE_END();
+
 
 };
 CPPUNIT_TEST_SUITE_REGISTRATION(ConnexionTest);
