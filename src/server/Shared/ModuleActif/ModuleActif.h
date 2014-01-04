@@ -13,7 +13,6 @@
 #include "Opcode/Opcode.h"
 
 #include <queue>
-#include <boost/thread.hpp>
 
 #define NUM_THREAD_MODULE 4
 

@@ -18,7 +18,6 @@
 
 #include "StructurePacket/StructureAuth.h"
 #include "Config/Configuration.h"
-#include "Connexion/Connexion.h"
 #include "ListServeur/ListServeur.h"
 #include "Session/GestionnaireSession.h"
 

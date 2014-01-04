@@ -9,9 +9,6 @@
 #ifndef GESTIONNAIRESESSION_H_
 #define GESTIONNAIRESESSION_H_
 
-#include <stdio.h>
-#include <vector>
-
 #include "Connexion/Connexion.h"
 #include "Session/Session.h"
 #include "Logging/Log.h"
