@@ -10,7 +10,6 @@
 #define MODULEACTIF_H_
 
 #include "Connexion/Connexion.h"
-#include "Opcode/Opcode.h"
 
 #include <queue>
 

@@ -9,10 +9,6 @@
 #ifndef GESTIONNAIRECOMPTE_H_
 #define GESTIONNAIRECOMPTE_H_
 
-#include <stdio.h>
-#include <vector>
-
-#include <string>
 
 #include "Compte/Compte.h"
 #include "Logging/Log.h"
