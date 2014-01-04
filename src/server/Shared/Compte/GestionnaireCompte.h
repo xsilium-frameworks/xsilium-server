@@ -14,8 +14,6 @@
 #include "Logging/Log.h"
 
 
-#include "Singleton/Singleton.h"
-
 /*
  *
  */

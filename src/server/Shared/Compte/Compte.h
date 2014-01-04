@@ -10,7 +10,6 @@
 #define COMPTE_H_
 
 #include <stdio.h>
-#include <string>
 
 #include "Databases/LoginDatabase.h"
 
