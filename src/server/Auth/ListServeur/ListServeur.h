@@ -16,8 +16,7 @@
 #ifndef LISTSERVEUR_H_
 #define LISTSERVEUR_H_
 
-#include <string>
-#include "time.h"
+
 #include <map>
 #include "Databases/LoginDatabase.h"
 
