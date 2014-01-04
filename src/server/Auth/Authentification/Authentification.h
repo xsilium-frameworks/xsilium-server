@@ -16,15 +16,11 @@
 #ifndef AUTHENTIFICATION_H_
 #define AUTHENTIFICATION_H_
 
-#include <stdio.h>
-#include <vector>
-
 #include "StructurePacket/StructureAuth.h"
 #include "Config/Configuration.h"
 #include "Connexion/Connexion.h"
 #include "ListServeur/ListServeur.h"
 #include "Session/GestionnaireSession.h"
-#include "Compte/GestionnaireCompte.h"
 
 #include "ModuleActif/ModuleActif.h"
 

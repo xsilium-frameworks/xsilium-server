@@ -15,11 +15,7 @@
 #ifndef AUTHSERVER_H_
 #define AUTHSERVER_H_
 
-#include "Config/Configuration.h"
 #include "SignalHandler/SignalHandler.h"
-
-#include "Session/GestionnaireSession.h"
-#include "Compte/GestionnaireCompte.h"
 #include "Authentification/Authentification.h"
 
   /*! \class authServer

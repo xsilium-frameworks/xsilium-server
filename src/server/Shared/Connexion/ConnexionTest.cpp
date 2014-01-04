@@ -13,12 +13,10 @@ public:
     //~ Call before tests
     void setUp(void)
     {
-    	connexiontToClient = new Connexion();
     }
     //~ Call after tests
     void tearDown(void)
     {
-    	delete connexiontToClient;
     }
 
 	void createConnexion()
@@ -27,6 +25,7 @@ public:
 		bool flagTest = false;
 
 
+		connexiontToClient = new Connexion();
 		adresse.host = ENET_HOST_ANY;
 		adresse.port  = (enet_uint16) 60000;
 
@@ -39,6 +38,8 @@ public:
 	{
 		bool flagTest = false;
 		flagTest = connexiontToClient->deleteConnexion();
+
+		delete connexiontToClient;
 		CPPUNIT_ASSERT(flagTest);
 	}
 
