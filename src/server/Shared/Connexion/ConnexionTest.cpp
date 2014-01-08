@@ -4,6 +4,7 @@
 
 #include "Connexion.h"
 
+
 class ConnexionTest : public CppUnit::TestFixture {
 
 private:
@@ -37,7 +38,7 @@ public:
 	void deleteConnexion()
 	{
 		bool flagTest = false;
-		flagTest = connexiontToClient->deleteConnexion();
+		//flagTest = connexiontToClient->deleteConnexion();
 
 		delete connexiontToClient;
 		CPPUNIT_ASSERT(flagTest);
