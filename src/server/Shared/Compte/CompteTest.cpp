@@ -59,17 +59,56 @@ public:
 		CPPUNIT_ASSERT(compte->getNomCompte()->compare("Joda") == false);
 	}
 
+	void testLockCompte()
+	{
+		compte = new Compte();
+		compte->chargementCompte("Joda");
+		compte->lockCompte();
+		CPPUNIT_ASSERT(compte->islocked() == true);
+	}
+
+	void testUnLockCompte()
+	{
+		compte = new Compte();
+		compte->chargementCompte("Joda");
+		compte->unlockCompte();
+		CPPUNIT_ASSERT(compte->islocked() == false);
+	}
+
+	void testGetNiveauCompte()
+	{
+		compte = new Compte();
+		compte->chargementCompte("Joda");
+		CPPUNIT_ASSERT(compte->getNiveauCompte() == 0);
+	}
+
+	void testGetEtapeConnextion()
+	{
+		compte = new Compte();
+		compte->chargementCompte("Joda");
+		compte->setEtapeConnexion(1);
+		CPPUNIT_ASSERT(compte->getEtapeConnextion() == 1);
+	}
+
+	void testSetNombreEssai()
+	{
+		compte = new Compte();
+		compte->chargementCompte("Joda");
+		compte->setNombreEssai(1);
+		CPPUNIT_ASSERT(true);
+	}
+
+	void testGetNombreEssai()
+	{
+		compte = new Compte();
+		compte->chargementCompte("Joda");
+		CPPUNIT_ASSERT(compte->getNombreEssai() == 1);
+	}
+
+
 	/*
-	std::string * getMDPSHA();
-
-	void lockCompte();
-	void unlockCompte();
-	bool islocked();
-
 	void setLastIP(std::string lastIP);
 	std::string * getLastIP();
-
-	uint8_t getNiveauCompte();
 
 	void banCompte(time_t unbandate,const char * raison,int bannedby);
 	void unbanCompte();
@@ -77,19 +116,19 @@ public:
 
 	time_t * getAccountUnBanDate();
 
-	void setEtapeConnexion(uint8_t etape );
-	uint8_t getEtapeConnextion();
-
-	void setNombreEssai(uint8_t essai);
-	uint8_t getNombreEssai();
-
-*/
+	 */
 
 	CPPUNIT_TEST_SUITE(CompteTest);
 	CPPUNIT_TEST(testUserErreur);
 	CPPUNIT_TEST(testUserOk);
 	CPPUNIT_TEST(testGetIdLogin);
 	CPPUNIT_TEST(testGetNomCompte);
+	CPPUNIT_TEST(testLockCompte);
+	CPPUNIT_TEST(testUnLockCompte);
+	CPPUNIT_TEST(testGetNiveauCompte);
+	CPPUNIT_TEST(testGetEtapeConnextion);
+	CPPUNIT_TEST(testSetNombreEssai);
+	CPPUNIT_TEST(testGetNombreEssai);
 	CPPUNIT_TEST_SUITE_END();
 
 
