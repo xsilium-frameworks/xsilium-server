@@ -23,7 +23,7 @@ public:
 	void setUp(void)
 	{
 		realms = LoginDatabase::getInstance();
-		realms->connexionDB("85.25.143.49;5432;Xsilium;Xsilium;Developpement");
+		realms->connexionDB("192.168.1.2;5432;Xsilium;Xsilium;Developpement");
 	}
 	//~ Call after tests
 	void tearDown(void)
