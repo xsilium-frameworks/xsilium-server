@@ -37,7 +37,7 @@ public:
 
 	void deleteConnexion()
 	{
-		bool flagTest = true;
+		bool flagTest = false;
 		//flagTest = connexiontToClient->deleteConnexion();
 
 		delete connexiontToClient;
