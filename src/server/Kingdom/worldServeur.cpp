@@ -55,7 +55,10 @@ worldServeur::~worldServeur() {
 }
 /*!
  *  \brief run
- *
+ *	Démmarrage du worldServeur (thread):
+ *		-> chargement des config
+ *		-> inscription dans les Logs
+ *		-> démarrage du chat()
  *  \param
  */
 void worldServeur::run()
@@ -64,24 +67,39 @@ void worldServeur::run()
 	try
 		{
 			signalHandler->setupSignalHandlers();
+			//Si chargement ne se fait pas correctement return null.
 			if (!config->Load("../etc/Kingdom.config"))
 			{
 				return;
 			}
 			int logLevel;
 
+			//Récupère le niveau de log :ERROR, WARNING, INFO, CONFIG, DEBUG
 			config->Get("LogLevel",logLevel);
+
+			//Démarre les logs avec les priorité et écrit dans le fichier Kingdom
 			log->Start((Log::Priority)logLevel,"Kingdom.log");
+
+			/**Puis inscrit le message suivant : "Demarrage du gestionnaire de royaume"
+			 * log->Write => Inscrit | Log::DEBUG => type dd'information | "[Le message]"
+			**/
 			log->Write(Log::DEBUG,"Demarrage du gestionnaire de royaume");
 
 			log->Write(Log::DEBUG,"Demarrage du gestionnaire de session");
+
+			//Récupère l'instanciation du GestionnaireSession
 			gestionnaireSession = GestionnaireSession::getInstance();
+			//?? A voir
 			gestionnaireSession->setConnexion(connexiontToClient);
 
 			log->Write(Log::DEBUG,"Demarrage du systeme de Tchat");
+			//Démarrage du chat
 			chat->run();
 
 			log->Write(Log::DEBUG,"Demarrage du systeme de Zone");
+
+			//si le gestionnaireZone ne démarre pas correctement
+			//Inscrit dans les log puis on return null.
 			if(!gestionnaireZone->run())
 			{
 				log->Write(Log::DEBUG,"erreur lors de l'ouverture du socket pour les zones");
