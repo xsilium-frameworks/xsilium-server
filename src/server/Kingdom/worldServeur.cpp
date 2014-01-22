@@ -7,7 +7,19 @@
  */
 
 #include "worldServeur.h"
-
+    /*!
+     *  \brief WorldServer
+     *
+     *  Constructeur de la classe worldServeur.
+     *  	- Charge les configs (Singleton)
+     *  	- Instancie:
+     *  			-> les Logs (Singleton)
+     *  			-> la gestion de connexion
+     *  			-> Gestionnaire de zone (Singleton)
+     *  				-->setConnexionClient ( a voir )
+     *
+     *  \param
+     */
 worldServeur::worldServeur() {
 	config = Configuration::getInstance();
 	log = Log::getInstance();
@@ -20,7 +32,19 @@ worldServeur::worldServeur() {
 	signalHandler = NULL;
 
 }
-
+/*!
+ *  \brief ~worldServeur
+ * Destructeur de la classe worldServeur
+ *	Supprime :
+ *		->la connexionToClient
+ *		->chat
+ *	Fait appel au destructeur de :
+ *		-> Configuration
+ *		-> Log
+ *		-> GestionnaireSession
+ *		-> GestionnaireZone
+ *  \param
+ */
 worldServeur::~worldServeur() {
 	delete connexiontToClient;
 	delete chat;
@@ -29,7 +53,11 @@ worldServeur::~worldServeur() {
 	GestionnaireSession::DestroyInstance();
 	GestionnaireZone::DestroyInstance();
 }
-
+/*!
+ *  \brief run
+ *
+ *  \param
+ */
 void worldServeur::run()
 {
 	int serverPort, numClient ;

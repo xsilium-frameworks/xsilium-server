@@ -13,7 +13,8 @@
    /*!
      *  \brief Singleton
      *
-     * ??
+     * Permet une instanciation unique
+     * _singleton contient l'instance
      *
      *  \param
      */
@@ -29,6 +30,14 @@ public:
 		return _singleton ;
 	}
 
+	   /*!
+	     *  \brief DestroyInstance
+	     *
+	     * Permet de détruire l'instance
+	     * et donc de mettre _singleton à null
+	     *
+	     *  \param
+	     */
 	static void DestroyInstance()
 	{
 		if (NULL != _singleton)
