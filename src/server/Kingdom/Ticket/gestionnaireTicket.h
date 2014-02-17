@@ -15,16 +15,18 @@
 #include "StructurePacket/StructureTicket.h"
 
 
-class gestionnaireTicket {
+class GestionnaireTicket : public ModuleActif {
+
 public:
-	gestionnaireTicket();
-	virtual ~gestionnaireTicket();
+	GestionnaireTicket(Connexion * connexion);
+	virtual ~GestionnaireTicket();
 
 	void run();
 
 	void stopThread();
 
-	void ajouterTicket();
+	bool ajouterTicket(ENetEvent * packet, bool cppUnit = false);
+	bool supprimerTicket(ENetEvent * packet, bool cppUnit = false);
 
 private:
 
