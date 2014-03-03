@@ -9,15 +9,20 @@
 #ifndef STRUCTURECHAT_H_
 #define STRUCTURECHAT_H_
 
-
-typedef struct TicketPACKET_C
+typedef struct TICKETTYPEPACKET
 {
 	structure_opcodeT structure_opcode;
     uint8_t           typeTicket;
+}ticketTypePacketT;
+
+typedef struct TICKETPACKET_C
+{
+	ticketTypePacketT charTypePacket;
     char      perso[64];
     int		  idTicket;
     char      message[512];
-} sTicketPACKET_C;
+} sTicketPacket_C;
+
 
 
 

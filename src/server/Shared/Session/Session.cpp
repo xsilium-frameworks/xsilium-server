@@ -111,6 +111,8 @@ void Session::supprimeIPTemps()
 
 	enet_address_get_host_ip(&peer->address,hostip,sizeof(hostip));
 	compteDB->executionPrepareStatement(REALMS_DEL_IPTEMPORAIRE_SUPPRLIGNEIP,1,hostip);
+	ipNBEssai = 0;
+
 
 }
 

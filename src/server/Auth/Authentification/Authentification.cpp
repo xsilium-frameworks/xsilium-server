@@ -202,6 +202,7 @@ int  Authentification::HandleLogonChallenge(ENetEvent * packet,bool cppUnit)
 			log->Write(Log::INFO,"[AuthChallenge] Les IPs correspondent ");
 	}
 
+	session->supprimeIPTemps();
 	compte->setEtapeConnexion(2);
 
 	AUTHPACKET_LC_S messageRetour;

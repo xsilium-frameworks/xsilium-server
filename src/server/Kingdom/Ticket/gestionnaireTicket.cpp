@@ -9,13 +9,13 @@
 
 #include "gestionnaireTicket.h"
 
-GestionnaireTicket::gestionnaireTicket(Connexion * connexion) : ModuleActif(connexion) {
+GestionnaireTicket::GestionnaireTicket(Connexion * connexion) : ModuleActif(connexion) {
 	endThread = false;
 	gestionnaireSession = GestionnaireSession::getInstance();
 }
 
-GestionnaireTicket::~gestionnaireTicket() {
-//	connexion->removelistenneur((XSILIUM_KINGDOM * 10 ) + ID_CHAT);
+GestionnaireTicket::~GestionnaireTicket() {
+	connexion->removelistenneur((XSILIUM_KINGDOM * 10 ) + ID_TICKET);
 }
 
 void GestionnaireTicket::stopThread()
@@ -27,10 +27,10 @@ void GestionnaireTicket::stopThread()
 
 void GestionnaireTicket::run()
 {
-	//connexion->addlistenneur((XSILIUM_KINGDOM * 10 )+ ID_CHAT,boost::bind(&Chat::setPacket, this));
+	connexion->addlistenneur((XSILIUM_KINGDOM * 10 )+ ID_TICKET,boost::bind(&GestionnaireTicket::setPacket, this));
 	for(uint8_t i = 0;i< NUM_THREAD_MODULE;i++)
 	{
-		groupThread.add_thread(new boost::thread(&Chat::threadTicket, (void *) this) );
+		groupThread.add_thread(new boost::thread(&GestionnaireTicket::threadTicket, (void *) this) );
 	}
 }
 
@@ -43,15 +43,15 @@ void GestionnaireTicket::threadTicket(void* arguments)
 		if(!gestionnaireTicket->isEmpty())
 		{
 			ENetEvent packet = gestionnaireTicket->getPacket();
-			CHATTYPEPACKET *data = (CHATTYPEPACKET *) packet.packet->data ;
-			switch(data->typeChat)
+			TICKETTYPEPACKET *data = (TICKETTYPEPACKET *) packet.packet->data ;
+			switch(data->typeTicket)
 			{
-			case ALLMESSAGE :
+		//	case ALLMESSAGE :
 				//gestionnaireTicket->messageToAll(&packet);
-				break;
-			case PERSOMESSAGE :
+			//	break;
+	//		case PERSOMESSAGE :
 				//gestionnaireTicket->messageToPerso(&packet);
-				break;
+		//		break;
 			default:
 				break;
 			}

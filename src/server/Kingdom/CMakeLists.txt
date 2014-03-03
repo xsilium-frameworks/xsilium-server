@@ -3,6 +3,7 @@
 file(GLOB_RECURSE sources_Chat Chat/*.cpp Chat/*.h)
 file(GLOB_RECURSE sources_Mail Mail/*.cpp Mail/*.h)
 file(GLOB_RECURSE sources_Zone Zone/*.cpp Zone/*.h)
+file(GLOB_RECURSE sources_Ticket Ticket/*.cpp Ticket/*.h)
 file(GLOB sources_localdir *.cpp *.h)
 
 file(GLOB_RECURSE sources_Test *Test.cpp *Test.h)
@@ -16,6 +17,7 @@ set(kingdom_STAT_SRCS
   ${sources_Chat}
   ${sources_Mail}
   ${sources_Zone}
+  ${sources_Ticket}
 )
 
 list(REMOVE_ITEM kingdom_STAT_SRCS "${sources_Test}")
