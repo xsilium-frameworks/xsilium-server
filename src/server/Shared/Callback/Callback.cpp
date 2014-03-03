@@ -18,7 +18,7 @@ Callback::~Callback()
 	for (listenner=listOfListenner.begin(); listenner !=listOfListenner.end(); ++listenner)
 	{
 		delete listenner->second;
-		listOfListenner.erase(listenner);
+		listenner = listOfListenner.erase(listenner);
 	}
 }
 
