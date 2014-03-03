@@ -18,7 +18,7 @@ Callback::~Callback()
 	for (listenner=listOfListenner.begin(); listenner !=listOfListenner.end(); ++listenner)
 	{
 		delete listenner->second;
-		listenner = listOfListenner.erase(listenner);
+		listOfListenner.clear();
 	}
 }
 
@@ -57,7 +57,7 @@ bool Callback::removelistenneur(int identifiant)
 	if ( listenner != listOfListenner.end())
 	{
 		delete listenner->second;
-		listOfListenner.erase(listenner);
+		listOfListenner.clear();
 		return true ;
 	}
 	return false ;
