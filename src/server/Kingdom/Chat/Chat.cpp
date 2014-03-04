@@ -98,7 +98,7 @@ bool Chat::messageToPerso(ENetEvent * packet,bool cppUnit)
 
 void Chat::threadChat(void* arguments)
 {
-	Chat * chat = (Chat *) arguments ;
+	Chat * chat = static_cast<Chat *> (arguments) ;
 
 	while(!chat->endThread)
 	{
