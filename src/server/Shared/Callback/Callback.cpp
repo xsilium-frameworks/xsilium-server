@@ -57,7 +57,7 @@ bool Callback::removelistenneur(int identifiant)
 	if ( listenner != listOfListenner.end())
 	{
 		delete listenner->second;
-		listOfListenner.clear();
+		listOfListenner.erase(listenner);
 		return true ;
 	}
 	return false ;
