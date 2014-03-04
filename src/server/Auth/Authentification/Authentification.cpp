@@ -42,7 +42,7 @@ void Authentification::run()
 
 void Authentification::threadAuthentification(void * arguments)
 {
-	Authentification * authentification = (Authentification *) arguments ;
+	Authentification * authentification = static_cast<Authentification *>(arguments) ;
 
 	while(!authentification->endThread)
 	{
