@@ -44,7 +44,7 @@ bool Connexion::createConnexion(ENetAddress adresse,int MaxClient)
 
 void* Connexion::threadConnexion(void* arguments)
 {
-	Connexion * connexion = (Connexion *) arguments ;
+	Connexion * connexion = static_cast<Connexion *> (arguments) ;
 	connexion->packet = &connexion->eventServer;
 
 	while ((enet_host_service (connexion->server,&connexion->eventServer, 10) >= 0 ) && (connexion->endThread == false )  )
