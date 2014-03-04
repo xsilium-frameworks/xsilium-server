@@ -102,7 +102,7 @@ void Mail::messageMailContreRemb(sMailPacket_C *data)  //Message avec pièces jo
 
 void Mail::threadMail(void* arguments)
 {
-	Mail * mail = (Mail *) arguments ;
+	Mail * mail = static_cast<Mail *> (arguments) ;
 
 	while(!mail->endThread)
 	{
