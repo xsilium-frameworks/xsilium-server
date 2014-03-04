@@ -36,7 +36,7 @@ void GestionnaireTicket::run()
 
 void GestionnaireTicket::threadTicket(void* arguments)
 {
-	GestionnaireTicket * gestionnaireTicket = (GestionnaireTicket *) arguments ;
+	GestionnaireTicket * gestionnaireTicket = static_cast<GestionnaireTicket *> (arguments) ;
 
 	while(!gestionnaireTicket->endThread)
 	{
