@@ -37,7 +37,7 @@ void ListServeur::UpdateIfNeed()
     UpdateRealms();
 }
 
-void ListServeur::UpdateRealm(uint32_t ID, const std::string& name, const std::string& address, uint32_t port, uint8_t allowedSecurityLevel, uint32_t population, const std::string& build)
+/*void ListServeur::UpdateRealm(uint32_t ID, const std::string& name, const std::string& address, uint32_t port, uint8_t allowedSecurityLevel, uint32_t population, const std::string& build)
 {
     ///- Create new if not exist or update existed
 	Serveur& serveur = listeServeur[name];
@@ -49,7 +49,7 @@ void ListServeur::UpdateRealm(uint32_t ID, const std::string& name, const std::s
 	serveur.NBJoueur = population ;
 	serveur.version = build;
 
-}
+}*/
 
 void ListServeur::UpdateRealms()
 {
