@@ -22,11 +22,11 @@ authServer::authServer() {
 
 authServer::~authServer() {
 	delete auth;
+	GestionnaireSession::DestroyInstance();
+	GestionnaireCompte::DestroyInstance();
 	delete connexiontToClient ;
 	LoginDatabase::DestroyInstance();
 	Configuration::DestroyInstance();
-	GestionnaireSession::DestroyInstance();
-	GestionnaireCompte::DestroyInstance();
 	Log::DestroyInstance();
 
 
