@@ -27,7 +27,7 @@ void GestionnaireTicket::stopThread()
 
 void GestionnaireTicket::run()
 {
-	connexion->addlistenneur((XSILIUM_KINGDOM * 10 )+ ID_TICKET,boost::bind(&GestionnaireTicket::setPacket, this));
+	connexion->addlistenneur((XSILIUM_KINGDOM * 1000 )+ ID_TICKET,boost::bind(&GestionnaireTicket::setPacket, this));
 	for(uint8_t i = 0;i< NUM_THREAD_MODULE;i++)
 	{
 		groupThread.add_thread(new boost::thread(&GestionnaireTicket::threadTicket, (void *) this) );

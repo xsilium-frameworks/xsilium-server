@@ -15,7 +15,7 @@ Chat::Chat(Connexion * connexion) : ModuleActif(connexion) {
 }
 
 Chat::~Chat() {
-	connexion->removelistenneur((XSILIUM_KINGDOM * 10 ) + ID_CHAT);
+	connexion->removelistenneur((XSILIUM_KINGDOM * 1000 ) + ID_CHAT);
 }
 
 void Chat::stopThread()

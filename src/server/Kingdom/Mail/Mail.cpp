@@ -25,7 +25,7 @@ void Mail::stopThread()
 
 void Mail::run()
 {
-	connexion->addlistenneur((XSILIUM_KINGDOM * 10 )+ ID_MAIL,boost::bind(&Mail::setPacket, this));
+	connexion->addlistenneur((XSILIUM_KINGDOM * 1000 )+ ID_MAIL,boost::bind(&Mail::setPacket, this));
 	for(uint8_t i = 0;i< NUM_THREAD_MODULE;i++)
 	{
 		groupThread.add_thread(new boost::thread(&Mail::threadMail, (void *) this) );
