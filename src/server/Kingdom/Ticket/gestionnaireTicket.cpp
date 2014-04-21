@@ -15,7 +15,7 @@ GestionnaireTicket::GestionnaireTicket(Connexion * connexion) : ModuleActif(conn
 }
 
 GestionnaireTicket::~GestionnaireTicket() {
-	connexion->removelistenneur((XSILIUM_KINGDOM * 10 ) + ID_TICKET);
+	connexion->removelistenneur((XSILIUM_KINGDOM * 1000 ) + ID_TICKET);
 }
 
 void GestionnaireTicket::stopThread()

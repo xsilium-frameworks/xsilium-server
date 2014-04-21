@@ -27,7 +27,7 @@ void Chat::stopThread()
 
 void Chat::run()
 {
-	connexion->addlistenneur((XSILIUM_KINGDOM * 10 )+ ID_CHAT,boost::bind(&Chat::setPacket, this));
+	connexion->addlistenneur((XSILIUM_KINGDOM * 1000 )+ ID_CHAT,boost::bind(&Chat::setPacket, this));
 	for(uint8_t i = 0;i< NUM_THREAD_MODULE;i++)
 	{
 		groupThread.add_thread(new boost::thread(&Chat::threadChat, (void *) this) );

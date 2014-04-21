@@ -7,6 +7,7 @@ file(GLOB_RECURSE sources_Compte Compte/*.cpp Compte/*.h)
 file(GLOB_RECURSE sources_Database Databases/*.cpp Databases/*.h)
 file(GLOB_RECURSE sources_Logging Logging/*.cpp Logging/*.h)
 file(GLOB_RECURSE sources_ModuleActifs ModuleActif/*.cpp ModuleActif/*.h)
+file(GLOB_RECURSE sources_Serveur Serveur/*.cpp Serveur/*.h)
 file(GLOB_RECURSE sources_SignalHandler SignalHandler/*.cpp SignalHandler/*.h)
 file(GLOB_RECURSE sources_Singleton Singleton/*.cpp Singleton/*.h)
 file(GLOB_RECURSE sources_Semaphore Semaphore/*.cpp Semaphore/*.h)
@@ -35,6 +36,7 @@ set(shared_STAT_SRCS
   ${sources_ModuleActifs}
   ${sources_Session}
   ${sources_Compte}
+  ${sources_Serveur}
 )
 
 list(REMOVE_ITEM shared_STAT_SRCS "${sources_Test}")
@@ -50,6 +52,7 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/Databases
   ${CMAKE_CURRENT_SOURCE_DIR}/Logging
   ${CMAKE_CURRENT_SOURCE_DIR}/ModuleActifs
+  ${CMAKE_CURRENT_SOURCE_DIR}/Serveur
   ${CMAKE_CURRENT_SOURCE_DIR}/Databases/PostgreSQLInterface
   ${CMAKE_CURRENT_SOURCE_DIR}/SignalHandler
   ${CMAKE_CURRENT_SOURCE_DIR}/Singleton

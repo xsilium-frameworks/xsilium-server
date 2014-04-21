@@ -17,19 +17,11 @@
 #define LISTSERVEUR_H_
 
 
-#include <map>
-#include "Databases/LoginDatabase.h"
+#include "Serveur/Serveur.h"
 
-struct Serveur
-{
-    std::string address;
-    uint32_t port;
-    std::string name;
-    uint32_t m_ID;
-    uint8_t allowedSecurityLevel;
-    uint32_t NBJoueur;
-    std::string version;
-};
+
+#include <map>
+
 typedef std::map<std::string, Serveur> ListeServeur;
 
 
@@ -82,7 +74,6 @@ private:
 
 
 	void UpdateRealms();
-	void UpdateRealm(uint32_t ID, const std::string& name, const std::string& address, uint32_t port, uint8_t allowedSecurityLevel, uint32_t population, const std::string& build);
 
 };
 

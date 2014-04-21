@@ -33,9 +33,6 @@ void ListServeur::UpdateIfNeed()
 
     m_NextUpdateTime = time(NULL) + m_UpdateInterval;
 
-    // Clears Realm list
-    listeServeur.clear();
-
     // Get the content of the realmlist table in the database
     UpdateRealms();
 }
@@ -63,7 +60,8 @@ void ListServeur::UpdateRealms()
     {
     	for (int rownum=0; rownum < resultsql.size(); ++rownum)
     	 {
-    		UpdateRealm(resultsql[rownum][0].as<int>(),resultsql[rownum][1].as<std::string>(),resultsql[rownum][2].as<std::string>(),resultsql[rownum][3].as<int>(),resultsql[rownum][4].as<int>(),resultsql[rownum][5].as<int>(),resultsql[rownum][5].as<std::string>());
+
+    		//UpdateRealm(resultsql[rownum][0].as<int>(),resultsql[rownum][1].as<std::string>(),resultsql[rownum][2].as<std::string>(),resultsql[rownum][3].as<int>(),resultsql[rownum][4].as<int>(),resultsql[rownum][5].as<int>(),resultsql[rownum][5].as<std::string>());
     	 }
     }
 }

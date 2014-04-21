@@ -13,7 +13,7 @@ Mail::Mail(Connexion * connexion) : ModuleActif(connexion) {
 }
 
 Mail::~Mail() {
-	connexion->removelistenneur((XSILIUM_KINGDOM * 10 ) + ID_MAIL);
+	connexion->removelistenneur((XSILIUM_KINGDOM * 1000 ) + ID_MAIL);
 }
 
 void Mail::stopThread()
