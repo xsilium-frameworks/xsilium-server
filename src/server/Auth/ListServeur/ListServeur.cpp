@@ -12,6 +12,8 @@ ListServeur::ListServeur() {
 	realms = LoginDatabase::getInstance();
 	m_UpdateInterval = 0;
 	m_NextUpdateTime = time(NULL);
+
+	loadServeur();
 }
 
 ListServeur::~ListServeur() {
@@ -20,53 +22,65 @@ ListServeur::~ListServeur() {
 
 void ListServeur::Initialize(uint32_t updateInterval)
 {
-    m_UpdateInterval = updateInterval;
-    ///- Get the content of the realmlist table in the database
-    UpdateRealms();
+	m_UpdateInterval = updateInterval;
+	///- Get the content of the realmlist table in the database
+	UpdateRealms();
 }
 
 void ListServeur::UpdateIfNeed()
 {
-    // maybe disabled or updated recently
-    if (!m_UpdateInterval || m_NextUpdateTime > time(NULL))
-        return;
+	// maybe disabled or updated recently
+	if (!m_UpdateInterval || m_NextUpdateTime > time(NULL))
+		return;
 
-    m_NextUpdateTime = time(NULL) + m_UpdateInterval;
+	m_NextUpdateTime = time(NULL) + m_UpdateInterval;
 
-    // Get the content of the realmlist table in the database
-    UpdateRealms();
+	// Get the content of the realmlist table in the database
+	UpdateRealms();
 }
 
-/*void ListServeur::UpdateRealm(uint32_t ID, const std::string& name, const std::string& address, uint32_t port, uint8_t allowedSecurityLevel, uint32_t population, const std::string& build)
-{
-    ///- Create new if not exist or update existed
-	Serveur& serveur = listeServeur[name];
-
-	serveur.m_ID = ID;
-	serveur.address	=	address;
-	serveur.port = port;
-	serveur.allowedSecurityLevel = allowedSecurityLevel;
-	serveur.NBJoueur = population ;
-	serveur.version = build;
-
-}*/
-
-void ListServeur::UpdateRealms()
+void ListServeur::loadServeur()
 {
 	pqxx::result resultsql;
 	resultsql = realms->executionPrepareStatement(REALMS_SEL_LISTESERVEUR_RECUPLISTESERVEUR);
 
-    if (!resultsql.empty())
-    {
-    	for (int rownum=0; rownum < resultsql.size(); ++rownum)
-    	 {
+	if (!resultsql.empty())
+	{
+		for (int rownum=0; rownum < resultsql.size(); ++rownum)
+		{
+			Serveur * serveur = new Serveur(resultsql[rownum][0].as<int>());
+			ListOfServer[rownum] = serveur;
+		}
+	}
+}
 
-    		//UpdateRealm(resultsql[rownum][0].as<int>(),resultsql[rownum][1].as<std::string>(),resultsql[rownum][2].as<std::string>(),resultsql[rownum][3].as<int>(),resultsql[rownum][4].as<int>(),resultsql[rownum][5].as<int>(),resultsql[rownum][5].as<std::string>());
-    	 }
-    }
+void ListServeur::UpdateRealms()
+{
+	pqxx::result resultsql;
+	std::map<int,Serveur*>::iterator it;
+
+
+	resultsql = realms->executionPrepareStatement(REALMS_SEL_LISTESERVEUR_UPDATESERVEUR);
+	if (!resultsql.empty())
+	{
+		for (int rownum=0; rownum < resultsql.size(); ++rownum)
+		{
+			it = ListOfServer.find(rownum);
+			if (it != ListOfServer.end() )
+			{
+				it->second->ChargementServeur();
+			}
+			else
+			{
+				Serveur * serveur = new Serveur(resultsql[rownum][0].as<int>());
+				ListOfServer[rownum] = serveur;
+			}
+		}
+
+	}
 }
 
 ListeServeur ListServeur::getListServeur()
 {
-	return listeServeur;
+	return ListOfServer;
 }

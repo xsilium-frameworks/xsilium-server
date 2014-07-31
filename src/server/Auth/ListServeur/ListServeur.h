@@ -22,7 +22,7 @@
 
 #include <map>
 
-typedef std::map<std::string, Serveur> ListeServeur;
+typedef std::map<int,Serveur*> ListeServeur;
 
 
 class ListServeur {
@@ -65,12 +65,15 @@ public:
 	void UpdateIfNeed();
 	ListeServeur getListServeur();
 
+	void loadServeur();
+
 
 private:
-	ListeServeur listeServeur;
     uint32_t   m_UpdateInterval;
     time_t   m_NextUpdateTime;
     LoginDatabase * realms ;
+
+    ListeServeur ListOfServer;
 
 
 	void UpdateRealms();

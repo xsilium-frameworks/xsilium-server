@@ -83,11 +83,14 @@ void LoginDatabase::connexionDB(std::string infoString)
 
 	//								Liste Serveur
 	//requete listing des infos de la liste des serveurs
-		connexionDatabase::PrepareStatement(REALMS_SEL_LISTESERVEUR_RECUPLISTESERVEUR, "SELECT id_serveur, serveur_nom, domain_name, port, level_requis, online_personnage, version_client, serveur_online FROM compte.liste_serveur");
+		connexionDatabase::PrepareStatement(REALMS_SEL_LISTESERVEUR_RECUPLISTESERVEUR, "SELECT id_serveur FROM compte.liste_serveur");
 
 	//								Serveur
 	//requete recupere
-		connexionDatabase::PrepareStatement(REALMS_SEL_LISTESERVEUR_RECUPSERVEUR, "SELECT serveur_nom, domain_name, port, level_requis, online_personnage, version_client, serveur_online FROM compte.liste_serveur WHERE id_serveur = $1 ");
+		connexionDatabase::PrepareStatement(REALMS_SEL_LISTESERVEUR_RECUPSERVEUR, "SELECT serveur_nom, domain_name, port, level_requis, version_client, serveur_online FROM compte.liste_serveur WHERE id_serveur = $1 ");
+
+	//requete de changement
+		connexionDatabase::PrepareStatement(REALMS_SEL_LISTESERVEUR_UPDATESERVEUR, "SELECT id_serveur FROM compte.liste_serveur where update = true");
 
 
 	/*
