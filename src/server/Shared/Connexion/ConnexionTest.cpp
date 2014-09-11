@@ -11,6 +11,13 @@ private:
 	Connexion * connexiontToClient;
 
 public:
+	ConnexionTest()
+	{
+		connexiontToClient = 0;
+	};
+
+	virtual ~ConnexionTest(){};
+
     //~ Call before tests
     void setUp(void)
     {

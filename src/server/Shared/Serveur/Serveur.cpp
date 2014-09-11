@@ -10,6 +10,13 @@
 
 Serveur::Serveur(uint32_t IDServeur) {
 	m_ID = IDServeur;
+	address = '';
+	port = 0;
+	name = '';
+	allowedSecurityLevel = 0;
+	NBJoueur = 0;
+	version = '';
+	online = false;
 
 	realms = LoginDatabase::getInstance();
 }
@@ -25,15 +32,15 @@ bool Serveur::ChargementServeur()
 		return false;
 	}
 
-    name = resultsql[0][0].as<std::string>();
-    address = resultsql[0][1].as<std::string>();
-    port = resultsql[0][2].as<int>();
-    allowedSecurityLevel = resultsql[0][3].as<int>();
-    NBJoueur = resultsql[0][4].as<int>();
-    version = resultsql[0][5].as<std::string>() ;
-    online = resultsql[0][6].as<bool>() ;
+	name = resultsql[0][0].as<std::string>();
+	address = resultsql[0][1].as<std::string>();
+	port = resultsql[0][2].as<int>();
+	allowedSecurityLevel = resultsql[0][3].as<int>();
+	NBJoueur = resultsql[0][4].as<int>();
+	version = resultsql[0][5].as<std::string>() ;
+	online = resultsql[0][6].as<bool>() ;
 
-    return true;
+	return true;
 }
 
 Serveur::~Serveur() {

@@ -26,7 +26,6 @@ void connexionDatabase::connexionDB(std::string infoString)
 		Tokens tokens = utils.StrSplit(infoString, ";");
 		Tokens::iterator iter;
 		std::string host, port_or_socket, user, password , database ,connectionString ;
-		char const* unix_socket;
 
 		iter = tokens.begin();
 

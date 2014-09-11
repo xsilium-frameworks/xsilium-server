@@ -19,6 +19,14 @@ private:
 	Compte * compte;
 
 public:
+
+	CompteTest()
+	{
+		compte = 0;
+		realms = 0;
+	};
+	virtual ~CompteTest(){};
+
 	//~ Call before tests
 	void setUp(void)
 	{

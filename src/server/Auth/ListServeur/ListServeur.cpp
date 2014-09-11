@@ -82,5 +82,6 @@ void ListServeur::UpdateRealms()
 
 ListeServeur ListServeur::getListServeur()
 {
+	UpdateIfNeed();
 	return ListOfServer;
 }

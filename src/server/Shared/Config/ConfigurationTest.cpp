@@ -20,6 +20,13 @@ private:
 	Configuration * configuration;
 
 public:
+	ConfigurationTest()
+	{
+		configuration = 0;
+	}
+
+	virtual ~ConfigurationTest(){};
+
 	//~ Call before tests
 	void setUp(void)
 	{

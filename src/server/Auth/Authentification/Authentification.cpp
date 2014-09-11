@@ -327,9 +327,10 @@ int Authentification::HandleLogonProof(ENetEvent * packet,bool cppUnit)
 
 int Authentification::HandleRealmList(ENetEvent * packet,bool cppUnit)
 {
-	listServeur->UpdateIfNeed();
+	for (ListeServeur::const_iterator serveur= listServeur->getListServeur().begin(); serveur!=listServeur->getListServeur().end(); ++serveur)
+	{
 
-	ListeServeur::const_iterator test;
+	}
 
 	return true;
 }
