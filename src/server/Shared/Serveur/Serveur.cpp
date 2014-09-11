@@ -10,12 +10,9 @@
 
 Serveur::Serveur(uint32_t IDServeur) {
 	m_ID = IDServeur;
-	address = '';
 	port = 0;
-	name = '';
 	allowedSecurityLevel = 0;
 	NBJoueur = 0;
-	version = '';
 	online = false;
 
 	realms = LoginDatabase::getInstance();
