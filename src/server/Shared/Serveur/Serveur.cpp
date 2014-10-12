@@ -103,3 +103,13 @@ std::string Serveur::getVersion()
 {
 	return this->version;
 }
+
+void Serveur::setOnline(bool online)
+{
+	this->online = online;
+}
+
+bool Serveur::isOnline()
+{
+	return this->online;
+}

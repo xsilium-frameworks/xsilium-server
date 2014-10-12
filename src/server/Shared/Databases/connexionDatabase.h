@@ -1,5 +1,5 @@
 /*
- * connexionDatabase.h
+ * ConnexionDatabase.h
  *
  *  Created on: 29 juin 2012
  *      Author: mathieu
@@ -14,28 +14,28 @@
 #include <iostream>
 #include <stdarg.h>
 
-class connexionDatabase {
+class ConnexionDatabase {
 
 public:
 
 	/*!
-	 *  \brief connexionDatabase
+	 *  \briefCconnexionDatabase
 	 *
 	 *  brief Constructeur
 	 *
 	 *  \param
 	 */
 
-	connexionDatabase();
+	ConnexionDatabase();
 
 	/*!
-	 *  \brief ~connexionDatabase
+	 *  \brief ~ConnexionDatabase
 	 *
 	 *  brief Destructeur de la classe
 	 *
 	 *  \param
 	 */
-	virtual ~connexionDatabase();
+	virtual ~ConnexionDatabase();
 
 	/*!
 	 *  \brief connexionDB
@@ -44,7 +44,7 @@ public:
 	 *
 	 *  \param
 	 */
-	void connexionDB(std::string infoString);
+	void ConnexionDB(std::string infoString);
 
 
 	/*!
@@ -54,7 +54,7 @@ public:
 	 *
 	 *  \param
 	 */
-	void deconnexionDB();
+	void DeconnexionDB();
 
 	/*!
 	 *  \brief PrepareStatement
@@ -72,25 +72,14 @@ public:
 	 *
 	 *  \param
 	 */
-	pqxx::result executionPrepareStatement(int index,int nombreArgument = 0,...);
+	pqxx::result ExecutionPrepareStatement(int index,pqxx::work * transaction = NULL, int nombreArgument = 0,...);
 
 protected:
 	Utils utils;
 	pqxx::lazyconnection * conn;
-	pqxx::work * txn;
 	boost::mutex mutex1;
 	std::string suffix;
 
 };
-
-template <typename T>
-  std::string ToString ( T variable )
-  {
-     std::ostringstream ss;
-
-     ss << variable;
-
-     return ss.str();
-  }
 
 #endif /* CONNEXIONDATABASE_H_ */

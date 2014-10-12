@@ -33,6 +33,9 @@ enum Opcode
     //Partie message
     ID_MAIL,
 
+    //Partie Perso
+    ID_PERSO,
+
     ID_ALL
 };
 

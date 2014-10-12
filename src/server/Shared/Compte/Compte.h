@@ -68,7 +68,7 @@ private:
     uint8_t	etapeDeConnexion;
 
 
-    LoginDatabase * realms ;
+    static ConnectionDatabase * connexionDatabase;
 
 
 

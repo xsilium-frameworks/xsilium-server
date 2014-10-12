@@ -41,6 +41,9 @@ public:
 	void setVersion(std::string version);
 	std::string getVersion();
 
+	void setOnline(bool online);
+	bool isOnline();
+
 private:
     std::string address;
     uint32_t port;

@@ -9,15 +9,15 @@
 
 
 
-connexionDatabase::connexionDatabase() {
+ConnexionDatabase::ConnexionDatabase() {
 	conn = NULL;
-	txn = NULL;
 }
 
-connexionDatabase::~connexionDatabase() {
+ConnexionDatabase::~ConnexionDatabase() {
+	delete conn;
 }
 
-void connexionDatabase::connexionDB(std::string infoString)
+void ConnexionDatabase::ConnexionDB(std::string infoString)
 {
 
 	//if (!conn->is_open())
@@ -50,13 +50,13 @@ void connexionDatabase::connexionDB(std::string infoString)
 
 }
 
-void connexionDatabase::deconnexionDB()
+void ConnexionDatabase::DeconnexionDB()
 {
 	conn->deactivate();
 }
 
 
-void connexionDatabase::PrepareStatement(int index, const char* sql)
+void ConnexionDatabase::PrepareStatement(int index, const char* sql)
 {
 	boost::mutex::scoped_lock lock(mutex1);
 
@@ -68,8 +68,9 @@ void connexionDatabase::PrepareStatement(int index, const char* sql)
 
 }
 
-pqxx::result connexionDatabase::executionPrepareStatement(int index,int nombreArgument,...)
+pqxx::result ConnexionDatabase::ExecutionPrepareStatement(int index,pqxx::work * transaction,int nombreArgument,...)
 {
+	bool autoCommit;
 	boost::mutex::scoped_lock lock(mutex1);
 
 	std::ostringstream oss;
@@ -78,14 +79,19 @@ pqxx::result connexionDatabase::executionPrepareStatement(int index,int nombreAr
 
 	pqxx::result resultat;
 	char * argument;
-	txn = new pqxx::work(*conn);
+
+	if(transaction == NULL)
+	{
+		transaction = new pqxx::work(*conn);
+		autoCommit = true;
+	}
 	va_list  listOfArgument;
 	va_start(listOfArgument, nombreArgument);
 	try{
 		conn->activate();
-		if(txn->prepared(indexDB.c_str()).exists())
+		if(transaction->prepared(indexDB.c_str()).exists())
 		{
-			pqxx::prepare::invocation invoc =  txn->prepared(indexDB.c_str());
+			pqxx::prepare::invocation invoc =  transaction->prepared(indexDB.c_str());
 
 			for (int i = 0 ;i < nombreArgument ; i++ )
 			{
@@ -93,16 +99,22 @@ pqxx::result connexionDatabase::executionPrepareStatement(int index,int nombreAr
 				invoc(argument);
 			}
 			resultat = invoc.exec();
+			if(autoCommit)
+				transaction->commit();
 		}
-		txn->commit();
+
 		conn->deactivate();
 	}
     catch (const std::exception &e)
        {
+    	txn->abort();
          std::cerr << e.what() << std::endl;
        }
 	va_end(listOfArgument);
-    delete txn;
+
+	if(autoCommit)
+		delete transaction;
+
     return resultat;
 
 }
