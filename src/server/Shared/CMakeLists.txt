@@ -16,11 +16,12 @@ set(shared_STAT_SRCS
 
 list(REMOVE_ITEM shared_STAT_SRCS "${sources_Test}")
 
+find_library(PQXX_LIB pqxx)
+
 include_directories(
   ${CMAKE_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/Databases
-  ${PQXX_INCLUDE_DIRECTORIES}
 )
 
 add_library(SHARED STATIC ${shared_STAT_SRCS})
