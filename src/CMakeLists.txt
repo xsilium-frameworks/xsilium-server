@@ -1,4 +1,5 @@
 find_package(CppUnit REQUIRED)
+find_library(PQXX_LIB pqxx)
 
 set(Boost_ADDITIONAL_VERSIONS "1.52.0")
 set(BOOST_COMPONENTS thread date_time system signals)
@@ -15,5 +16,5 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 
-add_subdirectory(server)
+add_subdirectory(Server)
 add_subdirectory(Test)
