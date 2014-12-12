@@ -78,12 +78,32 @@ public:
 		CPPUNIT_ASSERT_EQUAL(4,testInt);
 	}
 
+	void testGetLongPass()
+	{
+		long testLong;
+		configuration->Load("TestConfig.config");
 
+		configuration->Get("testLong",testLong);
+		CPPUNIT_ASSERT_EQUAL( (long) 100000,testLong);
+	}
 
-//    bool Get(const string& key, int&    value) const;
-//	  bool Get(const string& key, long&   value) const;
-//    bool Get(const string& key, double& value) const;
-//    bool Get(const string& key, bool&   value) const;
+	void testGetDoublePass()
+	{
+		double testDouble;
+		configuration->Load("TestConfig.config");
+
+		configuration->Get("testDouble",testDouble);
+		CPPUNIT_ASSERT_EQUAL(2.3,testDouble);
+	}
+
+	void testGetBoolPass()
+		{
+			bool testBool;
+			configuration->Load("TestConfig.config");
+
+			configuration->Get("testBool",testBool);
+			CPPUNIT_ASSERT_EQUAL(true,testBool);
+		}
 
 	CPPUNIT_TEST_SUITE(ConfigurationTest);
 	CPPUNIT_TEST(testLoadFail);
@@ -92,6 +112,9 @@ public:
 	CPPUNIT_TEST(testContainsFail);
 	CPPUNIT_TEST(testGetStringPass);
 	CPPUNIT_TEST(testGetIntPass);
+	CPPUNIT_TEST(testGetLongPass);
+	CPPUNIT_TEST(testGetDoublePass);
+	CPPUNIT_TEST(testGetBoolPass);
 
 	CPPUNIT_TEST_SUITE_END();
 

@@ -143,7 +143,12 @@ bool Configuration::Get(const string& key, bool& value) const
 
     if (Get(key, str))
     {
-        value = (str == "true");
+    	if(str == "true")
+    		value = true;
+    	else if(str == "1")
+    		value = true;
+    	else
+    		value = false;
         return true;
     }
     else

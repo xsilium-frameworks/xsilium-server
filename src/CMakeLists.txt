@@ -8,6 +8,7 @@ find_package(Boost COMPONENTS ${BOOST_COMPONENTS} QUIET)
 include_directories(
 	${CPPUNIT_INCLUDE_DIR}
 	${Boost_INCLUDE_DIR}
+	${ENET_INCLUDE_DIR}
 )	
 
 if(CMAKE_COMPILER_IS_GNUCXX)
