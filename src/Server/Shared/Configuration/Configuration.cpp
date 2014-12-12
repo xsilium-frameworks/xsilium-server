@@ -16,35 +16,35 @@ Configuration::~Configuration() {
 	// TODO Auto-generated destructor stub
 }
 
-void Configuration::Clear()
+void Configuration::clear()
 {
     data.clear();
 }
 
-bool Configuration::Load(const string& file)
+bool Configuration::load(std::string file)
 {
 
 	boost::mutex::scoped_lock lock(mutex1);
 
-    ifstream inFile(file.c_str());
+	std::ifstream inFile(file.c_str());
 
     if (!inFile.good())
     {
-        cout << "Cannot read configuration file " << file << endl;
+    	std::cout << "Cannot read configuration file " << file << std::endl;
         return false;
     }
 
     while (inFile.good() && ! inFile.eof())
     {
-        string line;
-        getline(inFile, line);
+    	std::string line;
+    	std::getline(inFile, line);
 
         // filter out comments
         if (!line.empty())
         {
             int pos = line.find('#');
 
-            if (pos != (int)string::npos)
+            if (pos != (int)std::string::npos)
             {
                 line = line.substr(0, pos);
             }
@@ -55,10 +55,10 @@ bool Configuration::Load(const string& file)
         {
             int pos = line.find('=');
 
-            if (pos != (int)string::npos)
+            if (pos != (int)std::string::npos)
             {
-                string key     = Trim(line.substr(0, pos));
-                string value   = Trim(line.substr(pos + 1));
+            	std::string key     = trim(line.substr(0, pos));
+            	std::string value   = trim(line.substr(pos + 1));
 
                 if (!key.empty() && !value.empty())
                 {
@@ -71,14 +71,14 @@ bool Configuration::Load(const string& file)
     return true;
 }
 
-bool Configuration::Contains(const string& key) const
+bool Configuration::contains(std::string key)
 {
     return data.find(key) != data.end();
 }
 
-bool Configuration::Get(const string& key, string& value) const
+bool Configuration::get(std::string key, std::string& value)
 {
-    map<string,string>::const_iterator iter = data.find(key);
+	std::map<std::string,std::string>::const_iterator iter = data.find(key);
 
     if (iter != data.end())
     {
@@ -92,13 +92,13 @@ bool Configuration::Get(const string& key, string& value) const
     }
 }
 
-bool Configuration::Get(const string& key, int& value) const
+bool Configuration::get(std::string key, int& value)
 {
-    string str;
+	std::string str;
 
-    if (Get(key, str))
+    if (get(key, str))
     {
-        value = atoi(str.c_str());
+        value = ToInt(str);
         return true;
     }
     else
@@ -107,11 +107,11 @@ bool Configuration::Get(const string& key, int& value) const
     }
 }
 
-bool Configuration::Get(const string& key, long& value) const
+bool Configuration::get(std::string key, long& value)
 {
-    string str;
+	std::string str;
 
-    if (Get(key, str))
+    if (get(key, str))
     {
         value = atol(str.c_str());
         return true;
@@ -122,11 +122,11 @@ bool Configuration::Get(const string& key, long& value) const
     }
 }
 
-bool Configuration::Get(const string& key, double& value) const
+bool Configuration::get(std::string key, double& value)
 {
-    string str;
+	std::string str;
 
-    if (Get(key, str))
+    if (get(key, str))
     {
         value = atof(str.c_str());
         return true;
@@ -137,13 +137,18 @@ bool Configuration::Get(const string& key, double& value) const
     }
 }
 
-bool Configuration::Get(const string& key, bool& value) const
+bool Configuration::get(std::string key, bool& value)
 {
-    string str;
+	std::string str;
 
-    if (Get(key, str))
+    if (get(key, str))
     {
-        value = (str == "true");
+    	if(str == "true")
+    		value = true;
+    	else if(str == "1")
+    		value = true;
+    	else
+    		value = false;
         return true;
     }
     else
@@ -152,11 +157,11 @@ bool Configuration::Get(const string& key, bool& value) const
     }
 }
 
-string Configuration::Trim(const string& str)
+std::string Configuration::trim(std::string str)
 {
     int first = str.find_first_not_of(" \t");
 
-    if (first != (int)string::npos)
+    if (first != (int)std::string::npos)
     {
         int last = str.find_last_not_of(" \t");
 

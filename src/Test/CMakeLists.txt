@@ -22,9 +22,6 @@ TestRunnerClient.cpp
 add_executable(UnitTester ${UnitTests_SRCS} ${sources_Test} )
 TARGET_LINK_LIBRARIES(UnitTester 
 	${CPPUNIT_LIBRARY}
-	${Boost_LIBRARIES}
-	${ENET_LIB}
-	${PQXX_LIB}
 	SHARED
 )
 

@@ -40,50 +40,70 @@ public:
 
 	void testLoadFail()
 	{
-		CPPUNIT_ASSERT_EQUAL(false,configuration->Load("Erreur"));
+		CPPUNIT_ASSERT_EQUAL(false,configuration->load("Erreur"));
 	}
 
 	void testLoadPass()
 	{
-		CPPUNIT_ASSERT(configuration->Load("TestConfig.config"));
+		CPPUNIT_ASSERT(configuration->load("TestConfig.config"));
 	}
 
 	void testContainsFail()
 	{
-		configuration->Load("TestConfig.config");
-		CPPUNIT_ASSERT_EQUAL(false,configuration->Contains("testErreur"));
+		configuration->load("TestConfig.config");
+		CPPUNIT_ASSERT_EQUAL(false,configuration->contains("testErreur"));
 	}
 
 	void testContainsPass()
 	{
-		configuration->Load("TestConfig.config");
-		CPPUNIT_ASSERT(configuration->Contains("testInt"));
+		configuration->load("TestConfig.config");
+		CPPUNIT_ASSERT(configuration->contains("testInt"));
 	}
 
 	void testGetStringPass()
 	{
 		std::string testString;
-		configuration->Load("TestConfig.config");
+		configuration->load("TestConfig.config");
 
-		configuration->Get("testString",testString);
+		configuration->get("testString",testString);
 		CPPUNIT_ASSERT_EQUAL(0,testString.compare("Test"));
 	}
 
 	void testGetIntPass()
 	{
 		int testInt;
-		configuration->Load("TestConfig.config");
+		configuration->load("TestConfig.config");
 
-		configuration->Get("testInt",testInt);
+		configuration->get("testInt",testInt);
 		CPPUNIT_ASSERT_EQUAL(4,testInt);
 	}
 
+	void testGetLongPass()
+	{
+		long testLong;
+		configuration->load("TestConfig.config");
 
+		configuration->get("testLong",testLong);
+		CPPUNIT_ASSERT_EQUAL( (long) 100000,testLong);
+	}
 
-//    bool Get(const string& key, int&    value) const;
-//	  bool Get(const string& key, long&   value) const;
-//    bool Get(const string& key, double& value) const;
-//    bool Get(const string& key, bool&   value) const;
+	void testGetDoublePass()
+	{
+		double testDouble;
+		configuration->load("TestConfig.config");
+
+		configuration->get("testDouble",testDouble);
+		CPPUNIT_ASSERT_EQUAL(2.3,testDouble);
+	}
+
+	void testGetBoolPass()
+		{
+			bool testBool;
+			configuration->load("TestConfig.config");
+
+			configuration->get("testBool",testBool);
+			CPPUNIT_ASSERT_EQUAL(true,testBool);
+		}
 
 	CPPUNIT_TEST_SUITE(ConfigurationTest);
 	CPPUNIT_TEST(testLoadFail);
@@ -92,6 +112,9 @@ public:
 	CPPUNIT_TEST(testContainsFail);
 	CPPUNIT_TEST(testGetStringPass);
 	CPPUNIT_TEST(testGetIntPass);
+	CPPUNIT_TEST(testGetLongPass);
+	CPPUNIT_TEST(testGetDoublePass);
+	CPPUNIT_TEST(testGetBoolPass);
 
 	CPPUNIT_TEST_SUITE_END();
 

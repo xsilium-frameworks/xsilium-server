@@ -8,14 +8,12 @@
 #ifndef SRC_SERVER_SHARED_DATABASES_DATABASE_H_
 #define SRC_SERVER_SHARED_DATABASES_DATABASE_H_
 
-#include <string>
 #include <iostream>
 #include <stdarg.h>
 #include <vector>
+#include "Utilities/Utilities.h"
 
-typedef std::vector<std::string> Tokens;
-
-class Database {
+class Database : public Utilities {
 public:
 	Database(){};
 	virtual ~Database(){};
@@ -28,24 +26,6 @@ public:
 			va_list listOfArgument = 0) = 0;
 	virtual int createTransaction() = 0;
 	virtual void commit(int idTransaction) = 0;
-
-	Tokens strSplit(const std::string &src, const std::string &sep) {
-		Tokens r;
-		std::string s;
-		for (std::string::const_iterator i = src.begin(); i != src.end(); ++i) {
-			if (sep.find(*i) != std::string::npos) {
-				if (s.length())
-					r.push_back(s);
-				s = "";
-			} else {
-				s += *i;
-			}
-		}
-		if (s.length())
-			r.push_back(s);
-		return r;
-	}
-	;
 };
 
 #endif /* SRC_SERVER_SHARED_DATABASES_DATABASE_H_ */

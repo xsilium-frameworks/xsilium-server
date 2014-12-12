@@ -14,13 +14,12 @@
 #include <iostream>
 #include "Singleton/Singleton.h"
 #include <boost/thread.hpp>
-
-using namespace std;
+#include "Utilities/Utilities.h"
 
 /*
  *
  */
-class Configuration : public Singleton<Configuration>
+class Configuration : public Singleton<Configuration>, public Utilities
 {
 
 public:
@@ -34,7 +33,7 @@ public:
 	 *
 	 *  \param
 	 */
-	void Clear();
+	void clear();
 
 
 	/*!
@@ -45,7 +44,7 @@ public:
 	 *  \param
 	 */
 
-	bool Load(const string& File);
+	bool load(std::string File);
 
 	/*!
 	 *  \brief Contains
@@ -55,7 +54,7 @@ public:
 	 *  \param
 	 */
 
-	bool Contains(const string& key) const;
+	bool contains(std::string key);
 
 
 	/*!
@@ -66,20 +65,20 @@ public:
 	 *  \param
 	 */
 
-	bool Get(const string& key, string& value) const;
-	bool Get(const string& key, int&    value) const;
-	bool Get(const string& key, long&   value) const;
-	bool Get(const string& key, double& value) const;
-	bool Get(const string& key, bool&   value) const;
+	bool get(std::string key, std::string& value);
+	bool get(std::string key, int&    value);
+	bool get(std::string key, long&   value);
+	bool get(std::string key, double& value);
+	bool get(std::string key, bool&   value);
 
 private:
 	// the container
-	map<string,string> data;
+	std::map<std::string,std::string> data;
 
 	boost::mutex mutex1 ;
 
 	// remove leading and trailing tabs and spaces
-	static string Trim(const string& str);
+	std::string trim(std::string str);
 
 };
 
