@@ -13,7 +13,7 @@ set(authserver_SRCS
   ${sources_realms}
 )
 
-list(REMOVE_ITEM authserver_SRCS "${sources_Test}")
+list(REMOVE_ITEM authserver_SRCS ${sources_Test})
 
 include_directories(
 	${CMAKE_BINARY_DIR}
@@ -24,16 +24,8 @@ include_directories(
 )
 
 
-find_library(ENET_LIB enet PATHS )
-find_library(PQXX_LIB pqxx)
-
-
 link_libraries(
 	SHARED
-	${OSX_LIBS}
-	${PQXX_LIB}
-	${ENET_LIB}
-	${Boost_LIBRARIES}	
 )
 
 if( UNIX )
