@@ -146,7 +146,7 @@ Tokens Postgresql::conversionRetour(pqxx::result resultat) {
 			row != resultat.end(); ++row) {
 		std::string ligneRetour;
 
-		for (pqxx::result::tuple::const_iterator field = row->begin();
+		for (pqxx::tuple::const_iterator field = row->begin();
 				field != row->end(); ++field) {
 			if (!ligneRetour.empty())
 				ligneRetour += ";";
