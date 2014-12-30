@@ -54,8 +54,6 @@ typedef int socklen_t;
 #endif
 #endif
 
-#endif
-
 #ifndef MSG_NOSIGNAL
 #define MSG_NOSIGNAL 0
 #endif
