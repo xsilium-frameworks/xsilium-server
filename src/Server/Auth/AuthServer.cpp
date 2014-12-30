@@ -11,8 +11,8 @@ namespace Auth {
 
 AuthServer::AuthServer() {
 	signalHandler = 0;
+	authentification = 0;
 	networkManager = new NetworkManager();
-	sessionManager = 0;
 	configuration = Configuration::getInstance();
 	log = Log::getInstance();
 	databaseManager = DatabaseManager::getInstance();
@@ -20,8 +20,8 @@ AuthServer::AuthServer() {
 }
 
 AuthServer::~AuthServer() {
+	delete authentification;
 	delete networkManager;
-	SessionManager::DestroyInstance();
 	DatabaseManager::DestroyInstance();
 	Configuration::DestroyInstance();
 	Log::DestroyInstance();
@@ -50,10 +50,10 @@ void AuthServer::startServer()
 		databaseManager->createServer(typeDatabase);
 		databaseManager->connection(infoDB);
 
-		log->write(Log::DEBUG,"Demarrage du gestionnaire de session");
-		sessionManager = SessionManager::getInstance();
-
 		log->write(Log::DEBUG,"Demarrage du serveur d'authentification");
+		authentification = new Authentification(networkManager);
+		authentification->run();
+
 
 		configuration->get("port",serverPort);
 		configuration->get("clientMax",numClient);
@@ -82,6 +82,10 @@ void AuthServer::startServer()
 
 void AuthServer::stopThread()
 {
+	log->write(Log::DEBUG,"Extinction du serveur ");
+	networkManager->deleteConnexion();
+	authentification->stopThread();
+	databaseManager->deconnection();
 
 }
 

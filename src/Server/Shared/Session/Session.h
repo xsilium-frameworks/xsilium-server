@@ -10,6 +10,7 @@
 
 #include <enet/enet.h>
 #include "Databases/DatabaseManager.h"
+#include "Compte/Compte.h"
 
 /*
  *
@@ -44,16 +45,18 @@ public:
 	void supprimeIPTemps();
 	int getNBIPTemps();
 
-	void setCompte(int idCompte);
-	int getCompte();
+	void setCompte(Compte * compte);
+	Compte * getCompte();
 
 private:
 	ENetPeer * peer;
 	time_t unbandate;
 	int ipNBEssai;
 	DatabaseManager * database;
-	int idCompte;
 	std::string suffix;
+
+	Compte * compte;
+
 
 };
 

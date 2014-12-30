@@ -13,7 +13,7 @@ set(authserver_SRCS
   ${sources_realms}
 )
 
-#list(REMOVE_ITEM authserver_SRCS "${sources_Test}")
+list(REMOVE_ITEM authserver_SRCS ${sources_Test})
 
 include_directories(
 	${CMAKE_BINARY_DIR}
@@ -36,10 +36,10 @@ if( CMAKE_SYSTEM_NAME MATCHES "Darwin" )
   set(authserver_LINK_FLAGS "${authserver_LINK_FLAGS}")
 endif()
 
-#add_library(Auth STATIC ${authserver_SRCS})
+add_library(Auth STATIC ${authserver_SRCS})
 
 add_executable(authserver ${sources_localdir})
-#target_link_libraries(authserver Auth)
+target_link_libraries(authserver Auth)
 
 set_target_properties(authserver PROPERTIES LINK_FLAGS "${authserver_LINK_FLAGS}" )
 

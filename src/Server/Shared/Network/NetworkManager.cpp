@@ -16,13 +16,7 @@ NetworkManager::NetworkManager() {
 }
 
 NetworkManager::~NetworkManager() {
-	std::map<int,NetworkListener *>::iterator listenner ;
-	for (listenner=listOfListenner.begin(); listenner !=listOfListenner.end(); ++listenner)
-	{
-		delete listenner->second;
-	}
 	listOfListenner.clear();
-
 	delete server;
 	delete peer;
 	enet_deinitialize();
@@ -57,10 +51,14 @@ void NetworkManager::sendPacket(ENetHost * host, enet_uint8 channel, MessagePack
 	boost::mutex::scoped_lock lock(mutexSend);
 
 	std::ostringstream archive_stream;
+	std::string messageSend;
+
 	boost::archive::text_oarchive archive(archive_stream);
 	archive << messagePacket;
 
-	ENetPacket * packet = enet_packet_create ((const void *)&archive_stream,sizeof(archive_stream) + 1,ENET_PACKET_FLAG_RELIABLE);
+	messageSend = archive_stream.str();
+
+	ENetPacket * packet = enet_packet_create (messageSend.c_str(),messageSend.size() + 1,ENET_PACKET_FLAG_RELIABLE);
 	enet_host_broadcast (host,channel,packet);
 }
 
@@ -76,7 +74,7 @@ void NetworkManager::sendPacket(ENetPeer * peer, enet_uint8 channel, MessagePack
 
 	messageSend = archive_stream.str();
 
-	ENetPacket * packet = enet_packet_create (messageSend.c_str(),sizeof(messageSend) + 1,ENET_PACKET_FLAG_RELIABLE);
+	ENetPacket * packet = enet_packet_create (messageSend.c_str(),messageSend.size() + 1,ENET_PACKET_FLAG_RELIABLE);
 	enet_peer_send(peer,channel,packet);
 }
 
@@ -101,7 +99,7 @@ void* NetworkManager::threadConnexion(void* arguments)
 			boost::archive::text_iarchive archive(archive_stream);
 			archive >> message;
 
-			networkManager->callback(message->getOpcode(), SessionManager::getInstance()->trouverSession(networkManager->eventServer.peer->address),message);
+			networkManager->callBack(message->getOpcode(), SessionManager::getInstance()->trouverSession(networkManager->eventServer.peer->address),message);
 
 			enet_packet_destroy (networkManager->eventServer.packet);
 			break;
@@ -118,22 +116,22 @@ void* NetworkManager::threadConnexion(void* arguments)
 }
 
 
-void NetworkManager::addlistenneur(int identifiant,NetworkListener * networkListener)
+void NetworkManager::addListenneur(int identifiant,NetworkListener * networkListener)
 {
 	listOfListenner[identifiant] = networkListener ;
 }
 
-void NetworkManager::removelistenneur(int identifiant)
+void NetworkManager::removeListenneur(int identifiant)
 {
 	std::map<int,NetworkListener *>::iterator listenner ;
 	listenner = listOfListenner.find(identifiant) ;
-	if ( listenner == listOfListenner.end())
+	if ( listenner != listOfListenner.end())
 	{
 		listOfListenner.erase(listenner);
 	}
 }
 
-void NetworkManager::callback(int identifiant,Session * session,MessagePacket * messagePacket)
+void NetworkManager::callBack(int identifiant,Session * session,MessagePacket * messagePacket)
 {
 	std::map<int,NetworkListener *>::iterator listenner ;
 	listenner = listOfListenner.find(identifiant) ;

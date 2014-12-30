@@ -16,9 +16,10 @@
 #include "Log/Log.h"
 
 #include "Databases/DatabaseManager.h"
-#include "Session/SessionManager.h"
 
 #include "Network/NetworkManager.h"
+
+#include "Authentification/Authentification.h"
 
 
 namespace Auth {
@@ -41,8 +42,8 @@ private:
 	Log * log;
 
 	DatabaseManager * databaseManager;
-	SessionManager * sessionManager;
 	NetworkManager * networkManager;
+	Authentification * authentification;
 };
 
 } /* namespace Auth */

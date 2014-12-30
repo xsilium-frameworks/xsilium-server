@@ -150,8 +150,10 @@ Tokens Postgresql::conversionRetour(pqxx::result resultat) {
 				field != row->end(); ++field) {
 			if (!ligneRetour.empty())
 				ligneRetour += ";";
-
-			ligneRetour += field->c_str();
+			if(field.is_null())
+				ligneRetour += "false";
+			else
+				ligneRetour += field->c_str();
 
 		}
 		retour.push_back(ligneRetour);

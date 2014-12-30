@@ -7,6 +7,7 @@ file(GLOB_RECURSE sources_Configuration Configuration/*.cpp Configuration/*.h)
 file(GLOB_RECURSE sources_Network Network/*.cpp Network/*.h)
 file(GLOB_RECURSE sources_Session Session/*.cpp Session/*.h)
 file(GLOB_RECURSE sources_Signal Signal/*.cpp Signal/*.h)
+file(GLOB_RECURSE sources_Compte Compte/*.cpp Compte/*.h)
 
 file(GLOB_RECURSE sources_Test *Test.cpp *Test.h)
 
@@ -23,9 +24,10 @@ set(shared_STAT_SRCS
   ${sources_Network}
   ${sources_Session}
   ${sources_Signal}
+  ${sources_Compte}
 )
 
-list(REMOVE_ITEM shared_STAT_SRCS "${sources_Test}")
+list(REMOVE_ITEM shared_STAT_SRCS ${sources_Test} )
 
 include_directories(
   ${CMAKE_BINARY_DIR}

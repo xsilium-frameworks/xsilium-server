@@ -50,9 +50,9 @@ public:
 
 	void sendPacket(ENetPeer * peer, enet_uint8 channel, MessagePacket * messagePacket);
 
-	void addlistenneur(int identifiant,NetworkListener * networkListener);
-	void removelistenneur(int identifiant);
-	void callback(int identifiant,Session * session = 0,MessagePacket * messagePacket = 0);
+	void addListenneur(int identifiant,NetworkListener * networkListener);
+	void removeListenneur(int identifiant);
+	void callBack(int identifiant,Session * session = 0,MessagePacket * messagePacket = 0);
 
 private:
 

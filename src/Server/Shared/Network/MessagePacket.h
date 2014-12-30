@@ -48,6 +48,10 @@ public:
 	}
 
 	int getOpcode();
+	int getSousOpcode();
+
+	void setOpcode(int opcode);
+	void setSousOpcode(int sousOpcode);
 
 protected:
 
@@ -55,11 +59,13 @@ protected:
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int version) {
 		ar & opcode;
+		ar & sousOpcode;
 		ar & content;
 	}
 
 private:
 	int opcode;
+	int sousOpcode;
 	std::map<std::string, std::string> content;
 
 	template<typename T>
