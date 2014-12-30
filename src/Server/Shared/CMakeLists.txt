@@ -38,6 +38,7 @@ link_libraries(
 ${ENET_LIBRARY}
 ${Boost_LIBRARIES}
 ${PQXX_LIB}
+
 )
 
 add_library(SHARED STATIC ${shared_STAT_SRCS})

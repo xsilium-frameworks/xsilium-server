@@ -82,7 +82,6 @@ public:
 	{
 		long testLong;
 		configuration->load("TestConfig.config");
-
 		configuration->get("testLong",testLong);
 		CPPUNIT_ASSERT_EQUAL( (long) 100000,testLong);
 	}
