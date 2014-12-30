@@ -20,7 +20,7 @@ include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CMAKE_CURRENT_SOURCE_DIR}/Authentication
 	${CMAKE_CURRENT_SOURCE_DIR}/ListServeur
-	${CMAKE_SOURCE_DIR}/src/server/Shared
+	${CMAKE_SOURCE_DIR}/src/Server/Shared
 )
 
 

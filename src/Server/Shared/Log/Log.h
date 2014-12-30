@@ -14,6 +14,7 @@
 #include <time.h>
 #include <cstdarg>
 #include <sstream>
+#include <cstring>
 #include "Singleton/Singleton.h"
 
 /*
