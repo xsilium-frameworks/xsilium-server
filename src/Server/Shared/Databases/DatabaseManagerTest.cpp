@@ -36,7 +36,7 @@ public:
 		databaseManager->createServer(0);
 		CPPUNIT_ASSERT_EQUAL(true,
 				databaseManager->connection(
-						"85.25.143.49;5432;Xsilium;Xsilium;Refonte"));
+						"192.168.1.2;5432;Xsilium;Xsilium;Refonte"));
 
 	}
 
@@ -51,9 +51,8 @@ public:
 
 	void testDeconnection() {
 		databaseManager->createServer(0);
-		databaseManager->connection("85.25.143.49;5432;Xsilium;Xsilium;Refonte");
-
-		CPPUNIT_ASSERT_EQUAL(true, databaseManager->deconnection());
+		if(databaseManager->connection("192.168.1.2;5432;Xsilium;Xsilium;Refonte"))
+			CPPUNIT_ASSERT_EQUAL(true, databaseManager->deconnection());
 
 	}
 
@@ -68,12 +67,12 @@ public:
 	void testSelect()
 	{
 		databaseManager->createServer(0);
-		databaseManager->connection("85.25.143.49;5432;Xsilium;Xsilium;Refonte");
+		databaseManager->connection("192.168.1.2;5432;Xsilium;Xsilium;Refonte");
 
-		databaseManager->prepareStatement("test1","select 1");
+		databaseManager->prepareStatement("test1","select 2");
 		Tokens resultat =  databaseManager->executionPrepareStatement("test1");
 
-		CPPUNIT_ASSERT_EQUAL(0, resultat[0].compare("1")   );
+		CPPUNIT_ASSERT_EQUAL(0, resultat[0].compare("2")   );
 
 		databaseManager->deconnection();
 
