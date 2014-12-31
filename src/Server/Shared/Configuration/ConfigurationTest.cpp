@@ -45,25 +45,25 @@ public:
 
 	void testLoadPass()
 	{
-		CPPUNIT_ASSERT(configuration->load("TestConfig.config"));
+		CPPUNIT_ASSERT(configuration->load("./TestConfig.config"));
 	}
 
 	void testContainsFail()
 	{
-		configuration->load("TestConfig.config");
+		configuration->load("./TestConfig.config");
 		CPPUNIT_ASSERT_EQUAL(false,configuration->contains("testErreur"));
 	}
 
 	void testContainsPass()
 	{
-		configuration->load("TestConfig.config");
+		configuration->load("./TestConfig.config");
 		CPPUNIT_ASSERT(configuration->contains("testInt"));
 	}
 
 	void testGetStringPass()
 	{
 		std::string testString;
-		configuration->load("TestConfig.config");
+		configuration->load("./TestConfig.config");
 
 		configuration->get("testString",testString);
 		CPPUNIT_ASSERT_EQUAL(0,testString.compare("Test"));
@@ -72,7 +72,7 @@ public:
 	void testGetIntPass()
 	{
 		int testInt;
-		configuration->load("TestConfig.config");
+		configuration->load("./TestConfig.config");
 
 		configuration->get("testInt",testInt);
 		CPPUNIT_ASSERT_EQUAL(4,testInt);
@@ -81,7 +81,7 @@ public:
 	void testGetLongPass()
 	{
 		long testLong;
-		configuration->load("TestConfig.config");
+		configuration->load("./TestConfig.config");
 		configuration->get("testLong",testLong);
 		CPPUNIT_ASSERT_EQUAL( (long) 100000,testLong);
 	}
@@ -89,7 +89,7 @@ public:
 	void testGetDoublePass()
 	{
 		double testDouble;
-		configuration->load("TestConfig.config");
+		configuration->load("./TestConfig.config");
 
 		configuration->get("testDouble",testDouble);
 		CPPUNIT_ASSERT_EQUAL(2.3,testDouble);
@@ -98,7 +98,7 @@ public:
 	void testGetBoolPass()
 		{
 			bool testBool;
-			configuration->load("TestConfig.config");
+			configuration->load("./TestConfig.config");
 
 			configuration->get("testBool",testBool);
 			CPPUNIT_ASSERT_EQUAL(true,testBool);

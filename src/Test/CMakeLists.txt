@@ -31,3 +31,4 @@ endif()
 
 
 install(TARGETS UnitTester DESTINATION test)
+install(FILES  TestConfig.config DESTINATION test)
