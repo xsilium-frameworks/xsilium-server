@@ -42,6 +42,7 @@ void AuthServer::startServer()
 
 		configuration->get("LogLevel",logLevel);
 		log->start((Log::Priority)logLevel,"authserver.log");
+		log->activationFile();
 
 		log->write(Log::DEBUG,"Demarrage de la connexion SQL (loginDB) ");
 		configuration->get("typeDatabase",typeDatabase);
