@@ -36,7 +36,7 @@ public:
 		databaseManager->createServer(0);
 		CPPUNIT_ASSERT_EQUAL(true,
 				databaseManager->connection(
-						"192.168.1.2;5432;Xsilium;Xsilium;Refonte"));
+						"192.168.1.2;5432;Xsilium;Xsilium;Developpement"));
 
 	}
 
@@ -45,20 +45,20 @@ public:
 		databaseManager->createServer(0);
 		CPPUNIT_ASSERT_EQUAL(false,
 				databaseManager->connection(
-						"127.0.0.1;5432;Xsilium;Xsilium;Refonte"));
+						"127.0.0.1;5432;Xsilium;Xsilium;Developpement"));
 
 	}
 
 	void testDeconnection() {
 		databaseManager->createServer(0);
-		if(databaseManager->connection("192.168.1.2;5432;Xsilium;Xsilium;Refonte"))
+		if(databaseManager->connection("192.168.1.2;5432;Xsilium;Xsilium;Developpement"))
 			CPPUNIT_ASSERT_EQUAL(true, databaseManager->deconnection());
 
 	}
 
 	void testNonDeconnection() {
 		databaseManager->createServer(0);
-		databaseManager->connection("127.0.0.1;5432;Xsilium;Xsilium;Refonte");
+		databaseManager->connection("127.0.0.1;5432;Xsilium;Xsilium;Developpement");
 
 		CPPUNIT_ASSERT_EQUAL(false, databaseManager->deconnection());
 
@@ -67,10 +67,26 @@ public:
 	void testSelect()
 	{
 		databaseManager->createServer(0);
-		databaseManager->connection("192.168.1.2;5432;Xsilium;Xsilium;Refonte");
+		databaseManager->connection("192.168.1.2;5432;Xsilium;Xsilium;Developpement");
 
 		databaseManager->prepareStatement("test1","select 2");
 		Tokens resultat =  databaseManager->executionPrepareStatement("test1");
+
+		CPPUNIT_ASSERT_EQUAL(0, resultat[0].compare("2")   );
+
+		databaseManager->deconnection();
+
+	}
+
+	void testSelectCommit()
+	{
+		databaseManager->createServer(0);
+		databaseManager->connection("192.168.1.2;5432;Xsilium;Xsilium;Developpement");
+
+		databaseManager->prepareStatement("test1","select 2");
+		int commit = databaseManager->createTransaction();
+		Tokens resultat =  databaseManager->executionPrepareStatement("test1",commit);
+		databaseManager->commit(commit);
 
 		CPPUNIT_ASSERT_EQUAL(0, resultat[0].compare("2")   );
 
