@@ -35,17 +35,17 @@ public:
 
 		ENetAddress adresse;
 		adresse.host = ENET_HOST_ANY;
-		adresse.port  =60000;
+		adresse.port  =60003;
 
 		CPPUNIT_ASSERT_EQUAL(true,networkManager->createConnexion(adresse,1));
 
-
+		networkManager->deleteConnexion();
 	}
 
 	void testDeconnection() {
 		ENetAddress adresse;
 		adresse.host = ENET_HOST_ANY;
-		adresse.port  =60000;
+		adresse.port  =60003;
 
 		networkManager->createConnexion(adresse,1);
 
@@ -57,13 +57,13 @@ public:
 
 		ENetAddress adresse;
 		adresse.host = ENET_HOST_ANY;
-		adresse.port  =60000;
+		adresse.port  =60003;
 
 		networkManager->createConnexion(adresse,1);
 
 		ENetAddress adresse2;
 		adresse2.host = ENET_HOST_ANY;
-		adresse2.port  =60000;
+		adresse2.port  =60003;
 
 		CPPUNIT_ASSERT_EQUAL(false,networkManager->createConnexion(adresse2,1));
 
