@@ -14,7 +14,6 @@
 
 #include "Authentification/Authentification.h"
 
-
 namespace Auth {
 
 /*
