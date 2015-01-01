@@ -18,7 +18,7 @@ set(kingdom_STAT_SRCS
   ${sources_Zone}
 )
 
-list(REMOVE_ITEM kingdom_STAT_SRCS "${sources_Test}")
+#list(REMOVE_ITEM kingdom_STAT_SRCS "${sources_Test}")
 
 include_directories(
 	${CMAKE_BINARY_DIR}

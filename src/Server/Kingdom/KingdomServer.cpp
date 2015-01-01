@@ -19,3 +19,10 @@ KingdomServer::~KingdomServer() {
 }
 
 } /* namespace Kingdom */
+
+int main()
+{
+	Kingdom::KingdomServer * kingdomServer = new Kingdom::KingdomServer();
+	//authserver->startServer();
+	delete kingdomServer;
+}
