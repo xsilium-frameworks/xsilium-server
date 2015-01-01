@@ -12,13 +12,6 @@
 #include <unistd.h>
 #include <iostream>
 
-#include "Configuration/Configuration.h"
-#include "Log/Log.h"
-
-#include "Databases/DatabaseManager.h"
-
-#include "Network/NetworkManager.h"
-
 #include "Authentification/Authentification.h"
 
 

@@ -8,8 +8,8 @@
 #ifndef SRC_SERVER_SHARED_DATABASES_DATABASEMANAGER_H_
 #define SRC_SERVER_SHARED_DATABASES_DATABASEMANAGER_H_
 
-#include "../../../Server/Shared/Databases/Postgresql/Postgresql.h"
-#include "../../../Server/Shared/Singleton/Singleton.h"
+#include "Databases/Postgresql/Postgresql.h"
+#include "Singleton/Singleton.h"
 
 
 enum ServerDB
