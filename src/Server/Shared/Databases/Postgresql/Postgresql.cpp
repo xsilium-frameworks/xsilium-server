@@ -109,8 +109,8 @@ Tokens Postgresql::executionPrepareStatement(std::string index,
 	if (autoCommit) {
 		txn->commit();
 		delete txn;
+		connexion->deactivate();
 	}
-	connexion->deactivate();
 
 	return resultat;
 }
@@ -136,7 +136,9 @@ void Postgresql::commit(int idTransaction) {
 		txn = iter->second;
 		delete txn;
 		listOfTransaction.erase(iter);
+		txn->commit();
 	}
+	connexion->deactivate();
 }
 
 Tokens Postgresql::conversionRetour(pqxx::result resultat) {
