@@ -69,8 +69,8 @@ public:
 		databaseManager->createServer(0);
 		databaseManager->connection("192.168.1.2;5432;Xsilium;Xsilium;Developpement");
 
-		databaseManager->prepareStatement("test1","select 2");
-		Tokens resultat =  databaseManager->executionPrepareStatement("test1");
+		databaseManager->prepareStatement("test1","select $1");
+		Tokens resultat =  databaseManager->executionPrepareStatement("test1",0,1,"2");
 
 		CPPUNIT_ASSERT_EQUAL(0, resultat[0].compare("2")   );
 

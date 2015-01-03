@@ -103,6 +103,7 @@ Tokens Postgresql::executionPrepareStatement(std::string index,
 	}
 	catch (const std::exception &e) {
 		std::cerr << e.what() << std::endl;
+		resultat.clear();
 		txn->abort();
 	}
 
