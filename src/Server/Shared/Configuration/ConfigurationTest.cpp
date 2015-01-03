@@ -92,6 +92,7 @@ public:
 		configuration->load("./TestConfig.config");
 
 		configuration->get("testDouble",testDouble);
+		printf("%f \n",testDouble);
 		CPPUNIT_ASSERT_EQUAL(2.3,testDouble);
 	}
 
