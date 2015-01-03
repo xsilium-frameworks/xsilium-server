@@ -100,6 +100,7 @@ public:
 	CPPUNIT_TEST(testDeconnection);
 	CPPUNIT_TEST(testNonDeconnection);
 	CPPUNIT_TEST(testSelect);
+	CPPUNIT_TEST(testSelectCommit);
 	CPPUNIT_TEST_SUITE_END();
 
 private:
