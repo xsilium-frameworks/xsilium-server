@@ -100,6 +100,11 @@ Tokens Postgresql::executionPrepareStatement(std::string index,
 			}
 			resultat = conversionRetour(invoc.exec());
 		}
+
+		if (autoCommit) {
+			txn->commit();
+			delete txn;
+		}
 	}
 	catch (const std::exception &e) {
 		std::cerr << e.what() << std::endl;
@@ -108,8 +113,6 @@ Tokens Postgresql::executionPrepareStatement(std::string index,
 	}
 
 	if (autoCommit) {
-		txn->commit();
-		delete txn;
 		connexion->deactivate();
 	}
 
