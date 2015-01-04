@@ -14,6 +14,7 @@ Log::Log() {
 	activeFile = false;
 	activeConsole = true;
 	maxPriority = ERROR;
+	date[0] = '0';
 
 }
 
