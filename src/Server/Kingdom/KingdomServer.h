@@ -21,6 +21,9 @@ class KingdomServer {
 public:
 	KingdomServer();
 	virtual ~KingdomServer();
+
+	void startServer();
+	void stopThread();
 };
 
 } /* namespace Kingdom */
