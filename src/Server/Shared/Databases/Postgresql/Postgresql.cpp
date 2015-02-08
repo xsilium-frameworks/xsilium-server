@@ -72,8 +72,7 @@ void Postgresql::prepareStatement(std::string index, const char * sql) {
 	connexion->prepare(index.c_str(), sql);
 }
 
-Tokens Postgresql::executionPrepareStatement(std::string index,
-		int idTransaction, int nombreArgument, va_list listOfArgument) {
+Tokens Postgresql::executionPrepareStatement(std::string index,int idTransaction, int nombreArgument, va_list listOfArgument) {
 	boost::mutex::scoped_lock lock(mutex1);
 
 	Tokens resultat;
