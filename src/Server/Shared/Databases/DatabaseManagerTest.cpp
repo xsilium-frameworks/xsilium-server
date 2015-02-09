@@ -9,9 +9,9 @@
 #ifndef TEST_DATABASEMANAGER
 #define TEST_DATABASEMANAGER
 
-#include "Databases/DatabaseManager.h"
+#include <Databases/DatabaseManager.h>
 
-#include "cppunit/extensions/HelperMacros.h"
+#include <cppunit/extensions/HelperMacros.h>
 
 class DatabaseManagerTest: public CppUnit::TestFixture {
 public:

@@ -12,7 +12,7 @@
 #include <boost/thread.hpp>
 
 #include "MessagePacket.h"
-#include "Session/Session.h"
+#include <Session/Session.h>
 
 /*
  *

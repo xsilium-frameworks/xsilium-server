@@ -9,10 +9,10 @@
 #define SRC_SERVER_SHARED_SESSION_SESSIONMANAGER_H_
 
 #include "Session.h"
-#include "Network/NetworkManager.h"
-#include "Log/Log.h"
+#include <Network/NetworkManager.h>
+#include <Log/Log.h>
 
-#include "Singleton/Singleton.h"
+#include <Singleton/Singleton.h>
 
 /*
  *

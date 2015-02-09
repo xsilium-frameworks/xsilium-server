@@ -9,9 +9,9 @@
 #ifndef TEST_DATABASEMANAGER
 #define TEST_DATABASEMANAGER
 
-#include "Network/NetworkManager.h"
+#include <Network/NetworkManager.h>
 
-#include "cppunit/extensions/HelperMacros.h"
+#include <cppunit/extensions/HelperMacros.h>
 
 class NetworkManagerTest: public CppUnit::TestFixture {
 public:

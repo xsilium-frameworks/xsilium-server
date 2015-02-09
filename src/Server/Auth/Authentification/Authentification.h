@@ -8,8 +8,8 @@
 #ifndef SRC_SERVER_AUTH_AUTHENTIFICATION_AUTHENTIFICATION_H_
 #define SRC_SERVER_AUTH_AUTHENTIFICATION_AUTHENTIFICATION_H_
 
-#include "Network/NetworkManager.h"
-#include "Configuration/Configuration.h"
+#include <Network/NetworkManager.h>
+#include <Configuration/Configuration.h>
 
 namespace Auth {
 

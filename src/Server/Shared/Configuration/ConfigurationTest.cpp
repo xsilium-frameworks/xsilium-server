@@ -9,7 +9,7 @@
 
 #ifndef TEST_ConfigurationTest
 #define TEST_ConfigurationTest
-#include "cppunit/extensions/HelperMacros.h"
+#include <cppunit/extensions/HelperMacros.h>
 
 #include "Configuration.h"
 

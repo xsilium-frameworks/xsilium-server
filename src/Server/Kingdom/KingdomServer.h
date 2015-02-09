@@ -8,7 +8,7 @@
 #ifndef SRC_SERVER_KINGDOM_KINGDOMSERVER_H_
 #define SRC_SERVER_KINGDOM_KINGDOMSERVER_H_
 
-#include "Signal/SignalHandler.h"
+#include <Signal/SignalHandler.h>
 #include <unistd.h>
 #include <iostream>
 

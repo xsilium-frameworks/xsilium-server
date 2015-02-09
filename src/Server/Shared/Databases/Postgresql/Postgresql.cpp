@@ -34,8 +34,8 @@ bool Postgresql::connection(std::string infoConnection) {
 		return false;
 
 	connectionString = "host=" + dataConnexion[0] + " port=" + dataConnexion[1]
-			+ " user=" + dataConnexion[2] + " password=" + dataConnexion[3]
-			+ " dbname=" + dataConnexion[4];
+																			 + " user=" + dataConnexion[2] + " password=" + dataConnexion[3]
+																																		  + " dbname=" + dataConnexion[4];
 
 	connexion = new pqxx::lazyconnection(connectionString.c_str());
 	try {
@@ -72,7 +72,7 @@ void Postgresql::prepareStatement(std::string index, const char * sql) {
 	connexion->prepare(index.c_str(), sql);
 }
 
-Tokens Postgresql::executionPrepareStatement(std::string index,int idTransaction, int nombreArgument, va_list listOfArgument) {
+Tokens Postgresql::executionPrepareStatement(std::string index, int idTransaction, int nombreArgument, va_list listOfArgument) {
 	boost::mutex::scoped_lock lock(mutex1);
 
 	Tokens resultat;

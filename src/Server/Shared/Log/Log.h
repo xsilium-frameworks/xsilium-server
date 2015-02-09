@@ -15,7 +15,7 @@
 #include <cstdarg>
 #include <sstream>
 #include <cstring>
-#include "Singleton/Singleton.h"
+#include <Singleton/Singleton.h>
 
 /*
  *

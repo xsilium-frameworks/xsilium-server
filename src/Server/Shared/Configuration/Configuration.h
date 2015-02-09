@@ -12,9 +12,9 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-#include "Singleton/Singleton.h"
+#include <Singleton/Singleton.h>
 #include <boost/thread.hpp>
-#include "Utilities/Utilities.h"
+#include <Utilities/Utilities.h>
 
 /*
  *
