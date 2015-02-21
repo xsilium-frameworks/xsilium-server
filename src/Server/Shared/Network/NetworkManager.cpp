@@ -99,7 +99,7 @@ void* NetworkManager::threadConnexion(void* arguments)
 			boost::archive::text_iarchive archive(archive_stream);
 			archive >> message;
 
-			networkManager->callBack(message->getOpcode(), SessionManager::getInstance()->trouverSession(networkManager->eventServer.peer->address),message);
+			Session * session = SessionManager::getInstance()->trouverSession(networkManager->eventServer.peer->address) ;
 
 			enet_packet_destroy (networkManager->eventServer.packet);
 			break;

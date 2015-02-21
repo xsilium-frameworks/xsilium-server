@@ -25,7 +25,7 @@ enum CompteDatabaseStatements {
 
 class Compte {
 public:
-	Compte();
+	Compte(std::string nomString = "");
 	virtual ~Compte();
 
 	bool chargementCompte(std::string nomString);

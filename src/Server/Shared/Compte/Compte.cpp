@@ -7,7 +7,7 @@
  */
 #include "Compte.h"
 
-Compte::Compte() {
+Compte::Compte(std::string nomString) {
 	database = DatabaseManager::getInstance();
 
 	idCompte = 0;
@@ -27,7 +27,8 @@ Compte::Compte() {
 	database->prepareStatement(suffix + database->ToString(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH),"INSERT INTO compte.account_banned VALUES (DEFAULT,$1,now(),to_timestamp($2), 'AutoBan erreur authentification', true,$3)");
 	database->prepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNTBANNED_DEBANCOMPTE),"UPDATE compte.account_banned SET active = false WHERE id_account = $1");
 	database->prepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNT_MAJERREURSAUTH),"UPDATE compte.account SET failed_logins = $2 WHERE id_account = $1");
-
+	if (!nomString.empty())
+		chargementCompte(nomString);
 }
 
 Compte::~Compte() {

@@ -10,6 +10,7 @@
 
 #include <Network/NetworkManager.h>
 #include <Configuration/Configuration.h>
+#include <IP/IP.h>
 
 namespace Auth {
 
