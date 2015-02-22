@@ -61,10 +61,7 @@ bool Compte::chargementCompte(std::string nomString)
 		nbPassage = database->ToInt(resultatsql[5]);
 
 
-		if(!database->ToBool(resultatsql[6]))
-			banned = false;
-		else
-			banned = true;
+		banned = database->ToBool(resultatsql[6]);
 
 		if(resultatsql[7].compare("false") != 0)
 		{

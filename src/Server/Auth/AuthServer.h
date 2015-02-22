@@ -14,6 +14,8 @@
 
 #include "Authentification/Authentification.h"
 
+#include "Royaumes/RoyaumesManager.h"
+
 namespace Auth {
 
 /*
@@ -36,6 +38,7 @@ private:
 	DatabaseManager * databaseManager;
 	NetworkManager * networkManager;
 	Authentification * authentification;
+	RoyaumesManager * royaumesManager;
 };
 
 } /* namespace Auth */

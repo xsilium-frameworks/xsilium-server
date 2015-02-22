@@ -9,6 +9,7 @@ file(GLOB_RECURSE sources_Session Session/*.cpp Session/*.h)
 file(GLOB_RECURSE sources_Signal Signal/*.cpp Signal/*.h)
 file(GLOB_RECURSE sources_Compte Compte/*.cpp Compte/*.h)
 file(GLOB_RECURSE sources_IP IP/*.cpp IP/*.h)
+file(GLOB_RECURSE sources_Royaume Royaume/*.cpp Royaume/*.h)
 
 file(GLOB_RECURSE sources_Test *Test.cpp *Test.h)
 
@@ -27,6 +28,7 @@ set(shared_STAT_SRCS
   ${sources_Signal}
   ${sources_Compte}
   ${sources_IP}
+  ${sources_Royaume}
 )
 
 list(REMOVE_ITEM shared_STAT_SRCS ${sources_Test} )

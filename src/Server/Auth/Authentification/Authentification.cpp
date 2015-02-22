@@ -29,7 +29,7 @@ void Authentification::run()
 
 void Authentification::processPacket(MessageNetwork * messageNetwork)
 {
-	log->write(Log::DEBUG,"New Packet");
+	log->write(Log::DEBUG,"Nouveau Packet Authentification");
 	MessagePacket * messageRetour = new MessagePacket();
 	switch(messageNetwork->messagePacket->getSousOpcode())
 	{
