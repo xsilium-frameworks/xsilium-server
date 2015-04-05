@@ -72,7 +72,6 @@ public:
 
 	int  HandleLogonChallenge(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 	int  HandleLogonProof(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
-	int  HandleRealmList(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 
 	void processPacket(MessageNetwork * messageNetwork);
 

@@ -231,18 +231,6 @@ int Authentification::HandleLogonProof(MessageNetwork * messageNetwork,MessagePa
 	return ID_NOERROR;
 }
 
-int Authentification::HandleRealmList(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
-{
-	/*	for (ListeServeur::const_iterator serveur= listServeur->getListServeur().begin(); serveur!=listServeur->getListServeur().end(); ++serveur)
-	{
-
-	}
-
-	return true; */
-
-	return ID_NOERROR;
-}
-
 
 
 /// %Realm List command handler

@@ -35,6 +35,7 @@ public:
 	 */
 
 	bool createConnexion(ENetAddress adresse, int MaxClient);
+	bool createConnexion();
 
 	/*!
 	 *  \brief deleteConnexion
@@ -45,6 +46,9 @@ public:
 	 */
 
 	bool deleteConnexion();
+	bool disconnexion();
+
+	int connexionToHost(std::string url,int port);
 
 	void sendPacket(ENetHost * host, enet_uint8 channel, MessagePacket * messagePacket);
 
@@ -56,11 +60,19 @@ public:
 
 private:
 
-	static void * threadConnexion(void * arguments);
+	static void * threadConnexionServer(void * arguments);
+	static void * threadConnexionClient(void * arguments);
 
 	bool endThread;
+	bool isConnectedflag;
 
 	boost::thread thread;
+
+	ENetAddress address;
+
+	ENetHost * client;
+
+	ENetEvent eventClient;
 
 	ENetHost * server;
 
