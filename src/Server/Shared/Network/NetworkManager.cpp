@@ -11,18 +11,13 @@ NetworkManager::NetworkManager() {
 	enet_initialize();
 	server = NULL;
 	peer = NULL;
-	client = NULL;
 	endThread = false;
-	isConnectedflag = false;
 
 }
 
 NetworkManager::~NetworkManager() {
 	listOfListenner.clear();
-	if(server)
-		delete server;
-	if(client)
-		delete client;
+	delete server;
 	delete peer;
 	enet_deinitialize();
 }
@@ -39,24 +34,9 @@ bool NetworkManager::createConnexion(ENetAddress adresse, int MaxClient) {
 		return false ;
 
 	enet_host_compress_with_range_coder(server);
-	thread = boost::thread(&NetworkManager::threadConnexionServer, (void *) this);
+	thread = boost::thread(&NetworkManager::threadConnexion, (void *) this);
 
 	return true ;
-}
-
-bool NetworkManager::createConnexion()
-{
-	client = enet_host_create (NULL /* create a client host */,
-			1 /* only allow 1 outgoing connection */,
-			2 /* allow up 2 channels to be used, 0 and 1 */,
-			57600 / 8 /* 56K modem with 56 Kbps downstream bandwidth */,
-			14400 / 8 /* 56K modem with 14 Kbps upstream bandwidth */);
-	if ( client != NULL)
-	{
-		enet_host_compress_with_range_coder(client);
-		return true;
-	}
-	return false;
 }
 
 bool NetworkManager::deleteConnexion()
@@ -64,48 +44,6 @@ bool NetworkManager::deleteConnexion()
 	endThread = true;
 	thread.join();
 	return true;
-}
-
-bool NetworkManager::disconnexion()
-{
-	if(peer != NULL)
-	{
-		if(isConnectedflag)
-		{
-			isConnectedflag = false;
-		}
-		enet_peer_disconnect (peer, 0);
-		thread.join();
-		enet_peer_reset (peer);
-		return true;
-	}
-	return false;
-}
-
-int NetworkManager::connexionToHost(std::string url,int port)
-{
-	enet_address_set_host (& address,url.c_str());
-	address.port = port;
-	peer = enet_host_connect (client, & address, 2, 0);
-	if (peer == NULL)
-	{
-		return 1;
-	}
-	if (enet_host_service (client, &eventClient, 1000) > 0 && eventClient.type == ENET_EVENT_TYPE_CONNECT)
-	{
-		isConnectedflag = true;
-		endThread = false;
-		thread = boost::thread(&NetworkManager::threadConnexionClient, (void *) this);
-		return 0;
-	}
-	else
-	{
-		/* Either the 5 seconds are up or a disconnect event was */
-		/* received. Reset the peer in the event the 5 seconds   */
-		/* had run out without any significant event.            */
-		enet_peer_reset (peer);
-		return 2 ;
-	}
 }
 
 void NetworkManager::sendPacket(ENetHost * host, enet_uint8 channel, MessagePacket * messagePacket)
@@ -142,7 +80,7 @@ void NetworkManager::sendPacket(ENetPeer * peer, enet_uint8 channel, MessagePack
 
 
 
-void* NetworkManager::threadConnexionServer(void* arguments)
+void* NetworkManager::threadConnexion(void* arguments)
 {
 	NetworkManager * networkManager = static_cast<NetworkManager*> (arguments) ;
 
@@ -173,41 +111,6 @@ void* NetworkManager::threadConnexionServer(void* arguments)
 		default:
 			break;
 		}
-	}
-	return NULL;
-}
-
-void* NetworkManager::threadConnexionClient(void* arguments)
-{
-	NetworkManager * networkManager = static_cast<NetworkManager *>(arguments) ;
-
-	while ((enet_host_service (networkManager->client,&networkManager->eventClient, 10) >= 0 ) && (networkManager->endThread == false )  )
-	{
-		switch (networkManager->eventClient.type)
-		{
-		case ENET_EVENT_TYPE_CONNECT:
-			//networkManager->callback((XSILIUM_ALL * 1000) + ID_CONNEXION);
-			break;
-		case ENET_EVENT_TYPE_RECEIVE:
-		{
-			MessagePacket * message = new MessagePacket();
-
-			std::istringstream archive_stream(std::string((char*)networkManager->eventClient.packet->data));
-			boost::archive::text_iarchive archive(archive_stream);
-			archive >> message;
-
-			networkManager->callback(message->getOpcode(),message);
-			break;
-		}
-
-		case ENET_EVENT_TYPE_DISCONNECT:
-			//networkManager->callback((XSILIUM_ALL * 1000 ) + ID_DECONEXION);
-			networkManager->endThread = true;
-			break;
-		default:
-			break;
-		}
-        enet_packet_destroy (networkManager->eventClient.packet);
 	}
 	return NULL;
 }
