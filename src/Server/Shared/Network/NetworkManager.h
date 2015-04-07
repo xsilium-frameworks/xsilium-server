@@ -18,12 +18,18 @@
 #include "Opcode.h"
 #include <Session/SessionManager.h>
 
+
+enum typeNetwork {
+	NETWORK_TYPE_SERVER = 0,
+	NETWORK_TYPE_CLIENT
+};
+
 /*
  *
  */
 class NetworkManager {
 public:
-	NetworkManager();
+	NetworkManager(int TypeConnexion);
 	virtual ~NetworkManager();
 
 	/*!
@@ -44,7 +50,9 @@ public:
 	 *  \param
 	 */
 
-	bool deleteConnexion();
+	int connexionToHost(std::string url,int port);
+
+	bool disconnexion();
 
 	void sendPacket(ENetHost * host, enet_uint8 channel, MessagePacket * messagePacket);
 
@@ -56,15 +64,19 @@ public:
 
 private:
 
+	int typeConnexion;
+
 	static void * threadConnexion(void * arguments);
 
 	bool endThread;
 
+	bool isConnectedflag;
+
 	boost::thread thread;
 
-	ENetHost * server;
+	ENetHost * host;
 
-	ENetEvent eventServer;
+	ENetEvent event;
 
 	ENetPeer *peer;
 

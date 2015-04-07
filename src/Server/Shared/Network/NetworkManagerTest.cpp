@@ -24,7 +24,7 @@ public:
 	}
 
 	void setUp() {
-		networkManager = new NetworkManager();
+		networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
 	}
 
 	void tearDown() {
@@ -39,7 +39,7 @@ public:
 
 		CPPUNIT_ASSERT_EQUAL(true,networkManager->createConnexion(adresse,1));
 
-		networkManager->deleteConnexion();
+		networkManager->disconnexion();
 	}
 
 	void testDeconnection() {
@@ -49,7 +49,7 @@ public:
 
 		networkManager->createConnexion(adresse,1);
 
-		CPPUNIT_ASSERT_EQUAL(true,networkManager->deleteConnexion());
+		CPPUNIT_ASSERT_EQUAL(true,networkManager->disconnexion());
 
 	}
 

@@ -36,7 +36,7 @@ public:
 		databaseManager->createServer(0);
 		CPPUNIT_ASSERT_EQUAL(true,
 				databaseManager->connection(
-						"10.0.0.2;5432;Xsilium;Xsilium;DevAuth"));
+						"192.168.0.5;5432;Xsilium;Xsilium;DevAuth"));
 
 	}
 
@@ -51,7 +51,7 @@ public:
 
 	void testDeconnection() {
 		databaseManager->createServer(0);
-		if(databaseManager->connection("10.0.0.2;5432;Xsilium;Xsilium;DevAuth"))
+		if(databaseManager->connection("192.168.0.5;5432;Xsilium;Xsilium;DevAuth"))
 			CPPUNIT_ASSERT_EQUAL(true, databaseManager->deconnection());
 
 	}
@@ -67,7 +67,7 @@ public:
 	void testSelect()
 	{
 		databaseManager->createServer(0);
-		databaseManager->connection("10.0.0.2;5432;Xsilium;Xsilium;DevAuth");
+		databaseManager->connection("192.168.0.5;5432;Xsilium;Xsilium;DevAuth");
 
 		databaseManager->prepareStatement("test1","select 2");
 		Tokens resultat =  databaseManager->executionPrepareStatement("test1");
@@ -81,7 +81,7 @@ public:
 	void testSelectCommit()
 	{
 		databaseManager->createServer(0);
-		databaseManager->connection("10.0.0.2;5432;Xsilium;Xsilium;DevAuth");
+		databaseManager->connection("192.168.0.5;5432;Xsilium;Xsilium;DevAuth");
 
 		databaseManager->prepareStatement("test1","select 2");
 		int commit = databaseManager->createTransaction();

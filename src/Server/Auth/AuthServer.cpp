@@ -13,7 +13,7 @@ AuthServer::AuthServer() {
 	signalHandler = 0;
 	authentification = 0;
 	royaumesManager = 0;
-	networkManager = new NetworkManager();
+	networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
 	configuration = Configuration::getInstance();
 	log = Log::getInstance();
 	databaseManager = DatabaseManager::getInstance();
@@ -89,7 +89,7 @@ void AuthServer::startServer()
 void AuthServer::stopThread()
 {
 	log->write(Log::DEBUG,"Extinction du serveur ");
-	networkManager->deleteConnexion();
+	networkManager->disconnexion();
 	authentification->stopThread();
 	databaseManager->deconnection();
 
