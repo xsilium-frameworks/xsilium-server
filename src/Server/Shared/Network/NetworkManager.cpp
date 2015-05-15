@@ -24,6 +24,15 @@ NetworkManager::~NetworkManager() {
 	enet_deinitialize();
 }
 
+ENetHost * NetworkManager::getHost()
+{
+	return host;
+}
+ENetPeer * NetworkManager::getPeer()
+{
+	return peer;
+}
+
 bool NetworkManager::createConnexion(ENetAddress adresse, int MaxClient) {
 
 	endThread = false;
