@@ -18,11 +18,20 @@ KingdomServer::~KingdomServer() {
 	// TODO Auto-generated destructor stub
 }
 
+void KingdomServer::startServer()
+{
+
+}
+void KingdomServer::stopThread()
+{
+
+}
+
 } /* namespace Kingdom */
 
 int main()
 {
 	Kingdom::KingdomServer * kingdomServer = new Kingdom::KingdomServer();
-	//authserver->startServer();
+	kingdomServer->startServer();
 	delete kingdomServer;
 }

@@ -10,7 +10,7 @@
 
 #include <Network/NetworkManager.h>
 #include <map>
-#include <Royaume/Royaume.h>
+#include "Royaume.h"
 
 namespace Auth {
 
