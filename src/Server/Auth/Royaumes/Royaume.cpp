@@ -120,6 +120,23 @@ void Royaume::loadRoyaume()
 
 }
 
+bool Royaume::create(int idTransaction)
+{
+	return true;
+}
+bool Royaume::read(int idTransaction)
+{
+	return true;
+}
+bool Royaume::update(int idTransaction)
+{
+	return true;
+}
+bool Royaume::suppr(int idTransaction)
+{
+	return true;
+}
+
 std::string Royaume::ToExport()
 {
 	return urlRoyaume +";" + database->ToString(portRoyaume) + ";" + nameRoyaume + database->ToString(online_royaume) ;
@@ -131,7 +148,6 @@ std::vector<int> Royaume::getListeRoyaume()
 	std::vector<int> listeID;
 	DatabaseManager::getInstance()->prepareStatement("Royaumes" + DatabaseManager::getInstance()->ToString(REALMS_SEL_LISTESROYAUMES_RECUPID),
 			"SELECT id_royaume FROM royaumes.liste_royaume");
-
 
 	resultsqlT = DatabaseManager::getInstance()->executionPrepareStatement("Royaumes" + DatabaseManager::getInstance()->ToString(REALMS_SEL_LISTESROYAUMES_RECUPID),0);
 

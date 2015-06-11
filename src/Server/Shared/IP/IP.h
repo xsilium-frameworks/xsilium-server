@@ -8,42 +8,39 @@
 #ifndef SRC_SERVER_SHARED_IP_IP_H_
 #define SRC_SERVER_SHARED_IP_IP_H_
 
-#include <Databases/DatabaseManager.h>
+#include <Databases/CRUD.h>
 
 enum IPDatabaseStatements {
 	REALMS_DEL_IPTEMPORAIRE_SUPPRLIGNEIP,
 	REALMS_SEL_IPTEMPORAIRE_LECTURENERREURS,
 	REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE,
-	REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE,
-	REALMS_SEL_IPBANNED_INFOSSURIPBANNIES,
-	REALMS_INS_IPBANNED_BANIP,
-	REALMS_UPD_IPBANNED_DEBANAUTOIP,
-	REALMS_UPD_IPBANNED_DEBANIP
+	REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE
 };
 
 /*
  *
  */
-class IP {
+class IP : public CRUD {
 public:
-	IP(char * hostip );
+	IP(std::string ip_temp_ip );
 	virtual ~IP();
 
-	void banIP(time_t unbandate, const char * raison, int bannedby);
-	void unbanIP();
-	bool isBanned();
-	time_t getUnBanDate();
+	bool create(int idTransaction = 0);
+	bool read(int idTransaction = 0);
+	bool update(int idTransaction = 0);
+	bool suppr(int idTransaction = 0);
 
-	void ajoutIPTemps();
-	void supprimeIPTemps();
-	int getNBIPTemps();
+	int getIdIp() const;
+	void setIdIp(int idIp);
+	const std::string& getIpTempIp() const;
+	void setIpTempIp(const std::string& ipTempIp);
+	int getIpTempNessais() const;
+	void setIpTempNessais(int ipTempNessais);
 
 private:
-	time_t unbandate;
-	int ipNBEssai;
-	DatabaseManager * database;
-	std::string suffix;
-	char * hostip;
+	int id_ip;
+	std::string ip_temp_ip;
+	int ip_temp_nessais;
 };
 
 #endif /* SRC_SERVER_SHARED_IP_IP_H_ */

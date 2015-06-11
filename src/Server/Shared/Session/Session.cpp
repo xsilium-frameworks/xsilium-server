@@ -9,14 +9,13 @@
 
 Session::Session() {
 	peer = NULL;
-	compte = 0;
-	sessionType = SESSION_NONE;
-
+	sessionListener = 0;
+	sessionEtape = 0;
 }
 
 Session::~Session() {
-	if(compte)
-		delete compte;
+	if(sessionListener)
+		delete sessionListener;
 }
 
 void Session::setSessionPeer(ENetPeer * peer)
@@ -34,29 +33,27 @@ ENetAddress * Session::getSessionID()
 	return &peer->address ;
 }
 
-void Session::setCompte(Compte * compte)
+void Session::setSessionListener(SessionListener * sessionListener)
 {
-	this->compte = compte;
+	this->sessionListener = sessionListener;
 }
 
-Compte * Session::getCompte()
+SessionListener * Session::getSessionListener()
 {
-	return compte;
+	return sessionListener;
 }
 
-void Session::setSessionType(SessionType sessionType)
-{
-	this->sessionType = sessionType;
-}
-
-SessionType Session::getSessionType()
-{
-	return sessionType;
-}
-
-char * Session::getIP()
+std::string Session::getIP()
 {
 	char * buffer = new char[16];
 	enet_address_get_host_ip(&peer->address,buffer,sizeof(buffer));
-	return buffer;
+	return std::string(buffer);
+}
+
+int Session::getSessionEtape() const {
+	return sessionEtape;
+}
+
+void Session::setSessionEtape(int sessionEtape) {
+	this->sessionEtape = sessionEtape;
 }

@@ -18,7 +18,6 @@ Compte::Compte(std::string nomString) {
 	lastIP = "";
 	gmlevel = 0;
 	accountUnBanDate = 0;
-	etapeDeConnexion = 1;
 	suffix = "Compte";
 
 	database->prepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNTBANNED_DEBANAUTOCOMPTE),"UPDATE compte.account_banned SET active = false WHERE unbandate<=now() AND active=true");
@@ -135,15 +134,6 @@ bool Compte::isBanned()
 	return banned;
 }
 
-void Compte::setEtapeConnexion(uint8_t etape )
-{
-	etapeDeConnexion = etape;
-
-}
-uint8_t Compte::getEtapeConnextion()
-{
-	return etapeDeConnexion;
-}
 time_t * Compte::getAccountUnBanDate()
 {
 	return &accountUnBanDate;
@@ -159,4 +149,21 @@ void Compte::setNombreEssai(uint8_t essai)
 uint8_t Compte::getNombreEssai()
 {
 	return nbPassage;
+}
+
+bool Compte::create(int idTransaction)
+{
+	return true;
+}
+bool Compte::read(int idTransaction)
+{
+	return true;
+}
+bool Compte::update(int idTransaction)
+{
+	return true;
+}
+bool Compte::suppr(int idTransaction)
+{
+	return true;
 }

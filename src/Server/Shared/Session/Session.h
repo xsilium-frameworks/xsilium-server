@@ -9,18 +9,16 @@
 #define SRC_SERVER_SHARED_SESSION_SESSION_H_
 
 #include <enet/enet.h>
-
-#include <Compte/Compte.h>
+#include <Session/SessionListener.h>
+#include <string>
 
 /*
  * Enum type session
  */
-
-enum SessionType {
-	SESSION_NONE,
-	SESSION_CLIENT,
-	SESSION_ROYAUME,
-	SESSION_ZONE
+enum typeOfSession
+{
+	SESSION_COMPTE = 0,
+	SESSION_PERSO,
 };
 
 /*
@@ -35,19 +33,18 @@ public:
 	ENetPeer * getSessionPeer();
 	ENetAddress * getSessionID();
 
-	void setCompte(Compte * compte);
-	Compte * getCompte();
+	void setSessionListener(SessionListener * sessionListener);
+	SessionListener * getSessionListener();
 
-	void setSessionType(SessionType sessionType);
-	SessionType getSessionType();
+	std::string getIP();
 
-	char * getIP();
-
+	int getSessionEtape() const;
+	void setSessionEtape(int sessionEtape);
 
 private:
 	ENetPeer * peer;
-	Compte * compte;
-	SessionType sessionType;
+	SessionListener * sessionListener;
+	int sessionEtape;
 
 
 };

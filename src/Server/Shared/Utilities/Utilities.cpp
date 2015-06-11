@@ -56,3 +56,10 @@ bool Utilities::ToBool(std::string str) {
 	else
 		return false;
 }
+
+time_t Utilities::ToDate(std::string str)
+{
+	struct tm tm;
+	strptime(str.c_str(), "%Y-%m-%d %H:%M:%S", &tm);
+	return mktime(&tm);
+}

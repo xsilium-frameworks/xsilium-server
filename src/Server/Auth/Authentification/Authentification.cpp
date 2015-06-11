@@ -69,21 +69,16 @@ int  Authentification::HandleLogonChallenge(MessageNetwork * messageNetwork,Mess
 
 	}
 
-	/*if(messageNetwork->session->getSessionType() != SESSION_CLIENT)
-	{
-		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
-		messageRetour->setOpcode(ID_AUTH);
-		messageRetour->setSousOpcode(ID_ERREUR);
-		messageRetour->setProperty("ErrorId",ID_ERROR_PACKET_SIZE);
-		return ID_ERROR_PACKET_SIZE ;
+	messageNetwork->session->getSessionListener()->setSessionListenerType(SESSION_COMPTE);
 
-	}*/
+	IPBan ipBan(messageNetwork->session->getIP());
+	IP ip(messageNetwork->session->getIP());
+	ip.read();
 
-	messageNetwork->session->setSessionType(SESSION_CLIENT);
+	if(ip.getIdIp() == 0)
+		ip.create();
 
-	IP ipTemp(messageNetwork->session->getIP());
-
-	if(ipTemp.isBanned())
+	if(ipBan.read())
 	{
 		log->write(Log::INFO,"[AuthChallenge] L'ip %d est bannie !",messageNetwork->session->getSessionID()->host);
 		messageRetour->setOpcode(ID_AUTH);
@@ -92,21 +87,28 @@ int  Authentification::HandleLogonChallenge(MessageNetwork * messageNetwork,Mess
 		return ID_CONNECTION_BANNED ;
 	}
 
-	ipTemp.ajoutIPTemps();
-
 	log->write(Log::INFO,"Nom du client : %s ",messageNetwork->messagePacket->getProperty("Login").c_str());
 
 	Compte * compte = new Compte();
 	if(!compte->chargementCompte(messageNetwork->messagePacket->getProperty("Login")))
 	{
+
+		ip.setIpTempNessais( ip.getIpTempNessais() + 1 );
+
 		int nombreErreurMax,banTime;
 		config->get("nombreErreurMax",nombreErreurMax);
 		config->get("banTime",banTime);
 
-		if( ( ipTemp.getNBIPTemps() % nombreErreurMax ) == 0 )
+		if( ( ip.getIpTempNessais() % nombreErreurMax ) == 0 )
 		{
-			ipTemp.banIP( (time(NULL) + (banTime * (ipTemp.getNBIPTemps() / nombreErreurMax ))  *60),"autoban", 0 );
+			ipBan.setBandate(time(NULL));
+			ipBan.setUnbandate((time(NULL) + (banTime * (ip.getIpTempNessais() / nombreErreurMax ))  *60));
+			ipBan.setRaison("autoban");
+			ipBan.setBannedby(0);
+			ipBan.create();
 		}
+		ip.update();
+
 		log->write(Log::INFO,"[AuthChallenge] Le compte %s n'existe pas",messageNetwork->messagePacket->getProperty("Login").c_str());
 		messageRetour->setOpcode(ID_AUTH);
 		messageRetour->setSousOpcode(ID_ERREUR);
@@ -115,7 +117,7 @@ int  Authentification::HandleLogonChallenge(MessageNetwork * messageNetwork,Mess
 	}
 
 
-	messageNetwork->session->setCompte(compte);
+	messageNetwork->session->setSessionListener(compte);
 
 	if(compte->isBanned())
 	{
@@ -129,11 +131,28 @@ int  Authentification::HandleLogonChallenge(MessageNetwork * messageNetwork,Mess
 	if(compte->islocked())
 	{
 		log->write(Log::INFO,"[AuthChallenge] Le compte %s est lier a l'IP %s ",compte->getNomCompte()->c_str(),compte->getLastIP()->c_str());
-		log->write(Log::INFO,"[AuthChallenge] Le client a pour l'IP : %s ",messageNetwork->session->getIP());
+		log->write(Log::INFO,"[AuthChallenge] Le client a pour l'IP : %s ",messageNetwork->session->getIP().c_str());
 
-		if(messageNetwork->session->getIP() != compte->getLastIP()->c_str())
+		if(messageNetwork->session->getIP().compare(compte->getLastIP()->c_str()) != 0 )
 		{
-			log->write(Log::INFO,"[AuthChallenge] L'IP %s ne correspond pas a la derniere IP %s ",messageNetwork->session->getIP(),compte->getLastIP()->c_str());
+
+			ip.setIpTempNessais( ip.getIpTempNessais() + 1 );
+
+			int nombreErreurMax,banTime;
+			config->get("nombreErreurMax",nombreErreurMax);
+			config->get("banTime",banTime);
+
+			if( ( ip.getIpTempNessais() % nombreErreurMax ) == 0 )
+			{
+				ipBan.setBandate(time(NULL));
+				ipBan.setUnbandate((time(NULL) + (banTime * (ip.getIpTempNessais() / nombreErreurMax ))  *60));
+				ipBan.setRaison("autoban");
+				ipBan.setBannedby(0);
+				ipBan.create();
+			}
+			ip.update();
+
+			log->write(Log::INFO,"[AuthChallenge] L'IP %s ne correspond pas a la derniere IP %s ",messageNetwork->session->getIP().c_str(),compte->getLastIP()->c_str());
 			messageRetour->setOpcode(ID_AUTH);
 			messageRetour->setSousOpcode(ID_ERREUR);
 			messageRetour->setProperty("ErrorId",ID_INVALID_IP);
@@ -144,8 +163,11 @@ int  Authentification::HandleLogonChallenge(MessageNetwork * messageNetwork,Mess
 			log->write(Log::INFO,"[AuthChallenge] Les IPs correspondent ");
 	}
 
-	ipTemp.supprimeIPTemps();
-	compte->setEtapeConnexion(2);
+	ip.setIpTempNessais(0);
+	ip.update();
+
+	messageNetwork->session->setSessionEtape(STEP_REPONSE);
+
 	messageRetour->setOpcode(ID_AUTH);
 	messageRetour->setSousOpcode(ID_CHALLENGE);
 	messageRetour->setProperty("Key",1234567);
@@ -165,7 +187,7 @@ int Authentification::HandleLogonProof(MessageNetwork * messageNetwork,MessagePa
 
 	}
 
-	if(messageNetwork->session->getSessionType() != SESSION_CLIENT)
+	if(messageNetwork->session->getSessionListener()->getSessionListenerType() != SESSION_COMPTE)
 	{
 		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
 		messageRetour->setOpcode(ID_AUTH);
@@ -175,7 +197,9 @@ int Authentification::HandleLogonProof(MessageNetwork * messageNetwork,MessagePa
 
 	}
 
-	if(messageNetwork->session->getCompte()->getEtapeConnextion() < 2)
+	Compte * compte = static_cast<Compte*> (messageNetwork->session->getSessionListener()) ;
+
+	if(messageNetwork->session->getSessionEtape() < 2)
 	{
 		log->write(Log::INFO,"Le client n'est pas a la bonne etape ");
 		messageRetour->setOpcode(ID_AUTH);
@@ -184,14 +208,11 @@ int Authentification::HandleLogonProof(MessageNetwork * messageNetwork,MessagePa
 		return ID_ERROR_ETAPE;
 	}
 
-	IP ipTemp(messageNetwork->session->getIP());
+	IP ip(messageNetwork->session->getIP());
 
+	log->write(Log::INFO,"nombre de passage %d",compte->getNombreEssai());
 
-	ipTemp.ajoutIPTemps();
-
-	log->write(Log::INFO,"nombre de passage %d",messageNetwork->session->getCompte()->getNombreEssai());
-
-	if (messageNetwork->messagePacket->getProperty("Password").compare(*messageNetwork->session->getCompte()->getMDPSHA()) != 0)
+	if (messageNetwork->messagePacket->getProperty("Password").compare(*compte->getMDPSHA()) != 0)
 	{
 		int nombreErreurMDPMax,banTime;
 		log->write(Log::INFO,"Erreur de mot de passe");
@@ -199,12 +220,12 @@ int Authentification::HandleLogonProof(MessageNetwork * messageNetwork,MessagePa
 		config->get("nombreErreurMDP",nombreErreurMDPMax);
 		config->get("banTime",banTime);
 
-		messageNetwork->session->getCompte()->setNombreEssai(messageNetwork->session->getCompte()->getNombreEssai() + 1);
+		compte->setNombreEssai(compte->getNombreEssai() + 1);
 
-		if( (messageNetwork->session->getCompte()->getNombreEssai() % nombreErreurMDPMax ) == 0 )
+		if( (compte->getNombreEssai() % nombreErreurMDPMax ) == 0 )
 		{
-			messageNetwork->session->getCompte()->banCompte((time(NULL) + banTime  *60),"autoban", 0);
-			log->write(Log::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s",messageNetwork->session->getCompte()->getNomCompte()->c_str(),ctime(messageNetwork->session->getCompte()->getAccountUnBanDate()));
+			compte->banCompte((time(NULL) + banTime  *60),"autoban", 0);
+			log->write(Log::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s",compte->getNomCompte()->c_str(),ctime(compte->getAccountUnBanDate()));
 			messageRetour->setOpcode(ID_AUTH);
 			messageRetour->setSousOpcode(ID_ERREUR);
 			messageRetour->setProperty("ErrorId",ID_COMPTE_BANNIE);
@@ -222,8 +243,10 @@ int Authentification::HandleLogonProof(MessageNetwork * messageNetwork,MessagePa
 
 	log->write(Log::INFO,"Mot de passe valider");
 
-	messageNetwork->session->getCompte()->setNombreEssai(0);
-	messageNetwork->session->getCompte()->setEtapeConnexion(3);
+	ip.setIpTempNessais(0);
+	ip.update();
+
+	messageNetwork->session->setSessionEtape(3);
 
 	messageRetour->setOpcode(ID_AUTH);
 	messageRetour->setSousOpcode(ID_REPONSE);

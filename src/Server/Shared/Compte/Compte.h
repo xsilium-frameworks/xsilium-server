@@ -8,7 +8,8 @@
 #ifndef SRC_SERVER_SHARED_COMPTE_COMPTE_H_
 #define SRC_SERVER_SHARED_COMPTE_COMPTE_H_
 
-#include <Databases/DatabaseManager.h>
+#include <Databases/CRUD.h>
+#include <Session/SessionListener.h>
 
 /*
  *
@@ -23,10 +24,15 @@ enum CompteDatabaseStatements {
 	REALMS_UPD_ACCOUNT_MAJERREURSAUTH
 };
 
-class Compte {
+class Compte : public SessionListener , public CRUD  {
 public:
 	Compte(std::string nomString = "");
 	virtual ~Compte();
+
+	bool create(int idTransaction);
+	bool read(int idTransaction) ;
+	bool update(int idTransaction);
+	bool suppr(int idTransaction);
 
 	bool chargementCompte(std::string nomString);
 
@@ -49,9 +55,6 @@ public:
 
 	time_t * getAccountUnBanDate();
 
-	void setEtapeConnexion(uint8_t etape );
-	uint8_t getEtapeConnextion();
-
 	void setNombreEssai(uint8_t essai);
 	uint8_t getNombreEssai();
 
@@ -68,7 +71,6 @@ private:
 	uint8_t gmlevel ; /*!<Niveau de MJ*/
 	bool banned;
 	time_t accountUnBanDate ; /*!<si le compte est bannie date de debanne du compte*/
-	uint8_t	etapeDeConnexion;
 
 	DatabaseManager * database;
 

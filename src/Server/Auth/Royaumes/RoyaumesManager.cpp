@@ -43,21 +43,6 @@ void RoyaumesManager::processPacket(MessageNetwork * messageNetwork)
 	networkManager->sendPacket(messageNetwork->session->getSessionPeer(),0,messageRetour);
 }
 
-int  RoyaumesManager::HandleListRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
-{
-	updateRoyaume();
-
-	messageRetour->setOpcode(ID_ROYAUME);
-	messageRetour->setSousOpcode(ID_LIST_ROYAUME);
-
-	for (std::map<int,Royaume *>::iterator it=listRoyaume.begin(); it!=listRoyaume.end(); ++it)
-	{
-		messageRetour->setProperty(it->first,it->second->ToExport());
-	}
-
-	return ID_NOERROR_R;
-
-}
 void RoyaumesManager::updateRoyaume()
 {
 
@@ -81,7 +66,27 @@ void RoyaumesManager::updateRoyaume()
 			}
 		}
 	}
+}
 
+int  RoyaumesManager::HandleListRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
+{
+	updateRoyaume();
+
+	messageRetour->setOpcode(ID_ROYAUME);
+	messageRetour->setSousOpcode(ID_LIST_ROYAUME);
+
+	for (std::map<int,Royaume *>::iterator it=listRoyaume.begin(); it!=listRoyaume.end(); ++it)
+	{
+		messageRetour->setProperty(it->first,it->second->ToExport());
+	}
+
+	return ID_NOERROR_R;
+
+}
+
+int  RoyaumesManager::HandleCreateRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
+{
+return true;
 
 }
 

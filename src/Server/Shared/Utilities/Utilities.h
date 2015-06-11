@@ -29,6 +29,7 @@ public:
 	long ToLong(std::string str);
 	double ToDouble(std::string str);
 	bool ToBool(std::string str);
+	time_t ToDate(std::string str);
 
 	template<typename T>
 	std::string ToString(T variable) {
@@ -36,6 +37,7 @@ public:
 		ss << variable;
 		return ss.str();
 	}
+
 
 };
 

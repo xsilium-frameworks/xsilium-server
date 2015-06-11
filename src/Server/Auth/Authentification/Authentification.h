@@ -10,9 +10,18 @@
 
 #include <Network/NetworkManager.h>
 #include <Configuration/Configuration.h>
+#include <IP/IPBan.h>
 #include <IP/IP.h>
+#include <Compte/Compte.h>
 
 namespace Auth {
+
+enum stepOfAuth
+{
+	STEP_CHALLENGE = 0,
+	STEP_REPONSE,
+
+};
 
 enum typeForAuth
 {
@@ -74,7 +83,6 @@ public:
 	int  HandleLogonProof(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 
 	void processPacket(MessageNetwork * messageNetwork);
-
 
 
 private:

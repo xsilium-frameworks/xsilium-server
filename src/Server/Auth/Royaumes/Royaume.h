@@ -8,7 +8,7 @@
 #ifndef SRC_SERVER_SHARED_ROYAUME_ROYAUME_H_
 #define SRC_SERVER_SHARED_ROYAUME_ROYAUME_H_
 
-#include <Databases/DatabaseManager.h>
+#include <Databases/CRUD.h>
 
 /*
  *
@@ -21,12 +21,19 @@ enum RoyaumeDatabaseStatements {
 /*
  *
  */
-class Royaume {
+class Royaume : public CRUD {
 public:
 	Royaume(int idRoyaume);
 	virtual ~Royaume();
 
+	bool create(int idTransaction);
+	bool read(int idTransaction) ;
+	bool update(int idTransaction);
+	bool suppr(int idTransaction);
+
 	static std::vector<int> getListeRoyaume();
+
+	static int createRoyaume(Royaume * royaume);
 
 	int getAutorisationRoyaume();
 
@@ -65,9 +72,6 @@ public:
 	std::string ToExport();
 
 private:
-	std::string suffix;
-	DatabaseManager * database;
-
 
 	int idRoyaume;
 	std::string keyRoyaume;

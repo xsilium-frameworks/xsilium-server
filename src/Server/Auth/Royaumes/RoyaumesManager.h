@@ -21,6 +21,7 @@ namespace Auth {
 enum typeForRoyaume
 {
 	ID_LIST_ROYAUME = 0,
+	ID_CREATE_ROAYUME
 };
 
 enum erreurOfRoyaume
@@ -42,7 +43,8 @@ public:
 	void run();
 	void processPacket(MessageNetwork * messageNetwork);
 
-	int  HandleListRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
+	int HandleListRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
+	int HandleCreateRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 
 	void updateRoyaume();
 
