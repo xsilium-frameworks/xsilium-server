@@ -122,6 +122,7 @@ void Royaume::loadRoyaume()
 
 bool Royaume::create(int idTransaction)
 {
+
 	return true;
 }
 bool Royaume::read(int idTransaction)
