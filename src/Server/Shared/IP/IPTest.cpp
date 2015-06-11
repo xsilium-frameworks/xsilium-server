@@ -26,7 +26,7 @@ public:
 		databaseManager = DatabaseManager::getInstance();
 
 		databaseManager->createServer(0);
-		databaseManager->connection("192.168.200.6;5432;Xsilium;Xsilium;DevAuth");
+		databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth");
 	}
 
 	void tearDown() {
