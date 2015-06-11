@@ -73,6 +73,10 @@ public:
 
 
 	CPPUNIT_TEST_SUITE(IPTest);
+	CPPUNIT_TEST(testIPCreate);
+	CPPUNIT_TEST(testIPRead);
+	CPPUNIT_TEST(testIPUpdate);
+	CPPUNIT_TEST(testIPDelete);
 	CPPUNIT_TEST_SUITE_END();
 
 private:
