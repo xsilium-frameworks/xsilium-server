@@ -70,6 +70,7 @@ public:
 		IPBan ip("127.0.0.1");
 		IPBan ip2("127.0.0.1");
 		ip.read();
+		printf("%d\n",ip.getIdIpBanned());
 		ip.suppr();
 		CPPUNIT_ASSERT_EQUAL(false,ip2.read());
 	}
