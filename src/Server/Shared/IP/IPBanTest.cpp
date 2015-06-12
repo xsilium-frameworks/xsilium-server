@@ -49,6 +49,7 @@ public:
 	{
 		IPBan ipBan("127.0.0.1");
 		CPPUNIT_ASSERT_EQUAL(true,ipBan.read());
+		printf("%d\n",ipBan.getIdIpBanned());
 	}
 
 	void testIPBanUpdate()
@@ -60,6 +61,8 @@ public:
 		ip.update();
 
 		ip2.read();
+
+		printf("%d\n",ip.getIdIpBanned());
 
 
 		CPPUNIT_ASSERT_EQUAL(1,ip2.getBannedby());
