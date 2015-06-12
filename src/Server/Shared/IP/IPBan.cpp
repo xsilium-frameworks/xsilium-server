@@ -50,7 +50,6 @@ bool IPBan::read(int idTransaction)
 
 		resultatsql = database->strSplit( resultsqlT[0] ,";");
 
-		printf("test %s \n",resultsqlT[0].c_str());
 		id_ip_banned = database->ToInt(resultatsql[0]);
 		bandate = database->ToDate(resultatsql[1]);
 		unbandate = database->ToDate(resultatsql[2]);
