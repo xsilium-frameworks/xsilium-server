@@ -18,7 +18,7 @@ IPBan::IPBan(std::string ip) {
 
 	database->prepareStatement(suffix + database->ToString(REALMS_SEL_IPBANNED_INFOSSURIPBANNIES),"SELECT * FROM IP.ip_banned WHERE unbandate > now() and ip = $1");
 	database->prepareStatement(suffix + database->ToString(REALMS_INS_IPBANNED_BANIP),"INSERT INTO IP.ip_banned VALUES (DEFAULT,$1, to_timestamp($2), to_timestamp($3), $4, $5 )");
-	database->prepareStatement(suffix + database->ToString(REALMS_UPD_IPBANNED_DEBANIP),"Update IP.ip_banned set bandate=$2,unbandate=$3,raison=$4,bannedby=$5 WHERE ip = $1 ");
+	database->prepareStatement(suffix + database->ToString(REALMS_UPD_IPBANNED_DEBANIP),"Update IP.ip_banned set bandate=$2,unbandate=$3,raison=$4,bannedby=$5 WHERE id_ip_banned = $1 ");
 	database->prepareStatement(suffix + database->ToString(REALMS_DEL_IPBANNED_DEBANIP),"Delete from IP.ip_banned WHERE id_ip_banned = $1 ");
 
 
@@ -63,7 +63,7 @@ bool IPBan::read(int idTransaction)
 }
 bool IPBan::update(int idTransaction)
 {
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_IPBANNED_BANIP),0,5,ip.c_str(),database->ToString(bandate).c_str(),database->ToString(unbandate).c_str(),raison.c_str(),database->ToString(bannedby).c_str());
+	database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_IPBANNED_BANIP),0,5,database->ToString(id_ip_banned).c_str(),database->ToString(bandate).c_str(),database->ToString(unbandate).c_str(),raison.c_str(),database->ToString(bannedby).c_str());
 	return true;
 }
 bool IPBan::suppr(int idTransaction)
