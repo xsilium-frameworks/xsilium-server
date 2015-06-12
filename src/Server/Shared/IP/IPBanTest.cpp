@@ -60,7 +60,6 @@ public:
 
 		IPBan ip2("127.0.0.1");
 		ip2.read();
-
 		CPPUNIT_ASSERT_EQUAL(1,ip2.getBannedby());
 	}
 

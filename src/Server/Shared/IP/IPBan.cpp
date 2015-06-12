@@ -63,7 +63,7 @@ bool IPBan::read(int idTransaction)
 }
 bool IPBan::update(int idTransaction)
 {
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_IPBANNED_BANIP),0,5,database->ToString(bandate).c_str(),database->ToString(unbandate).c_str(),raison.c_str(),database->ToString(bannedby).c_str(),database->ToString(id_ip_banned).c_str());
+	database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_IPBANNED_DEBANIP),0,5,database->ToString(bandate).c_str(),database->ToString(unbandate).c_str(),raison.c_str(),database->ToString(bannedby).c_str(),database->ToString(id_ip_banned).c_str());
 	return true;
 }
 bool IPBan::suppr(int idTransaction)
