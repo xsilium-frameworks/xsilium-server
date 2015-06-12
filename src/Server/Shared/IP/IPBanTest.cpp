@@ -78,8 +78,8 @@ public:
 	CPPUNIT_TEST_SUITE(IPBanTest);
 	CPPUNIT_TEST(testIPBanCreate);
 	CPPUNIT_TEST(testIPBanRead);
-	//CPPUNIT_TEST(testIPBanUpdate);
-	//CPPUNIT_TEST(testIPBanDelete);
+	CPPUNIT_TEST(testIPBanUpdate);
+	CPPUNIT_TEST(testIPBanDelete);
 	CPPUNIT_TEST_SUITE_END();
 
 private:
