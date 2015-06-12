@@ -68,18 +68,18 @@ public:
 	{
 		IPBan ip("127.0.0.1");
 		ip.read();
-		//ip.suppr();
-		//IPBan ip2("127.0.0.1");
-		//CPPUNIT_ASSERT_EQUAL(false,ip2.read());
+		ip.suppr();
+		IPBan ip2("127.0.0.1");
+		CPPUNIT_ASSERT_EQUAL(false,ip2.read());
 	}
 
 
 
 	CPPUNIT_TEST_SUITE(IPBanTest);
 	CPPUNIT_TEST(testIPBanCreate);
-	CPPUNIT_TEST(testIPBanRead);
-	CPPUNIT_TEST(testIPBanUpdate);
-	CPPUNIT_TEST(testIPBanDelete);
+	//CPPUNIT_TEST(testIPBanRead);
+	//CPPUNIT_TEST(testIPBanUpdate);
+	//CPPUNIT_TEST(testIPBanDelete);
 	CPPUNIT_TEST_SUITE_END();
 
 private:
