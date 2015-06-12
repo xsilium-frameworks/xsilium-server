@@ -18,7 +18,7 @@ IPBan::IPBan(std::string ip) {
 
 	database->prepareStatement(suffix + database->ToString(REALMS_SEL_IPBANNED_INFOSSURIPBANNIES),"SELECT id_ip_banned,bandate,unbandate,raison,bannedby FROM IP.ip_banned WHERE unbandate > now() and ip = $1");
 	database->prepareStatement(suffix + database->ToString(REALMS_INS_IPBANNED_BANIP),"INSERT INTO IP.ip_banned VALUES (DEFAULT,$1, to_timestamp($2), to_timestamp($3), $4, $5 )");
-	database->prepareStatement(suffix + database->ToString(REALMS_UPD_IPBANNED_DEBANIP),"Update IP.ip_banned set bandate=$1,unbandate=$2,raison=$3,bannedby=$4 WHERE id_ip_banned = $5 ");
+	database->prepareStatement(suffix + database->ToString(REALMS_UPD_IPBANNED_DEBANIP),"Update IP.ip_banned set bandate=to_timestamp($1),unbandate=to_timestamp($2),raison=$3,bannedby=$4 WHERE id_ip_banned = $5 ");
 	database->prepareStatement(suffix + database->ToString(REALMS_DEL_IPBANNED_DEBANIP),"Delete from IP.ip_banned WHERE id_ip_banned = $1 ");
 
 
