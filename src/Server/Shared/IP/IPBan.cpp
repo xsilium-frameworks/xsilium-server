@@ -16,7 +16,7 @@ IPBan::IPBan(std::string ip) {
 	raison = "";
 	bannedby = 0;
 
-	database->prepareStatement(suffix + database->ToString(REALMS_SEL_IPBANNED_INFOSSURIPBANNIES),"SELECT * FROM IP.ip_banned WHERE unbandate > now() and ip = $1");
+	database->prepareStatement(suffix + database->ToString(REALMS_SEL_IPBANNED_INFOSSURIPBANNIES),"SELECT id_ip_banned,bandate,unbandate,raison,bannedby FROM IP.ip_banned WHERE unbandate > now() and ip = $1");
 	database->prepareStatement(suffix + database->ToString(REALMS_INS_IPBANNED_BANIP),"INSERT INTO IP.ip_banned VALUES (DEFAULT,$1, to_timestamp($2), to_timestamp($3), $4, $5 )");
 	database->prepareStatement(suffix + database->ToString(REALMS_UPD_IPBANNED_DEBANIP),"Update IP.ip_banned set bandate=$2,unbandate=$3,raison=$4,bannedby=$5 WHERE id_ip_banned = $1 ");
 	database->prepareStatement(suffix + database->ToString(REALMS_DEL_IPBANNED_DEBANIP),"Delete from IP.ip_banned WHERE id_ip_banned = $1 ");
@@ -50,11 +50,12 @@ bool IPBan::read(int idTransaction)
 
 		resultatsql = database->strSplit( resultsqlT[0] ,";");
 
+		printf("test %s \n",resultsqlT[0]);
 		id_ip_banned = database->ToInt(resultatsql[0]);
-		bandate = database->ToDate(resultatsql[2]);
-		unbandate = database->ToDate(resultatsql[3]);
-		raison = resultatsql[4];
-		bannedby = database->ToInt(resultatsql[5]);
+		bandate = database->ToDate(resultatsql[1]);
+		unbandate = database->ToDate(resultatsql[2]);
+		raison = resultatsql[3];
+		bannedby = database->ToInt(resultatsql[4]);
 
 		return true;
 	}
