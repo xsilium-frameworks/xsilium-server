@@ -54,11 +54,11 @@ public:
 	void testIPBanUpdate()
 	{
 		IPBan ip("127.0.0.1");
-		IPBan ip2("127.0.0.1");
 		ip.read();
 		ip.setBannedby(1);
 		ip.update();
 
+		IPBan ip2("127.0.0.1");
 		ip2.read();
 
 		CPPUNIT_ASSERT_EQUAL(1,ip2.getBannedby());
@@ -79,7 +79,7 @@ public:
 	CPPUNIT_TEST(testIPBanCreate);
 	CPPUNIT_TEST(testIPBanRead);
 	CPPUNIT_TEST(testIPBanUpdate);
-	//CPPUNIT_TEST(testIPBanDelete);
+	CPPUNIT_TEST(testIPBanDelete);
 	CPPUNIT_TEST_SUITE_END();
 
 private:
