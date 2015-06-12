@@ -68,7 +68,7 @@ public:
 	{
 		IPBan ip("127.0.0.1");
 		ip.read();
-		ip.suppr();
+		//ip.suppr();
 		//IPBan ip2("127.0.0.1");
 		//CPPUNIT_ASSERT_EQUAL(false,ip2.read());
 	}
