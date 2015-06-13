@@ -38,16 +38,16 @@ void DatabaseManager::prepareStatement(std::string index, const char * sql)
 {
 	database->prepareStatement(index,sql);
 }
-Tokens DatabaseManager::executionPrepareStatement(std::string index, int idTransaction,
+bool DatabaseManager::executionPrepareStatement(std::string index,Tokens * resultat, int idTransaction,
 		int nombreArgument, ...)
 {
 	va_list listOfArgument;
-	Tokens tokens;
+	bool retour;
 
 	va_start(listOfArgument,nombreArgument);
-	tokens = database->executionPrepareStatement(index,idTransaction,nombreArgument,listOfArgument);
+	retour = database->executionPrepareStatement(index,resultat,idTransaction,nombreArgument,listOfArgument);
 	va_end(listOfArgument);
-	return tokens;
+	return retour;
 }
 int DatabaseManager::createTransaction()
 {

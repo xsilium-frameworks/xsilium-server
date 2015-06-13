@@ -11,8 +11,8 @@ IPBan::IPBan(std::string ip) {
 	suffix = "IPBAN";
 	this->ip = ip;
 	id_ip_banned = 0;
-	time_t bandate = 0;
-	time_t unbandate = 0;
+	bandate = 0;
+	unbandate = 0;
 	raison = "";
 	bannedby = 0;
 
@@ -30,19 +30,21 @@ IPBan::~IPBan() {
 
 bool IPBan::create(int idTransaction)
 {
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_IPBANNED_BANIP),0,5,ip.c_str(),database->ToString(bandate).c_str(),database->ToString(unbandate).c_str(),raison.c_str(),database->ToString(bannedby).c_str());
+	bool retour;
+	Tokens tokens;
+	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_IPBANNED_BANIP),&tokens,0,5,ip.c_str(),database->ToString(bandate).c_str(),database->ToString(unbandate).c_str(),raison.c_str(),database->ToString(bannedby).c_str());
 	read();
-	return true;
+	return retour;
 }
 bool IPBan::read(int idTransaction)
 {
-
+	bool retour;
 	Tokens resultsqlT;
-	resultsqlT = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_IPBANNED_INFOSSURIPBANNIES),0,1,ip.c_str());
+	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_IPBANNED_INFOSSURIPBANNIES),&resultsqlT,0,1,ip.c_str());
 
 	if(resultsqlT.empty())
 	{
-		return false;
+		retour = false;
 	}
 	else
 	{
@@ -56,21 +58,21 @@ bool IPBan::read(int idTransaction)
 		raison = resultatsql[3];
 		bannedby = database->ToInt(resultatsql[4]);
 
-		return true;
+		retour = true;
 	}
 
+	return retour;
 
 }
 bool IPBan::update(int idTransaction)
 {
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_IPBANNED_DEBANIP),0,5,database->ToString(bandate).c_str(),database->ToString(unbandate).c_str(),raison.c_str(),database->ToString(bannedby).c_str(),database->ToString(id_ip_banned).c_str());
-	return true;
+	Tokens resultsqlT;
+	return database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_IPBANNED_DEBANIP),&resultsqlT,0,5,database->ToString(bandate).c_str(),database->ToString(unbandate).c_str(),raison.c_str(),database->ToString(bannedby).c_str(),database->ToString(id_ip_banned).c_str());
 }
 bool IPBan::suppr(int idTransaction)
 {
 	Tokens resultsqlT;
-	resultsqlT = database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_IPBANNED_DEBANIP),0,1,database->ToString(id_ip_banned).c_str());
-	return true;
+	return  database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_IPBANNED_DEBANIP),&resultsqlT,0,1,database->ToString(id_ip_banned).c_str());
 }
 
 

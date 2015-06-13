@@ -72,10 +72,10 @@ void Postgresql::prepareStatement(std::string index, const char * sql) {
 	connexion->prepare(index.c_str(), sql);
 }
 
-Tokens Postgresql::executionPrepareStatement(std::string index, int idTransaction, int nombreArgument, va_list listOfArgument) {
+bool Postgresql::executionPrepareStatement(std::string index,Tokens * resultat, int idTransaction, int nombreArgument, va_list listOfArgument) {
 	boost::mutex::scoped_lock lock(mutex1);
 
-	Tokens resultat;
+	bool retour = true;
 	char * argument;
 	pqxx::work * txn;
 	bool autoCommit = false;
@@ -89,7 +89,6 @@ Tokens Postgresql::executionPrepareStatement(std::string index, int idTransactio
 		txn = iter->second;
 
 	try {
-		connexion->activate();
 		if (txn->prepared(index.c_str()).exists()) {
 			pqxx::prepare::invocation invoc = txn->prepared(index.c_str());
 
@@ -97,25 +96,24 @@ Tokens Postgresql::executionPrepareStatement(std::string index, int idTransactio
 				argument = va_arg(listOfArgument,char*);
 				invoc(argument);
 			}
-			resultat = conversionRetour(invoc.exec());
+			 conversionRetour(invoc.exec(),resultat);
 		}
 
 		if (autoCommit) {
 			txn->commit();
-			delete txn;
 		}
 	}
 	catch (const std::exception &e) {
-		std::cerr << e.what() << std::endl;
-		resultat.clear();
+		resultat->push_back(e.what());
 		txn->abort();
+		retour = false;
 	}
 
 	if (autoCommit) {
-		connexion->deactivate();
+		delete txn;
 	}
 
-	return resultat;
+	return retour;
 }
 
 int Postgresql::createTransaction() {
@@ -144,8 +142,7 @@ void Postgresql::commit(int idTransaction) {
 	connexion->deactivate();
 }
 
-Tokens Postgresql::conversionRetour(pqxx::result resultat) {
-	Tokens retour;
+bool Postgresql::conversionRetour(pqxx::result resultat,Tokens * resultatToken) {
 
 	for (pqxx::result::const_iterator row = resultat.begin();
 			row != resultat.end(); ++row) {
@@ -161,7 +158,7 @@ Tokens Postgresql::conversionRetour(pqxx::result resultat) {
 				ligneRetour += field->c_str();
 
 		}
-		retour.push_back(ligneRetour);
+		resultatToken->push_back(ligneRetour);
 	}
-	return retour;
+	return true;
 }

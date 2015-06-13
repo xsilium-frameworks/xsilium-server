@@ -27,19 +27,22 @@ IP::~IP() {
 
 bool IP::create(int idTransaction)
 {
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE),0,2,ip_temp_ip.c_str(),database->ToString(ip_temp_nessais).c_str());
+	bool retour;
+	Tokens tokens;
+	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE),&tokens,0,2,ip_temp_ip.c_str(),database->ToString(ip_temp_nessais).c_str());
 	read();
-	return true;
+	return retour;
 }
 bool IP::read(int idTransaction)
 {
-	Tokens resultsqlT;
+	bool retour;
+	Tokens resultsqlT ;
 
-	resultsqlT = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_IPTEMPORAIRE_LECTURENERREURS),0,1,ip_temp_ip.c_str());
+	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_IPTEMPORAIRE_LECTURENERREURS),&resultsqlT,0,1,ip_temp_ip.c_str());
 
 	if(resultsqlT.empty())
 	{
-		return false ;
+		retour = false ;
 	}
 	else
 	{
@@ -47,18 +50,20 @@ bool IP::read(int idTransaction)
 		resultatsql = database->strSplit( resultsqlT[0] ,";");
 		id_ip = database->ToInt(resultatsql[0]);
 		ip_temp_nessais = database->ToInt(resultatsql[2]);
-		return true ;
+		retour = true ;
 	}
+	return retour ;
 }
 bool IP::update(int idTransaction)
 {
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE),0,2,database->ToString(ip_temp_nessais).c_str(),ip_temp_ip.c_str() );
-	return true;
+	Tokens resultsqlT ;
+	return database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE),&resultsqlT,0,2,database->ToString(ip_temp_nessais).c_str(),ip_temp_ip.c_str() );
 }
 bool IP::suppr(int idTransaction)
 {
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_IPTEMPORAIRE_SUPPRLIGNEIP),0,1,ip_temp_ip.c_str());
-	return true;
+	Tokens resultsqlT ;
+	return database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_IPTEMPORAIRE_SUPPRLIGNEIP),&resultsqlT,0,1,ip_temp_ip.c_str());
+
 }
 
 int IP::getIdIp() const {

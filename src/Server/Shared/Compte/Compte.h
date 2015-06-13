@@ -16,12 +16,10 @@
  */
 
 enum CompteDatabaseStatements {
-	REALMS_UPD_ACCOUNTBANNED_DEBANAUTOCOMPTE,
-	REALMS_SEL_ACCOUNT_RECUPINFOSCOMPTE,
-	REALMS_UPD_ACCOUNT_MAJLASTIP,
-	REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH,
-	REALMS_UPD_ACCOUNTBANNED_DEBANCOMPTE,
-	REALMS_UPD_ACCOUNT_MAJERREURSAUTH
+	REALMS_SEL_ACCOUNT,
+	REALMS_INS_ACCOUNT,
+	REALMS_UPD_ACCOUNT,
+	REALMS_DEL_ACCOUNT
 };
 
 class Compte : public SessionListener , public CRUD  {
@@ -34,45 +32,40 @@ public:
 	bool update(int idTransaction);
 	bool suppr(int idTransaction);
 
-	bool chargementCompte(std::string nomString);
 
-	int getIdLogin();
-	std::string * getNomCompte();
-	std::string * getMDPSHA();
-
-	void lockCompte();
-	void unlockCompte();
-	bool islocked();
-
-	void setLastIP(std::string lastIP);
-	std::string * getLastIP();
-
-	uint8_t getNiveauCompte();
-
-	void banCompte(time_t unbandate,const char * raison,int bannedby);
-	void unbanCompte();
-	bool isBanned();
-
-	time_t * getAccountUnBanDate();
-
-	void setNombreEssai(uint8_t essai);
-	uint8_t getNombreEssai();
+	const std::string& getEmail() const;
+	void setEmail(const std::string& email);
+	int getIdAccount() const;
+	void setIdAccount(int idAccount);
+	time_t getJoindate() const;
+	void setJoindate(time_t joindate);
+	const std::string& getLastIp() const;
+	void setLastIp(const std::string& lastIp);
+	time_t getLastLogin() const;
+	void setLastLogin(time_t lastLogin);
+	int getLocale() const;
+	void setLocale(int locale);
+	bool isLocked() const;
+	void setLocked(bool locked);
+	bool isOnline() const;
+	void setOnline(bool online);
+	const std::string& getShaPassHash() const;
+	void setShaPassHash(const std::string& shaPassHash);
+	const std::string& getUsername() const;
+	void setUsername(const std::string& username);
 
 private:
 
-	std::string suffix;
-
-	int idCompte; /*!< numero unique du compte dans la base de donn�e      */
-	std::string nomDuCompte;
-	std::string shaPassHash; /*!< Le mot de passe crypter */
+	int id_account; /*!< numero unique du compte dans la base de donn�e      */
+	std::string username; /*!< Le nom du compte */
+	std::string sha_pass_hash; /*!< Le mot de passe crypter */
+	std::string email; /*!<L'email du compte */
+	time_t joindate ; /*!< date de creation du compte  */
+	std::string last_ip ; /*!< derniere IP du compte  */
 	bool locked; /*!< Si le client lock sont compte sur l'ip*/
-	uint8_t nbPassage; /*!<Le nombre d'essais que fait un clien */
-	std::string lastIP; /*!< derniere IP du compte  */
-	uint8_t gmlevel ; /*!<Niveau de MJ*/
-	bool banned;
-	time_t accountUnBanDate ; /*!<si le compte est bannie date de debanne du compte*/
-
-	DatabaseManager * database;
+	time_t last_login ; /*!< derniere date de connexion du compte  */
+	bool online ; /*!< le compte est utilise  */
+	int locale; /*!< langue du compte  */
 
 };
 
