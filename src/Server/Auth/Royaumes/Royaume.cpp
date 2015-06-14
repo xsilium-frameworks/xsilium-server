@@ -92,7 +92,12 @@ void Royaume::setVersionClientRoyaume(int versionClientRoyaume) {
 	this->versionClientRoyaume = versionClientRoyaume;
 }
 
-void Royaume::loadRoyaume()
+bool Royaume::create(int idTransaction)
+{
+
+	return true;
+}
+bool Royaume::read(int idTransaction)
 {
 	Tokens resultsqlT;
 
@@ -117,17 +122,6 @@ void Royaume::loadRoyaume()
 
 
 	}
-
-}
-
-bool Royaume::create(int idTransaction)
-{
-
-	return true;
-}
-bool Royaume::read(int idTransaction)
-{
-	return true;
 }
 bool Royaume::update(int idTransaction)
 {

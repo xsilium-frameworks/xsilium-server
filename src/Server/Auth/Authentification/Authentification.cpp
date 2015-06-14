@@ -89,8 +89,8 @@ int  Authentification::HandleLogonChallenge(MessageNetwork * messageNetwork,Mess
 
 	log->write(Log::INFO,"Nom du client : %s ",messageNetwork->messagePacket->getProperty("Login").c_str());
 
-	Compte * compte = new Compte();
-	if(!compte->chargementCompte(messageNetwork->messagePacket->getProperty("Login")))
+	Compte * compte = new Compte(messageNetwork->messagePacket->getProperty("Login"));
+	if(!compte->read())
 	{
 
 		ip.setIpTempNessais( ip.getIpTempNessais() + 1 );
@@ -118,22 +118,25 @@ int  Authentification::HandleLogonChallenge(MessageNetwork * messageNetwork,Mess
 
 
 	messageNetwork->session->setSessionListener(compte);
+	CompteBan compteBan( compte->getIdAccount());
 
-	if(compte->isBanned())
+
+	if(compteBan.read())
 	{
-		log->write(Log::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s",messageNetwork->messagePacket->getProperty("Login").c_str(),ctime(compte->getAccountUnBanDate()));
+		time_t unbandate = compteBan.getUnbandate() ;
+		log->write(Log::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s",messageNetwork->messagePacket->getProperty("Login").c_str(),ctime(&unbandate));
 		messageRetour->setOpcode(ID_AUTH);
 		messageRetour->setSousOpcode(ID_ERREUR);
 		messageRetour->setProperty("ErrorId",ID_COMPTE_BANNIE);
 		return ID_COMPTE_BANNIE;
 	}
 
-	if(compte->islocked())
+	if(compte->isLocked())
 	{
-		log->write(Log::INFO,"[AuthChallenge] Le compte %s est lier a l'IP %s ",compte->getNomCompte()->c_str(),compte->getLastIP()->c_str());
+		log->write(Log::INFO,"[AuthChallenge] Le compte %s est lier a l'IP %s ",compte->getUsername().c_str(),compte->getLastIp().c_str());
 		log->write(Log::INFO,"[AuthChallenge] Le client a pour l'IP : %s ",messageNetwork->session->getIP().c_str());
 
-		if(messageNetwork->session->getIP().compare(compte->getLastIP()->c_str()) != 0 )
+		if(messageNetwork->session->getIP().compare(compte->getLastIp()) != 0 )
 		{
 
 			ip.setIpTempNessais( ip.getIpTempNessais() + 1 );
@@ -152,7 +155,7 @@ int  Authentification::HandleLogonChallenge(MessageNetwork * messageNetwork,Mess
 			}
 			ip.update();
 
-			log->write(Log::INFO,"[AuthChallenge] L'IP %s ne correspond pas a la derniere IP %s ",messageNetwork->session->getIP().c_str(),compte->getLastIP()->c_str());
+			log->write(Log::INFO,"[AuthChallenge] L'IP %s ne correspond pas a la derniere IP %s ",messageNetwork->session->getIP().c_str(),compte->getLastIp().c_str());
 			messageRetour->setOpcode(ID_AUTH);
 			messageRetour->setSousOpcode(ID_ERREUR);
 			messageRetour->setProperty("ErrorId",ID_INVALID_IP);
@@ -199,7 +202,7 @@ int Authentification::HandleLogonProof(MessageNetwork * messageNetwork,MessagePa
 
 	Compte * compte = static_cast<Compte*> (messageNetwork->session->getSessionListener()) ;
 
-	if(messageNetwork->session->getSessionEtape() < 2)
+	if(messageNetwork->session->getSessionEtape() < STEP_REPONSE)
 	{
 		log->write(Log::INFO,"Le client n'est pas a la bonne etape ");
 		messageRetour->setOpcode(ID_AUTH);
@@ -210,11 +213,9 @@ int Authentification::HandleLogonProof(MessageNetwork * messageNetwork,MessagePa
 
 	IP ip(messageNetwork->session->getIP());
 
-	log->write(Log::INFO,"nombre de passage %d",compte->getNombreEssai());
-
-	if (messageNetwork->messagePacket->getProperty("Password").compare(*compte->getMDPSHA()) != 0)
+	if (messageNetwork->messagePacket->getProperty("Password").compare(compte->getShaPassHash()) != 0)
 	{
-		int nombreErreurMDPMax,banTime;
+		/*int nombreErreurMDPMax,banTime;
 		log->write(Log::INFO,"Erreur de mot de passe");
 
 		config->get("nombreErreurMDP",nombreErreurMDPMax);
@@ -231,7 +232,7 @@ int Authentification::HandleLogonProof(MessageNetwork * messageNetwork,MessagePa
 			messageRetour->setProperty("ErrorId",ID_COMPTE_BANNIE);
 			return ID_COMPTE_BANNIE;
 
-		}
+		} */
 
 		messageRetour->setOpcode(ID_AUTH);
 		messageRetour->setSousOpcode(ID_ERREUR);
@@ -246,120 +247,13 @@ int Authentification::HandleLogonProof(MessageNetwork * messageNetwork,MessagePa
 	ip.setIpTempNessais(0);
 	ip.update();
 
-	messageNetwork->session->setSessionEtape(3);
+	messageNetwork->session->setSessionEtape(STEP_REAMSLIST);
 
 	messageRetour->setOpcode(ID_AUTH);
 	messageRetour->setSousOpcode(ID_REPONSE);
 
 	return ID_NOERROR;
 }
-
-
-
-/// %Realm List command handler
-/*bool Authentification::_HandleRealmList()
-{
-    sLog.outStaticDebug("Entering _HandleRealmList");
-    if (socket().recv_len() < 5)
-        return false;
-
-    socket().recv_skip(5);
-
-    ///- Get the user id (else close the connection)
-    // No SQL injection (prepared statement)
-//changement car normalisation nom requete -- nico le 18-11-2012
-PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPTE);
-    //PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_GET_ACCIDBYNAME);
-    stmt->setString(0, _login);
-    PreparedQueryResult result = LoginDatabase.Query(stmt);
-    if (!result)
-    {
-        sLog.outError("[ERROR] user %s tried to login and we cannot find him in the database.", _login.c_str());
-        socket().shutdown();
-        return false;
-    }
-
-    uint32 id = result->GetUInt32(0);
-
-    ///- Update realm list if need
-    sRealmList->UpdateIfNeed();
-
-    ///- Circle through realms in the RealmList and construct the return packet (including # of user characters in each realm)
-    ByteBuffer pkt;
-
-    size_t RealmListSize = 0;
-    for (RealmList::RealmMap::const_iterator i = sRealmList->begin(); i != sRealmList->end(); ++i)
-    {
-        // don't work with realms which not compatible with the client
-        if (_expversion & POST_BC_EXP_FLAG) // 2.4.3 and 3.1.3 cliens
-        {
-            if (i->second.gamebuild != _build)
-                continue;
-        }
-        else if (_expversion & PRE_BC_EXP_FLAG) // 1.12.1 and 1.12.2 clients are compatible with eachother
-        {
-            if (!AuthHelper::IsPreBCAcceptedClientBuild(i->second.gamebuild))
-                continue;
-        }
-
-        uint8 AmountOfCharacters;
-
-        // No SQL injection. id of realm is controlled by the database.
-        stmt = LoginDatabase.GetPreparedStatement(LOGIN_GET_NUMCHARSONREALM);
-        stmt->setUInt32(0, i->second.m_ID);
-        stmt->setUInt32(1, id);
-        result = LoginDatabase.Query(stmt);
-        if (result)
-            AmountOfCharacters = result->GetUInt8(0);
-        else
-            AmountOfCharacters = 0;
-
-        uint8 lock = (i->second.allowedSecurityLevel > _accountSecurityLevel) ? 1 : 0;
-
-        pkt << i->second.icon;                             // realm type
-        if ( _expversion & POST_BC_EXP_FLAG )//only 2.4.3 and 3.1.3 cliens
-            pkt << lock;                                       // if 1, then realm locked
-        pkt << i->second.color;                            // if 2, then realm is offline
-        pkt << i->first;
-        pkt << i->second.address;
-        pkt << i->second.populationLevel;
-        pkt << AmountOfCharacters;
-        pkt << i->second.timezone;                          // realm category
-        if ( _expversion & POST_BC_EXP_FLAG )//2.4.3 and 3.1.3 clients
-            pkt << (uint8) 0x2C;                                // unk, may be realm number/id?
-        else
-            pkt << (uint8) 0x0; //1.12.1 and 1.12.2 clients
-
-        ++RealmListSize;
-    }
-
-    if ( _expversion & POST_BC_EXP_FLAG )//2.4.3 and 3.1.3 cliens
-    {
-        pkt << (uint8) 0x10;
-        pkt << (uint8) 0x00;
-    }else{//1.12.1 and 1.12.2 clients
-        pkt << (uint8) 0x00;
-        pkt << (uint8) 0x02;
-    }
-
-    // make a ByteBuffer which stores the RealmList's size
-    ByteBuffer RealmListSizeBuffer;
-    RealmListSizeBuffer << (uint32)0;
-    if (_expversion & POST_BC_EXP_FLAG) // only 2.4.3 and 3.1.3 cliens
-        RealmListSizeBuffer << (uint16)RealmListSize;
-    else
-        RealmListSizeBuffer << (uint32)RealmListSize;
-
-    ByteBuffer hdr;
-    hdr << (uint8) REALM_LIST;
-    hdr << (uint16)(pkt.size() + RealmListSizeBuffer.size());
-    hdr.append(RealmListSizeBuffer);    // append RealmList's size buffer
-    hdr.append(pkt);                    // append realms in the realmlist
-
-    socket().send((char const*)hdr.contents(), hdr.size());
-
-    return true;
-}*/
 
 
 } /* namespace Auth */

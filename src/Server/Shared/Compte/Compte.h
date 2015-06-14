@@ -27,32 +27,32 @@ public:
 	Compte(std::string nomString = "");
 	virtual ~Compte();
 
-	bool create(int idTransaction);
-	bool read(int idTransaction) ;
-	bool update(int idTransaction);
-	bool suppr(int idTransaction);
+	bool create(int idTransaction = 0);
+	bool read(int idTransaction = 0) ;
+	bool update(int idTransaction = 0);
+	bool suppr(int idTransaction = 0);
 
 
-	const std::string& getEmail() const;
-	void setEmail(const std::string& email);
-	int getIdAccount() const;
+	std::string& getEmail();
+	void setEmail(std::string& email);
+	int getIdAccount();
 	void setIdAccount(int idAccount);
-	time_t getJoindate() const;
+	time_t getJoindate();
 	void setJoindate(time_t joindate);
-	const std::string& getLastIp() const;
-	void setLastIp(const std::string& lastIp);
-	time_t getLastLogin() const;
+	std::string& getLastIp();
+	void setLastIp(std::string& lastIp);
+	time_t getLastLogin();
 	void setLastLogin(time_t lastLogin);
-	int getLocale() const;
+	int getLocale();
 	void setLocale(int locale);
-	bool isLocked() const;
+	bool isLocked();
 	void setLocked(bool locked);
-	bool isOnline() const;
+	bool isOnline();
 	void setOnline(bool online);
-	const std::string& getShaPassHash() const;
-	void setShaPassHash(const std::string& shaPassHash);
-	const std::string& getUsername() const;
-	void setUsername(const std::string& username);
+	std::string& getShaPassHash();
+	void setShaPassHash(std::string& shaPassHash);
+	std::string& getUsername();
+	void setUsername(std::string& username);
 
 private:
 

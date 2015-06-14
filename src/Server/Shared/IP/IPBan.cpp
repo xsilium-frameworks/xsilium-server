@@ -32,7 +32,7 @@ bool IPBan::create(int idTransaction)
 {
 	bool retour;
 	Tokens tokens;
-	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_IPBANNED_BANIP),&tokens,0,5,ip.c_str(),database->ToString(bandate).c_str(),database->ToString(unbandate).c_str(),raison.c_str(),database->ToString(bannedby).c_str());
+	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_IPBANNED_BANIP),&tokens,idTransaction,5,ip.c_str(),database->ToString(bandate).c_str(),database->ToString(unbandate).c_str(),raison.c_str(),database->ToString(bannedby).c_str());
 	read();
 	return retour;
 }
@@ -40,7 +40,7 @@ bool IPBan::read(int idTransaction)
 {
 	bool retour;
 	Tokens resultsqlT;
-	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_IPBANNED_INFOSSURIPBANNIES),&resultsqlT,0,1,ip.c_str());
+	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_IPBANNED_INFOSSURIPBANNIES),&resultsqlT,idTransaction,1,ip.c_str());
 
 	if(resultsqlT.empty())
 	{
@@ -67,12 +67,12 @@ bool IPBan::read(int idTransaction)
 bool IPBan::update(int idTransaction)
 {
 	Tokens resultsqlT;
-	return database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_IPBANNED_DEBANIP),&resultsqlT,0,5,database->ToString(bandate).c_str(),database->ToString(unbandate).c_str(),raison.c_str(),database->ToString(bannedby).c_str(),database->ToString(id_ip_banned).c_str());
+	return database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_IPBANNED_DEBANIP),&resultsqlT,idTransaction,5,database->ToString(bandate).c_str(),database->ToString(unbandate).c_str(),raison.c_str(),database->ToString(bannedby).c_str(),database->ToString(id_ip_banned).c_str());
 }
 bool IPBan::suppr(int idTransaction)
 {
 	Tokens resultsqlT;
-	return  database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_IPBANNED_DEBANIP),&resultsqlT,0,1,database->ToString(id_ip_banned).c_str());
+	return  database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_IPBANNED_DEBANIP),&resultsqlT,idTransaction,1,database->ToString(id_ip_banned).c_str());
 }
 
 

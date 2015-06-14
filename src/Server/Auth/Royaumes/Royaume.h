@@ -26,10 +26,10 @@ public:
 	Royaume(int idRoyaume);
 	virtual ~Royaume();
 
-	bool create(int idTransaction);
-	bool read(int idTransaction) ;
-	bool update(int idTransaction);
-	bool suppr(int idTransaction);
+	bool create(int idTransaction = 0);
+	bool read(int idTransaction = 0) ;
+	bool update(int idTransaction = 0);
+	bool suppr(int idTransaction = 0);
 
 	static std::vector<int> getListeRoyaume();
 

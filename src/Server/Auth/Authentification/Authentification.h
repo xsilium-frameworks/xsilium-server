@@ -13,6 +13,7 @@
 #include <IP/IPBan.h>
 #include <IP/IP.h>
 #include <Compte/Compte.h>
+#include <Compte/CompteBan.h>
 
 namespace Auth {
 
@@ -20,6 +21,7 @@ enum stepOfAuth
 {
 	STEP_CHALLENGE = 0,
 	STEP_REPONSE,
+	STEP_REAMSLIST
 
 };
 

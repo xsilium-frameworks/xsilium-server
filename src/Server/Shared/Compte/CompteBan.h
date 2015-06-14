@@ -24,26 +24,26 @@ enum CompteBanDatabaseStatements {
  */
 class CompteBan : public CRUD  {
 public:
-	CompteBan();
+	CompteBan(int id_account);
 	virtual ~CompteBan();
 
-	bool create(int idTransaction);
-	bool read(int idTransaction) ;
-	bool update(int idTransaction);
-	bool suppr(int idTransaction);
+	bool create(int idTransaction = 0);
+	bool read(int idTransaction = 0) ;
+	bool update(int idTransaction = 0);
+	bool suppr(int idTransaction = 0);
 
 
-	time_t getBandate() const;
+	time_t getBandate();
 	void setBandate(time_t bandate);
-	int getBannedby() const;
+	int getBannedby();
 	void setBannedby(int bannedby);
-	int getIdAccount() const;
+	int getIdAccount();
 	void setIdAccount(int idAccount);
-	int getIdAccountBanned() const;
+	int getIdAccountBanned();
 	void setIdAccountBanned(int idAccountBanned);
-	const std::string& getRaison() const;
-	void setRaison(const std::string& raison);
-	time_t getUnbandate() const;
+	std::string& getRaison();
+	void setRaison(std::string& raison);
+	time_t getUnbandate();
 	void setUnbandate(time_t unbandate);
 
 private:
