@@ -66,13 +66,13 @@ public:
 
 	void testSelect()
 	{
+		Tokens resultat;
 		databaseManager->createServer(0);
 		databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth");
 
 		databaseManager->prepareStatement("test1","select 2");
-		Tokens resultat =  databaseManager->executionPrepareStatement("test1");
 
-		CPPUNIT_ASSERT_EQUAL(0, resultat[0].compare("2")   );
+		CPPUNIT_ASSERT_EQUAL(true,databaseManager->executionPrepareStatement("test1",&resultat));
 
 		databaseManager->deconnection();
 
@@ -80,14 +80,14 @@ public:
 
 	void testSelectCommit()
 	{
+		Tokens resultat;
 		databaseManager->createServer(0);
 		databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth");
 
 		databaseManager->prepareStatement("test1","select 2");
 		int commit = databaseManager->createTransaction();
-		Tokens resultat =  databaseManager->executionPrepareStatement("test1",commit);
+		databaseManager->executionPrepareStatement("test1",&resultat,commit);
 		databaseManager->commit(commit);
-
 		CPPUNIT_ASSERT_EQUAL(0, resultat[0].compare("2")   );
 
 		databaseManager->deconnection();

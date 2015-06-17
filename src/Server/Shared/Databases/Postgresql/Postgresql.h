@@ -26,7 +26,7 @@ public:
 	bool connection(std::string infoConnection);
 	bool deconnection();
 	void prepareStatement(std::string index,const char * sql);
-	Tokens executionPrepareStatement(std::string index,int idTransaction = 0,int nombreArgument = 0,va_list listOfArgument = 0);
+	bool executionPrepareStatement(std::string index,Tokens * resultat, int idTransaction = 0,int nombreArgument = 0,va_list listOfArgument = 0);
 	int  createTransaction();
 	void commit(int idTransaction);
 
@@ -36,7 +36,7 @@ private:
 	time_t timer;
 	boost::mutex mutex1;
 
-	Tokens  conversionRetour(pqxx::result resultat);
+	bool conversionRetour(pqxx::result resultat,Tokens * resultatToken);
 
 
 

@@ -15,7 +15,7 @@ IP::IP(std::string ip_temp_ip ) {
 	this->ip_temp_ip = ip_temp_ip;
 
 	database->prepareStatement(suffix + database->ToString(REALMS_DEL_IPTEMPORAIRE_SUPPRLIGNEIP),"DELETE FROM IP.ip_temporaire where ip_temp_ip = $1");
-	database->prepareStatement(suffix + database->ToString(REALMS_SEL_IPTEMPORAIRE_LECTURENERREURS),"SELECT * FROM IP.ip_temporaire where ip_temp_ip = $1");
+	database->prepareStatement(suffix + database->ToString(REALMS_SEL_IPTEMPORAIRE_LECTURENERREURS),"SELECT id_ip,ip_temp_nessais FROM IP.ip_temporaire where ip_temp_ip = $1");
 	database->prepareStatement(suffix + database->ToString(REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE),"INSERT INTO IP.ip_temporaire VALUES (DEFAULT, $1, $2)");
 	database->prepareStatement(suffix + database->ToString(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE),"UPDATE IP.ip_temporaire SET ip_temp_nessais = $1 WHERE ip_temp_ip = $2");
 
@@ -27,38 +27,43 @@ IP::~IP() {
 
 bool IP::create(int idTransaction)
 {
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE),0,2,ip_temp_ip.c_str(),database->ToString(ip_temp_nessais).c_str());
+	bool retour;
+	Tokens tokens;
+	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_IPTEMPORAIRE_STOCKAGEIPTEMPORAIRE),&tokens,idTransaction,2,ip_temp_ip.c_str(),database->ToString(ip_temp_nessais).c_str());
 	read();
-	return true;
+	return retour;
 }
 bool IP::read(int idTransaction)
 {
-	Tokens resultsqlT;
+	bool retour;
+	Tokens resultsqlT ;
 
-	resultsqlT = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_IPTEMPORAIRE_LECTURENERREURS),0,1,ip_temp_ip.c_str());
+	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_IPTEMPORAIRE_LECTURENERREURS),&resultsqlT,idTransaction,1,ip_temp_ip.c_str());
 
 	if(resultsqlT.empty())
 	{
-		return false ;
+		retour = false ;
 	}
 	else
 	{
 		Tokens resultatsql;
 		resultatsql = database->strSplit( resultsqlT[0] ,";");
 		id_ip = database->ToInt(resultatsql[0]);
-		ip_temp_nessais = database->ToInt(resultatsql[2]);
-		return true ;
+		ip_temp_nessais = database->ToInt(resultatsql[1]);
+		retour = true ;
 	}
+	return retour ;
 }
 bool IP::update(int idTransaction)
 {
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE),0,2,database->ToString(ip_temp_nessais).c_str(),ip_temp_ip.c_str() );
-	return true;
+	Tokens resultsqlT ;
+	return database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_IPTEMPORAIRE_MAJIPTEMPORAIRE),&resultsqlT,idTransaction,2,database->ToString(ip_temp_nessais).c_str(),ip_temp_ip.c_str() );
 }
 bool IP::suppr(int idTransaction)
 {
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_IPTEMPORAIRE_SUPPRLIGNEIP),0,1,ip_temp_ip.c_str());
-	return true;
+	Tokens resultsqlT ;
+	return database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_IPTEMPORAIRE_SUPPRLIGNEIP),&resultsqlT,idTransaction,1,ip_temp_ip.c_str());
+
 }
 
 int IP::getIdIp() const {

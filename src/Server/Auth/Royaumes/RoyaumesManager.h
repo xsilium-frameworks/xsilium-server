@@ -46,7 +46,7 @@ public:
 	int HandleListRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 	int HandleCreateRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 
-	void updateRoyaume();
+	//void updateRoyaume();
 
 private:
 	Log * log;

@@ -32,7 +32,7 @@ public:
 	bool connection(std::string infoConnection);
 	bool deconnection();
 	void prepareStatement(std::string index, const char * sql);
-	Tokens executionPrepareStatement(std::string index, int idTransaction = 0,
+	bool executionPrepareStatement(std::string index,Tokens * resultat, int idTransaction = 0,
 			int nombreArgument = 0, ...);
 	int createTransaction();
 	void commit(int idTransaction);

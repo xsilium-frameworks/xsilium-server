@@ -14,8 +14,10 @@
  *
  */
 enum RoyaumeDatabaseStatements {
-	REALMS_SEL_LISTESROYAUMES_RECUPID,
-	REALMS_SEL_LISTESROYAUMES_RECUPINFO
+	REALMS_SEL_LISTESROYAUMES,
+	REALMS_INS_LISTESROYAUMES,
+	REALMS_UPD_LISTESROYAUMES,
+	REALMS_DEL_LISTESROYAUMES
 };
 
 /*
@@ -26,14 +28,10 @@ public:
 	Royaume(int idRoyaume);
 	virtual ~Royaume();
 
-	bool create(int idTransaction);
-	bool read(int idTransaction) ;
-	bool update(int idTransaction);
-	bool suppr(int idTransaction);
-
-	static std::vector<int> getListeRoyaume();
-
-	static int createRoyaume(Royaume * royaume);
+	bool create(int idTransaction = 0);
+	bool read(int idTransaction = 0) ;
+	bool update(int idTransaction = 0);
+	bool suppr(int idTransaction = 0);
 
 	int getAutorisationRoyaume();
 

@@ -43,7 +43,7 @@ void RoyaumesManager::processPacket(MessageNetwork * messageNetwork)
 	networkManager->sendPacket(messageNetwork->session->getSessionPeer(),0,messageRetour);
 }
 
-void RoyaumesManager::updateRoyaume()
+ /*void RoyaumesManager::updateRoyaume()
 {
 
 	if(m_NextUpdateTime < time(NULL))
@@ -66,11 +66,11 @@ void RoyaumesManager::updateRoyaume()
 			}
 		}
 	}
-}
+} */
 
 int  RoyaumesManager::HandleListRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
-	updateRoyaume();
+	//updateRoyaume();
 
 	messageRetour->setOpcode(ID_ROYAUME);
 	messageRetour->setSousOpcode(ID_LIST_ROYAUME);

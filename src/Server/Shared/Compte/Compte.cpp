@@ -8,43 +8,46 @@
 #include "Compte.h"
 
 Compte::Compte(std::string nomString) {
-	database = DatabaseManager::getInstance();
-
-	idCompte = 0;
-	shaPassHash = "";
-	locked = false;
-	banned = false;
-	nbPassage = 0;
-	lastIP = "";
-	gmlevel = 0;
-	accountUnBanDate = 0;
 	suffix = "Compte";
+	id_account = 0;
+	username = nomString;
+	sha_pass_hash = "";
+	email = "";
+	joindate = 0 ;
+	last_ip = "" ;
+	locked = false;
+	last_login = 0 ;
+	online = false ;
+	locale = 0;
 
-	database->prepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNTBANNED_DEBANAUTOCOMPTE),"UPDATE compte.account_banned SET active = false WHERE unbandate<=now() AND active=true");
-	database->prepareStatement(suffix + database->ToString(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPTE),"SELECT a.id_account,a.username,a.sha_pass_hash,a.locked,a.last_ip,a.failed_logins,b.active,b.unbandate FROM compte.account a left outer join compte.account_banned b on b.id_account_banned = a.id_account and b.unbandate > now() where a.username = $1 ");
-	database->prepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNT_MAJLASTIP),"UPDATE compte.account SET last_ip = $2 WHERE id_account = $1");
-	database->prepareStatement(suffix + database->ToString(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH),"INSERT INTO compte.account_banned VALUES (DEFAULT,$1,now(),to_timestamp($2), 'AutoBan erreur authentification', true,$3)");
-	database->prepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNTBANNED_DEBANCOMPTE),"UPDATE compte.account_banned SET active = false WHERE id_account = $1");
-	database->prepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNT_MAJERREURSAUTH),"UPDATE compte.account SET failed_logins = $2 WHERE id_account = $1");
-	if (!nomString.empty())
-		chargementCompte(nomString);
+
+	database->prepareStatement(suffix + database->ToString(REALMS_SEL_ACCOUNT),"SELECT id_account,sha_pass_hash,email,joindate,last_ip,locked,last_login,online,locale FROM compte.account where username = $1 ");
+	database->prepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNT),"UPDATE compte.account SET sha_pass_hash = $2,email=$3,joindate = to_timestamp($4),last_ip = $5,locked = $6,last_login = to_timestamp($7),online = $8,locale = $9 WHERE id_account = $1");
+	database->prepareStatement(suffix + database->ToString(REALMS_INS_ACCOUNT),"INSERT INTO compte.account VALUES (DEFAULT,$1,$2,$3,to_timestamp($4),$5,$6,to_timestamp($7),$8,$9)");
+	database->prepareStatement(suffix + database->ToString(REALMS_DEL_ACCOUNT),"DELETE FROM compte.account WHERE id_account = $1");
 }
 
 Compte::~Compte() {
 	// TODO Auto-generated destructor stub
 }
 
-bool Compte::chargementCompte(std::string nomString)
+bool Compte::create(int idTransaction)
 {
+	bool retour;
+	Tokens tokens;
+	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_ACCOUNT),&tokens,idTransaction,9,username.c_str(),sha_pass_hash.c_str(),email.c_str(),database->ToString(joindate).c_str(),last_ip.c_str(),database->ToString(locked).c_str(),database->ToString(last_login).c_str(),database->ToString(online).c_str(),database->ToString(locale).c_str());
+	read();
+	return retour;
+}
+bool Compte::read(int idTransaction)
+{
+	bool retour;
 	Tokens resultsqlT;
-
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNTBANNED_DEBANAUTOCOMPTE));
-
-	resultsqlT = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_ACCOUNT_RECUPINFOSCOMPTE),0,1,nomString.c_str());
+	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_ACCOUNT),&resultsqlT,idTransaction,1,username.c_str());
 
 	if(resultsqlT.empty())
 	{
-		return false;
+		retour = false;
 	}
 	else
 	{
@@ -52,118 +55,110 @@ bool Compte::chargementCompte(std::string nomString)
 
 		resultatsql = database->strSplit( resultsqlT[0] ,";");
 
-		idCompte = database->ToInt(resultatsql[0]);
-		nomDuCompte = resultatsql[1];
-		shaPassHash = resultatsql[2];
-		locked = database->ToBool(resultatsql[3]);
-		lastIP = resultatsql[4];
-		nbPassage = database->ToInt(resultatsql[5]);
+		id_account = database->ToInt(resultatsql[0]);
+		sha_pass_hash = resultatsql[1];
+		email = resultatsql[2];
+		joindate = database->ToDate(resultatsql[3]);
+		last_ip = resultatsql[4];
+		locked = database->ToBool(resultatsql[5]) ;
+		last_login = database->ToDate(resultatsql[6]);
+		online = database->ToBool(resultatsql[8]) ;
+		locale = database->ToInt(resultatsql[8]);
 
-
-		banned = database->ToBool(resultatsql[6]);
-
-		if(resultatsql[7].compare("false") != 0)
-		{
-			struct tm tm;
-			printf("Date de ban %s \n",resultatsql[7].c_str());
-			strptime(resultatsql[7].c_str(), "%Y-%m-%d %H:%M:%S", &tm);
-			accountUnBanDate = mktime(&tm);
-		}
-
+		retour = true;
 	}
 
-
-	return true;
-}
-
-int Compte::getIdLogin()
-{
-	return idCompte;
-}
-std::string * Compte::getNomCompte()
-{
-	return &nomDuCompte;
-}
-std::string * Compte::getMDPSHA()
-{
-	return &shaPassHash;
-}
-
-void Compte::lockCompte()
-{
-	locked = true;
-}
-void Compte::unlockCompte()
-{
-	locked = false;
-}
-bool Compte::islocked()
-{
-	return locked;
-}
-
-void Compte::setLastIP(std::string lastIP)
-{
-	this->lastIP = lastIP;
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNT_MAJLASTIP),0,2,idCompte,lastIP.c_str());
-
-}
-std::string * Compte::getLastIP()
-{
-	return &lastIP;
-}
-
-uint8_t Compte::getNiveauCompte()
-{
-	return gmlevel;
-}
-
-void Compte::banCompte(time_t unbandate,const char * raison,int bannedby)
-{
-	banned = true;
-	this->accountUnBanDate = unbandate;
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_ACCOUNTBANNED_AUTOBANCOMPTEAUTH),0,4,idCompte,database->ToString(unbandate).c_str(),raison,database->ToString(bannedby).c_str());
-}
-void Compte::unbanCompte()
-{
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNTBANNED_DEBANCOMPTE),0,1,idCompte);
-	banned = false;
-}
-bool Compte::isBanned()
-{
-	return banned;
-}
-
-time_t * Compte::getAccountUnBanDate()
-{
-	return &accountUnBanDate;
-}
-
-void Compte::setNombreEssai(uint8_t essai)
-{
-	pqxx::result resultsql;
-	nbPassage = essai;
-	database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNT_MAJERREURSAUTH),0,2,database->ToString(idCompte).c_str(),database->ToString((int)nbPassage).c_str());
-}
-
-uint8_t Compte::getNombreEssai()
-{
-	return nbPassage;
-}
-
-bool Compte::create(int idTransaction)
-{
-	return true;
-}
-bool Compte::read(int idTransaction)
-{
-	return true;
+	return retour;
 }
 bool Compte::update(int idTransaction)
 {
-	return true;
+	Tokens resultsqlT;
+	return database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNT),&resultsqlT,idTransaction,9,database->ToString(id_account).c_str(),sha_pass_hash.c_str(),email.c_str(),database->ToString(joindate).c_str(),last_ip.c_str(),database->ToString(locked).c_str(),database->ToString(last_login).c_str(),database->ToString(online).c_str(),database->ToString(locale).c_str());
+
 }
 bool Compte::suppr(int idTransaction)
 {
-	return true;
+	Tokens resultsqlT;
+	return  database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_ACCOUNT),&resultsqlT,idTransaction,1,database->ToString(id_account).c_str());
+
+}
+
+std::string& Compte::getEmail() {
+	return email;
+}
+
+void Compte::setEmail(std::string& email) {
+	this->email = email;
+}
+
+int Compte::getIdAccount() {
+	return id_account;
+}
+
+void Compte::setIdAccount(int idAccount) {
+	id_account = idAccount;
+}
+
+time_t Compte::getJoindate() {
+	return joindate;
+}
+
+void Compte::setJoindate(time_t joindate) {
+	this->joindate = joindate;
+}
+
+std::string& Compte::getLastIp() {
+	return last_ip;
+}
+
+void Compte::setLastIp(std::string& lastIp) {
+	last_ip = lastIp;
+}
+
+time_t Compte::getLastLogin() {
+	return last_login;
+}
+
+void Compte::setLastLogin(time_t lastLogin) {
+	last_login = lastLogin;
+}
+
+int Compte::getLocale() {
+	return locale;
+}
+
+void Compte::setLocale(int locale) {
+	this->locale = locale;
+}
+
+bool Compte::isLocked() {
+	return locked;
+}
+
+void Compte::setLocked(bool locked) {
+	this->locked = locked;
+}
+
+bool Compte::isOnline() {
+	return online;
+}
+
+void Compte::setOnline(bool online) {
+	this->online = online;
+}
+
+std::string& Compte::getShaPassHash() {
+	return sha_pass_hash;
+}
+
+void Compte::setShaPassHash(std::string& shaPassHash) {
+	sha_pass_hash = shaPassHash;
+}
+
+std::string& Compte::getUsername() {
+	return username;
+}
+
+void Compte::setUsername(std::string& username) {
+	this->username = username;
 }
