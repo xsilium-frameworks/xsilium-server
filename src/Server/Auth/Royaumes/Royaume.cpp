@@ -8,8 +8,6 @@
 #include "Royaume.h"
 
 Royaume::Royaume(int idRoyaume) {
-	database = DatabaseManager::getInstance();
-
 	suffix = "Royaume";
 	this->idRoyaume = idRoyaume;
 	keyRoyaume = "";
@@ -20,16 +18,70 @@ Royaume::Royaume(int idRoyaume) {
 	versionClientRoyaume = 0;
 	online_royaume = 0;
 
-	database->prepareStatement(suffix + database->ToString(REALMS_SEL_LISTESROYAUMES_RECUPINFO),
+	database->prepareStatement(suffix + database->ToString(REALMS_SEL_LISTESROYAUMES),
 			"SELECT key_royaume,name_royaume,url_royaume,port_royaume,autorisation_royaume,version_client_royaume,online_royaume FROM royaumes.liste_royaume where id_royaume = $1");
-
-	loadRoyaume();
+	database->prepareStatement(suffix + database->ToString(REALMS_UPD_LISTESROYAUMES),"UPDATE royaumes.liste_royaume SET "
+			"keyRoyaume = $2,nameRoyaume=$3,urlRoyaume = $4,portRoyaume=$5,autorisationRoyaume=$6,versionClientRoyaume=$7,online_royaume = $8 WHERE idRoyaume = $1");
+	database->prepareStatement(suffix + database->ToString(REALMS_INS_LISTESROYAUMES),"INSERT INTO royaumes.liste_royaume VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7)");
+	database->prepareStatement(suffix + database->ToString(REALMS_DEL_LISTESROYAUMES),"DELETE FROM royaumes.liste_royaume WHERE id_royaume = $1");
 
 
 }
 
 Royaume::~Royaume() {
 	// TODO Auto-generated destructor stub
+}
+
+bool Royaume::create(int idTransaction)
+{
+	bool retour;
+	Tokens tokens;
+	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_LISTESROYAUMES),&tokens,idTransaction,7,keyRoyaume.c_str(),nameRoyaume.c_str(),urlRoyaume.c_str(),database->ToString(portRoyaume).c_str(),database->ToString(autorisationRoyaume).c_str(),database->ToString(versionClientRoyaume).c_str(),database->ToString(online_royaume).c_str());
+	retour = read();
+	return retour;
+}
+bool Royaume::read(int idTransaction)
+{
+	bool retour ;
+	Tokens resultsqlT;
+
+	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_LISTESROYAUMES),&resultsqlT,idTransaction,1,database->ToString(idRoyaume).c_str());
+
+	if(resultsqlT.empty())
+	{
+		retour = false ;
+	}
+	else
+	{
+		Tokens resultatsql;
+		resultatsql = database->strSplit( resultsqlT[0] ,";");
+
+		keyRoyaume = resultatsql[0];
+		nameRoyaume = resultatsql[1];
+		urlRoyaume = resultatsql[2];
+		portRoyaume = database->ToInt(resultatsql[3]);
+		autorisationRoyaume = database->ToInt(resultatsql[4]);
+		versionClientRoyaume = database->ToInt(resultatsql[5]);
+		online_royaume = database->ToBool(resultatsql[6]);
+
+		retour = true ;
+
+	}
+
+	return retour ;
+
+}
+bool Royaume::update(int idTransaction)
+{
+	Tokens resultsqlT;
+	return database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_LISTESROYAUMES),&resultsqlT,idTransaction,8,database->ToString(idRoyaume).c_str(),keyRoyaume.c_str(),nameRoyaume.c_str(),urlRoyaume.c_str(),database->ToString(portRoyaume).c_str(),database->ToString(autorisationRoyaume).c_str(),database->ToString(versionClientRoyaume).c_str(),database->ToString(online_royaume).c_str());
+
+}
+bool Royaume::suppr(int idTransaction)
+{
+	Tokens resultsqlT;
+	return  database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_LISTESROYAUMES),&resultsqlT,idTransaction,1,database->ToString(idRoyaume).c_str());
+
 }
 
 int Royaume::getAutorisationRoyaume() {
@@ -92,74 +144,8 @@ void Royaume::setVersionClientRoyaume(int versionClientRoyaume) {
 	this->versionClientRoyaume = versionClientRoyaume;
 }
 
-bool Royaume::create(int idTransaction)
-{
-
-	return true;
-}
-bool Royaume::read(int idTransaction)
-{
-	Tokens resultsqlT;
-
-	resultsqlT = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_LISTESROYAUMES_RECUPINFO),0,1,database->ToString(idRoyaume).c_str());
-
-	if(resultsqlT.empty())
-	{
-		return ;
-	}
-	else
-	{
-		Tokens resultatsql;
-		resultatsql = database->strSplit( resultsqlT[0] ,";");
-
-		keyRoyaume = resultatsql[0];
-		nameRoyaume = resultatsql[1];
-		urlRoyaume = resultatsql[2];
-		portRoyaume = database->ToInt(resultatsql[3]);
-		autorisationRoyaume = database->ToInt(resultatsql[4]);
-		versionClientRoyaume = database->ToInt(resultatsql[5]);
-		online_royaume = database->ToBool(resultatsql[6]);
-
-
-	}
-}
-bool Royaume::update(int idTransaction)
-{
-	return true;
-}
-bool Royaume::suppr(int idTransaction)
-{
-	return true;
-}
-
 std::string Royaume::ToExport()
 {
 	return urlRoyaume +";" + database->ToString(portRoyaume) + ";" + nameRoyaume + database->ToString(online_royaume) ;
-}
-
-std::vector<int> Royaume::getListeRoyaume()
-{
-	Tokens resultsqlT;
-	std::vector<int> listeID;
-	DatabaseManager::getInstance()->prepareStatement("Royaumes" + DatabaseManager::getInstance()->ToString(REALMS_SEL_LISTESROYAUMES_RECUPID),
-			"SELECT id_royaume FROM royaumes.liste_royaume");
-
-	resultsqlT = DatabaseManager::getInstance()->executionPrepareStatement("Royaumes" + DatabaseManager::getInstance()->ToString(REALMS_SEL_LISTESROYAUMES_RECUPID),0);
-
-	if(resultsqlT.empty())
-		{
-
-			return listeID;
-		}
-		else
-		{
-			for (int i = 0;i < resultsqlT.size();i++)
-			{
-				listeID.push_back(DatabaseManager::getInstance()->ToInt(resultsqlT[i]));
-			}
-			return listeID;
-		}
-
-
 }
 
