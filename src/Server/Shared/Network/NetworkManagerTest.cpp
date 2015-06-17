@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(testConnection)
 	delete networkManager;
 }
 
-BOOST_AUTO_TEST_CASE(testDeconnection)
+/*BOOST_AUTO_TEST_CASE(testDeconnection)
 {
 	NetworkManager * networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
 	ENetAddress adresse;
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE(testErrorConnection)
 	delete networkManager;
 
 
-}
+}*/
 
 BOOST_AUTO_TEST_SUITE_END()
 #endif
