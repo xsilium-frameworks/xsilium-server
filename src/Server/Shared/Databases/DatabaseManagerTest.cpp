@@ -22,6 +22,7 @@ BOOST_AUTO_TEST_CASE(testConnection)
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
 	BOOST_CHECK_EQUAL(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"), true);
+	databaseManager->deconnection();
 	DatabaseManager::DestroyInstance();
 }
 
@@ -31,6 +32,7 @@ BOOST_AUTO_TEST_CASE(testNonConnection)
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
 	BOOST_CHECK_EQUAL(databaseManager->connection("127.0.0.1;5432;Xsilium;Xsilium;DevAuth"), false);
+	databaseManager->deconnection();
 	DatabaseManager::DestroyInstance();
 }
 
