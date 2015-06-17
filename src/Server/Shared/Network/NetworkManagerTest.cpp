@@ -42,6 +42,8 @@ BOOST_AUTO_TEST_CASE(testDeconnection)
 
 	BOOST_CHECK(networkManager->disconnexion());
 
+	delete networkManager;
+
 }
 
 BOOST_AUTO_TEST_CASE(testErrorConnection)
@@ -59,6 +61,8 @@ BOOST_AUTO_TEST_CASE(testErrorConnection)
 	adresse2.port  =60003;
 
 	BOOST_CHECK(!networkManager->createConnexion(adresse2,1));
+
+	delete networkManager;
 
 
 }
