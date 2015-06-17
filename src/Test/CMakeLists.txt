@@ -7,6 +7,10 @@ endif()
 
 file(GLOB_RECURSE sources_Test ../Server/*Test.cpp ../Server/*Test.h)
 
+set(UnitTests_SRCS 
+TestRunnerClient.cpp
+)
+
 
 # Unit testing driver
 include_directories(
@@ -15,19 +19,17 @@ include_directories(
 	${CMAKE_SOURCE_DIR}/src/Server/Auth
 	${CMAKE_SOURCE_DIR}/src/Server/Kingdom
 )
-set(UnitTests_SRCS 
-TestRunnerClient.cpp
-)
 
 add_executable(UnitTester ${UnitTests_SRCS} ${sources_Test} )
 TARGET_LINK_LIBRARIES(UnitTester 
-	${CPPUNIT_LIBRARY}
+	${Boost_LIBRARIES}
 	SHARED
 )
 
+
 if(CMAKE_COMPILER_IS_GNUCXX)
     target_link_libraries(UnitTester gcov)
-endif()
+endif() 
 
 
 install(TARGETS UnitTester DESTINATION test)

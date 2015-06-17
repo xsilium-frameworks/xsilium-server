@@ -9,78 +9,59 @@
 #ifndef TEST_DATABASEMANAGER
 #define TEST_DATABASEMANAGER
 
+
+#include <boost/test/unit_test.hpp>
+
 #include <Network/NetworkManager.h>
 
-#include <cppunit/extensions/HelperMacros.h>
+BOOST_AUTO_TEST_SUITE(NetworkManagerTest)
 
-class NetworkManagerTest: public CppUnit::TestFixture {
-public:
-	NetworkManagerTest() {
-		networkManager= 0;
+BOOST_AUTO_TEST_CASE(testConnection)
+{
+	NetworkManager * networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
 
-	}
-	virtual ~NetworkManagerTest() {
+	ENetAddress adresse;
+	adresse.host = ENET_HOST_ANY;
+	adresse.port  =60003;
 
-	}
+	BOOST_CHECK(networkManager->createConnexion(adresse,1));
 
-	void setUp() {
-		networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
-	}
+	networkManager->disconnexion();
 
-	void tearDown() {
-		delete networkManager;
-	}
+	delete networkManager;
+}
 
-	void testConnection() {
+BOOST_AUTO_TEST_CASE(testDeconnection)
+{
+	NetworkManager * networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
+	ENetAddress adresse;
+	adresse.host = ENET_HOST_ANY;
+	adresse.port  =60003;
 
-		ENetAddress adresse;
-		adresse.host = ENET_HOST_ANY;
-		adresse.port  =60003;
+	BOOST_REQUIRE(networkManager->createConnexion(adresse,1));
 
-		CPPUNIT_ASSERT_EQUAL(true,networkManager->createConnexion(adresse,1));
+	BOOST_CHECK(networkManager->disconnexion());
 
-		networkManager->disconnexion();
-	}
+}
 
-	void testDeconnection() {
-		ENetAddress adresse;
-		adresse.host = ENET_HOST_ANY;
-		adresse.port  =60003;
+BOOST_AUTO_TEST_CASE(testErrorConnection)
+{
+	NetworkManager * networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
 
-		networkManager->createConnexion(adresse,1);
+	ENetAddress adresse;
+	adresse.host = ENET_HOST_ANY;
+	adresse.port  =60003;
 
-		CPPUNIT_ASSERT_EQUAL(true,networkManager->disconnexion());
+	BOOST_REQUIRE(networkManager->createConnexion(adresse,1));
 
-	}
+	ENetAddress adresse2;
+	adresse2.host = ENET_HOST_ANY;
+	adresse2.port  =60003;
 
-	void testErrorConnection() {
-
-		ENetAddress adresse;
-		adresse.host = ENET_HOST_ANY;
-		adresse.port  =60003;
-
-		networkManager->createConnexion(adresse,1);
-
-		ENetAddress adresse2;
-		adresse2.host = ENET_HOST_ANY;
-		adresse2.port  =60003;
-
-		CPPUNIT_ASSERT_EQUAL(false,networkManager->createConnexion(adresse2,1));
+	BOOST_CHECK(!networkManager->createConnexion(adresse2,1));
 
 
-	}
+}
 
-	CPPUNIT_TEST_SUITE(NetworkManagerTest);
-	CPPUNIT_TEST(testConnection);
-	CPPUNIT_TEST(testDeconnection);
-	CPPUNIT_TEST(testErrorConnection);
-	CPPUNIT_TEST_SUITE_END();
-
-private:
-	NetworkManager * networkManager;
-
-};
-
-CPPUNIT_TEST_SUITE_REGISTRATION(NetworkManagerTest);
-
+BOOST_AUTO_TEST_SUITE_END()
 #endif

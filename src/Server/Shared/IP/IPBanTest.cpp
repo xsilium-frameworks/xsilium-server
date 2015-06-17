@@ -9,83 +9,76 @@
 #ifndef TEST_IPBAN
 #define TEST_IPBAN
 
+#include <boost/test/unit_test.hpp>
+
 #include "IPBan.h"
 
-#include <cppunit/extensions/HelperMacros.h>
+BOOST_AUTO_TEST_SUITE(IPBanTest)
 
-class IPBanTest: public CppUnit::TestFixture {
-public:
-	IPBanTest() {
-		databaseManager = 0;
+BOOST_AUTO_TEST_CASE(testIPBanCreate)
+{
+	DatabaseManager * databaseManager = DatabaseManager::getInstance();
+	databaseManager->createServer(POSTGRESQL);
+	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
 
-	}
-	virtual ~IPBanTest() {
+	IPBan ipBan("127.0.0.1");
+	ipBan.setBandate(time(NULL));
+	ipBan.setBannedby(0);
+	ipBan.setRaison("CPPUNIT");
+	ipBan.setUnbandate(time(NULL) + 300000);
+	BOOST_CHECK(ipBan.create());
 
-	}
+	databaseManager->deconnection();
+	DatabaseManager::DestroyInstance();
+}
 
-	void setUp() {
-		databaseManager = DatabaseManager::getInstance();
+BOOST_AUTO_TEST_CASE(testIPBanRead)
+{
+	DatabaseManager * databaseManager = DatabaseManager::getInstance();
+	databaseManager->createServer(POSTGRESQL);
+	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
 
-		databaseManager->createServer(0);
-		databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth");
-	}
+	IPBan ipBan("127.0.0.1");
+	BOOST_CHECK(ipBan.read());
 
-	void tearDown() {
-		databaseManager->deconnection();
-		DatabaseManager::DestroyInstance();
-	}
+	databaseManager->deconnection();
+	DatabaseManager::DestroyInstance();
+}
 
-	void testIPBanCreate()
-	{
-		IPBan ipBan("127.0.0.1");
-		ipBan.setBandate(time(NULL));
-		ipBan.setBannedby(0);
-		ipBan.setRaison("CPPUNIT");
-		ipBan.setUnbandate(time(NULL) + 300000);
-		CPPUNIT_ASSERT_EQUAL(true,ipBan.create());
-	}
+BOOST_AUTO_TEST_CASE(testIPBanUpdate)
+{
+	DatabaseManager * databaseManager = DatabaseManager::getInstance();
+	databaseManager->createServer(POSTGRESQL);
+	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
 
-	void testIPBanRead()
-	{
-		IPBan ipBan("127.0.0.1");
-		CPPUNIT_ASSERT_EQUAL(true,ipBan.read());
-	}
+	IPBan ip("127.0.0.1");
+	ip.read();
+	ip.setBannedby(1);
+	BOOST_CHECK(ip.update());
 
-	void testIPBanUpdate()
-	{
-		IPBan ip("127.0.0.1");
-		ip.read();
-		ip.setBannedby(1);
-		ip.update();
+	IPBan ip2("127.0.0.1");
+	BOOST_CHECK(ip2.read());
+	BOOST_CHECK_EQUAL(ip2.getBannedby(),1);
 
-		IPBan ip2("127.0.0.1");
-		ip2.read();
-		CPPUNIT_ASSERT_EQUAL(1,ip2.getBannedby());
-	}
+	databaseManager->deconnection();
+	DatabaseManager::DestroyInstance();
+}
 
-	void testIPBanDelete()
-	{
-		IPBan ip("127.0.0.1");
-		ip.read();
-		ip.suppr();
-		IPBan ip2("127.0.0.1");
-		CPPUNIT_ASSERT_EQUAL(false,ip2.read());
-	}
+BOOST_AUTO_TEST_CASE(testIPBanDelete)
+{
+	DatabaseManager * databaseManager = DatabaseManager::getInstance();
+	databaseManager->createServer(POSTGRESQL);
+	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
 
+	IPBan ip("127.0.0.1");
+	ip.read();
+	ip.suppr();
+	IPBan ip2("127.0.0.1");
+	BOOST_CHECK(!ip2.read());
 
+	databaseManager->deconnection();
+	DatabaseManager::DestroyInstance();
+}
 
-	CPPUNIT_TEST_SUITE(IPBanTest);
-	CPPUNIT_TEST(testIPBanCreate);
-	CPPUNIT_TEST(testIPBanRead);
-	CPPUNIT_TEST(testIPBanUpdate);
-	CPPUNIT_TEST(testIPBanDelete);
-	CPPUNIT_TEST_SUITE_END();
-
-private:
-	DatabaseManager * databaseManager;
-
-};
-
-CPPUNIT_TEST_SUITE_REGISTRATION(IPBanTest);
-
+BOOST_AUTO_TEST_SUITE_END()
 #endif

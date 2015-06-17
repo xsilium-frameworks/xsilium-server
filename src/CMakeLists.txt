@@ -1,12 +1,10 @@
-find_package(CppUnit REQUIRED)
 find_library(PQXX_LIB pqxx)
 
 set(Boost_ADDITIONAL_VERSIONS "1.52.0")
-set(BOOST_COMPONENTS thread date_time system signals serialization)
+set(BOOST_COMPONENTS thread date_time system signals serialization unit_test_framework)
 find_package(Boost COMPONENTS ${BOOST_COMPONENTS} QUIET)
 	
 include_directories(
-	${CPPUNIT_INCLUDE_DIR}
 	${Boost_INCLUDE_DIR}
 	${ENET_INCLUDE_DIR}
 )	

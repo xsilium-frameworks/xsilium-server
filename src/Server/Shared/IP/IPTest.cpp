@@ -8,82 +8,74 @@
 #ifndef TEST_IP
 #define TEST_IP
 
+
+#include <boost/test/unit_test.hpp>
+
 #include "IP.h"
 
-#include <cppunit/extensions/HelperMacros.h>
+BOOST_AUTO_TEST_SUITE(IPTest)
 
-class IPTest: public CppUnit::TestFixture {
-public:
-	IPTest() {
-		databaseManager = 0;
+BOOST_AUTO_TEST_CASE(testIPBanCreate)
+{
+	DatabaseManager * databaseManager = DatabaseManager::getInstance();
+	databaseManager->createServer(POSTGRESQL);
+	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
 
-	}
-	virtual ~IPTest() {
+	IP ip("127.0.0.1");
+	ip.setIpTempNessais(0);
+	BOOST_CHECK(ip.create());
 
-	}
+	databaseManager->deconnection();
+	DatabaseManager::DestroyInstance();
+}
 
-	void setUp() {
-		databaseManager = DatabaseManager::getInstance();
+BOOST_AUTO_TEST_CASE(testIPRead)
+{
+	DatabaseManager * databaseManager = DatabaseManager::getInstance();
+	databaseManager->createServer(POSTGRESQL);
+	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
 
-		databaseManager->createServer(0);
-		databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth");
-	}
+	IP ip("127.0.0.1");
+	BOOST_CHECK(ip.read());
 
-	void tearDown() {
-		databaseManager->deconnection();
-		DatabaseManager::DestroyInstance();
-	}
+	databaseManager->deconnection();
+	DatabaseManager::DestroyInstance();
+}
 
-	void testIPCreate()
-	{
-		IP ip("127.0.0.1");
-		ip.setIpTempNessais(0);
-		CPPUNIT_ASSERT_EQUAL(true,ip.create());
-	}
+void testIPUpdate()
+{
+	DatabaseManager * databaseManager = DatabaseManager::getInstance();
+	databaseManager->createServer(POSTGRESQL);
+	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
 
-	void testIPRead()
-	{
-		IP ip("127.0.0.1");
-		CPPUNIT_ASSERT_EQUAL(true,ip.read());
-	}
+	IP ip("127.0.0.1");
+	IP ip2("127.0.0.1");
+	ip.read();
+	ip.setIpTempNessais(1);
+	BOOST_CHECK(ip.update());
+	BOOST_CHECK(ip2.read());
+	BOOST_CHECK_EQUAL(1,ip2.getIpTempNessais());
 
-	void testIPUpdate()
-	{
-		IP ip("127.0.0.1");
-		IP ip2("127.0.0.1");
-		ip.read();
-		ip.setIpTempNessais(1);
-		ip.update();
+	databaseManager->deconnection();
+	DatabaseManager::DestroyInstance();
+}
 
-		ip2.read();
-
-
-		CPPUNIT_ASSERT_EQUAL(1,ip2.getIpTempNessais());
-	}
-
-	void testIPDelete()
-	{
-		IP ip("127.0.0.1");
-		IP ip2("127.0.0.1");
-		ip.read();
-		ip.suppr();
-		CPPUNIT_ASSERT_EQUAL(false,ip2.read());
-	}
+void testIPDelete()
+{
+	DatabaseManager * databaseManager = DatabaseManager::getInstance();
+	databaseManager->createServer(POSTGRESQL);
+	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
 
 
+	IP ip("127.0.0.1");
+	IP ip2("127.0.0.1");
+	BOOST_CHECK(ip.read());
+	BOOST_CHECK(ip.suppr());
+	BOOST_CHECK(!ip2.read());
 
-	CPPUNIT_TEST_SUITE(IPTest);
-	CPPUNIT_TEST(testIPCreate);
-	CPPUNIT_TEST(testIPRead);
-	CPPUNIT_TEST(testIPUpdate);
-	CPPUNIT_TEST(testIPDelete);
-	CPPUNIT_TEST_SUITE_END();
+	databaseManager->deconnection();
+	DatabaseManager::DestroyInstance();
+}
 
-private:
-	DatabaseManager * databaseManager;
-
-};
-
-CPPUNIT_TEST_SUITE_REGISTRATION(IPTest);
-
+BOOST_AUTO_TEST_SUITE_END()
 #endif

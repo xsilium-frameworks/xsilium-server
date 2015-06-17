@@ -9,115 +9,104 @@
 
 #ifndef TEST_ConfigurationTest
 #define TEST_ConfigurationTest
-#include <cppunit/extensions/HelperMacros.h>
+
+
+#include <boost/test/unit_test.hpp>
 
 #include "Configuration.h"
 
 
-class ConfigurationTest : public CppUnit::TestFixture {
+BOOST_AUTO_TEST_SUITE(ConfigurationTest)
 
-private:
-	Configuration * configuration;
+BOOST_AUTO_TEST_CASE(testLoadFail)
+{
+	Configuration * configuration = Configuration::getInstance();
+	BOOST_CHECK_EQUAL(configuration->load("Erreur"), false );
+	Configuration::DestroyInstance();
+}
 
-public:
-	ConfigurationTest()
-	{
-		configuration = 0;
-	}
+BOOST_AUTO_TEST_CASE(testLoadPass)
+{
+	Configuration * configuration = Configuration::getInstance();
+	BOOST_CHECK_EQUAL(configuration->load("./TestConfig.config"), true );
+	Configuration::DestroyInstance();
+}
 
-	virtual ~ConfigurationTest(){};
+BOOST_AUTO_TEST_CASE(testContainsFail)
+{
+	Configuration * configuration = Configuration::getInstance();
+	configuration->load("./TestConfig.config");
+	BOOST_CHECK_EQUAL(configuration->contains("testErreur"), false );
+	Configuration::DestroyInstance();
+}
 
-	//~ Call before tests
-	void setUp(void)
-	{
-		configuration = Configuration::getInstance();
-	}
-	//~ Call after tests
-	void tearDown(void)
-	{
-		Configuration::DestroyInstance();
-	}
+BOOST_AUTO_TEST_CASE(testContainsPass)
+{
+	Configuration * configuration = Configuration::getInstance();
+	configuration->load("./TestConfig.config");
+	BOOST_CHECK_EQUAL(configuration->contains("testInt"), true );
+	Configuration::DestroyInstance();
+}
 
-	void testLoadFail()
-	{
-		CPPUNIT_ASSERT_EQUAL(false,configuration->load("Erreur"));
-	}
+BOOST_AUTO_TEST_CASE(testGetStringPass)
+{
+	Configuration * configuration = Configuration::getInstance();
+	std::string testString;
 
-	void testLoadPass()
-	{
-		CPPUNIT_ASSERT(configuration->load("./TestConfig.config"));
-	}
+	configuration->load("./TestConfig.config");
+	configuration->get("testString",testString);
 
-	void testContainsFail()
-	{
-		configuration->load("./TestConfig.config");
-		CPPUNIT_ASSERT_EQUAL(false,configuration->contains("testErreur"));
-	}
+	BOOST_CHECK_EQUAL(testString.compare("Test"), false );
+	Configuration::DestroyInstance();
+}
 
-	void testContainsPass()
-	{
-		configuration->load("./TestConfig.config");
-		CPPUNIT_ASSERT(configuration->contains("testInt"));
-	}
+BOOST_AUTO_TEST_CASE(testGetIntPass)
+{
+	Configuration * configuration = Configuration::getInstance();
+	int testInt;
 
-	void testGetStringPass()
-	{
-		std::string testString;
-		configuration->load("./TestConfig.config");
+	configuration->load("./TestConfig.config");
+	configuration->get("testInt",testInt);
 
-		configuration->get("testString",testString);
-		CPPUNIT_ASSERT_EQUAL(0,testString.compare("Test"));
-	}
+	BOOST_CHECK_EQUAL(testInt,4);
+	Configuration::DestroyInstance();
+}
 
-	void testGetIntPass()
-	{
-		int testInt;
-		configuration->load("./TestConfig.config");
+BOOST_AUTO_TEST_CASE(testGetLongPass)
+{
+	Configuration * configuration = Configuration::getInstance();
+	long testLong;
 
-		configuration->get("testInt",testInt);
-		CPPUNIT_ASSERT_EQUAL(4,testInt);
-	}
+	configuration->load("./TestConfig.config");
+	configuration->get("testLong",testLong);
 
-	void testGetLongPass()
-	{
-		long testLong;
-		configuration->load("./TestConfig.config");
-		configuration->get("testLong",testLong);
-		CPPUNIT_ASSERT_EQUAL( (long) 100000,testLong);
-	}
+	BOOST_CHECK_EQUAL(testLong,(long) 100000 );
+	Configuration::DestroyInstance();
+}
 
-	void testGetDoublePass()
-	{
-		double testDouble;
-		configuration->load("./TestConfig.config");
+BOOST_AUTO_TEST_CASE(testGetDoublePass)
+{
+	Configuration * configuration = Configuration::getInstance();
+	double testDouble;
 
-		configuration->get("testDouble",testDouble);
-		CPPUNIT_ASSERT_EQUAL(2.3,testDouble);
-	}
+	configuration->load("./TestConfig.config");
+	configuration->get("testDouble",testDouble);
 
-	void testGetBoolPass()
-		{
-			bool testBool;
-			configuration->load("./TestConfig.config");
+	BOOST_CHECK_EQUAL(testDouble,2.3 );
+	Configuration::DestroyInstance();
+}
 
-			configuration->get("testBool",testBool);
-			CPPUNIT_ASSERT_EQUAL(true,testBool);
-		}
+BOOST_AUTO_TEST_CASE(testGetBoolPass)
+{
+	Configuration * configuration = Configuration::getInstance();
+	bool testBool;
 
-	CPPUNIT_TEST_SUITE(ConfigurationTest);
-	CPPUNIT_TEST(testLoadFail);
-	CPPUNIT_TEST(testLoadPass);
-	CPPUNIT_TEST(testContainsPass);
-	CPPUNIT_TEST(testContainsFail);
-	CPPUNIT_TEST(testGetStringPass);
-	CPPUNIT_TEST(testGetIntPass);
-	CPPUNIT_TEST(testGetLongPass);
-	CPPUNIT_TEST(testGetDoublePass);
-	CPPUNIT_TEST(testGetBoolPass);
+	configuration->load("./TestConfig.config");
+	configuration->get("testBool",testBool);
 
-	CPPUNIT_TEST_SUITE_END();
+	BOOST_CHECK_EQUAL(testBool,true );
+	Configuration::DestroyInstance();
+}
 
-
-};
-CPPUNIT_TEST_SUITE_REGISTRATION(ConfigurationTest);
+BOOST_AUTO_TEST_SUITE_END()
 #endif
