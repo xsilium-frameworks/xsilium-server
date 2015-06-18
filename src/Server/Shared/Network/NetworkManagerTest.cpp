@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(testDeconnection)
 	adresse.host = ENET_HOST_ANY;
 	adresse.port  =60003;
 
-	BOOST_REQUIRE(networkManager->createConnexion(adresse,1));
+	BOOST_CHECK(networkManager->createConnexion(adresse,1));
 
 	BOOST_CHECK(networkManager->disconnexion());
 
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(testErrorConnection)
 	adresse.host = ENET_HOST_ANY;
 	adresse.port  =60003;
 
-	BOOST_REQUIRE(networkManager->createConnexion(adresse,1));
+	BOOST_CHECK(networkManager->createConnexion(adresse,1));
 
 	ENetAddress adresse2;
 	adresse2.host = ENET_HOST_ANY;
