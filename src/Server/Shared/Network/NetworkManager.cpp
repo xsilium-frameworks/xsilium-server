@@ -20,7 +20,6 @@ NetworkManager::NetworkManager(int typeConnexion) {
 NetworkManager::~NetworkManager() {
 	listOfListenner.clear();
 	enet_host_destroy(host);
-	delete peer;
 	enet_deinitialize();
 }
 

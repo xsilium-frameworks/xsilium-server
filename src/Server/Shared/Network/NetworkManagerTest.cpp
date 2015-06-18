@@ -26,24 +26,9 @@ BOOST_AUTO_TEST_CASE(testConnection)
 
 	BOOST_CHECK(networkManager->createConnexion(adresse,1));
 
-	networkManager->disconnexion();
-
-	delete networkManager;
-}
-
-BOOST_AUTO_TEST_CASE(testDeconnection)
-{
-	NetworkManager * networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
-	ENetAddress adresse;
-	adresse.host = ENET_HOST_ANY;
-	adresse.port  =60003;
-
-	BOOST_CHECK(networkManager->createConnexion(adresse,1));
-
 	BOOST_CHECK(networkManager->disconnexion());
 
 	delete networkManager;
-
 }
 
 BOOST_AUTO_TEST_CASE(testErrorConnection)
@@ -54,7 +39,7 @@ BOOST_AUTO_TEST_CASE(testErrorConnection)
 	adresse.host = ENET_HOST_ANY;
 	adresse.port  =60003;
 
-	BOOST_CHECK(networkManager->createConnexion(adresse,1));
+	BOOST_REQUIRE(networkManager->createConnexion(adresse,1));
 
 	ENetAddress adresse2;
 	adresse2.host = ENET_HOST_ANY;
