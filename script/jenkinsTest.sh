@@ -5,7 +5,7 @@ BUILD=$WORKSPACE"/build/"
 REPORT=$WORKSPACE"/report/"
 
 echo "Lancement des tests unitaire "
-mkdir $WORKSPACE"/build/"
+mkdir $REPORT
 cd $BUILD
 
 cp $WORKSPACE"/bin/test/TestConfig.config" .
