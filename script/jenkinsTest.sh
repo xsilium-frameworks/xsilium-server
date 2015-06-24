@@ -1,5 +1,4 @@
 #!/bin/bash
-
 WORKSPACE=${1}
 BUILD=$WORKSPACE"/build/"
 REPORT=$WORKSPACE"/report/"
