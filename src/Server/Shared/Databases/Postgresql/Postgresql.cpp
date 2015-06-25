@@ -13,7 +13,7 @@ Postgresql::Postgresql() {
 }
 
 Postgresql::~Postgresql() {
-	// TODO Auto-generated destructor stub
+	delete connexion ;
 }
 
 bool Postgresql::connection(std::string infoConnection) {
