@@ -25,41 +25,40 @@ void ChatManager::run()
 	NetworkListener::run();
 }
 
-void ChatManager::processPacket(MessageNetwork * messageNetwork)
+void ChatManager::ProcessPacket(MessageNetwork * messageNetwork)
 {
 	log->write(Log::DEBUG,"Nouveau Packet de Chat");
 	MessagePacket * messageRetour = new MessagePacket();
 
-	// En cas de spam le message n'est pas envoyé
-	if (!SpamDetector) {
-
-		switch(messageNetwork->messagePacket->getSousOpcode())
-		{
-		case ID_KINGDOM :
-			HandleChatKingdom(messageNetwork, messageRetour);
-			networkManager->sendPacket(networkManager->getHost(),0,messageRetour)
-			break;
-		case ID_AREA :
-			HandleChatArea(messageNetwork, messageRetour);
-			break;
-		case ID_PRIVATE :
-			HandleChatPrivate(messageNetwork, messageRetour);
-			break;
-		case ID_COMMUNITY :
-			HandleChatArea(messageNetwork, messageRetour);
-			break;
-		default:
-			break;
-		}
-	} else {
-		networkManager->sendPacket(networkManager->session->getSessionPeer(),0,messageRetour)
+	// En cas de spam le message n'est pas envoye
+	switch(messageNetwork->messagePacket->getSousOpcode())
+	{
+	case ID_KINGDOM :
+		HandleChatKingdom(messageNetwork, messageRetour);
+		SendPacketChat(messageNetwork, messageRetour, ID_KINGDOM);
+		networkManager->sendPacket(networkManager->getHost(),0,messageRetour);
+		break;
+	case ID_AREA :
+		HandleChatArea(messageNetwork, messageRetour);
+		SendPacketChat(messageNetwork, messageRetour, ID_AREA);
+		break;
+	case ID_PRIVATE :
+		HandleChatPrivate(messageNetwork, messageRetour);
+		SendPacketChat(messageNetwork, messageRetour, ID_PRIVATE);
+		break;
+	case ID_COMMUNITY :
+		HandleChatCommunity(messageNetwork, messageRetour);
+		SendPacketChat(messageNetwork, messageRetour, ID_COMMUNITY);
+		break;
+	default:
+		break;
 	}
 }
 
 int  ChatManager::HandleChatKingdom(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
-	// Controle presence donnée identifiant du destinataire
-	if(!messageNetwork->messagePacket->hasProperty("canal"))
+	// Controle presence proprietes du message
+	if(!messageNetwork->messagePacket->hasProperty("canal")||!messageNetwork->messagePacket->hasProperty("text"))
 	{
 		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
 		messageRetour->setOpcode(ID_CHAT);
@@ -67,7 +66,6 @@ int  ChatManager::HandleChatKingdom(MessageNetwork * messageNetwork,MessagePacke
 		messageRetour->setProperty("ErrorId",ID_ERROR_PACKET_SIZE);
 		return ID_ERROR_PACKET_SIZE ;
 	}
-
 	messageRetour->setOpcode(ID_CHAT);
 	messageRetour->setSousOpcode(ID_PRIVATE);
 
@@ -76,8 +74,8 @@ int  ChatManager::HandleChatKingdom(MessageNetwork * messageNetwork,MessagePacke
 
 int  ChatManager::HandleChatPrivate(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
-	// Controle presence donnée du canal de destination:
-	if(!messageNetwork->messagePacket->hasProperty("name_dest"))
+	// Controle presence proprietes du message
+	if(!messageNetwork->messagePacket->hasProperty("name_dest")||!messageNetwork->messagePacket->hasProperty("text"))
 	{
 		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
 		messageRetour->setOpcode(ID_CHAT);
@@ -89,28 +87,71 @@ int  ChatManager::HandleChatPrivate(MessageNetwork * messageNetwork,MessagePacke
 
 int  ChatManager::HandleChatArea(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
-	// Controle presence donnée identifiant du destinataire
-	if(!messageNetwork->messagePacket->hasProperty("id_area"))
+	// Controle presence proprietes du message
+	if(!messageNetwork->messagePacket->hasProperty("id_area")||!messageNetwork->messagePacket->hasProperty("text"))
 	{
 		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
 		messageRetour->setOpcode(ID_CHAT);
 		messageRetour->setSousOpcode(ID_ERREUR);
 		messageRetour->setProperty("ErrorId",ID_ERROR_PACKET_SIZE);
+
 		return ID_ERROR_PACKET_SIZE ;
 	}
-
 	messageRetour->setOpcode(ID_CHAT);
 	messageRetour->setSousOpcode(ID_PRIVATE);
 
 	return ID_NOERROR;
 }
 
-bool ChatManager::SpamDetector(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
+int  ChatManager::HandleChatCommunity(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
+	// Controle presence proprietes du message
+	if(!messageNetwork->messagePacket->hasProperty("id_community")||!messageNetwork->messagePacket->hasProperty("text"))
+	{
+		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
 		messageRetour->setOpcode(ID_CHAT);
 		messageRetour->setSousOpcode(ID_ERREUR);
-		messageRetour->setProperty("ErrorId",ID_SPAM);
-		return false;
+		messageRetour->setProperty("ErrorId",ID_ERROR_PACKET_SIZE);
+
+		return ID_ERROR_PACKET_SIZE ;
+	}
+	messageRetour->setOpcode(ID_CHAT);
+	messageRetour->setSousOpcode(ID_COMMUNITY);
+
+	return ID_NOERROR;
+}
+//TODO Implementation SpamDetector
+bool ChatManager::SpamDetector(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
+{
+	messageRetour->setOpcode(ID_CHAT);
+	messageRetour->setSousOpcode(ID_ERREUR);
+	messageRetour->setProperty("ErrorId",ID_SPAM);
+
+	return false;
+}
+
+void ChatManager::SendPacketChat(MessageNetwork * messageNetwork,MessagePacket * messageRetour, int typeForChat) {
+	if (messageRetour->getSousOpcode() == ID_ERREUR)
+	{
+		networkManager->sendPacket(messageNetwork->session->getSessionPeer(),0,messageRetour);
+	} else {
+
+		switch(typeForChat)
+			{
+			case ID_KINGDOM :
+				networkManager->sendPacket(networkManager->getHost(),0,messageRetour);
+				break;
+			case ID_AREA :
+				// envoie au joueurs de la zone uniquement
+				break;
+			case ID_PRIVATE :
+				// envoi a un joueur spécifique
+				break;
+			case ID_COMMUNITY :
+				// envoie a une liste de joueur
+				break;
+			}
+	}
 }
 
 }/* namespace Kingdom */
