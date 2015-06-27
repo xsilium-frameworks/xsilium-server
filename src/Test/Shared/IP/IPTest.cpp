@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(testIPRead)
 	DatabaseManager::DestroyInstance();
 }
 
-void testIPUpdate()
+BOOST_AUTO_TEST_CASE(testIPUpdate)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
@@ -61,7 +61,7 @@ void testIPUpdate()
 	DatabaseManager::DestroyInstance();
 }
 
-void testIPDelete()
+BOOST_AUTO_TEST_CASE(testIPDelete)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
