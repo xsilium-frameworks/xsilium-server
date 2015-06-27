@@ -36,12 +36,12 @@ void KingdomServer::startServer()
 		ENetAddress adresse;
 
 		signalHandler->setupSignalHandlers();
-		if (!configuration->load("../etc/auth.config"))
+		if (!configuration->load("../etc/Kingdom.config"))
 			return;
 
 
 		configuration->get("LogLevel",logLevel);
-		log->start((Log::Priority)logLevel,"authserver.log");
+		log->start((Log::Priority)logLevel,"kingdomServer.log");
 		log->activationFile();
 
 		log->write(Log::DEBUG,"Demarrage de la connexion SQL (loginDB) ");
