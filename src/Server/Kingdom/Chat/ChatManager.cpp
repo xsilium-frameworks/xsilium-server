@@ -36,7 +36,6 @@ void ChatManager::ProcessPacket(MessageNetwork * messageNetwork)
 	case ID_KINGDOM :
 		HandleChatKingdom(messageNetwork, messageRetour);
 		SendPacketChat(messageNetwork, messageRetour, ID_KINGDOM);
-		networkManager->sendPacket(networkManager->getHost(),0,messageRetour);
 		break;
 	case ID_AREA :
 		HandleChatArea(messageNetwork, messageRetour);
