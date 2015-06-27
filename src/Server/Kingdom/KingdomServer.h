@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <Chat/ChatManager.h>
-#include <Databases/Databasemanager.h>
+#include <Databases/DatabaseManager.h>
 
 namespace Kingdom {
 
