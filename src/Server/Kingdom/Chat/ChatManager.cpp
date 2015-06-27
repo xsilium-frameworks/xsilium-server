@@ -57,7 +57,7 @@ void ChatManager::processPacket(MessageNetwork * messageNetwork)
 int  ChatManager::handleChatKingdom(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
 	// Controle presence proprietes du message
-	if(!messageNetwork->messagePacket->hasProperty("canal")||!messageNetwork->messagePacket->hasProperty("text"))
+	if(!messageNetwork->messagePacket->hasProperty("Canal")||!messageNetwork->messagePacket->hasProperty("Text"))
 	{
 		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
 		messageRetour->setOpcode(ID_CHAT);
@@ -66,8 +66,10 @@ int  ChatManager::handleChatKingdom(MessageNetwork * messageNetwork,MessagePacke
 		return ID_ERROR_PACKET_SIZE ;
 	}
 	messageRetour->setOpcode(ID_CHAT);
-	messageRetour->setSousOpcode(ID_PRIVATE);
-
+	messageRetour->setSousOpcode(ID_KINGDOM);
+	messageRetour->setProperty("Perso",messageNetwork->messagePacket->getProperty("Perso"));
+	messageRetour->setProperty("Canal",messageNetwork->messagePacket->getProperty("Canal"));
+	messageRetour->setProperty("Text",messageNetwork->messagePacket->getProperty("Text"));
 	return ID_NOERROR;
 }
 
