@@ -49,10 +49,11 @@ void testIPUpdate()
 	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
 
 	IP ip("127.0.0.1");
-	IP ip2("127.0.0.1");
+
 	ip.read();
 	ip.setIpTempNessais(1);
 	BOOST_CHECK(ip.update());
+	IP ip2("127.0.0.1");
 	BOOST_CHECK(ip2.read());
 	BOOST_CHECK_EQUAL(1,ip2.getIpTempNessais());
 
@@ -68,9 +69,9 @@ void testIPDelete()
 
 
 	IP ip("127.0.0.1");
-	IP ip2("127.0.0.1");
 	BOOST_CHECK(ip.read());
 	BOOST_CHECK(ip.suppr());
+	IP ip2("127.0.0.1");
 	BOOST_CHECK(!ip2.read());
 
 	databaseManager->deconnection();
