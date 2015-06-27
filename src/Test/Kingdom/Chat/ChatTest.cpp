@@ -5,7 +5,7 @@
  *      Author: \author joda
  *  \brief :
  */
-#include <Chat/Chat.h>
+#include <Chat/ChatManager.h>
 
 namespace Kingdom {
 

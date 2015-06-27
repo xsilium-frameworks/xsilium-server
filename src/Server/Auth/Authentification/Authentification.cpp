@@ -34,10 +34,10 @@ void Authentification::processPacket(MessageNetwork * messageNetwork)
 	switch(messageNetwork->messagePacket->getSousOpcode())
 	{
 	case ID_CHALLENGE :
-		HandleLogonChallenge(messageNetwork,messageRetour);
+		handleLogonChallenge(messageNetwork,messageRetour);
 		break;
 	case ID_REPONSE :
-		HandleLogonProof(messageNetwork,messageRetour);
+		handleLogonProof(messageNetwork,messageRetour);
 		break;
 	default:
 		break;
@@ -46,7 +46,7 @@ void Authentification::processPacket(MessageNetwork * messageNetwork)
 }
 
 
-int  Authentification::HandleLogonChallenge(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
+int  Authentification::handleLogonChallenge(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
 	// Controle Presence Donnée
 	if(!messageNetwork->messagePacket->hasProperty("Build"))
@@ -177,7 +177,7 @@ int  Authentification::HandleLogonChallenge(MessageNetwork * messageNetwork,Mess
 	return ID_NOERROR;
 }
 
-int Authentification::HandleLogonProof(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
+int Authentification::handleLogonProof(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
 
 	if(!messageNetwork->messagePacket->hasProperty("Password"))

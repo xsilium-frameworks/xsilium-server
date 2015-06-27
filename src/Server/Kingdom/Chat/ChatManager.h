@@ -49,14 +49,14 @@ public:
 	 *  	Forme du fichier en entree: String canal: canal de discution
 	 *  \return messageRetour
 	 */
-	int HandleChatKingdom(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
+	int handleChatKingdom(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 	/*!
 	 *  \brief Gestion des messages a destination d'une zone specifique
 	 *  \param messageNetwork:
 	 *  	Forme du fichier en entree: String id_area: id de la zone, text: contenu du message
 	 *  \return messageRetour
 	 */
-	int HandleChatArea(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
+	int handleChatArea(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 	/*!
 	 *  \brief Gestion des messages a  destination d'un joueur
 	 *  \param messageNetwork:
@@ -64,7 +64,7 @@ public:
 	 *
 	 *  \return messageRetour
 	 */
-	int HandleChatPrivate(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
+	int handleChatPrivate(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 	/*!
 	 *  \brief Gestion des messages a  destination d'un groupe de joueurs
 	 *  \param messageNetwork:
@@ -72,24 +72,24 @@ public:
 	 *
 	 *  \return messageRetour
 	 */
-	int HandleChatCommunity(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
+	int handleChatCommunity(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 
 	/*!
 	 *  \brief Indicateur de spam de l'emetteur
 	 *  \param messageNetwork
 	 *  \return messageRetour
 	 */
-	bool SpamDetector(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
+	bool spamDetector(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 	/*!
 	 *  \brief Traitement de l'envoie d'un packet de chat en fonction de son type
 	 *  \param messageNetwork, messageRetour, typeForChat
 	 */
-	void SendPacketChat(MessageNetwork * messageNetwork,MessagePacket * messageRetour, int typeForChat);
+	void sendPacketChat(MessageNetwork * messageNetwork,MessagePacket * messageRetour, int typeForChat);
 	/*!
 	 *  \brief Gestion des packets de Chat
 	 *  \param messageNetwork
 	 */
-	void ProcessPacket(MessageNetwork * messageNetwork);
+	void processPacket(MessageNetwork * messageNetwork);
 
 	private:
 	Log * log;

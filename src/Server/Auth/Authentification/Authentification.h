@@ -81,8 +81,8 @@ public:
 	 *  \param
 	 */
 
-	int  HandleLogonChallenge(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
-	int  HandleLogonProof(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
+	int  handleLogonChallenge(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
+	int  handleLogonProof(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 
 	void processPacket(MessageNetwork * messageNetwork);
 
