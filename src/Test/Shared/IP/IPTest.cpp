@@ -15,7 +15,7 @@
 
 BOOST_AUTO_TEST_SUITE(IPTest)
 
-BOOST_AUTO_TEST_CASE(testIPBanCreate)
+BOOST_AUTO_TEST_CASE(testIPCreate)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);

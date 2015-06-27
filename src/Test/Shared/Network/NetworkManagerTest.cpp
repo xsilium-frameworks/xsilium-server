@@ -47,6 +47,7 @@ BOOST_AUTO_TEST_CASE(testErrorConnection)
 
 	BOOST_CHECK(!networkManager->createConnexion(adresse2,1));
 
+	networkManager->disconnexion();
 	delete networkManager;
 
 

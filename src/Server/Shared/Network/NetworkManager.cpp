@@ -9,8 +9,8 @@
 
 NetworkManager::NetworkManager(int typeConnexion) {
 	enet_initialize();
-	host = NULL;
-	peer = NULL;
+	host = 0;
+	peer = 0;
 	endThread = false;
 	isConnectedflag = false;
 	this->typeConnexion = typeConnexion ;
@@ -36,31 +36,36 @@ bool NetworkManager::createConnexion(ENetAddress adresse, int MaxClient) {
 
 	endThread = false;
 
-	if(typeConnexion == NETWORK_TYPE_SERVER)
+	if (host)
 	{
+		if(typeConnexion == NETWORK_TYPE_SERVER)
+		{
 
-		host = enet_host_create (&adresse /* the address to bind the server host to */,
-				(size_t)MaxClient      /* allow up to 32 clients and/or outgoing connections */,
-				2      /* allow up to 2 channels to be used, 0 and 1 */,
-				0      /* assume any amount of incoming bandwidth */,
-				0      /* assume any amount of outgoing bandwidth */);
-		if (host == NULL)
-			return false ;
-		enet_host_compress_with_range_coder(host);
-		thread = boost::thread(&NetworkManager::threadConnexion, (void *) this);
+			host = enet_host_create (&adresse /* the address to bind the server host to */,
+					(size_t)MaxClient      /* allow up to 32 clients and/or outgoing connections */,
+					2      /* allow up to 2 channels to be used, 0 and 1 */,
+					0      /* assume any amount of incoming bandwidth */,
+					0      /* assume any amount of outgoing bandwidth */);
+			if (host == NULL)
+				return false ;
+			enet_host_compress_with_range_coder(host);
+			thread = boost::thread(&NetworkManager::threadConnexion, (void *) this);
 
+		}
+		else
+		{
+			host = enet_host_create (NULL /* create a client host */,
+					1 /* only allow 1 outgoing connection */,
+					2 /* allow up 2 channels to be used, 0 and 1 */,
+					57600 / 8 /* 56K modem with 56 Kbps downstream bandwidth */,
+					14400 / 8 /* 56K modem with 14 Kbps upstream bandwidth */);
+			if ( host == NULL)
+				return false;
+			enet_host_compress_with_range_coder(host);
+		}
 	}
 	else
-	{
-		host = enet_host_create (NULL /* create a client host */,
-				1 /* only allow 1 outgoing connection */,
-				2 /* allow up 2 channels to be used, 0 and 1 */,
-				57600 / 8 /* 56K modem with 56 Kbps downstream bandwidth */,
-				14400 / 8 /* 56K modem with 14 Kbps upstream bandwidth */);
-		if ( host == NULL)
-			return false;
-		enet_host_compress_with_range_coder(host);
-	}
+		return false;
 	return true ;
 }
 
