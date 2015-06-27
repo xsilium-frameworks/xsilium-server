@@ -13,7 +13,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "Configuration.h"
+#include <Configuration/Configuration.h>
 
 
 BOOST_AUTO_TEST_SUITE(ConfigurationTest)

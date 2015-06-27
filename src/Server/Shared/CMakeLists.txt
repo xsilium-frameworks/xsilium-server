@@ -11,8 +11,6 @@ file(GLOB_RECURSE sources_Compte Compte/*.cpp Compte/*.h)
 file(GLOB_RECURSE sources_IP IP/*.cpp IP/*.h)
 file(GLOB_RECURSE sources_Royaume Royaume/*.cpp Royaume/*.h)
 
-file(GLOB_RECURSE sources_Test *Test.cpp *Test.h)
-
 #
 # Build shared sourcelist
 #
@@ -30,8 +28,6 @@ set(shared_STAT_SRCS
   ${sources_IP}
   ${sources_Royaume}
 )
-
-list(REMOVE_ITEM shared_STAT_SRCS ${sources_Test} )
 
 include_directories(
   ${CMAKE_BINARY_DIR}
