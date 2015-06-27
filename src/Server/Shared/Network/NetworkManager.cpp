@@ -36,7 +36,7 @@ bool NetworkManager::createConnexion(ENetAddress adresse, int MaxClient) {
 
 	endThread = false;
 
-	if (host)
+	if (!host)
 	{
 		if(typeConnexion == NETWORK_TYPE_SERVER)
 		{
