@@ -51,9 +51,22 @@ void KingdomServer::startServer()
 		databaseManager->createServer(typeDatabase);
 		databaseManager->connection(infoDB);
 
-		log->write(Log::DEBUG,"Demarrage du serveur d'authentification");
+		log->write(Log::DEBUG,"Demarrage du module de Chat");
 		chatManager = new ChatManager(networkManager);
 		chatManager->run();
+
+		configuration->get("port",serverPort);
+		configuration->get("clientMax",numClient);
+		adresse.host = ENET_HOST_ANY;
+		adresse.port  = (enet_uint16) serverPort;
+
+		log->write(Log::DEBUG,"Demarrage du socket Kingdom");
+
+		if(!networkManager->createConnexion(adresse,numClient))
+		{
+			log->write(Log::DEBUG,"Impossible d'ouvrir la connexion ");
+			return;
+		}
 
 		while(!signalHandler->gotExitSignal())
 			sleep(1);
