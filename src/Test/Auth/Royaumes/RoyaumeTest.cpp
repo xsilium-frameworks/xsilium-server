@@ -5,5 +5,5 @@
  *      Author: \author joda
  *  \brief :
  */
-#include "Royaume.h"
+#include <Royaumes/Royaume.h>
 

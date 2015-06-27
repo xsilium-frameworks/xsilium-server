@@ -5,7 +5,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     SETUP_TARGET_FOR_COVERAGE_COBERTURA(UnitTester_coverage UnitTester coverage "--log_format=XML --log_sink=boost-report.xml --log_level=all --report_level=no")
 endif()
 
-file(GLOB_RECURSE sources_Test ../Server/*Test.cpp ../Server/*Test.h)
+file(GLOB_RECURSE sources_Test *Test.cpp *Test.h)
 
 set(UnitTests_SRCS 
 TestRunnerClient.cpp
