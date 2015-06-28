@@ -90,6 +90,7 @@ void AuthServer::stopThread()
 {
 	log->write(Log::DEBUG,"Extinction du serveur ");
 	networkManager->disconnexion();
+	royaumesManager->stopThread();
 	authentification->stopThread();
 	databaseManager->deconnection();
 

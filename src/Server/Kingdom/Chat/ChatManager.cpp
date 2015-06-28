@@ -28,26 +28,26 @@ void ChatManager::run()
 void ChatManager::processPacket(MessageNetwork * messageNetwork)
 {
 	log->write(Log::DEBUG,"Nouveau Packet de Chat");
-	MessagePacket * messageRetour = new MessagePacket();
+	MessagePacket messageRetour;
 
 	// En cas de spam le message n'est pas envoye
 	switch(messageNetwork->messagePacket->getSousOpcode())
 	{
 	case ID_KINGDOM :
-		handleChatKingdom(messageNetwork, messageRetour);
-		sendPacketChat(messageNetwork, messageRetour, ID_KINGDOM);
+		handleChatKingdom(messageNetwork, &messageRetour);
+		sendPacketChat(messageNetwork, &messageRetour, ID_KINGDOM);
 		break;
 	case ID_AREA :
-		handleChatArea(messageNetwork, messageRetour);
-		sendPacketChat(messageNetwork, messageRetour, ID_AREA);
+		handleChatArea(messageNetwork, &messageRetour);
+		sendPacketChat(messageNetwork, &messageRetour, ID_AREA);
 		break;
 	case ID_PRIVATE :
-		handleChatPrivate(messageNetwork, messageRetour);
-		sendPacketChat(messageNetwork, messageRetour, ID_PRIVATE);
+		handleChatPrivate(messageNetwork, &messageRetour);
+		sendPacketChat(messageNetwork, &messageRetour, ID_PRIVATE);
 		break;
 	case ID_COMMUNITY :
-		handleChatCommunity(messageNetwork, messageRetour);
-		sendPacketChat(messageNetwork, messageRetour, ID_COMMUNITY);
+		handleChatCommunity(messageNetwork, &messageRetour);
+		sendPacketChat(messageNetwork, &messageRetour, ID_COMMUNITY);
 		break;
 	default:
 		break;

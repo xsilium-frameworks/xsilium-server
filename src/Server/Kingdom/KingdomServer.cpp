@@ -55,7 +55,7 @@ void KingdomServer::startServer()
 		chatManager = new ChatManager(networkManager);
 		chatManager->run();
 
-		configuration->get("port",serverPort);
+		configuration->get("portClient",serverPort);
 		configuration->get("clientMax",numClient);
 		adresse.host = ENET_HOST_ANY;
 		adresse.port  = (enet_uint16) serverPort;

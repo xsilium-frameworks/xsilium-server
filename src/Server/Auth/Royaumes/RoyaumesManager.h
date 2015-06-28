@@ -21,7 +21,7 @@ namespace Auth {
 enum typeForRoyaume
 {
 	ID_LIST_ROYAUME = 0,
-	ID_CREATE_ROAYUME
+	ID_CREATE_ROYAUME
 };
 
 enum erreurOfRoyaume

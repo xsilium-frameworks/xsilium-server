@@ -30,19 +30,19 @@ void Authentification::run()
 void Authentification::processPacket(MessageNetwork * messageNetwork)
 {
 	log->write(Log::DEBUG,"Nouveau Packet Authentification");
-	MessagePacket * messageRetour = new MessagePacket();
+	MessagePacket messageRetour;
 	switch(messageNetwork->messagePacket->getSousOpcode())
 	{
 	case ID_CHALLENGE :
-		handleLogonChallenge(messageNetwork,messageRetour);
+		handleLogonChallenge(messageNetwork,&messageRetour);
 		break;
 	case ID_REPONSE :
-		handleLogonProof(messageNetwork,messageRetour);
+		handleLogonProof(messageNetwork,&messageRetour);
 		break;
 	default:
 		break;
 	}
-	networkManager->sendPacket(messageNetwork->session->getSessionPeer(),0,messageRetour);
+	networkManager->sendPacket(messageNetwork->session->getSessionPeer(),0,&messageRetour);
 }
 
 
