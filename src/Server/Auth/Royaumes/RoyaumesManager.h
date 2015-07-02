@@ -30,8 +30,6 @@ enum erreurOfRoyaume
 	ID_ERROR_PACKET_SIZE_R
 };
 
-#define NUM_UPDATE_ROYAUME 300000
-
 /*
  *
  */
@@ -43,8 +41,11 @@ public:
 	void run();
 	void processPacket(MessageNetwork * messageNetwork);
 
-	int HandleListRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
+	int HandleReadRoyaumes(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 	int HandleCreateRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
+	int HandleUpdateRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
+	int HandleDeleteRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
+
 
 	//void updateRoyaume();
 

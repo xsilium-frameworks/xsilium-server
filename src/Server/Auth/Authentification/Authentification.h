@@ -88,6 +88,9 @@ public:
 
 
 private:
+
+	void banIP(IP * ip , IPBan * ipBan);
+
 	Log * log;
 	Configuration * config ;
 	NetworkManager * networkManager;

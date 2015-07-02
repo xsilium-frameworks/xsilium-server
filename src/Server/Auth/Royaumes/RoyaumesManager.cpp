@@ -35,7 +35,7 @@ void RoyaumesManager::processPacket(MessageNetwork * messageNetwork)
 	switch(messageNetwork->messagePacket->getSousOpcode())
 	{
 	case ID_LIST_ROYAUME :
-		HandleListRoyaume(messageNetwork,messageRetour);
+		HandleReadRoyaumes(messageNetwork,messageRetour);
 		break;
 	default:
 		break;
@@ -43,51 +43,26 @@ void RoyaumesManager::processPacket(MessageNetwork * messageNetwork)
 	networkManager->sendPacket(messageNetwork->session->getSessionPeer(),0,messageRetour);
 }
 
- /*void RoyaumesManager::updateRoyaume()
+int  RoyaumesManager::HandleReadRoyaumes(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
-
-	if(m_NextUpdateTime < time(NULL))
-	{
-		std::vector<int> listID = Royaume::getListeRoyaume();
-
-		printf("test %li < %li \n",m_NextUpdateTime,time(NULL));
-
-		for (std::vector<int>::iterator it = listID.begin() ; it != listID.end(); ++it)
-		{
-			std::map<int,Royaume *>::iterator royaumeIterator = listRoyaume.find(*it);
-			if (royaumeIterator == listRoyaume.end())
-			{
-				Royaume * royaume = new Royaume(*it);
-				listRoyaume[*it] = royaume ;
-			}
-			else
-			{
-				royaumeIterator->second->loadRoyaume();
-			}
-		}
-	}
-} */
-
-int  RoyaumesManager::HandleListRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
-{
-	//updateRoyaume();
-
 	messageRetour->setOpcode(ID_ROYAUME);
 	messageRetour->setSousOpcode(ID_LIST_ROYAUME);
 
 	for (std::map<int,Royaume *>::iterator it=listRoyaume.begin(); it!=listRoyaume.end(); ++it)
 	{
-		messageRetour->setProperty(it->first,it->second->ToExport());
+		if(it->second != NULL)
+			messageRetour->setProperty(it->first,it->second->ToExport());
+		else
+			listRoyaume.erase(it);
+
 	}
 
 	return ID_NOERROR_R;
-
 }
 
 int  RoyaumesManager::HandleCreateRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
-return true;
-
+	return true;
 }
 
 } /* namespace Auth */

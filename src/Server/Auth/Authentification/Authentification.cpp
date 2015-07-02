@@ -48,211 +48,146 @@ void Authentification::processPacket(MessageNetwork * messageNetwork)
 
 int  Authentification::handleLogonChallenge(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
-	// Controle Presence Donnée
-	if(!messageNetwork->messagePacket->hasProperty("Build"))
-	{
-		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
-		messageRetour->setOpcode(ID_AUTH);
-		messageRetour->setSousOpcode(ID_ERREUR);
-		messageRetour->setProperty("ErrorId",ID_ERROR_PACKET_SIZE);
-		return ID_ERROR_PACKET_SIZE ;
-
-	}
-
-	if(!messageNetwork->messagePacket->hasProperty("Login"))
-	{
-		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
-		messageRetour->setOpcode(ID_AUTH);
-		messageRetour->setSousOpcode(ID_ERREUR);
-		messageRetour->setProperty("ErrorId",ID_ERROR_PACKET_SIZE);
-		return ID_ERROR_PACKET_SIZE ;
-
-	}
-
-	messageNetwork->session->getSessionListener()->setSessionListenerType(SESSION_COMPTE);
-
 	IPBan ipBan(messageNetwork->session->getIP());
 	IP ip(messageNetwork->session->getIP());
-	ip.read();
+	int error = ID_NOERROR ;
 
-	if(ip.getIdIp() == 0)
-		ip.create();
-
-	if(ipBan.read())
+	try
 	{
-		log->write(Log::INFO,"[AuthChallenge] L'ip %d est bannie !",messageNetwork->session->getSessionID()->host);
-		messageRetour->setOpcode(ID_AUTH);
-		messageRetour->setSousOpcode(ID_ERREUR);
-		messageRetour->setProperty("ErrorId",ID_CONNECTION_BANNED);
-		return ID_CONNECTION_BANNED ;
-	}
+		// Controle Presence Donnée
+		if(!messageNetwork->messagePacket->hasProperty("Build") || messageNetwork->messagePacket->hasProperty("Login"))
+			throw ID_ERROR_PACKET_SIZE;
 
-	log->write(Log::INFO,"Nom du client : %s ",messageNetwork->messagePacket->getProperty("Login").c_str());
+		messageNetwork->session->getSessionListener()->setSessionListenerType(SESSION_COMPTE);
 
-	Compte * compte = new Compte(messageNetwork->messagePacket->getProperty("Login"));
-	if(!compte->read())
-	{
+		ip.read();
 
-		ip.setIpTempNessais( ip.getIpTempNessais() + 1 );
+		if(!ipBan.read())
+			throw ID_CONNECTION_BANNED ;
 
-		int nombreErreurMax,banTime;
-		config->get("nombreErreurMax",nombreErreurMax);
-		config->get("banTime",banTime);
+		log->write(Log::INFO,"Nom du client : %s ",messageNetwork->messagePacket->getProperty("Login").c_str());
 
-		if( ( ip.getIpTempNessais() % nombreErreurMax ) == 0 )
+		Compte * compte = new Compte(messageNetwork->messagePacket->getProperty("Login"));
+		if(!compte->read())
 		{
-			ipBan.setBandate(time(NULL));
-			ipBan.setUnbandate((time(NULL) + (banTime * (ip.getIpTempNessais() / nombreErreurMax ))  *60));
-			ipBan.setRaison("autoban");
-			ipBan.setBannedby(0);
-			ipBan.create();
+			banIP(&ip,&ipBan);
+			throw ID_INVALID_ACCOUNT_OR_PASSWORD;
 		}
-		ip.update();
 
-		log->write(Log::INFO,"[AuthChallenge] Le compte %s n'existe pas",messageNetwork->messagePacket->getProperty("Login").c_str());
+		CompteBan compteBan( compte->getIdAccount());
+
+		if(compteBan.read())
+			throw ID_COMPTE_BANNIE;
+
+		messageNetwork->session->setSessionListener(compte);
+		messageNetwork->session->setSessionEtape(STEP_REPONSE);
+		messageRetour->setOpcode(ID_AUTH);
+		messageRetour->setSousOpcode(ID_CHALLENGE);
+		messageRetour->setProperty("Key",1234567);
+
+		ip.setIpTempNessais(0);
+
+
+
+	}
+	catch ( int exceptionError )
+	{
+		log->write(Log::ERROR,"Erreur d'authentification %d sur l'ip %s",exceptionError,messageNetwork->session->getIP().c_str());
 		messageRetour->setOpcode(ID_AUTH);
 		messageRetour->setSousOpcode(ID_ERREUR);
-		messageRetour->setProperty("ErrorId",ID_INVALID_ACCOUNT_OR_PASSWORD);
-		return ID_INVALID_ACCOUNT_OR_PASSWORD;
+		messageRetour->setProperty("ErrorId",exceptionError);
+		error = exceptionError;
+
 	}
 
+	int idtransaction = DatabaseManager::getInstance()->createTransaction();
+	ip.update(idtransaction);
 
-	messageNetwork->session->setSessionListener(compte);
-	CompteBan compteBan( compte->getIdAccount());
+	if(error == ID_INVALID_ACCOUNT_OR_PASSWORD )
+		ipBan.create(idtransaction);
+
+	DatabaseManager::getInstance()->commit(idtransaction);
 
 
-	if(compteBan.read())
-	{
-		time_t unbandate = compteBan.getUnbandate() ;
-		log->write(Log::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s",messageNetwork->messagePacket->getProperty("Login").c_str(),ctime(&unbandate));
-		messageRetour->setOpcode(ID_AUTH);
-		messageRetour->setSousOpcode(ID_ERREUR);
-		messageRetour->setProperty("ErrorId",ID_COMPTE_BANNIE);
-		return ID_COMPTE_BANNIE;
-	}
 
-	if(compte->isLocked())
-	{
-		log->write(Log::INFO,"[AuthChallenge] Le compte %s est lier a l'IP %s ",compte->getUsername().c_str(),compte->getLastIp().c_str());
-		log->write(Log::INFO,"[AuthChallenge] Le client a pour l'IP : %s ",messageNetwork->session->getIP().c_str());
+	return error ;
 
-		if(messageNetwork->session->getIP().compare(compte->getLastIp()) != 0 )
-		{
-
-			ip.setIpTempNessais( ip.getIpTempNessais() + 1 );
-
-			int nombreErreurMax,banTime;
-			config->get("nombreErreurMax",nombreErreurMax);
-			config->get("banTime",banTime);
-
-			if( ( ip.getIpTempNessais() % nombreErreurMax ) == 0 )
-			{
-				ipBan.setBandate(time(NULL));
-				ipBan.setUnbandate((time(NULL) + (banTime * (ip.getIpTempNessais() / nombreErreurMax ))  *60));
-				ipBan.setRaison("autoban");
-				ipBan.setBannedby(0);
-				ipBan.create();
-			}
-			ip.update();
-
-			log->write(Log::INFO,"[AuthChallenge] L'IP %s ne correspond pas a la derniere IP %s ",messageNetwork->session->getIP().c_str(),compte->getLastIp().c_str());
-			messageRetour->setOpcode(ID_AUTH);
-			messageRetour->setSousOpcode(ID_ERREUR);
-			messageRetour->setProperty("ErrorId",ID_INVALID_IP);
-			return ID_INVALID_IP;
-
-		}
-		else
-			log->write(Log::INFO,"[AuthChallenge] Les IPs correspondent ");
-	}
-
-	ip.setIpTempNessais(0);
-	ip.update();
-
-	messageNetwork->session->setSessionEtape(STEP_REPONSE);
-
-	messageRetour->setOpcode(ID_AUTH);
-	messageRetour->setSousOpcode(ID_CHALLENGE);
-	messageRetour->setProperty("Key",1234567);
-	return ID_NOERROR;
 }
 
 int Authentification::handleLogonProof(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
 
-	if(!messageNetwork->messagePacket->hasProperty("Password"))
-	{
-		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
-		messageRetour->setOpcode(ID_AUTH);
-		messageRetour->setSousOpcode(ID_ERREUR);
-		messageRetour->setProperty("ErrorId",ID_ERROR_PACKET_SIZE);
-		return ID_ERROR_PACKET_SIZE ;
-
-	}
-
-	if(messageNetwork->session->getSessionListener()->getSessionListenerType() != SESSION_COMPTE)
-	{
-		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
-		messageRetour->setOpcode(ID_AUTH);
-		messageRetour->setSousOpcode(ID_ERREUR);
-		messageRetour->setProperty("ErrorId",ID_ERROR_PACKET_SIZE);
-		return ID_ERROR_PACKET_SIZE ;
-
-	}
-
-	Compte * compte = static_cast<Compte*> (messageNetwork->session->getSessionListener()) ;
-
-	if(messageNetwork->session->getSessionEtape() < STEP_REPONSE)
-	{
-		log->write(Log::INFO,"Le client n'est pas a la bonne etape ");
-		messageRetour->setOpcode(ID_AUTH);
-		messageRetour->setSousOpcode(ID_ERREUR);
-		messageRetour->setProperty("ErrorId",ID_ERROR_ETAPE);
-		return ID_ERROR_ETAPE;
-	}
-
+	IPBan ipBan(messageNetwork->session->getIP());
 	IP ip(messageNetwork->session->getIP());
+	int error = ID_NOERROR ;
 
-	if (messageNetwork->messagePacket->getProperty("Password").compare(compte->getShaPassHash()) != 0)
+	try
 	{
-		/*int nombreErreurMDPMax,banTime;
-		log->write(Log::INFO,"Erreur de mot de passe");
 
-		config->get("nombreErreurMDP",nombreErreurMDPMax);
-		config->get("banTime",banTime);
+		if(!messageNetwork->messagePacket->hasProperty("Password"))
+			throw ID_ERROR_PACKET_SIZE;
 
-		compte->setNombreEssai(compte->getNombreEssai() + 1);
+		if(messageNetwork->session->getSessionListener()->getSessionListenerType() != SESSION_COMPTE)
+			throw ID_ERROR_PACKET_SIZE;
 
-		if( (compte->getNombreEssai() % nombreErreurMDPMax ) == 0 )
+		if(messageNetwork->session->getSessionEtape() < STEP_REPONSE)
+			throw ID_ERROR_ETAPE;
+
+		Compte * compte = static_cast<Compte*> (messageNetwork->session->getSessionListener()) ;
+
+
+		if (messageNetwork->messagePacket->getProperty("Password").compare(compte->getShaPassHash()) != 0)
 		{
-			compte->banCompte((time(NULL) + banTime  *60),"autoban", 0);
-			log->write(Log::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s",compte->getNomCompte()->c_str(),ctime(compte->getAccountUnBanDate()));
-			messageRetour->setOpcode(ID_AUTH);
-			messageRetour->setSousOpcode(ID_ERREUR);
-			messageRetour->setProperty("ErrorId",ID_COMPTE_BANNIE);
-			return ID_COMPTE_BANNIE;
+			banIP(&ip , &ipBan);
+			throw ID_INVALID_ACCOUNT_OR_PASSWORD;
+		}
 
-		} */
+		log->write(Log::INFO,"Mot de passe valider");
+
+		ip.setIpTempNessais(0);
+
+		messageNetwork->session->setSessionEtape(STEP_REAMSLIST);
 
 		messageRetour->setOpcode(ID_AUTH);
+		messageRetour->setSousOpcode(ID_REPONSE);
+	}
+	catch ( int exceptionError )
+	{
+		log->write(Log::ERROR,"Erreur d'authentification %d sur l'ip %s",exceptionError,messageNetwork->session->getIP().c_str());
+		messageRetour->setOpcode(ID_AUTH);
 		messageRetour->setSousOpcode(ID_ERREUR);
-		messageRetour->setProperty("ErrorId",ID_INVALID_ACCOUNT_OR_PASSWORD);
-		return ID_INVALID_ACCOUNT_OR_PASSWORD;
-
-
+		messageRetour->setProperty("ErrorId",exceptionError);
+		error = exceptionError;
 	}
 
-	log->write(Log::INFO,"Mot de passe valider");
+	int idtransaction = DatabaseManager::getInstance()->createTransaction();
+	ip.update(idtransaction);
 
-	ip.setIpTempNessais(0);
-	ip.update();
+	if(error == ID_INVALID_ACCOUNT_OR_PASSWORD )
+		ipBan.create(idtransaction);
 
-	messageNetwork->session->setSessionEtape(STEP_REAMSLIST);
+	DatabaseManager::getInstance()->commit(idtransaction);
 
-	messageRetour->setOpcode(ID_AUTH);
-	messageRetour->setSousOpcode(ID_REPONSE);
 
-	return ID_NOERROR;
+	return error;
+}
+
+void Authentification::banIP(IP * ip , IPBan * ipBan)
+{
+	int nombreErreurMax,banTime;
+	config->get("nombreErreurMax",nombreErreurMax);
+	config->get("banTime",banTime);
+
+
+	ip->setIpTempNessais( ip->getIpTempNessais() + 1 );
+
+	if( ( ip->getIpTempNessais() % nombreErreurMax ) == 0 )
+	{
+		ipBan->setBandate(time(NULL));
+		ipBan->setUnbandate((time(NULL) + (banTime * (ip->getIpTempNessais() / nombreErreurMax ))  *60));
+		ipBan->setRaison("autoban");
+		ipBan->setBannedby(0);
+	}
 }
 
 
