@@ -13,11 +13,10 @@ Ticket::Ticket() {
 
 	idTicket = 0;
 	suffix = "Ticket";
-	std::string defaultStatus = "OPEN";
 
 	database->prepareStatement(suffix + database->ToString(KINGDOM_DEL_TICKET),"DELETE FROM Ticket where idTicket = $1");
 	database->prepareStatement(suffix + database->ToString(KINGDOM_SEL_TICKET),"SELECT idTicket, idReporter, idResponsible, text, title, category, subCategory, coord, status FROM Ticket where idTicket = $1");
-	database->prepareStatement(suffix + database->ToString(KINGDOM_INS_TICKET),"INSERT INTO Ticket VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, "+defaultStatus+")");
+	database->prepareStatement(suffix + database->ToString(KINGDOM_INS_TICKET),"INSERT INTO Ticket VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7)");
 	database->prepareStatement(suffix + database->ToString(KINGDOM_UPD_TICKET),"UPDATE Ticket SET status = $8, idResponsible= $3 WHERE idTicket = $1");
 }
 
@@ -29,7 +28,7 @@ bool Ticket::create(int idTransaction)
 {
 	bool retour;
 	Tokens tokens;
-	retour = database->executionPrepareStatement(suffix + database->ToString(KINGDOM_INS_TICKET),&tokens,idTransaction,9,database->ToString(idTicket).c_str(),database->ToString(idReporter).c_str(), text.c_str(), title.c_str(), category.c_str(), subCategory.c_str(), coord.c_str(),defaultStatus.c_str());
+	retour = database->executionPrepareStatement(suffix + database->ToString(KINGDOM_INS_TICKET),&tokens,idTransaction,9,database->ToString(idTicket).c_str(),database->ToString(idReporter).c_str(), text.c_str(), title.c_str(), category.c_str(), subCategory.c_str(), coord.c_str());
 	read();
 	return retour;
 }
@@ -72,63 +71,71 @@ int Ticket::getIdTicket() {
 }
 
 void Ticket::setIdTicket(int idTicket) {
-	idTicket = idTicket;
+	this->idTicket = idTicket;
 }
 
 int Ticket::getIdReporter() {
-	return idReporter;
+	return this->idReporter;
 }
 
-void Ticket::setIdReporter(int idTicket) {
-	idReporter = idReporter;
+void Ticket::setIdReporter(int idReporter) {
+	this->idReporter = idReporter;
 }
 
 int Ticket::getIdResponsible() {
-	return idResponsible;
+	return this->idResponsible;
 }
 
 void Ticket::setIdResponsible(int idResponsible) {
-	idResponsible = idResponsible;
+	this->idResponsible = idResponsible;
 }
 
-std::string& Ticket::getTitle() {
+std::string Ticket::getTitle() {
 	return title;
 }
 
-void Ticket::setTitle(std::string& title) {
+void Ticket::setTitle(std::string title) {
 	this->title = title;
 }
 
-std::string& Ticket::getText() {
+std::string Ticket::getText() {
 	return text;
 }
 
-void Ticket::setText(std::string& text) {
+void Ticket::setText(std::string text) {
 	this->text = text;
 }
 
-std::string& Ticket::getStatus() {
+std::string Ticket::getStatus() {
 	return status;
 }
 
-void Ticket::setStatus(std::string& status) {
+void Ticket::setStatus(std::string status) {
 	this->status = status;
 }
 
-std::string& Ticket::getCategory() {
+std::string Ticket::getCategory() {
 	return category;
 }
 
-void Ticket::setCategory(std::string& category) {
+void Ticket::setCategory(std::string category) {
 	this->category = category;
 }
 
-std::string& Ticket::getSubCategory() {
+std::string Ticket::getSubCategory() {
 	return subCategory;
 }
 
-void Ticket::setSubCategory(std::string& subCategory) {
+void Ticket::setSubCategory(std::string subCategory) {
 	this->subCategory = subCategory;
 }
-///TODO get/set coord
+
+const std::string Ticket::getCoord() {
+	return coord;
+}
+
+void Ticket::setCoord(std::string coord) {
+	this->coord = coord;
+}
+
 }

@@ -59,10 +59,10 @@ public:
 	 *  \param messageNetwork
 	 *  \param messageNetwork
 	 *	MessagePacket.propery:
-	 *  	title: Intitulé du ticket
+	 *  	title: Intitulï¿½ du ticket
 	 *  	text: Contenu du ticket
-	 *  	coord: coordonée de l'emetteur
-	 *  	idReporter: identité de la personne envoyant le ticket
+	 *  	coord: coordonï¿½e de l'emetteur
+	 *  	idReporter: identitï¿½ de la personne envoyant le ticket
 	 *  	category: Categorie du ticket
 	 *  	subCategory: sous categorie du ticket
 	 *  \return messageRetour
@@ -72,13 +72,13 @@ public:
 	 *  \brief Methode de gestion pour editer un ticket	 *  \param messageNetwork
 	 *  \param messageNetwork
 	 *	MessagePacket.propery:
-	 *  	idTicket: numéro de ticket
-	 *		idReponsible: identité de la personne traitant le ticket
-	 *  	title: Intitulé du ticket
+	 *  	idTicket: numï¿½ro de ticket
+	 *		idReponsible: identitï¿½ de la personne traitant le ticket
+	 *  	title: Intitulï¿½ du ticket
 	 *  	text: Contenu du ticket
 	 *  	category: Categorie du ticket
 	 *  	subCategory: sous categorie du ticket
-	 *  	coord: coordonée de l'emetteur
+	 *  	coord: coordonï¿½e de l'emetteur
 	 *  \return messageRetour
 	 */
 	int  handleTicketEdit(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
@@ -86,7 +86,7 @@ public:
 	 *  \brief Methode de gestion pour supprimer un ticket	 *  \param messageNetwork
 	 *  \param messageNetwork
 	 *	MessagePacket.propery:
-	 *  	idTicket: numéro de ticket
+	 *  	idTicket: numï¿½ro de ticket
 	 *  \return messageRetour
 	 */
 	int  handleTicketSuppr(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
@@ -94,15 +94,15 @@ public:
 	 *  \brief Methode de gestion pour visualiser un ticket
 	 *  \param messageNetwork
 	 *	MessagePacket.propery:
-	 *  	idTicket: numéro de ticket
-	 *		idReponsible: identité de la personne traitant le ticket
-	 *		idReporter: identité de la personne envoyant le ticket
-	 *  	title: Intitulé du ticket
+	 *  	idTicket: numï¿½ro de ticket
+	 *		idReponsible: identitï¿½ de la personne traitant le ticket
+	 *		idReporter: identitï¿½ de la personne envoyant le ticket
+	 *  	title: Intitulï¿½ du ticket
 	 *  	text: Contenu du ticket
-	 *  	coord: coordonée de l'emetteur
+	 *  	coord: coordonï¿½e de l'emetteur
 	 *  	category: Categorie du ticket
 	 *  	subCategory: sous categorie du ticket
-	 *  	coord: coordonée de l'emetteur
+	 *  	coord: coordonï¿½e de l'emetteur
 	 *  \return messageRetour
 	 */
 	int  handleTicketRead(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
@@ -112,7 +112,7 @@ public:
 	 *  \param messageNetwork
 	 *  \return messageRetour
 	 */
-	void TicketManager::createTicket(MessageNetwork * messageNetwork, MessagePacket * messageRetour);
+	void createTicket(MessageNetwork * messageNetwork, MessagePacket * messageRetour);
 
 
 private:

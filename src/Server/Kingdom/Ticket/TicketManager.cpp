@@ -28,29 +28,29 @@ void TicketManager::run()
 void TicketManager::processPacket(MessageNetwork * messageNetwork)
 {
 	log->write(Log::DEBUG,"Nouveau Packet de ticket");
-	MessagePacket * messageRetour = new MessagePacket();
+	MessagePacket messageRetour ;
 	Ticket ticket;
 
 	switch(messageNetwork->messagePacket->getSousOpcode())
 	{
 	case ID_CREATE :
-		handleTicketCreate(messageNetwork,messageRetour);
-		createTicket();
+		handleTicketCreate(messageNetwork,&messageRetour);
+		createTicket(messageNetwork,&messageRetour);
 		break;
 	case ID_EDIT :
-		handleTicketEdit(messageNetwork,messageRetour);
+		handleTicketEdit(messageNetwork,&messageRetour);
 		//editTicket();
 		break;
 	case ID_SHOW :
-		handleTicketRead(messageNetwork,messageRetour);
+		handleTicketRead(messageNetwork,&messageRetour);
 		//readTicket();
 		break;
 	case ID_DELETE :
-		handleTicketSuppr(messageNetwork,messageRetour);
+		handleTicketSuppr(messageNetwork,&messageRetour);
 		//deleteTicket();
 		break;
 	}
-	networkManager->sendPacket(messageNetwork->session->getSessionPeer(),0,messageRetour);
+	networkManager->sendPacket(messageNetwork->session->getSessionPeer(),0,&messageRetour);
 }
 
 int  TicketManager::handleTicketCreate(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
@@ -64,6 +64,7 @@ int  TicketManager::handleTicketCreate(MessageNetwork * messageNetwork,MessagePa
 		messageRetour->setProperty("ErrorId",ID_ERROR_PACKET_SIZE);
 		return ID_ERROR_PACKET_SIZE ;
 	}
+	return 0;
 }
 
 void TicketManager::createTicket(MessageNetwork * messageNetwork, MessagePacket * messageRetour) {
@@ -73,7 +74,7 @@ void TicketManager::createTicket(MessageNetwork * messageNetwork, MessagePacket 
 	ticket.setCategory(messageNetwork->messagePacket->getProperty("category"));
 	ticket.setSubCategory(messageNetwork->messagePacket->getProperty("subCategory"));
 	//ticket.setCoord();  TODO: recuperation des coordonnees du joueur
-	ticket.setIdReporter(messageNetwork->messagePacket->getProperty("idReporter"));
+	//ticket.setIdReporter(messageNetwork->messagePacket->getProperty("idReporter").);
 
 	if (ticket.create()) {
 		messageRetour->setOpcode(ID_TICKET);

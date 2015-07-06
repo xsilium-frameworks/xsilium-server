@@ -1,6 +1,7 @@
 
 
 file(GLOB_RECURSE sources_Chat Chat/*.cpp Chat/*.h)
+file(GLOB_RECURSE sources_Ticket Ticket/*.cpp Ticket/*.h)
 file(GLOB sources_localdir *.cpp *.h)
 
 
@@ -10,8 +11,7 @@ file(GLOB sources_localdir *.cpp *.h)
 
 set(kingdom_STAT_SRCS
   ${sources_Chat}
-  ${sources_Mail}
-  ${sources_Zone}
+  ${sources_Ticket}
 )
 
 include_directories(

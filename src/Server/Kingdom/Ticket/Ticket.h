@@ -10,6 +10,8 @@
 
 #include <Databases/CRUD.h>
 
+namespace Kingdom {
+
 enum TicketDatabaseStatements {
 	KINGDOM_SEL_TICKET,
 	KINGDOM_INS_TICKET,
@@ -24,29 +26,31 @@ public:
 	virtual ~Ticket();
 	/// Mehode de creation d'un ticket
 	bool create(int idTransaction = 0);
-	/// Mehode de récupération d'un ticket
+	/// Mehode de rï¿½cupï¿½ration d'un ticket
 	bool read(int idTransaction = 0);
-	/// Mehode de mise à jour d'un ticket
+	/// Mehode de mise ï¿½ jour d'un ticket
 	bool update(int idTransaction = 0);
 	/// Mehode de suppression d'un ticket
 	bool suppr(int idTransaction = 0);
 
 	int getIdTicket();
 	void setIdTicket(int idTicket);
-	int getIdReporter() const;
+	int getIdReporter();
 	void setIdReporter(int idReporter);
 	int getIdResponsible();
 	void setIdResponsible(int idResponsible);
-	std::string& Ticket::getTitle();
-	void Ticket::setTitle(std::string& title);
-	std::string& Ticket::getText();
-	void Ticket::setText(std::string& text);
-	std::string& Ticket::getStatus();
-	void Ticket::setStatus(std::string& status);
-	std::string& Ticket::getCategory();
-	void Ticket::setCategory(std::string& category);
-	std::string& Ticket::getSubcategory();
-	void Ticket::setSubCategory(std::string& subCategory);
+	std::string getTitle();
+	void setTitle(std::string title);
+	std::string getText();
+	void setText(std::string text);
+	std::string getStatus();
+	void setStatus(std::string status);
+	std::string getCategory();
+	void setCategory(std::string category);
+	std::string getSubCategory();
+	void setSubCategory(std::string subCategory);
+	const std::string getCoord();
+	void setCoord(std::string coord);
 
 private:
 	/// identifiant du ticket
@@ -63,11 +67,13 @@ private:
 	std::string status;
 	/// Type de ticket: bug, report, support
 	std::string category;
-	/// sous catégorie, liste liée à la catégorie selectionnée
+	/// sous catï¿½gorie, liste liï¿½e ï¿½ la catï¿½gorie selectionnï¿½e
 	std::string subCategory;
 	/// coordonnee du reporter
-	///? coord; TODO: coordonnee du reporter
+	std::string coord; //TODO: coordonnee du reporter
 };
+
+}
 
 
 #endif /* SRC_SERVER_KINGDOM_TICKET_TICKET_H_ */
