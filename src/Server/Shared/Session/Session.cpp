@@ -15,7 +15,11 @@ Session::Session() {
 
 Session::~Session() {
 	if(sessionListener)
+	{
+		sessionListener->deleteSession();
 		delete sessionListener;
+		sessionListener = NULL;
+	}
 }
 
 void Session::setSessionPeer(ENetPeer * peer)

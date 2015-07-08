@@ -44,6 +44,8 @@ public:
 
 	bool isEmpty();
 
+	bool controleData(MessagePacket * messagePacket,std::vector<std::string> * tableauData);
+
 protected:
 
 	static void threadProcess(void * arguments);

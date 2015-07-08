@@ -7,11 +7,12 @@
  */
 #include "Royaume.h"
 
-Royaume::Royaume(int idRoyaume) {
+Royaume::Royaume(std::string nameRoyaume) {
 	suffix = "Royaume";
-	this->idRoyaume = idRoyaume;
+	this->nameRoyaume = nameRoyaume;
+	idRoyaume = 0;
 	keyRoyaume = "";
-	nameRoyaume = "";
+
 	urlRoyaume = "";
 	portRoyaume = 0;
 	autorisationRoyaume = 0;
@@ -19,7 +20,7 @@ Royaume::Royaume(int idRoyaume) {
 	online_royaume = 0;
 
 	database->prepareStatement(suffix + database->ToString(REALMS_SEL_LISTESROYAUMES),
-			"SELECT key_royaume,name_royaume,url_royaume,port_royaume,autorisation_royaume,version_client_royaume,online_royaume FROM royaumes.liste_royaume where id_royaume = $1");
+			"SELECT id_royaume,key_royaume,url_royaume,port_royaume,autorisation_royaume,version_client_royaume,online_royaume FROM royaumes.liste_royaume where name_royaume = $1");
 	database->prepareStatement(suffix + database->ToString(REALMS_UPD_LISTESROYAUMES),"UPDATE royaumes.liste_royaume SET "
 			"keyRoyaume = $2,nameRoyaume=$3,urlRoyaume = $4,portRoyaume=$5,autorisationRoyaume=$6,versionClientRoyaume=$7,online_royaume = $8 WHERE idRoyaume = $1");
 	database->prepareStatement(suffix + database->ToString(REALMS_INS_LISTESROYAUMES),"INSERT INTO royaumes.liste_royaume VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7)");
@@ -56,8 +57,8 @@ bool Royaume::read(int idTransaction)
 		Tokens resultatsql;
 		resultatsql = database->strSplit( resultsqlT[0] ,";");
 
-		keyRoyaume = resultatsql[0];
-		nameRoyaume = resultatsql[1];
+		nameRoyaume = resultatsql[0];
+		keyRoyaume = resultatsql[1];
 		urlRoyaume = resultatsql[2];
 		portRoyaume = database->ToInt(resultatsql[3]);
 		autorisationRoyaume = database->ToInt(resultatsql[4]);
@@ -82,6 +83,12 @@ bool Royaume::suppr(int idTransaction)
 	Tokens resultsqlT;
 	return  database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_LISTESROYAUMES),&resultsqlT,idTransaction,1,database->ToString(idRoyaume).c_str());
 
+}
+
+void Royaume::deleteSession()
+{
+	online_royaume = false;
+	update();
 }
 
 int Royaume::getAutorisationRoyaume() {

@@ -9,8 +9,6 @@
 
 SessionManager::SessionManager() {
 	log = Log::getInstance();
-
-
 }
 
 SessionManager::~SessionManager() {
@@ -20,6 +18,7 @@ SessionManager::~SessionManager() {
 Session * SessionManager::trouverSession(ENetAddress address)
 {
 	boost::mutex::scoped_lock lock(mutexSession);
+	std::vector<Session *>::iterator session ;
 	for (session=listOfSession.begin() ; session!=listOfSession.end() ; ++session)
 	{
 		if((*session)->getSessionID()->host == address.host)
@@ -46,12 +45,19 @@ void SessionManager::creerSession(ENetPeer * peer)
 
 void SessionManager::supprimerSession(ENetPeer * peer)
 {
-	if( trouverSession(peer->address) != NULL)
+	boost::mutex::scoped_lock lock(mutexSession);
+	std::vector<Session *>::iterator session ;
+	for (session=listOfSession.begin() ; session!=listOfSession.end() ; ++session)
 	{
-		boost::mutex::scoped_lock lock(mutexSession);
-		log->write(Log::INFO,"deconnexion de la Session avec IP : %d, Port : %d ",peer->address.host,peer->address.port);
-		delete *session;
-		session = listOfSession.erase(session);
+		if((*session)->getSessionID()->host == peer->address.host)
+		{
+			if((*session)->getSessionID()->port == peer->address.port)
+			{
+				log->write(Log::INFO,"deconnexion de la Session avec IP : %d, Port : %d ",peer->address.host,peer->address.port);
+				delete *session;
+				session = listOfSession.erase(session);
+			}
+		}
 	}
 }
 

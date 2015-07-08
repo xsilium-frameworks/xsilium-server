@@ -28,7 +28,6 @@ public:
 
 private:
 	std::vector<Session *> listOfSession ;
-	std::vector<Session *>::iterator session ;
 	Log * log;
 
 	boost::mutex mutexSession;

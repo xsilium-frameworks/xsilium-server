@@ -32,6 +32,8 @@ public:
 	bool update(int idTransaction = 0);
 	bool suppr(int idTransaction = 0);
 
+	void deleteSession();
+
 
 	std::string& getEmail();
 	void setEmail(std::string& email);

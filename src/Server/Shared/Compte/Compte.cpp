@@ -83,6 +83,11 @@ bool Compte::suppr(int idTransaction)
 
 }
 
+void Compte::deleteSession()
+{
+	update();
+}
+
 std::string& Compte::getEmail() {
 	return email;
 }

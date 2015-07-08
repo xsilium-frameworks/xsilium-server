@@ -19,6 +19,8 @@ public:
 	int getSessionListenerType() const;
 	void setSessionListenerType(int sessionListenerType);
 
+	virtual void deleteSession() = 0 ;
+
 protected:
 	int sessionListenerType ;
 };

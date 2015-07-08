@@ -81,3 +81,14 @@ void NetworkListener::threadProcess(void * arguments)
 		}
 	}
 }
+
+bool NetworkListener::controleData(MessagePacket * messagePacket,std::vector<std::string> * tableauData)
+{
+	bool retour = true;
+	for (std::vector<std::string>::iterator it = tableauData->begin() ; it != tableauData->end(); ++it)
+	{
+		if(!messagePacket->hasProperty(*it->c_str()))
+			return false;
+	}
+	return true;
+}

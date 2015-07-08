@@ -43,50 +43,77 @@ void RoyaumesManager::processPacket(MessageNetwork * messageNetwork)
 	networkManager->sendPacket(messageNetwork->session->getSessionPeer(),0,messageRetour);
 }
 
- /*void RoyaumesManager::updateRoyaume()
-{
-
-	if(m_NextUpdateTime < time(NULL))
-	{
-		std::vector<int> listID = Royaume::getListeRoyaume();
-
-		printf("test %li < %li \n",m_NextUpdateTime,time(NULL));
-
-		for (std::vector<int>::iterator it = listID.begin() ; it != listID.end(); ++it)
-		{
-			std::map<int,Royaume *>::iterator royaumeIterator = listRoyaume.find(*it);
-			if (royaumeIterator == listRoyaume.end())
-			{
-				Royaume * royaume = new Royaume(*it);
-				listRoyaume[*it] = royaume ;
-			}
-			else
-			{
-				royaumeIterator->second->loadRoyaume();
-			}
-		}
-	}
-} */
-
 int  RoyaumesManager::HandleListRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
-	//updateRoyaume();
-
 	messageRetour->setOpcode(ID_ROYAUME);
 	messageRetour->setSousOpcode(ID_LIST_ROYAUME);
 
 	for (std::map<int,Royaume *>::iterator it=listRoyaume.begin(); it!=listRoyaume.end(); ++it)
 	{
-		messageRetour->setProperty(it->first,it->second->ToExport());
+		if(it->second != NULL)
+			messageRetour->setProperty(it->first,it->second->ToExport());
+		else
+			it = listRoyaume.erase(it);
 	}
 
 	return ID_NOERROR_R;
 
 }
 
-int  RoyaumesManager::HandleCreateRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
+int  RoyaumesManager::HandleUpdateRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
-return true;
+	std::vector<std::string> tableauData = {"NameRoyaume","Key"};
+
+	// Controle Presence Donnée
+	if(! controleData(messageNetwork->messagePacket,&tableauData) )
+	{
+		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
+		messageRetour->setOpcode(ID_ROYAUME);
+		messageRetour->setSousOpcode(ID_ERROR_PACKET_SIZE_R);
+		messageRetour->setProperty("ErrorId",ID_ERROR_PACKET_SIZE);
+		return ID_ERROR_PACKET_SIZE ;
+	}
+
+
+
+	Royaume * newRoyaume = new Royaume(messageNetwork->messagePacket->getProperty("NameRoyaume"));
+
+	if(newRoyaume->read())
+	{
+		tableauData.clear();
+		tableauData = {"ID","Key"};
+		if(! controleData(messageNetwork->messagePacket,&tableauData) )
+		{
+			log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
+			messageRetour->setOpcode(ID_ROYAUME);
+			messageRetour->setSousOpcode(ID_ERROR_PACKET_SIZE_R);
+			messageRetour->setProperty("ErrorId",ID_ERROR_PACKET_SIZE);
+			return ID_ERROR_PACKET_SIZE ;
+		}
+	}
+
+
+
+
+	suffix = "Royaume";
+	this->idRoyaume = idRoyaume;
+	keyRoyaume = "";
+	nameRoyaume = "";
+	urlRoyaume = "";
+	portRoyaume = 0;
+	autorisationRoyaume = 0;
+	versionClientRoyaume = 0;
+	online_royaume = 0;
+
+	messageNetwork->session->getSessionListener()->setSessionListenerType(SESSION_ROYAUME);
+
+
+
+
+
+
+
+	return true;
 
 }
 

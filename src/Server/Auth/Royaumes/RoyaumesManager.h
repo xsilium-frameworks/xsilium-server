@@ -21,13 +21,14 @@ namespace Auth {
 enum typeForRoyaume
 {
 	ID_LIST_ROYAUME = 0,
-	ID_CREATE_ROAYUME
+	ID_UPDATE_ROYAUME,
+
 };
 
 enum erreurOfRoyaume
 {
 	ID_NOERROR_R = 0,
-	ID_ERROR_PACKET_SIZE_R
+	ID_ERROR_PACKET_SIZE_R,
 };
 
 #define NUM_UPDATE_ROYAUME 300000
@@ -44,9 +45,7 @@ public:
 	void processPacket(MessageNetwork * messageNetwork);
 
 	int HandleListRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
-	int HandleCreateRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
-
-	//void updateRoyaume();
+	int HandleUpdateRoyaume(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 
 private:
 	Log * log;

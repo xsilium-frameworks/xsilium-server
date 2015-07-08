@@ -48,18 +48,13 @@ void Authentification::processPacket(MessageNetwork * messageNetwork)
 
 int  Authentification::handleLogonChallenge(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
+	std::vector<std::string> tableauData ;
+	tableauData.push_back("Build");
+	tableauData.push_back("Login");
+
+
 	// Controle Presence Donnée
-	if(!messageNetwork->messagePacket->hasProperty("Build"))
-	{
-		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
-		messageRetour->setOpcode(ID_AUTH);
-		messageRetour->setSousOpcode(ID_ERREUR);
-		messageRetour->setProperty("ErrorId",ID_ERROR_PACKET_SIZE);
-		return ID_ERROR_PACKET_SIZE ;
-
-	}
-
-	if(!messageNetwork->messagePacket->hasProperty("Login"))
+	if(! controleData(messageNetwork->messagePacket,&tableauData) )
 	{
 		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
 		messageRetour->setOpcode(ID_AUTH);
@@ -179,8 +174,11 @@ int  Authentification::handleLogonChallenge(MessageNetwork * messageNetwork,Mess
 
 int Authentification::handleLogonProof(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
+	std::vector<std::string> tableauData;
+	tableauData.push_back("Password");
 
-	if(!messageNetwork->messagePacket->hasProperty("Password"))
+	// Controle Presence Donnée
+	if(! controleData(messageNetwork->messagePacket,&tableauData) )
 	{
 		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
 		messageRetour->setOpcode(ID_AUTH);

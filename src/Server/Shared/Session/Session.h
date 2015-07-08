@@ -17,7 +17,10 @@
  */
 enum typeOfSession
 {
-	SESSION_COMPTE = 0,
+
+	SESSION_ROYAUME = 0,
+	SESSION_ZONE,
+	SESSION_COMPTE,
 	SESSION_PERSO,
 };
 

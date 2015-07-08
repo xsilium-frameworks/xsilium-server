@@ -25,13 +25,15 @@ enum RoyaumeDatabaseStatements {
  */
 class Royaume : public CRUD {
 public:
-	Royaume(int idRoyaume);
+	Royaume(std::string nameRoyaume);
 	virtual ~Royaume();
 
 	bool create(int idTransaction = 0);
 	bool read(int idTransaction = 0) ;
 	bool update(int idTransaction = 0);
 	bool suppr(int idTransaction = 0);
+
+	void deleteSession();
 
 	int getAutorisationRoyaume();
 
