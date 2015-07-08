@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(testConnection)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_CHECK_EQUAL(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"), true);
+	BOOST_CHECK_EQUAL(databaseManager->connection("10.0.15.10;5432;Xsilium;Xsilium;DevAuth"), true);
 	databaseManager->deconnection();
 	DatabaseManager::DestroyInstance();
 }
@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(testDeconnection)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
+	BOOST_REQUIRE(databaseManager->connection("10.0.15.10;5432;Xsilium;Xsilium;DevAuth"));
 	BOOST_CHECK(databaseManager->deconnection());
 	DatabaseManager::DestroyInstance();
 }
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(testSelect)
 	Tokens resultat;
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
+	BOOST_REQUIRE(databaseManager->connection("10.0.15.10;5432;Xsilium;Xsilium;DevAuth"));
 	databaseManager->prepareStatement("test1","select 2");
 	BOOST_CHECK(databaseManager->executionPrepareStatement("test1",&resultat));
 	databaseManager->deconnection();
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(testSelectCommit)
 	Tokens resultat;
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
+	BOOST_REQUIRE(databaseManager->connection("10.0.15.10;5432;Xsilium;Xsilium;DevAuth"));
 	databaseManager->prepareStatement("test1","select 2");
 	int commit = databaseManager->createTransaction();
 	BOOST_CHECK(databaseManager->executionPrepareStatement("test1",&resultat,commit));

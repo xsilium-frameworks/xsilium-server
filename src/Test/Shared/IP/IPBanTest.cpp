@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(testIPBanCreate)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
+	BOOST_REQUIRE(databaseManager->connection("10.0.15.10;5432;Xsilium;Xsilium;DevAuth"));
 
 	IPBan ipBan("127.0.0.1");
 	ipBan.setBandate(time(NULL));
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(testIPBanRead)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
+	BOOST_REQUIRE(databaseManager->connection("10.0.15.10;5432;Xsilium;Xsilium;DevAuth"));
 
 	IPBan ipBan("127.0.0.1");
 	BOOST_CHECK(ipBan.read());
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(testIPBanUpdate)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
+	BOOST_REQUIRE(databaseManager->connection("10.0.15.10;5432;Xsilium;Xsilium;DevAuth"));
 
 	IPBan ip("127.0.0.1");
 	ip.read();
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(testIPBanDelete)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_REQUIRE(databaseManager->connection("192.69.200.6;5432;Xsilium;Xsilium;DevAuth"));
+	BOOST_REQUIRE(databaseManager->connection("10.0.15.10;5432;Xsilium;Xsilium;DevAuth"));
 
 	IPBan ip("127.0.0.1");
 	ip.read();
