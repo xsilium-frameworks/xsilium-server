@@ -23,6 +23,7 @@ Log::~Log() {
 }
 
 void Log::start(Priority maxPriority, std::string logFile) {
+	boost::mutex::scoped_lock lock(mutex1);
 	this->maxPriority = maxPriority;
 	if (logFile != "") {
 		fileStream.open(logFile.c_str());
@@ -30,6 +31,7 @@ void Log::start(Priority maxPriority, std::string logFile) {
 }
 
 void Log::stop() {
+	boost::mutex::scoped_lock lock(mutex1);
 	activeFile = false;
 	activeConsole = false;
 	if (fileStream.is_open()) {
@@ -38,6 +40,9 @@ void Log::stop() {
 }
 
 void Log::write(Priority priority, std::string message, ...) {
+
+	boost::mutex::scoped_lock lock(mutex1);
+
 	char buffer[512];
 	time(&temps);
 	strcpy(date, ctime(&temps));
@@ -65,20 +70,24 @@ void Log::write(Priority priority, std::string message, ...) {
 
 void Log::activationConsole()
 {
+	boost::mutex::scoped_lock lock(mutex1);
 	activeConsole = true;
 }
 
 void Log::desactivationConsole()
 {
+	boost::mutex::scoped_lock lock(mutex1);
 	activeConsole = false;
 }
 
 void Log::activationFile()
 {
+	boost::mutex::scoped_lock lock(mutex1);
 	activeFile = true;
 }
 
 void Log::desactivationFile()
 {
+	boost::mutex::scoped_lock lock(mutex1);
 	activeFile = true;
 }

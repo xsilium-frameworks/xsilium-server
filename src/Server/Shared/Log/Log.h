@@ -16,6 +16,7 @@
 #include <sstream>
 #include <cstring>
 #include <Singleton/Singleton.h>
+#include <boost/thread.hpp>
 
 /*
  *
@@ -74,6 +75,8 @@ public:
 	void desactivationFile();
 
 private:
+
+	boost::mutex mutex1 ;
 
 	bool activeFile;
 	bool activeConsole;
