@@ -36,11 +36,13 @@ bool DatabaseManager::deconnection()
 }
 void DatabaseManager::prepareStatement(std::string index, const char * sql)
 {
+	boost::mutex::scoped_lock lock(mutex1);
 	database->prepareStatement(index,sql);
 }
 bool DatabaseManager::executionPrepareStatement(std::string index,Tokens * resultat, int idTransaction,
 		int nombreArgument, ...)
 {
+	boost::mutex::scoped_lock lock(mutex1);
 	va_list listOfArgument;
 	bool retour;
 
@@ -51,9 +53,11 @@ bool DatabaseManager::executionPrepareStatement(std::string index,Tokens * resul
 }
 int DatabaseManager::createTransaction()
 {
+	boost::mutex::scoped_lock lock(mutex1);
 	return database->createTransaction();
 }
 void DatabaseManager::commit(int idTransaction)
 {
+	boost::mutex::scoped_lock lock(mutex1);
 	database->commit(idTransaction);
 }

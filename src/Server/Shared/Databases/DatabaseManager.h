@@ -10,6 +10,7 @@
 
 #include <Databases/Postgresql/Postgresql.h>
 #include <Singleton/Singleton.h>
+#include <boost/thread.hpp>
 
 
 enum ServerDB
@@ -38,6 +39,9 @@ public:
 	void commit(int idTransaction);
 
 private:
+
+	boost::mutex mutex1 ;
+
 	Database * database;
 
 
