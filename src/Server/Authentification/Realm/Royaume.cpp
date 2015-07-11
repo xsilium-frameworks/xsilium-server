@@ -5,7 +5,7 @@
  *      Author: \author joda
  *  \brief :
  */
-#include "Royaume.h"
+#include "../Realm/Royaume.h"
 
 Royaume::Royaume(std::string nameRoyaume) {
 	suffix = "Royaume";

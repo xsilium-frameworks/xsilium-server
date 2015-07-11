@@ -5,7 +5,7 @@
  *      Author: \author joda
  *  \brief :
  */
-#include "Authentification.h"
+#include "../../Authentification/Authentification/Authentification.h"
 
 namespace Auth {
 
@@ -20,30 +20,6 @@ Authentification::~Authentification() {
 	networkManager->removeListenneur(ID_AUTH);
 }
 
-void Authentification::run()
-{
-	networkManager->addListenneur(ID_AUTH,this);
-	NetworkListener::run();
-
-}
-
-void Authentification::processPacket(MessageNetwork * messageNetwork)
-{
-	log->write(Log::DEBUG,"Nouveau Packet Authentification");
-	MessagePacket * messageRetour = new MessagePacket();
-	switch(messageNetwork->messagePacket->getSousOpcode())
-	{
-	case ID_CHALLENGE :
-		handleLogonChallenge(messageNetwork,messageRetour);
-		break;
-	case ID_REPONSE :
-		handleLogonProof(messageNetwork,messageRetour);
-		break;
-	default:
-		break;
-	}
-	networkManager->sendPacket(messageNetwork->session->getSessionPeer(),0,messageRetour);
-}
 
 
 int  Authentification::handleLogonChallenge(MessageNetwork * messageNetwork,MessagePacket * messageRetour)

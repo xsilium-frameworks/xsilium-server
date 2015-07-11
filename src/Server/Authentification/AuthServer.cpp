@@ -5,7 +5,7 @@
  *      Author: \author joda
  *  \brief :
  */
-#include "AuthServer.h"
+#include "../Authentification/AuthServer.h"
 
 namespace Auth {
 

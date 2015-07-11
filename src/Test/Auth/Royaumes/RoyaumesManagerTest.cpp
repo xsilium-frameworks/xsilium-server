@@ -5,7 +5,7 @@
  *      Author: \author joda
  *  \brief :
  */
-#include <Royaumes/RoyaumesManager.h>
+#include "../../../Server/Authentification/Realm/RoyaumesManager.h"
 
 namespace Auth {
 

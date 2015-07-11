@@ -5,8 +5,8 @@
  *      Author: \author joda
  *  \brief :
  */
-#ifndef SRC_SERVER_AUTH_AUTHENTIFICATION_AUTHENTIFICATION_H_
-#define SRC_SERVER_AUTH_AUTHENTIFICATION_AUTHENTIFICATION_H_
+#ifndef SRC_SERVER_AUTHENTIFICATION_AUTHENTIFICATION_AUTHENTIFICATION_H_
+#define SRC_SERVER_AUTHENTIFICATION_AUTHENTIFICATION_AUTHENTIFICATION_H_
 
 #include <Network/NetworkManager.h>
 #include <Configuration/Configuration.h>
@@ -47,7 +47,7 @@ enum erreurOfAuth
 /*
  *
  */
-class Authentification : public NetworkListener {
+class Authentification {
 public:
 	/*!
 	 *  \brief Constructeur
@@ -70,7 +70,6 @@ public:
 	virtual ~Authentification();
 
 
-	void run();
 
 	/*!
 	 *  \brief _HandleLogonChallenge
@@ -84,7 +83,6 @@ public:
 	int  handleLogonChallenge(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 	int  handleLogonProof(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 
-	void processPacket(MessageNetwork * messageNetwork);
 
 
 private:
@@ -96,4 +94,4 @@ private:
 
 } /* namespace Auth */
 
-#endif /* SRC_SERVER_AUTH_AUTHENTIFICATION_AUTHENTIFICATION_H_ */
+#endif /* SRC_SERVER_AUTHENTIFICATION_AUTHENTIFICATION_AUTHENTIFICATION_H_ */

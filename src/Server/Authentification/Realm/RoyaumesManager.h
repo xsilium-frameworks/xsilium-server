@@ -5,12 +5,13 @@
  *      Author: \author joda
  *  \brief :
  */
-#ifndef SRC_SERVER_AUTH_ROYAUMES_ROYAUMESMANAGER_H_
-#define SRC_SERVER_AUTH_ROYAUMES_ROYAUMESMANAGER_H_
+#ifndef SRC_SERVER_AUTHENTIFICATION_REALM_ROYAUMESMANAGER_H_
+#define SRC_SERVER_AUTHENTIFICATION_REALM_ROYAUMESMANAGER_H_
 
 #include <Network/NetworkManager.h>
 #include <map>
-#include "Royaume.h"
+
+#include "../Realm/Royaume.h"
 
 namespace Auth {
 
@@ -57,4 +58,4 @@ private:
 
 } /* namespace Auth */
 
-#endif /* SRC_SERVER_AUTH_ROYAUMES_ROYAUMESMANAGER_H_ */
+#endif /* SRC_SERVER_AUTHENTIFICATION_REALM_ROYAUMESMANAGER_H_ */

@@ -5,16 +5,15 @@
  *      Author: \author joda
  *  \brief :
  */
-#ifndef SRC_SERVER_AUTH_AUTHSERVER_H_
-#define SRC_SERVER_AUTH_AUTHSERVER_H_
+#ifndef SRC_SERVER_AUTHENTIFICATION_AUTHSERVER_H_
+#define SRC_SERVER_AUTHENTIFICATION_AUTHSERVER_H_
 
 #include <Signal/SignalHandler.h>
 #include <unistd.h>
 #include <iostream>
 
-#include "Authentification/Authentification.h"
-
-#include "Royaumes/RoyaumesManager.h"
+#include "../Authentification/Authentification/Authentification.h"
+#include "Realm/RoyaumesManager.h"
 
 namespace Auth {
 
@@ -43,4 +42,4 @@ private:
 
 } /* namespace Auth */
 
-#endif /* SRC_SERVER_AUTH_AUTHSERVER_H_ */
+#endif /* SRC_SERVER_AUTHENTIFICATION_AUTHSERVER_H_ */

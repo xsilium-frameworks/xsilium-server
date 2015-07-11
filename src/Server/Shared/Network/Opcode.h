@@ -21,7 +21,7 @@ enum Opcode
 	// partie authentification
 
 	ID_AUTH,
-	ID_ROYAUME,
+	ID_REALM,
 	ID_ZONE,
 
 	//partie royaume
