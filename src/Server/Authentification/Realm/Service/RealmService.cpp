@@ -46,7 +46,39 @@ void RealmService::processPacket(MessageNetwork * messageNetwork)
 
 void  RealmService::handleRegisterRealm(MessageNetwork * messageNetwork,MessagePacket * messageRetour)
 {
+	std::vector<std::string> tableauData ;
+	tableauData.push_back("Name");
+	tableauData.push_back("Key");
+	tableauData.push_back("Port");
+	tableauData.push_back("URL");
+	tableauData.push_back("Version");
+
 	messageNetwork->session->getSessionListener()->setSessionListenerType(SESSION_REALM);
+
+	// Controle Presence Donneee
+	if(! controleData(messageNetwork->messagePacket,&tableauData) )
+	{
+		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
+		sendErrorPacket(messageRetour, ID_ERROR_PACKET_SIZE);
+		return;
+	}
+
+	// Verification de la clé
+	if (! realmManager->checkRealmKey(messageNetwork->messagePacket->getProperty("Key")))
+	{
+		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
+		sendErrorPacket(messageRetour, ID_ERROR_KEY);
+	}
+
+	// Récupération du Realm et mise à jour
+	idRealm = realmManager->checkRealmName(messageNetwork->messagePacket->getProperty("Name"));
+
+	if (idRealm)
+	{
+		realmManager->createRealm();
+	} else {
+		realmManager->updateRealm();
+	}
 }
 
 void RealmService::sendErrorPacket(MessagePacket * messageRetour, int typeError) {

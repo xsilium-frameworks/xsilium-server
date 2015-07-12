@@ -20,12 +20,25 @@ public:
 
 	void createRealm();
 	void updateRealm();
+	/*!
+	 * Methode de verification de l'existence d'un realm par son nom
+	 * @param nameRoyaume
+	 * @return idRealm ou 0 si non trouvé
+	 */
+	int checkRealmName(std::string nameRealm);
+	/*!
+	 * Methode de verification de la clé d'un realm
+	 * @param nameRoyaume
+	 * @return bool
+	 */
+	bool checkRealmKey(std::string keyRealm);
 
 	std::vector<std::string> getRealmsList();
 
 
 private:
 	std::vector<RealmDAO *> listRoyaume;
+	Configuration * configuration;
 };
 
 } /* namespace Auth */

@@ -16,6 +16,7 @@ enum erreurOfRealm
 {
 	ID_NOERROR_R = 0,
 	ID_ERROR_PACKET_SIZE_R,
+	ID_ERROR_KEY
 };
 
 enum typeForRealm
@@ -47,6 +48,7 @@ private:
 	Log * log;
 	NetworkManager * networkManager;
 	RealmManager * realmManager;
+	int idRealm;
 
 };
 
