@@ -9,6 +9,7 @@
 #define SRC_SERVER_AUTHENTIFICATION_REALM_SERVICE_REALMMANAGER_H_
 
 #include "Realm/DAO/RealmDAO.h"
+#include <Configuration/Configuration.h>
 #include <vector>
 
 namespace Auth {
@@ -23,11 +24,11 @@ public:
 	/*!
 	 * Methode de verification de l'existence d'un realm par son nom
 	 * @param nameRoyaume
-	 * @return idRealm ou 0 si non trouvé
+	 * @return idRealm ou 0 si non trouvï¿½
 	 */
 	int checkRealmName(std::string nameRealm);
 	/*!
-	 * Methode de verification de la clé d'un realm
+	 * Methode de verification de la clï¿½ d'un realm
 	 * @param nameRoyaume
 	 * @return bool
 	 */

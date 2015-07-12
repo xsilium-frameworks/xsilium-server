@@ -59,18 +59,18 @@ void  RealmService::handleRegisterRealm(MessageNetwork * messageNetwork,MessageP
 	if(! controleData(messageNetwork->messagePacket,&tableauData) )
 	{
 		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
-		sendErrorPacket(messageRetour, ID_ERROR_PACKET_SIZE);
+		sendErrorPacket(messageRetour, ID_ERROR_PACKET_SIZE_R);
 		return;
 	}
 
-	// Verification de la clé
+	// Verification de la clï¿½
 	if (! realmManager->checkRealmKey(messageNetwork->messagePacket->getProperty("Key")))
 	{
 		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
 		sendErrorPacket(messageRetour, ID_ERROR_KEY);
 	}
 
-	// Récupération du Realm et mise à jour
+	// Rï¿½cupï¿½ration du Realm et mise ï¿½ jour
 	idRealm = realmManager->checkRealmName(messageNetwork->messagePacket->getProperty("Name"));
 
 	if (idRealm)
