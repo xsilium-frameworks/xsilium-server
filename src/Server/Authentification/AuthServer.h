@@ -12,8 +12,8 @@
 #include <unistd.h>
 #include <iostream>
 
-#include "../Authentification/Authentification/Authentification.h"
-#include "Realm/RoyaumesManager.h"
+#include "Authentification/Service/AuthentificationService.h"
+#include "Realm/Service/RealmService.h"
 
 namespace Auth {
 
@@ -36,8 +36,8 @@ private:
 
 	DatabaseManager * databaseManager;
 	NetworkManager * networkManager;
-	Authentification * authentification;
-	RoyaumesManager * royaumesManager;
+	AuthentificationService * authentificationService;
+	RealmService * realmService;
 };
 
 } /* namespace Auth */

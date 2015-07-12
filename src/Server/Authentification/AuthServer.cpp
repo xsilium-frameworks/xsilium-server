@@ -11,8 +11,8 @@ namespace Auth {
 
 AuthServer::AuthServer() {
 	signalHandler = 0;
-	authentification = 0;
-	royaumesManager = 0;
+	authentificationService = 0;
+	realmService = 0;
 	networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
 	configuration = Configuration::getInstance();
 	log = Log::getInstance();
@@ -21,8 +21,8 @@ AuthServer::AuthServer() {
 }
 
 AuthServer::~AuthServer() {
-	delete authentification;
-	delete royaumesManager;
+	delete authentificationService;
+	delete realmService;
 	delete networkManager;
 	DatabaseManager::DestroyInstance();
 	Configuration::DestroyInstance();
@@ -54,12 +54,12 @@ void AuthServer::startServer()
 		databaseManager->connection(infoDB);
 
 		log->write(Log::DEBUG,"Demarrage du serveur d'authentification");
-		authentification = new Authentification(networkManager);
-		authentification->run();
+		authentificationService = new AuthentificationService(networkManager);
+		authentificationService->run();
 
 		log->write(Log::DEBUG,"Demarrage du serveur de Royaume");
-		royaumesManager = new RoyaumesManager(networkManager);
-		royaumesManager->run();
+		realmService = new RealmService(networkManager);
+		realmService->run();
 
 		configuration->get("port",serverPort);
 		configuration->get("clientMax",numClient);
@@ -90,7 +90,8 @@ void AuthServer::stopThread()
 {
 	log->write(Log::DEBUG,"Extinction du serveur ");
 	networkManager->disconnexion();
-	authentification->stopThread();
+	authentificationService->stopThread();
+	realmService->stopThread();
 	databaseManager->deconnection();
 
 }

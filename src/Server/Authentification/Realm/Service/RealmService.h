@@ -8,6 +8,7 @@
 #ifndef SRC_SERVER_AUTHENTIFICATION_REALM_SERVICE_REALMSERVICE_H_
 #define SRC_SERVER_AUTHENTIFICATION_REALM_SERVICE_REALMSERVICE_H_
 #include <Network/NetworkManager.h>
+#include "Realm/Manager/RealmManager.h"
 
 namespace Auth {
 
@@ -19,11 +20,10 @@ enum erreurOfRealm
 
 enum typeForRealm
 {
-	ID_LIST_REALM = 0,
-	ID_UPDATE_REALM,
+	ID_REGISTER_REALM,
+	ID_ERREUR_REALM
 
 };
-#define NUM_UPDATE_ROYAUME 300000
 
 class RealmService : public NetworkListener {
 
@@ -35,20 +35,19 @@ public:
 	void run();
 	void processPacket(MessageNetwork * messageNetwork);
 
-	int handleListRealm(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
-	int handleCreateRealm(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
+	void handleRegisterRealm(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 	/*!
 	 * Alimentation des erreurs d'un packets
 	 * @param messageRetour
 	 * @param typeForAuth : type d'erreur
 	 */
-	void sendErrorPacket(MessagePacket * messageRetour, erreurOfRealm type);
+	void sendErrorPacket(MessagePacket * messageRetour, int typeError);
 
 private:
 	Log * log;
 	NetworkManager * networkManager;
-	std::map<int,Royaume *> listRoyaume;
-	time_t   m_NextUpdateTime;
+	RealmManager * realmManager;
+
 };
 
 

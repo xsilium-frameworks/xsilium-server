@@ -7,6 +7,7 @@
 
 #ifndef SRC_SERVER_AUTHENTIFICATION_AUTHENTIFICATION_MANAGER_AUTHENTIFICATIONMANAGER_H_
 #define SRC_SERVER_AUTHENTIFICATION_AUTHENTIFICATION_MANAGER_AUTHENTIFICATIONMANAGER_H_
+#include <Log/Log.h>
 #include <Configuration/Configuration.h>
 #include <IP/IPBan.h>
 #include <IP/IP.h>
@@ -15,26 +16,7 @@
 
 namespace Auth {
 
-enum erreurOfAuth
-{
-	ID_NOERROR = 0,
-	ID_ERROR_PACKET_SIZE,
-	ID_CONNECTION_BANNED,
-	ID_INVALID_ACCOUNT_OR_PASSWORD,
-	ID_COMPTE_BANNIE,
-	ID_INVALID_IP,
-	ID_ERROR_ETAPE
-};
-
-enum stepOfAuth
-{
-	STEP_CHALLENGE = 0,
-	STEP_REPONSE,
-	STEP_REAMSLIST
-
-};
-
-class AuthentificationManager {
+class AuthentificationManager : public Singleton<AuthentificationManager> {
 public:
 
 	/*!
@@ -46,7 +28,20 @@ public:
 	 */
 	virtual ~AuthentificationManager();
 
-	int checkIp(std::string ip);
+	bool checkIp(std::string ip);
+
+	Compte * isAccountExist(std::string Username,std::string ip);
+
+	bool checkAccount(int idAccount);
+
+	void resetIpTemp(std::string ip);
+
+	void banIP(std::string ip);
+
+private:
+
+	Log * log;
+	Configuration * config ;
 };
 
 } /* namespace Auth */

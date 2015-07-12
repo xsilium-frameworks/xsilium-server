@@ -9,6 +9,7 @@
 #define SRC_SERVER_AUTHENTIFICATION_AUTHENTIFICATION_SERVICE_AUTHENTIFICATIONSERVICE_H_
 
 #include <Network/NetworkManager.h>
+#include "Authentification/Manager/AuthentificationManager.h"
 
 namespace Auth {
 
@@ -22,6 +23,25 @@ enum typeForAuth
 	ID_REPONSE,      //!< ID_REPONSE
 	ID_SEND_CANCEL,  //!< ID_SEND_CANCEL
 	ID_ERREUR        //!< ID_ERREUR
+};
+
+enum erreurOfAuth
+{
+	ID_NOERROR = 0,
+	ID_ERROR_PACKET_SIZE,
+	ID_CONNECTION_BANNED,
+	ID_INVALID_ACCOUNT_OR_PASSWORD,
+	ID_COMPTE_BANNIE,
+	ID_INVALID_IP,
+	ID_ERROR_ETAPE
+};
+
+enum stepOfAuth
+{
+	STEP_CHALLENGE = 0,
+	STEP_REPONSE,
+	STEP_REAMSLIST
+
 };
 
 
@@ -56,11 +76,13 @@ public:
 	 * @param messageRetour
 	 * @param typeForAuth : type d'erreur
 	 */
-	void sendErrorPacket(MessagePacket * messageRetour, typeForAuth type);
+	void sendErrorPacket(MessagePacket * messageRetour, int typeErreur);
 
 private:
 	NetworkManager * networkManager;
 	Log * log;
+
+	AuthentificationManager * authentificationManager ;
 };
 
 } /* namespace Auth */

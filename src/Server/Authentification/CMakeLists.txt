@@ -1,7 +1,7 @@
 ########### authserver ###############
 
 file(GLOB_RECURSE sources_authentication Authentification/*.cpp Authentification/*.h)
-file(GLOB_RECURSE sources_royaumes Royaumes/*.cpp Royaumes/*.h)
+file(GLOB_RECURSE sources_royaumes Realm/*.cpp Realm/*.h)
 file(GLOB sources_localdir *.cpp *.h)
 
 
