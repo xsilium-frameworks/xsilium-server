@@ -13,6 +13,7 @@
 
 #include "MessagePacket.h"
 #include <Session/Session.h>
+#include <Utilities/Utilities.h>
 
 /*
  *
@@ -28,7 +29,7 @@ struct MessageNetwork {
 
 #define NUM_THREAD_MODULE 4
 
-class NetworkListener {
+class NetworkListener : public Utilities {
 public:
 	NetworkListener();
 	virtual ~NetworkListener();

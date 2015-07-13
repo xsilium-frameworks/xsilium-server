@@ -10,6 +10,7 @@
 
 #include <Network/NetworkManager.h>
 #include "Authentification/Manager/AuthentificationManager.h"
+#include "Realm/Manager/RealmManager.h"
 
 namespace Auth {
 
@@ -21,6 +22,7 @@ enum typeForAuth
 {
 	ID_CHALLENGE = 0,//!< ID_CHALLENGE
 	ID_REPONSE,      //!< ID_REPONSE
+	ID_REALMSLIST,
 	ID_SEND_CANCEL,  //!< ID_SEND_CANCEL
 	ID_ERREUR        //!< ID_ERREUR
 };
@@ -70,6 +72,7 @@ public:
 	 */
 	void handleLogonChallenge(MessageNetwork * messageNetwork, MessagePacket * messageRetour);
 	void handleLogonProof(MessageNetwork * messageNetwork, MessagePacket * messageRetour);
+	void handleRealmsList(MessageNetwork * messageNetwork, MessagePacket * messageRetour);
 
 	/*!
 	 * Alimentation des erreurs d'un packets
@@ -83,6 +86,7 @@ private:
 	Log * log;
 
 	AuthentificationManager * authentificationManager ;
+	RealmManager * realmManager;
 };
 
 } /* namespace Auth */

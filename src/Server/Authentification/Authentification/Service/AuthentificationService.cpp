@@ -13,11 +13,13 @@ AuthentificationService::AuthentificationService(NetworkManager * networkManager
 	this->networkManager = networkManager;
 	log = Log::getInstance();
 	authentificationManager = AuthentificationManager::getInstance();
+	realmManager = RealmManager::getInstance();
 }
 
 
 AuthentificationService::~AuthentificationService() {
 	AuthentificationManager::DestroyInstance();
+	RealmManager::DestroyInstance();
 }
 
 void AuthentificationService::run()
@@ -39,6 +41,8 @@ void AuthentificationService::processPacket(MessageNetwork * messageNetwork)
 	case ID_REPONSE :
 		handleLogonProof(messageNetwork,messageRetour);
 		break;
+	case ID_REALMSLIST:
+		handleRealmsList(messageNetwork,messageRetour);
 	default:
 		break;
 	}
@@ -136,6 +140,38 @@ void AuthentificationService::handleLogonProof(MessageNetwork * messageNetwork,M
 
 	messageRetour->setOpcode(ID_AUTH);
 	messageRetour->setSousOpcode(ID_REPONSE);
+}
+
+void AuthentificationService::handleRealmsList(MessageNetwork * messageNetwork, MessagePacket * messageRetour)
+{
+	std::vector<std::string> tableauData;
+	tableauData.push_back("versionClient");
+
+	// Controle Presence Donnee
+	if(! controleData(messageNetwork->messagePacket,&tableauData) )
+	{
+		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
+		sendErrorPacket(messageRetour, ID_ERROR_PACKET_SIZE);
+	}
+
+	if(messageNetwork->session->getSessionEtape() < STEP_REAMSLIST)
+	{
+		log->write(Log::INFO,"Le client n'est pas a la bonne etape ");
+		sendErrorPacket(messageRetour, ID_ERROR_ETAPE);
+	}
+
+	std::vector<std::string> listOfRealms = realmManager->getRealmsList(ToInt(messageNetwork->messagePacket->getProperty("versionClient")),1);
+
+
+	for ( int increment = 0 ; increment < listOfRealms.size();++increment)
+	{
+		messageRetour->setProperty("serveur"+ ToString(increment),listOfRealms[increment]);
+	}
+
+	messageRetour->setOpcode(ID_AUTH);
+	messageRetour->setSousOpcode(ID_REALMSLIST);
+
+
 }
 
 void AuthentificationService::sendErrorPacket(MessagePacket * messageRetour, int typeErreur) {

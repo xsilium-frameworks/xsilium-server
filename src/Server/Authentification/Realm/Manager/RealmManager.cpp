@@ -51,7 +51,7 @@ bool RealmManager::checkRealmKey(std::string realmKey)
 	}
 }
 
-std::vector<std::string> RealmManager::getRealmsList()
+std::vector<std::string> RealmManager::getRealmsList(int version,int autorisation)
 {
 	std::vector<std::string> retour;
 	std::vector<RealmDAO *>::iterator it;
@@ -61,7 +61,8 @@ std::vector<std::string> RealmManager::getRealmsList()
 	{
 		if(*it != NULL)
 		{
-			retour.push_back((*it)->getUrlRoyaume());
+			if((*it)->getAutorisationRoyaume() <= autorisation && (*it)->getVersionClientRoyaume() == version)
+				retour.push_back((*it)->getUrlRoyaume());
 		}
 		else
 			listRoyaume.erase(it);
