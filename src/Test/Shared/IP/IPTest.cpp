@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(testIPCreate)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_REQUIRE(databaseManager->connection("10.0.15.10;5432;Xsilium;Xsilium;DevAuth"));
+	BOOST_REQUIRE(databaseManager->connection("172.17.0.21;5432;Xsilium;Xsilium;DevAuth"));
 
 	IP ip("127.0.0.1");
 	ip.setIpTempNessais(0);
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(testIPRead)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_REQUIRE(databaseManager->connection("10.0.15.10;5432;Xsilium;Xsilium;DevAuth"));
+	BOOST_REQUIRE(databaseManager->connection("172.17.0.21;5432;Xsilium;Xsilium;DevAuth"));
 
 	IP ip("127.0.0.1");
 	BOOST_CHECK(ip.read());
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(testIPUpdate)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_REQUIRE(databaseManager->connection("10.0.15.10;5432;Xsilium;Xsilium;DevAuth"));
+	BOOST_REQUIRE(databaseManager->connection("172.17.0.21;5432;Xsilium;Xsilium;DevAuth"));
 
 	IP ip("127.0.0.1");
 
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE(testIPDelete)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_REQUIRE(databaseManager->connection("10.0.15.10;5432;Xsilium;Xsilium;DevAuth"));
+	BOOST_REQUIRE(databaseManager->connection("172.17.0.21;5432;Xsilium;Xsilium;DevAuth"));
 
 
 	IP ip("127.0.0.1");
