@@ -11,6 +11,7 @@
 #include <string>
 #include <sstream>
 #include <boost/serialization/map.hpp>
+#include <boost/date_time/posix_time/time_serialize.hpp>
 
 /*
  *
@@ -53,6 +54,12 @@ public:
 	void setOpcode(int opcode);
 	void setSousOpcode(int sousOpcode);
 
+	boost::posix_time::ptime getTimestampDepart();
+	void setTimestampDepart(boost::posix_time::ptime);
+
+	boost::posix_time::ptime getTimestampArriver();
+	void setTimestampArriver(boost::posix_time::ptime);
+
 protected:
 
 
@@ -60,6 +67,8 @@ protected:
 	void serialize(Archive & ar, const unsigned int version) {
 		ar & opcode;
 		ar & sousOpcode;
+		ar & timestampDepart;
+		ar & timestampArriver;
 		ar & content;
 	}
 
@@ -67,6 +76,8 @@ private:
 	int opcode;
 	int sousOpcode;
 	std::map<std::string, std::string> content;
+	boost::posix_time::ptime timestampDepart;
+	boost::posix_time::ptime timestampArriver;
 
 	template<typename T>
 	std::string toString(T variable) {

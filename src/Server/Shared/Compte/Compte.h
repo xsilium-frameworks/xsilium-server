@@ -32,7 +32,7 @@ public:
 	bool update(int idTransaction = 0);
 	bool suppr(int idTransaction = 0);
 
-	void deleteSession();
+	void disconnect();
 
 
 	std::string& getEmail();

@@ -83,7 +83,7 @@ bool Compte::suppr(int idTransaction)
 
 }
 
-void Compte::deleteSession()
+void Compte::disconnect()
 {
 	update();
 }

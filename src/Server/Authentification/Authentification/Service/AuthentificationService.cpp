@@ -165,7 +165,7 @@ void AuthentificationService::handleRealmsList(MessageNetwork * messageNetwork, 
 
 	for ( int increment = 0 ; increment < listOfRealms.size();++increment)
 	{
-		messageRetour->setProperty("serveur"+ ToString(increment),listOfRealms[increment]);
+		messageRetour->setProperty("realm"+ ToString(increment),listOfRealms[increment]);
 	}
 
 	messageRetour->setOpcode(ID_AUTH);

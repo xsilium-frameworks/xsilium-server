@@ -38,3 +38,23 @@ void MessagePacket::setSousOpcode(int sousOpcode)
 {
 	this->sousOpcode = sousOpcode;
 }
+
+boost::posix_time::ptime MessagePacket::getTimestampDepart()
+{
+	return timestampDepart;
+}
+
+void MessagePacket::setTimestampDepart(boost::posix_time::ptime timestamp)
+{
+	this->timestampDepart = timestamp ;
+}
+
+boost::posix_time::ptime MessagePacket::getTimestampArriver()
+{
+	return timestampArriver;
+}
+
+void MessagePacket::setTimestampArriver(boost::posix_time::ptime timestamp)
+{
+	this->timestampArriver = timestamp ;
+}
