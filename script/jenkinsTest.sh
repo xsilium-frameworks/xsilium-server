@@ -10,7 +10,7 @@ if [ ! -d "$REPORT" ]; then
 fi
 cd $BUILD
 
-cp $WORKSPACE"/srv/Test/TestConfig.config" .
+cp $WORKSPACE"/src/Test/TestConfig.config" .
 
 make UnitTester_coverage
 mv *.xml $REPORT
