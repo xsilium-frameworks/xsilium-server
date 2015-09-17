@@ -18,5 +18,5 @@ mv *.xml $REPORT
 cppcheck $WORKSPACE"/src" --enable=all --quiet --xml 2> $REPORT"cppcheck-result.xml"
 
 
-
+exit 0
 
