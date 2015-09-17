@@ -4,10 +4,13 @@ BUILD=$WORKSPACE"/build/"
 REPORT=$WORKSPACE"/report/"
 
 echo "Lancement des tests unitaire "
-mkdir $REPORT
+
+if [ ! -d "$REPORT" ]; then
+    mkdir $REPORT
+fi
 cd $BUILD
 
-cp $WORKSPACE"/bin/test/TestConfig.config" .
+cp $WORKSPACE"/srv/Test/TestConfig.config" .
 
 make UnitTester_coverage
 mv *.xml $REPORT
