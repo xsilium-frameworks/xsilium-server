@@ -13,7 +13,7 @@
 #include <map>
 #include <time.h>
 
-#include "../../../../Server/Shared/Databases/Database.h"
+#include <Databases/Database.h>
 
 /*
  *

@@ -5,7 +5,7 @@
  *      Author: \author joda
  *  \brief :
  */
-#include "../../../Server/Shared/Databases/DatabaseManager.h"
+#include "Databases/DatabaseManager.h"
 
 DatabaseManager::DatabaseManager() {
 	database = 0;

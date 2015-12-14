@@ -8,8 +8,8 @@
 #ifndef SRC_SERVER_SHARED_COMPTE_COMPTE_H_
 #define SRC_SERVER_SHARED_COMPTE_COMPTE_H_
 
-#include <Databases/CRUD.h>
 #include <Session/SessionListener.h>
+#include <time.h>
 
 /*
  *
@@ -22,15 +22,10 @@ enum CompteDatabaseStatements {
 	REALMS_DEL_ACCOUNT
 };
 
-class Compte : public SessionListener , public CRUD  {
+class Compte : public SessionListener  {
 public:
 	Compte(std::string nomString = "");
 	virtual ~Compte();
-
-	bool create(int idTransaction = 0);
-	bool read(int idTransaction = 0) ;
-	bool update(int idTransaction = 0);
-	bool suppr(int idTransaction = 0);
 
 	void disconnect();
 
@@ -68,6 +63,8 @@ private:
 	time_t last_login ; /*!< derniere date de connexion du compte  */
 	bool online ; /*!< le compte est utilise  */
 	int locale; /*!< langue du compte  */
+
+	bool updateData;
 
 };
 

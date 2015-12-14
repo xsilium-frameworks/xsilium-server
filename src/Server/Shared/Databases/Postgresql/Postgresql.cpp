@@ -5,11 +5,11 @@
  *      Author: \author joda
  *  \brief :
  */
-#include "../../../../Server/Shared/Databases/Postgresql/Postgresql.h"
+#include "Databases/Postgresql/Postgresql.h"
 
 Postgresql::Postgresql() {
 	connexion = NULL;
-	time(&timer);
+	timer = time(NULL);
 }
 
 Postgresql::~Postgresql() {
@@ -72,7 +72,7 @@ void Postgresql::prepareStatement(std::string index, const char * sql) {
 	connexion->prepare(index.c_str(), sql);
 }
 
-bool Postgresql::executionPrepareStatement(std::string index,Tokens * resultat, int idTransaction, int nombreArgument, va_list listOfArgument) {
+bool Postgresql::executionPrepareStatement(std::string index,Tokens * resultat, int idTransaction,int nombreArgument,va_list listOfArgument) {
 	boost::mutex::scoped_lock lock(mutex1);
 
 	bool retour = true;
