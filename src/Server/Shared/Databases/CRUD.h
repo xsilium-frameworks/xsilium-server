@@ -9,6 +9,7 @@
 #define SRC_SERVER_SHARED_DATABASES_CRUD_H_
 
 #include <Databases/DatabaseManager.h>
+#include <Model/Model.h>
 
 class CRUD {
 public:
@@ -18,10 +19,10 @@ public:
 	};
 	virtual ~CRUD(){};
 
-	virtual bool create(int idTransaction) = 0;
-	virtual bool read(int idTransaction) = 0 ;
-	virtual bool update(int idTransaction) = 0;
-	virtual bool suppr(int idTransaction) = 0;
+	virtual bool create(Model * model , int idTransaction = 0) = 0;
+	virtual bool read(Model * model , int idTransaction = 0) = 0 ;
+	virtual bool update(Model * model , int idTransaction = 0) = 0;
+	virtual bool suppr(Model * model , int idTransaction = 0) = 0;
 
 protected:
 	std::string suffix;

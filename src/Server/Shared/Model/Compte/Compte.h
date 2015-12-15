@@ -15,14 +15,7 @@
  *
  */
 
-enum CompteDatabaseStatements {
-	REALMS_SEL_ACCOUNT,
-	REALMS_INS_ACCOUNT,
-	REALMS_UPD_ACCOUNT,
-	REALMS_DEL_ACCOUNT
-};
-
-class Compte : public SessionListener  {
+class Compte : public SessionListener, Model {
 public:
 	Compte(std::string nomString = "");
 	virtual ~Compte();

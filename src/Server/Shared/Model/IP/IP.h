@@ -10,25 +10,13 @@
 
 #include <Databases/CRUD.h>
 
-enum IPDatabaseStatements {
-	REALMS_DEL_IPTEMPORAIRE,
-	REALMS_SEL_IPTEMPORAIRE,
-	REALMS_INS_IPTEMPORAIRE,
-	REALMS_UPD_IPTEMPORAIRE
-};
-
 /*
  *
  */
-class IP : public CRUD {
+class IP : public Model {
 public:
 	IP(std::string ip_temp_ip );
 	virtual ~IP();
-
-	bool create(int idTransaction = 0);
-	bool read(int idTransaction = 0);
-	bool update(int idTransaction = 0);
-	bool suppr(int idTransaction = 0);
 
 	int getIdIp() const;
 	void setIdIp(int idIp);

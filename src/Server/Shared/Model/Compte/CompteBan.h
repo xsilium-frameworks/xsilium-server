@@ -8,30 +8,14 @@
 #ifndef SRC_SERVER_SHARED_COMPTE_COMPTEBAN_H_
 #define SRC_SERVER_SHARED_COMPTE_COMPTEBAN_H_
 
-#include <Databases/CRUD.h>
-
-
-enum CompteBanDatabaseStatements {
-	REALMS_SEL_ACCOUNTBANNED,
-	REALMS_INS_ACCOUNTBANNED,
-	REALMS_UPD_ACCOUNTBANNED,
-	REALMS_DEL_ACCOUNTBANNED
-};
-
 
 /*
  *
  */
-class CompteBan : public CRUD  {
+class CompteBan : public Model {
 public:
 	CompteBan(int id_account);
 	virtual ~CompteBan();
-
-	bool create(int idTransaction = 0);
-	bool read(int idTransaction = 0) ;
-	bool update(int idTransaction = 0);
-	bool suppr(int idTransaction = 0);
-
 
 	time_t getBandate();
 	void setBandate(time_t bandate);

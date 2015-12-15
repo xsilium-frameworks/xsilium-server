@@ -26,55 +26,6 @@ Compte::~Compte() {
 	// TODO Auto-generated destructor stub
 }
 
-bool Compte::read(int idTransaction)
-{
-	bool retour;
-	Tokens resultsqlT;
-	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_ACCOUNT),&resultsqlT,idTransaction,1,username.c_str());
-
-	if(resultsqlT.empty())
-	{
-		retour = false;
-	}
-	else
-	{
-		Tokens resultatsql;
-
-		resultatsql = database->strSplit( resultsqlT[0] ,";");
-
-		id_account = database->ToInt(resultatsql[0]);
-		sha_pass_hash = resultatsql[1];
-		email = resultatsql[2];
-		joindate = database->ToDate(resultatsql[3]);
-		last_ip = resultatsql[4];
-		locked = database->ToBool(resultatsql[5]) ;
-		last_login = database->ToDate(resultatsql[6]);
-		online = database->ToBool(resultatsql[8]) ;
-		locale = database->ToInt(resultatsql[8]);
-
-		retour = true;
-	}
-
-	return retour;
-}
-bool Compte::update(int idTransaction)
-{
-	Tokens resultsqlT;
-	return database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNT),&resultsqlT,idTransaction,9,database->ToString(id_account).c_str(),sha_pass_hash.c_str(),email.c_str(),database->ToString(joindate).c_str(),last_ip.c_str(),database->ToString(locked).c_str(),database->ToString(last_login).c_str(),database->ToString(online).c_str(),database->ToString(locale).c_str());
-
-}
-bool Compte::suppr(int idTransaction)
-{
-	Tokens resultsqlT;
-	return  database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_ACCOUNT),&resultsqlT,idTransaction,1,database->ToString(id_account).c_str());
-
-}
-
-void Compte::disconnect()
-{
-	update();
-}
-
 std::string& Compte::getEmail() {
 	return email;
 }

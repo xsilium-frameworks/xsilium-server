@@ -8,30 +8,16 @@
 #ifndef SRC_SERVER_SHARED_IP_IPBAN_H_
 #define SRC_SERVER_SHARED_IP_IPBAN_H_
 
-#include <Databases/CRUD.h>
-
-enum IPBanDatabaseStatements {
-	REALMS_SEL_IPBANNED_INFOSSURIPBANNIES,
-	REALMS_INS_IPBANNED_BANIP,
-	REALMS_DEL_IPBANNED_DEBANIP,
-	REALMS_UPD_IPBANNED_DEBANIP
-};
-
 
 /*
  *
  *
  *
  */
-class IPBan : public CRUD {
+class IPBan : public Model {
 public:
 	IPBan(std::string hostip);
 	virtual ~IPBan();
-
-	bool create(int idTransaction = 0);
-	bool read(int idTransaction = 0);
-	bool update(int idTransaction = 0);
-	bool suppr(int idTransaction = 0);
 
 	time_t getBandate() const;
 	void setBandate(time_t bandate);

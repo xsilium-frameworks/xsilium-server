@@ -9,10 +9,14 @@
 #define SRC_SERVER_AUTHENTIFICATION_AUTHENTIFICATION_MANAGER_AUTHENTIFICATIONMANAGER_H_
 #include <Log/Log.h>
 #include <Configuration/Configuration.h>
-#include <IP/IPBan.h>
-#include <IP/IP.h>
-#include <Compte/Compte.h>
-#include <Compte/CompteBan.h>
+#include <Model/IP/IPBan.h>
+#include <Model/IP/IP.h>
+#include <Model/Compte/Compte.h>
+#include <Model/Compte/CompteBan.h>
+#include <DAO/IP/IPBanDAO.h>
+#include <DAO/IP/IPDAO.h>
+#include <DAO/Compte/CompteDAO.h>
+#include <DAO/Compte/CompteBanDAO.h>
 
 namespace Auth {
 
