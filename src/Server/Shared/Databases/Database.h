@@ -9,7 +9,7 @@
 #define SRC_SERVER_SHARED_DATABASES_DATABASE_H_
 
 #include <iostream>
-#include <stdarg.h>
+#include <cstdarg>
 #include <vector>
 #include <Utilities/Utilities.h>
 
@@ -21,7 +21,7 @@ public:
 	virtual bool connection(std::string infoConnection) = 0;
 	virtual bool deconnection() = 0;
 	virtual void prepareStatement(std::string index, const char * sql) = 0;
-	virtual bool executionPrepareStatement(std::string index,Tokens * resultat, int idTransaction = 0,int nombreArgument = 0,va_list listOfArgument = 0) = 0;
+	virtual bool executionPrepareStatement(std::string index,Tokens * resultat, int idTransaction = 0,int nombreArgument = 0, va_list listOfArgument = 0) = 0;
 	virtual int createTransaction() = 0;
 	virtual void commit(int idTransaction) = 0;
 };

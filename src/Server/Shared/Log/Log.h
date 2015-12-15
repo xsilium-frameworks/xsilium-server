@@ -11,11 +11,11 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-#include <time.h>
 #include <cstdarg>
 #include <sstream>
 #include <cstring>
 #include <Singleton/Singleton.h>
+#include "../../../../lib/Enet/enet/time.h"
 
 /*
  *

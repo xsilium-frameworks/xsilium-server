@@ -7,9 +7,7 @@ file(GLOB_RECURSE sources_Configuration Configuration/*.cpp Configuration/*.h)
 file(GLOB_RECURSE sources_Network Network/*.cpp Network/*.h)
 file(GLOB_RECURSE sources_Session Session/*.cpp Session/*.h)
 file(GLOB_RECURSE sources_Signal Signal/*.cpp Signal/*.h)
-file(GLOB_RECURSE sources_Compte Compte/*.cpp Compte/*.h)
-file(GLOB_RECURSE sources_IP IP/*.cpp IP/*.h)
-file(GLOB_RECURSE sources_Royaume Royaume/*.cpp Royaume/*.h)
+file(GLOB_RECURSE sources_Model Model/*.cpp Model/*.h)
 
 #
 # Build shared sourcelist
@@ -24,9 +22,7 @@ set(shared_STAT_SRCS
   ${sources_Network}
   ${sources_Session}
   ${sources_Signal}
-  ${sources_Compte}
-  ${sources_IP}
-  ${sources_Royaume}
+  ${sources_Model}
 )
 
 include_directories(

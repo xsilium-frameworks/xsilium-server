@@ -11,9 +11,8 @@
 #include <pqxx/pqxx>
 #include <boost/thread.hpp>
 #include <map>
-#include <time.h>
-
 #include <Databases/Database.h>
+#include <time.h>
 
 /*
  *

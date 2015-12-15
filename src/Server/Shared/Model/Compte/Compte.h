@@ -8,14 +8,15 @@
 #ifndef SRC_SERVER_SHARED_COMPTE_COMPTE_H_
 #define SRC_SERVER_SHARED_COMPTE_COMPTE_H_
 
-#include <Session/SessionListener.h>
+#include <Model/Model.h>
+#include <string>
 #include <time.h>
 
 /*
  *
  */
 
-class Compte : public SessionListener, Model {
+class Compte : public Model {
 public:
 	Compte(std::string nomString = "");
 	virtual ~Compte();

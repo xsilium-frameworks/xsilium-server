@@ -8,6 +8,11 @@
 #ifndef SRC_SERVER_SHARED_COMPTE_COMPTEBAN_H_
 #define SRC_SERVER_SHARED_COMPTE_COMPTEBAN_H_
 
+#include <Model/Model.h>
+#include <string>
+
+#include <time.h>
+
 
 /*
  *
