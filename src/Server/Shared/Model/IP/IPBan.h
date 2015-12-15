@@ -8,6 +8,7 @@
 #ifndef SRC_SERVER_SHARED_IP_IPBAN_H_
 #define SRC_SERVER_SHARED_IP_IPBAN_H_
 
+#include <Model/Model.h>
 
 /*
  *

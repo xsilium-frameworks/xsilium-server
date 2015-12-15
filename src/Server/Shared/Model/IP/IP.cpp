@@ -11,59 +11,12 @@ IP::IP(std::string ip_temp_ip ) {
 
 	ip_temp_nessais = 0;
 	id_ip = 0;
-	suffix = "IP";
 	this->ip_temp_ip = ip_temp_ip;
-
-	database->prepareStatement(suffix + database->ToString(REALMS_DEL_IPTEMPORAIRE),"DELETE FROM IP.ip_temporaire where id_ip = $1");
-	database->prepareStatement(suffix + database->ToString(REALMS_SEL_IPTEMPORAIRE),"SELECT id_ip,ip_temp_nessais FROM IP.ip_temporaire where ip_temp_ip = $1");
-	database->prepareStatement(suffix + database->ToString(REALMS_INS_IPTEMPORAIRE),"INSERT INTO IP.ip_temporaire VALUES (DEFAULT, $1, $2)");
-	database->prepareStatement(suffix + database->ToString(REALMS_UPD_IPTEMPORAIRE),"UPDATE IP.ip_temporaire SET ip_temp_nessais = $1 WHERE id_ip = $2");
 
 }
 
 IP::~IP() {
 	// TODO Auto-generated destructor stub
-}
-
-bool IP::create(int idTransaction)
-{
-	bool retour;
-	Tokens tokens;
-	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_IPTEMPORAIRE),&tokens,idTransaction,2,ip_temp_ip.c_str(),database->ToString(ip_temp_nessais).c_str());
-	read();
-	return retour;
-}
-bool IP::read(int idTransaction)
-{
-	bool retour;
-	Tokens resultsqlT ;
-
-	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_IPTEMPORAIRE),&resultsqlT,idTransaction,1,ip_temp_ip.c_str());
-
-	if(resultsqlT.empty())
-	{
-		retour = false ;
-	}
-	else
-	{
-		Tokens resultatsql;
-		resultatsql = database->strSplit( resultsqlT[0] ,";");
-		id_ip = database->ToInt(resultatsql[0]);
-		ip_temp_nessais = database->ToInt(resultatsql[1]);
-		retour = true ;
-	}
-	return retour ;
-}
-bool IP::update(int idTransaction)
-{
-	Tokens resultsqlT ;
-	return database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_IPTEMPORAIRE),&resultsqlT,idTransaction,2,database->ToString(ip_temp_nessais).c_str(),database->ToString(id_ip).c_str() );
-}
-bool IP::suppr(int idTransaction)
-{
-	Tokens resultsqlT ;
-	return database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_IPTEMPORAIRE),&resultsqlT,idTransaction,1,database->ToString(id_ip).c_str());
-
 }
 
 int IP::getIdIp() const {

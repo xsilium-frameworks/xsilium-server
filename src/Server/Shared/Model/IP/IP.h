@@ -8,7 +8,7 @@
 #ifndef SRC_SERVER_SHARED_IP_IP_H_
 #define SRC_SERVER_SHARED_IP_IP_H_
 
-#include <Databases/CRUD.h>
+#include <Model/Model.h>
 
 /*
  *
