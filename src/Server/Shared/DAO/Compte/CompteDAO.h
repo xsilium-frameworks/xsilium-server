@@ -8,7 +8,8 @@
 #ifndef SRC_SERVER_SHARED_COMPTE_COMPTEDAO_H_
 #define SRC_SERVER_SHARED_COMPTE_COMPTEDAO_H_
 
-#include <Databases/CRUD.h>
+#include <Manager/Databases/CRUD.h>
+#include <Model/Compte/Compte.h>
 
 enum CompteDatabaseStatements {
 	REALMS_SEL_ACCOUNT,

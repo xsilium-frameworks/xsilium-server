@@ -8,7 +8,8 @@
 #ifndef SRC_SERVER_SHARED_DAO_BAN_COMPTEBANDAO_H_
 #define SRC_SERVER_SHARED_DAO_BAN_COMPTEBANDAO_H_
 
-#include <Databases/CRUD.h>
+#include <Manager/Databases/CRUD.h>
+#include  <Model/Compte/CompteBan.h>
 
 enum CompteBanDatabaseStatements {
 	REALMS_SEL_ACCOUNTBANNED,

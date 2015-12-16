@@ -8,7 +8,7 @@
 #ifndef SRC_SERVER_SHARED_DATABASES_DATABASEMANAGER_H_
 #define SRC_SERVER_SHARED_DATABASES_DATABASEMANAGER_H_
 
-#include <Databases/Postgresql/Postgresql.h>
+#include <Manager/Databases/Postgresql/Postgresql.h>
 #include <Singleton/Singleton.h>
 
 

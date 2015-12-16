@@ -8,7 +8,8 @@
 #ifndef SRC_SERVER_SHARED_DAO_IP_IPDAO_H_
 #define SRC_SERVER_SHARED_DAO_IP_IPDAO_H_
 
-#include <Databases/CRUD.h>
+#include <Manager/Databases/CRUD.h>
+#include <Model/IP/IP.h>
 
 enum IPDatabaseStatements {
 	REALMS_DEL_IPTEMPORAIRE,
@@ -17,7 +18,7 @@ enum IPDatabaseStatements {
 	REALMS_UPD_IPTEMPORAIRE
 };
 
-class IPDAO : public CRUD {
+class IPDAO: public CRUD {
 public:
 	IPDAO();
 	virtual ~IPDAO();
@@ -29,8 +30,6 @@ public:
 
 private:
 
-
 };
-
 
 #endif /* SRC_SERVER_SHARED_DAO_IP_IPDAO_H_ */

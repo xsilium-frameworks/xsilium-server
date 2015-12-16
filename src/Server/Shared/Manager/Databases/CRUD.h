@@ -8,7 +8,7 @@
 #ifndef SRC_SERVER_SHARED_DATABASES_CRUD_H_
 #define SRC_SERVER_SHARED_DATABASES_CRUD_H_
 
-#include <Databases/DatabaseManager.h>
+#include <Manager/Databases/DatabaseManager.h>
 #include <Model/Model.h>
 
 class CRUD {
@@ -27,6 +27,7 @@ public:
 protected:
 	std::string suffix;
 	DatabaseManager * database;
+	std::string requeteSQL;
 };
 
 

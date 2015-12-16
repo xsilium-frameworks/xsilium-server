@@ -8,7 +8,8 @@
 #ifndef SRC_SERVER_SHARED_DAO_IP_IPBANDAO_H_
 #define SRC_SERVER_SHARED_DAO_IP_IPBANDAO_H_
 
-#include <Databases/CRUD.h>
+#include <Manager/Databases/CRUD.h>
+#include <Model/IP/IPBan.h>
 
 enum IPBanDatabaseStatements {
 	REALMS_SEL_IPBANNED_INFOSSURIPBANNIES,
@@ -17,7 +18,7 @@ enum IPBanDatabaseStatements {
 	REALMS_UPD_IPBANNED_DEBANIP
 };
 
-class IPBanDAO : public CRUD {
+class IPBanDAO: public CRUD {
 public:
 	IPBanDAO();
 	virtual ~IPBanDAO();
@@ -29,8 +30,6 @@ public:
 
 private:
 
-
 };
-
 
 #endif /* SRC_SERVER_SHARED_DAO_IP_IPBANDAO_H_ */

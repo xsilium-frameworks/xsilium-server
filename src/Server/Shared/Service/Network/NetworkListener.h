@@ -12,7 +12,7 @@
 #include <boost/thread.hpp>
 
 #include "MessagePacket.h"
-#include <Session/Session.h>
+#include <Model/Session/Session.h>
 #include <Utilities/Utilities.h>
 
 /*
@@ -29,7 +29,7 @@ struct MessageNetwork {
 
 #define NUM_THREAD_MODULE 4
 
-class NetworkListener : public Utilities {
+class NetworkListener: public Utilities {
 public:
 	NetworkListener();
 	virtual ~NetworkListener();
@@ -40,12 +40,12 @@ public:
 
 	virtual void processPacket(MessageNetwork * messageNetwork) = 0;
 
-	void setPacket(Session * session,MessagePacket * messagePacket);
+	void setPacket(Session * session, MessagePacket * messagePacket);
 	MessageNetwork * getPacket();
 
 	bool isEmpty();
 
-	bool controleData(MessagePacket * messagePacket,std::vector<std::string> * tableauData);
+	bool controleData(MessagePacket * messagePacket, std::vector<std::string> * tableauData);
 
 protected:
 

@@ -1,12 +1,9 @@
 
 file(GLOB_RECURSE sources_Utilities Utilities/*.cpp Utilities/*.h)
 file(GLOB_RECURSE sources_Singleton Singleton/*.cpp Singleton/*.h)
-file(GLOB_RECURSE sources_Log Log/*.cpp Log/*.h)
-file(GLOB_RECURSE sources_Database Databases/*.cpp Databases/*.h)
-file(GLOB_RECURSE sources_Configuration Configuration/*.cpp Configuration/*.h)
-file(GLOB_RECURSE sources_Network Network/*.cpp Network/*.h)
-file(GLOB_RECURSE sources_Session Session/*.cpp Session/*.h)
-file(GLOB_RECURSE sources_Signal Signal/*.cpp Signal/*.h)
+file(GLOB_RECURSE sources_DAO DAO/*.cpp DAO/*.h)
+file(GLOB_RECURSE sources_Manager Manager/*.cpp Manager/*.h)
+file(GLOB_RECURSE sources_Service Service/*.cpp Service/*.h)
 file(GLOB_RECURSE sources_Model Model/*.cpp Model/*.h)
 
 #
@@ -16,12 +13,9 @@ file(GLOB_RECURSE sources_Model Model/*.cpp Model/*.h)
 set(shared_STAT_SRCS
   ${sources_Utilities}
   ${sources_Singleton}
-  ${sources_Database}
-  ${sources_Configuration}
-  ${sources_Log}
-  ${sources_Network}
-  ${sources_Session}
-  ${sources_Signal}
+  ${sources_DAO}
+  ${sources_Manager}
+  ${sources_Service}
   ${sources_Model}
 )
 

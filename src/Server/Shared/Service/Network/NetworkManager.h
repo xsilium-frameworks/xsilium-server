@@ -8,20 +8,16 @@
 #ifndef SRC_SERVER_SHARED_NETWORK_NETWORKMANAGER_H_
 #define SRC_SERVER_SHARED_NETWORK_NETWORKMANAGER_H_
 
-
-
 #include <boost/serialization/serialization.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 
 #include "NetworkListener.h"
 #include "Opcode.h"
-#include <Session/SessionManager.h>
-
+#include <Manager/Session/SessionManager.h>
 
 enum typeNetwork {
-	NETWORK_TYPE_SERVER = 0,
-	NETWORK_TYPE_CLIENT
+	NETWORK_TYPE_SERVER = 0, NETWORK_TYPE_CLIENT
 };
 
 /*
@@ -50,7 +46,7 @@ public:
 	 *  \param
 	 */
 
-	int connexionToHost(std::string url,int port);
+	int connexionToHost(std::string url, int port);
 
 	bool disconnexion();
 
@@ -61,9 +57,9 @@ public:
 	ENetHost * getHost();
 	ENetPeer * getPeer();
 
-	void addListenneur(int identifiant,NetworkListener * networkListener);
+	void addListenneur(int identifiant, NetworkListener * networkListener);
 	void removeListenneur(int identifiant);
-	void callBack(int identifiant,Session * session = 0,MessagePacket * messagePacket = 0);
+	void callBack(int identifiant, Session * session = 0, MessagePacket * messagePacket = 0);
 
 private:
 
@@ -85,7 +81,7 @@ private:
 
 	boost::mutex mutexSend;
 
-	std::map<int,NetworkListener *> listOfListenner ;
+	std::map<int, NetworkListener *> listOfListenner;
 
 };
 

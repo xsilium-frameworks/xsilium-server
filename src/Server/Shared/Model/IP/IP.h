@@ -9,6 +9,7 @@
 #define SRC_SERVER_SHARED_IP_IP_H_
 
 #include <Model/Model.h>
+#include <string>
 
 /*
  *

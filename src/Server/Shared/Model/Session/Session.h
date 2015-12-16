@@ -9,19 +9,15 @@
 #define SRC_SERVER_SHARED_SESSION_SESSION_H_
 
 #include <enet/enet.h>
-#include <Session/SessionListener.h>
+#include <Model/Session/SessionListener.h>
 #include <string>
 
 /*
  * Enum type session
  */
-enum typeOfSession
-{
+enum typeOfSession {
 
-	SESSION_REALM = 0,
-	SESSION_ZONE,
-	SESSION_COMPTE,
-	SESSION_PERSO,
+	SESSION_REALM = 0, SESSION_ZONE, SESSION_COMPTE, SESSION_PERSO,
 };
 
 /*
@@ -48,7 +44,6 @@ private:
 	ENetPeer * peer;
 	SessionListener * sessionListener;
 	int sessionEtape;
-
 
 };
 

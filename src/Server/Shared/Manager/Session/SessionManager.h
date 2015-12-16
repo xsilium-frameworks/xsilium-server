@@ -8,16 +8,16 @@
 #ifndef SRC_SERVER_SHARED_SESSION_SESSIONMANAGER_H_
 #define SRC_SERVER_SHARED_SESSION_SESSIONMANAGER_H_
 
-#include "Session.h"
-#include <Network/NetworkManager.h>
-#include <Log/Log.h>
+#include "Model/Session/Session.h"
+#include <Service/Network/NetworkManager.h>
+#include <Manager/Log/Log.h>
 
 #include <Singleton/Singleton.h>
 
 /*
  *
  */
-class SessionManager : public Singleton<SessionManager> {
+class SessionManager: public Singleton<SessionManager> {
 public:
 	SessionManager();
 	virtual ~SessionManager();
@@ -27,12 +27,10 @@ public:
 	Session * trouverSession(ENetAddress address);
 
 private:
-	std::vector<Session *> listOfSession ;
+	std::vector<Session *> listOfSession;
 	Log * log;
 
 	boost::mutex mutexSession;
-
-
 
 };
 

@@ -10,18 +10,24 @@
 CompteDAO::CompteDAO() {
 	suffix = "Compte";
 
-	database->prepareStatement(suffix + database->ToString(REALMS_SEL_ACCOUNT),
-			"SELECT id_account,sha_pass_hash,email,joindate,last_ip,locked,last_login,online,locale "
-					+ "FROM compte.account where username = $1 ");
-	database->prepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNT),
-			"UPDATE compte.account SET sha_pass_hash = $2,email=$3,joindate = to_timestamp($4),"
-					+ "last_ip = $5,locked = $6,last_login = to_timestamp($7),online = $8,locale = $9 "
-					+ "WHERE id_account = $1");
-	database->prepareStatement(suffix + database->ToString(REALMS_INS_ACCOUNT),
-			"INSERT INTO compte.account VALUES "
-					+ "(DEFAULT,$1,$2,$3,to_timestamp($4),$5,$6,to_timestamp($7),$8,$9)");
-	database->prepareStatement(suffix + database->ToString(REALMS_DEL_ACCOUNT),
-			"DELETE FROM compte.account WHERE id_account = $1");
+	requeteSQL = "SELECT id_account,sha_pass_hash,email,joindate,last_ip,";
+	requeteSQL += "locked,last_login,online,locale";
+	requeteSQL += " FROM compte.account where username = $1";
+	database->prepareStatement(suffix + database->ToString(REALMS_SEL_ACCOUNT), requeteSQL.c_str());
+
+	requeteSQL = "UPDATE compte.account SET sha_pass_hash = $2,email=$3,";
+	requeteSQL += "joindate = to_timestamp($4),last_ip = $5,locked = $6,";
+	requeteSQL += "last_login = to_timestamp($7),online = $8,locale = $9;";
+	requeteSQL += " WHERE id_account = $1";
+	database->prepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNT), requeteSQL.c_str());
+
+	requeteSQL = "INSERT INTO compte.account VALUES ";
+	requeteSQL += "(DEFAULT,$1,$2,$3,to_timestamp($4),$5,$6,";
+	requeteSQL += "to_timestamp($7),$8,$9)";
+	database->prepareStatement(suffix + database->ToString(REALMS_INS_ACCOUNT), requeteSQL.c_str());
+
+	requeteSQL = "DELETE FROM compte.account WHERE id_account = $1";
+	database->prepareStatement(suffix + database->ToString(REALMS_DEL_ACCOUNT), requeteSQL.c_str());
 
 }
 
@@ -32,12 +38,10 @@ CompteDAO::~CompteDAO() {
 bool CompteDAO::create(Compte * compte, int idTransaction) {
 	bool retour;
 	Tokens tokens;
-	retour = database->executionPrepareStatement(
-			suffix + database->ToString(REALMS_INS_ACCOUNT), &tokens,
-			idTransaction, 9, compte->getUsername().c_str(),
+	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_ACCOUNT),
+			&tokens, idTransaction, 9, compte->getUsername().c_str(),
 			compte->getShaPassHash().c_str(), compte->getEmail().c_str(),
-			database->ToString(compte->getJoindate()).c_str(),
-			compte->getLastIp().c_str(),
+			database->ToString(compte->getJoindate()).c_str(), compte->getLastIp().c_str(),
 			database->ToString(compte->isLocked()).c_str(),
 			database->ToString(compte->getLastLogin()).c_str(),
 			database->ToString(compte->isOnline()).c_str(),
@@ -46,13 +50,10 @@ bool CompteDAO::create(Compte * compte, int idTransaction) {
 }
 bool CompteDAO::update(Compte * compte, int idTransaction) {
 	Tokens resultsqlT;
-	return database->executionPrepareStatement(
-			suffix + database->ToString(REALMS_UPD_ACCOUNT), &resultsqlT,
-			idTransaction, 9,
-			database->ToString(compte->getIdAccount()).c_str(),
+	return database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_ACCOUNT),
+			&resultsqlT, idTransaction, 9, database->ToString(compte->getIdAccount()).c_str(),
 			compte->getShaPassHash().c_str(), compte->getEmail().c_str(),
-			database->ToString(compte->getJoindate()).c_str(),
-			compte->getLastIp().c_str(),
+			database->ToString(compte->getJoindate()).c_str(), compte->getLastIp().c_str(),
 			database->ToString(compte->isLocked()).c_str(),
 			database->ToString(compte->getLastLogin()).c_str(),
 			database->ToString(compte->isOnline()).c_str(),
@@ -62,9 +63,8 @@ bool CompteDAO::update(Compte * compte, int idTransaction) {
 bool CompteDAO::read(Compte * compte, int idTransaction) {
 	bool retour;
 	Tokens resultsqlT;
-	retour = database->executionPrepareStatement(
-			suffix + database->ToString(REALMS_SEL_ACCOUNT), &resultsqlT,
-			idTransaction, 1, compte->getUsername().c_str());
+	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_ACCOUNT),
+			&resultsqlT, idTransaction, 1, compte->getUsername().c_str());
 
 	if (resultsqlT.empty()) {
 		retour = false;
@@ -90,8 +90,6 @@ bool CompteDAO::read(Compte * compte, int idTransaction) {
 }
 bool CompteDAO::suppr(Compte * compte, int idTransaction) {
 	Tokens resultsqlT;
-	return database->executionPrepareStatement(
-			suffix + database->ToString(REALMS_DEL_ACCOUNT), &resultsqlT,
-			idTransaction, 1,
-			database->ToString(compte->getIdAccount()).c_str());
+	return database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_ACCOUNT),
+			&resultsqlT, idTransaction, 1, database->ToString(compte->getIdAccount()).c_str());
 }

@@ -5,7 +5,7 @@
  *      Author: \author joda
  *  \brief :
  */
-#include "Databases/Postgresql/Postgresql.h"
+#include "Manager/Databases/Postgresql/Postgresql.h"
 
 Postgresql::Postgresql() {
 	connexion = NULL;
@@ -13,7 +13,7 @@ Postgresql::Postgresql() {
 }
 
 Postgresql::~Postgresql() {
-	delete connexion ;
+	delete connexion;
 }
 
 bool Postgresql::connection(std::string infoConnection) {
@@ -33,16 +33,14 @@ bool Postgresql::connection(std::string infoConnection) {
 	if (increment != 5)
 		return false;
 
-	connectionString = "host=" + dataConnexion[0] + " port=" + dataConnexion[1]
-																			 + " user=" + dataConnexion[2] + " password=" + dataConnexion[3]
-																																		  + " dbname=" + dataConnexion[4];
+	connectionString = "host=" + dataConnexion[0] + " port=" + dataConnexion[1] + " user="
+			+ dataConnexion[2] + " password=" + dataConnexion[3] + " dbname=" + dataConnexion[4];
 
 	connexion = new pqxx::lazyconnection(connectionString.c_str());
 	try {
 		connexion->activate();
 		return connexion->is_open();
-	}
-	catch (const std::exception &e) {
+	} catch (const std::exception &e) {
 		std::cerr << e.what() << std::endl;
 		return false;
 	}
@@ -58,8 +56,7 @@ bool Postgresql::deconnection() {
 			return true;
 		}
 
-	}
-	catch (const std::exception &e) {
+	} catch (const std::exception &e) {
 		std::cerr << e.what() << std::endl;
 		return false;
 	}
@@ -72,7 +69,8 @@ void Postgresql::prepareStatement(std::string index, const char * sql) {
 	connexion->prepare(index.c_str(), sql);
 }
 
-bool Postgresql::executionPrepareStatement(std::string index,Tokens * resultat, int idTransaction,int nombreArgument,va_list listOfArgument) {
+bool Postgresql::executionPrepareStatement(std::string index, Tokens * resultat, int idTransaction,
+		int nombreArgument, va_list listOfArgument) {
 	boost::mutex::scoped_lock lock(mutex1);
 
 	bool retour = true;
@@ -80,8 +78,7 @@ bool Postgresql::executionPrepareStatement(std::string index,Tokens * resultat, 
 	pqxx::work * txn;
 	bool autoCommit = false;
 
-	std::map<int, pqxx::work *>::iterator iter = listOfTransaction.find(
-			idTransaction);
+	std::map<int, pqxx::work *>::iterator iter = listOfTransaction.find(idTransaction);
 	if (iter == listOfTransaction.end()) {
 		txn = new pqxx::work(*connexion);
 		autoCommit = true;
@@ -96,14 +93,13 @@ bool Postgresql::executionPrepareStatement(std::string index,Tokens * resultat, 
 				argument = va_arg(listOfArgument,char*);
 				invoc(argument);
 			}
-			 conversionRetour(invoc.exec(),resultat);
+			conversionRetour(invoc.exec(), resultat);
 		}
 
 		if (autoCommit) {
 			txn->commit();
 		}
-	}
-	catch (const std::exception &e) {
+	} catch (const std::exception &e) {
 		resultat->push_back(e.what());
 		txn->abort();
 		retour = false;
@@ -131,8 +127,7 @@ void Postgresql::commit(int idTransaction) {
 
 	pqxx::work * txn;
 
-	std::map<int, pqxx::work *>::iterator iter = listOfTransaction.find(
-			idTransaction);
+	std::map<int, pqxx::work *>::iterator iter = listOfTransaction.find(idTransaction);
 	if (iter != listOfTransaction.end()) {
 		txn = iter->second;
 		txn->commit();
@@ -142,17 +137,15 @@ void Postgresql::commit(int idTransaction) {
 	connexion->deactivate();
 }
 
-bool Postgresql::conversionRetour(pqxx::result resultat,Tokens * resultatToken) {
+bool Postgresql::conversionRetour(pqxx::result resultat, Tokens * resultatToken) {
 
-	for (pqxx::result::const_iterator row = resultat.begin();
-			row != resultat.end(); ++row) {
+	for (pqxx::result::const_iterator row = resultat.begin(); row != resultat.end(); ++row) {
 		std::string ligneRetour;
 
-		for (pqxx::tuple::const_iterator field = row->begin();
-				field != row->end(); ++field) {
+		for (pqxx::tuple::const_iterator field = row->begin(); field != row->end(); ++field) {
 			if (!ligneRetour.empty())
 				ligneRetour += ";";
-			if(field.is_null())
+			if (field.is_null())
 				ligneRetour += "false";
 			else
 				ligneRetour += field->c_str();
