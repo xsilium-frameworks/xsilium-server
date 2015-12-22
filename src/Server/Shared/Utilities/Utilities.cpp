@@ -34,21 +34,21 @@ Tokens Utilities::strSplit(std::string src, std::string sep) {
 }
 ;
 
-int Utilities::ToInt(std::string str) {
+int Utilities::toInt(std::string str) {
 	return atoi(str.c_str());
 }
 
-long Utilities::ToLong(std::string str) {
+long Utilities::toLong(std::string str) {
 	return atol(str.c_str());
 
 }
 
-double Utilities::ToDouble(std::string str) {
+double Utilities::toDouble(std::string str) {
 	return atof(str.c_str());
 
 }
 
-bool Utilities::ToBool(std::string str) {
+bool Utilities::toBool(std::string str) {
 	if (str == "true")
 		return true;
 	else if (str == "1")
@@ -57,7 +57,7 @@ bool Utilities::ToBool(std::string str) {
 		return false;
 }
 
-time_t Utilities::ToDate(std::string str)
+time_t Utilities::toDate(std::string str)
 {
 	struct tm tm;
 	strptime(str.c_str(), "%Y-%m-%d %H:%M:%S", &tm);

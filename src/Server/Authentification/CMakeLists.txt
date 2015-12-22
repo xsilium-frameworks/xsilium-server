@@ -1,22 +1,22 @@
 ########### authserver ###############
 
-file(GLOB_RECURSE sources_authentication Authentification/*.cpp Authentification/*.h)
-file(GLOB_RECURSE sources_royaumes Realm/*.cpp Realm/*.h)
+file(GLOB_RECURSE sources_Service Service/*.cpp Service/*.h)
+file(GLOB_RECURSE sources_Manager Manager/*.cpp Manager/*.h)
+file(GLOB_RECURSE sources_DAO DAO/*.cpp DAO/*.h)
 file(GLOB sources_localdir *.cpp *.h)
 
 
 
 
 set(authserver_SRCS
-  ${sources_authentication}
-  ${sources_royaumes}
+  ${sources_Service}
+  ${sources_Manager}
+  ${sources_DAO}
 )
 
 include_directories(
 	${CMAKE_BINARY_DIR}
 	${CMAKE_CURRENT_SOURCE_DIR}
-	${CMAKE_CURRENT_SOURCE_DIR}/Authentication
-	${CMAKE_CURRENT_SOURCE_DIR}/Royaumes
 	${CMAKE_SOURCE_DIR}/src/Server/Shared
 )
 

@@ -8,8 +8,8 @@
 #ifndef SRC_SERVER_AUTHENTIFICATION_REALM_SERVICE_REALMMANAGER_H_
 #define SRC_SERVER_AUTHENTIFICATION_REALM_SERVICE_REALMMANAGER_H_
 
-#include "Realm/DAO/RealmDAO.h"
-#include <Configuration/Configuration.h>
+#include "DAO/Realm/RealmDAO.h"
+#include <Manager/Configuration/ConfigurationManager.h>
 #include <vector>
 
 namespace Auth {
@@ -39,7 +39,7 @@ public:
 
 private:
 	std::vector<RealmDAO *> listRoyaume;
-	Configuration * configuration;
+	ConfigurationManager * configuration;
 };
 
 } /* namespace Auth */

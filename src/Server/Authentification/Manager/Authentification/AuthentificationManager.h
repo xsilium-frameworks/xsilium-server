@@ -7,12 +7,9 @@
 
 #ifndef SRC_SERVER_AUTHENTIFICATION_AUTHENTIFICATION_MANAGER_AUTHENTIFICATIONMANAGER_H_
 #define SRC_SERVER_AUTHENTIFICATION_AUTHENTIFICATION_MANAGER_AUTHENTIFICATIONMANAGER_H_
-#include <Log/Log.h>
-#include <Configuration/Configuration.h>
-#include <Model/IP/IPBan.h>
-#include <Model/IP/IP.h>
-#include <Model/Compte/Compte.h>
-#include <Model/Compte/CompteBan.h>
+
+#include <Manager/Manager.h>
+
 #include <DAO/IP/IPBanDAO.h>
 #include <DAO/IP/IPDAO.h>
 #include <DAO/Compte/CompteDAO.h>
@@ -20,7 +17,7 @@
 
 namespace Auth {
 
-class AuthentificationManager : public Singleton<AuthentificationManager> {
+class AuthentificationManager : public Manager , public Singleton<AuthentificationManager> {
 public:
 
 	/*!
@@ -43,9 +40,10 @@ public:
 	void banIP(std::string ip);
 
 private:
-
-	Log * log;
-	Configuration * config ;
+	IPBanDAO * ipBanDAO ;
+	IPDAO * ipDAO;
+	CompteDAO * compteDAO;
+	CompteBanDAO * compteBanDAO;
 };
 
 } /* namespace Auth */

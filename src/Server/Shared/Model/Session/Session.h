@@ -9,7 +9,7 @@
 #define SRC_SERVER_SHARED_SESSION_SESSION_H_
 
 #include <enet/enet.h>
-#include <Model/Session/SessionListener.h>
+#include <Model/Model.h>
 #include <string>
 
 /*
@@ -32,8 +32,8 @@ public:
 	ENetPeer * getSessionPeer();
 	ENetAddress * getSessionID();
 
-	void setSessionListener(SessionListener * sessionListener);
-	SessionListener * getSessionListener();
+	void setSessionListener(Model * model);
+	Model * getSessionListener();
 
 	std::string getIP();
 
@@ -42,7 +42,7 @@ public:
 
 private:
 	ENetPeer * peer;
-	SessionListener * sessionListener;
+	Model * model;
 	int sessionEtape;
 
 };

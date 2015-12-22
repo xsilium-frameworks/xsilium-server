@@ -12,9 +12,10 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 
-#include "NetworkListener.h"
+#include <Service/Service.h>
 #include "Opcode.h"
 #include <Manager/Session/SessionManager.h>
+#include <Singleton/Singleton.h>
 
 enum typeNetwork {
 	NETWORK_TYPE_SERVER = 0, NETWORK_TYPE_CLIENT
@@ -23,7 +24,7 @@ enum typeNetwork {
 /*
  *
  */
-class NetworkManager {
+class NetworkManager : public Singleton<NetworkManager> {
 public:
 	NetworkManager(int TypeConnexion);
 	virtual ~NetworkManager();
@@ -57,7 +58,7 @@ public:
 	ENetHost * getHost();
 	ENetPeer * getPeer();
 
-	void addListenneur(int identifiant, NetworkListener * networkListener);
+	void addListenneur(int identifiant, Service * service);
 	void removeListenneur(int identifiant);
 	void callBack(int identifiant, Session * session = 0, MessagePacket * messagePacket = 0);
 
@@ -81,7 +82,7 @@ private:
 
 	boost::mutex mutexSend;
 
-	std::map<int, NetworkListener *> listOfListenner;
+	std::map<int, Service *> listOfListenner;
 
 };
 

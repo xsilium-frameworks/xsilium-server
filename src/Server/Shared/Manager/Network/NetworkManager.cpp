@@ -197,14 +197,14 @@ void* NetworkManager::threadConnexion(void* arguments)
 }
 
 
-void NetworkManager::addListenneur(int identifiant,NetworkListener * networkListener)
+void NetworkManager::addListenneur(int identifiant,Service * service)
 {
-	listOfListenner[identifiant] = networkListener ;
+	listOfListenner[identifiant] = service ;
 }
 
 void NetworkManager::removeListenneur(int identifiant)
 {
-	std::map<int,NetworkListener *>::iterator listenner ;
+	std::map<int,Service *>::iterator listenner ;
 	listenner = listOfListenner.find(identifiant) ;
 	if ( listenner != listOfListenner.end())
 	{
@@ -214,7 +214,7 @@ void NetworkManager::removeListenneur(int identifiant)
 
 void NetworkManager::callBack(int identifiant,Session * session,MessagePacket * messagePacket)
 {
-	std::map<int,NetworkListener *>::iterator listenner ;
+	std::map<int,Service *>::iterator listenner ;
 	listenner = listOfListenner.find(identifiant) ;
 	if ( listenner != listOfListenner.end())
 	{

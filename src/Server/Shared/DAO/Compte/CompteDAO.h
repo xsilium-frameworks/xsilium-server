@@ -8,7 +8,7 @@
 #ifndef SRC_SERVER_SHARED_COMPTE_COMPTEDAO_H_
 #define SRC_SERVER_SHARED_COMPTE_COMPTEDAO_H_
 
-#include <Manager/Databases/CRUD.h>
+#include <DAO/DAO.h>
 #include <Model/Compte/Compte.h>
 
 enum CompteDatabaseStatements {
@@ -18,15 +18,15 @@ enum CompteDatabaseStatements {
 	REALMS_DEL_ACCOUNT
 };
 
-class CompteDAO : public CRUD {
+class CompteDAO : public DAO {
 public:
 	CompteDAO();
 	virtual ~CompteDAO();
 
-	bool create(Compte * compte, int idTransaction);
-	bool update(Compte * compte, int idTransaction);
-	bool read(Compte * compte, int idTransaction);
-	bool suppr(Compte * compte, int idTransaction);
+	bool create(Compte * compte, int idTransaction = 0);
+	bool update(Compte * compte, int idTransaction = 0);
+	bool read(Compte * compte, int idTransaction = 0);
+	bool suppr(Compte * compte, int idTransaction = 0);
 
 private:
 

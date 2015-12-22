@@ -10,13 +10,20 @@
 namespace Auth {
 
 AuthentificationManager::AuthentificationManager() {
-	config = Configuration::getInstance();
-	log = Log::getInstance();
+
+    ipBanDAO = new IPBanDAO(); ;
+    ipDAO = new IPDAO();
+    compteDAO = new CompteDAO();
+    compteBanDAO = new CompteBanDAO();
+
 
 }
 
 AuthentificationManager::~AuthentificationManager() {
-	// TODO Auto-generated destructor stub
+    delete ipBanDAO ;
+    delete ipDAO ;
+    delete compteDAO;
+    delete compteBanDAO ;
 }
 
 //TODO have fun
@@ -26,12 +33,12 @@ bool AuthentificationManager::checkIp(std::string ip){
 	IP ipTemp(ip);
 
 
-	if(ipBan.read())
+	if(ipBanDAO->read(&ipBan))
 		return false;
 
 
-	if(ipTemp.read())
-		ipTemp.create();
+	if(ipDAO->read(&ipTemp))
+	    ipDAO->create(&ipTemp);
 
 	return true ;
 }
@@ -40,7 +47,7 @@ Compte * AuthentificationManager::isAccountExist(std::string Username,std::strin
 {
 	Compte * compte = new Compte(Username);
 
-	if(!compte->read())
+	if(!compteDAO->read(compte))
 	{
 		banIP(ip);
 		return 0;
@@ -53,7 +60,7 @@ bool AuthentificationManager::checkAccount(int idAccount)
 {
 	CompteBan compteBan( idAccount);
 
-	if(compteBan.read())
+	if(compteBanDAO->read(&compteBan))
 		return false;
 
 	return true;
@@ -67,11 +74,11 @@ void AuthentificationManager::banIP(std::string ip)
 	IP ipTemp(ip);
 	IPBan ipBan(ip);
 
-	ipTemp.read();
+	ipDAO->read(&ipTemp);
 	ipTemp.setIpTempNessais(ipTemp.getIpTempNessais() + 1);
 
-	config->get("nombreErreurMax",nombreErreurMax);
-	config->get("banTime",banTime);
+	configurationManager->get("nombreErreurMax",nombreErreurMax);
+	configurationManager->get("banTime",banTime);
 
 	if( ( ipTemp.getIpTempNessais() % nombreErreurMax ) == 0 )
 	{
@@ -82,17 +89,17 @@ void AuthentificationManager::banIP(std::string ip)
 		ipBan.setUnbandate((time(NULL) + (banTime * (ipTemp.getIpTempNessais() / nombreErreurMax ))  *60));
 		ipBan.setRaison("autoban");
 		ipBan.setBannedby(0);
-		ipBan.create(idTransaction);
+		ipBanDAO->create(&ipBan,idTransaction);
 	}
-	ipTemp.update(idTransaction);
+	ipDAO->update(&ipTemp,idTransaction);
 }
 
 void AuthentificationManager::resetIpTemp(std::string ip)
 {
 	IP ipTemp(ip);
-	ipTemp.read();
+	ipDAO->read(&ipTemp);
 	ipTemp.setIpTempNessais(0);
-	ipTemp.update();
+	ipDAO->update(&ipTemp);
 }
 
 } /* namespace Auth */

@@ -11,7 +11,7 @@ namespace Auth {
 
 AuthentificationService::AuthentificationService(NetworkManager * networkManager) {
 	this->networkManager = networkManager;
-	log = Log::getInstance();
+	log = LogManager::getInstance();
 	authentificationManager = AuthentificationManager::getInstance();
 	realmManager = RealmManager::getInstance();
 }
@@ -25,13 +25,13 @@ AuthentificationService::~AuthentificationService() {
 void AuthentificationService::run()
 {
 	networkManager->addListenneur(ID_AUTH,this);
-	NetworkListener::run();
+	Service::run();
 
 }
 
 void AuthentificationService::processPacket(MessageNetwork * messageNetwork)
 {
-	log->write(Log::DEBUG,"Nouveau Packet Authentification");
+	log->write(LogManager::DEBUG,"Nouveau Packet Authentification");
 	MessagePacket * messageRetour = new MessagePacket();
 	switch(messageNetwork->messagePacket->getSousOpcode())
 	{
@@ -59,7 +59,7 @@ void  AuthentificationService::handleLogonChallenge(MessageNetwork * messageNetw
 	// Controle Presence Donneee
 	if(! controleData(messageNetwork->messagePacket,&tableauData) )
 	{
-		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
+		log->write(LogManager::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
 		sendErrorPacket(messageRetour, ID_ERROR_PACKET_SIZE);
 		return;
 	}
@@ -68,19 +68,19 @@ void  AuthentificationService::handleLogonChallenge(MessageNetwork * messageNetw
 
 	if(!authentificationManager->checkIp(messageNetwork->session->getIP()))
 	{
-		log->write(Log::INFO,"[AuthChallenge] L'ip %s est bannie !",messageNetwork->session->getIP().c_str());
+		log->write(LogManager::INFO,"[AuthChallenge] L'ip %s est bannie !",messageNetwork->session->getIP().c_str());
 		sendErrorPacket(messageRetour, ID_CONNECTION_BANNED);
 		return;
 	}
 
-	log->write(Log::INFO,"Nom du client : %s ",messageNetwork->messagePacket->getProperty("Login").c_str());
+	log->write(LogManager::INFO,"Nom du client : %s ",messageNetwork->messagePacket->getProperty("Login").c_str());
 
 
 	messageNetwork->session->setSessionListener(authentificationManager->isAccountExist(messageNetwork->messagePacket->getProperty("Login"), messageNetwork->session->getIP()));
 
 	if(!messageNetwork->session->getSessionListener())
 	{
-		log->write(Log::INFO,"[AuthChallenge] Le compte %s n'existe pas",messageNetwork->messagePacket->getProperty("Login").c_str());
+		log->write(LogManager::INFO,"[AuthChallenge] Le compte %s n'existe pas",messageNetwork->messagePacket->getProperty("Login").c_str());
 		sendErrorPacket(messageRetour, ID_INVALID_ACCOUNT_OR_PASSWORD);
 		return ;
 	}
@@ -108,19 +108,19 @@ void AuthentificationService::handleLogonProof(MessageNetwork * messageNetwork,M
 	// Controle Presence Donnee
 	if(! controleData(messageNetwork->messagePacket,&tableauData) )
 	{
-		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
+		log->write(LogManager::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
 		sendErrorPacket(messageRetour, ID_ERROR_PACKET_SIZE);
 	}
 
 	if(messageNetwork->session->getSessionListener()->getSessionListenerType() != SESSION_COMPTE)
 	{
-		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
+		log->write(LogManager::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
 		sendErrorPacket(messageRetour, ID_ERROR_PACKET_SIZE);
 	}
 
 	if(messageNetwork->session->getSessionEtape() < STEP_REPONSE)
 	{
-		log->write(Log::INFO,"Le client n'est pas a la bonne etape ");
+		log->write(LogManager::INFO,"Le client n'est pas a la bonne etape ");
 		sendErrorPacket(messageRetour, ID_ERROR_ETAPE);
 	}
 
@@ -132,7 +132,7 @@ void AuthentificationService::handleLogonProof(MessageNetwork * messageNetwork,M
 		sendErrorPacket(messageRetour, ID_INVALID_ACCOUNT_OR_PASSWORD);
 	}
 
-	log->write(Log::INFO,"Mot de passe valider");
+	log->write(LogManager::INFO,"Mot de passe valider");
 
 	authentificationManager->resetIpTemp(messageNetwork->session->getIP());
 
@@ -150,13 +150,13 @@ void AuthentificationService::handleRealmsList(MessageNetwork * messageNetwork, 
 	// Controle Presence Donnee
 	if(! controleData(messageNetwork->messagePacket,&tableauData) )
 	{
-		log->write(Log::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
+		log->write(LogManager::INFO,"Le message venant de %d:%d est illisible ",messageNetwork->session->getSessionID()->host,messageNetwork->session->getSessionID()->port);
 		sendErrorPacket(messageRetour, ID_ERROR_PACKET_SIZE);
 	}
 
 	if(messageNetwork->session->getSessionEtape() < STEP_REAMSLIST)
 	{
-		log->write(Log::INFO,"Le client n'est pas a la bonne etape ");
+		log->write(LogManager::INFO,"Le client n'est pas a la bonne etape ");
 		sendErrorPacket(messageRetour, ID_ERROR_ETAPE);
 	}
 

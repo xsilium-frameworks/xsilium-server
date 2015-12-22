@@ -7,7 +7,7 @@
 
 #ifndef SRC_SERVER_AUTHENTIFICATION_REALM_DAO_REALMDAO_H_
 #define SRC_SERVER_AUTHENTIFICATION_REALM_DAO_REALMDAO_H_
-#include <Databases/CRUD.h>
+#include <DAO/DAO.h>
 
 namespace Auth {
 
@@ -21,7 +21,7 @@ enum RoyaumeDatabaseStatements {
 	REALMS_DEL_LISTESROYAUMES
 };
 
-class RealmDAO: public CRUD {
+class RealmDAO: public DAO {
 public:
 	RealmDAO(std::string nameRoyaume);
 	virtual ~RealmDAO();

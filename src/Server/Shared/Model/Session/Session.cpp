@@ -9,14 +9,14 @@
 
 Session::Session() {
 	peer = NULL;
-	sessionListener = 0;
+	model = 0;
 	sessionEtape = 0;
 }
 
 Session::~Session() {
-	if(sessionListener)
+	if(model)
 	{
-		sessionListener->disconnect();
+	    model->disconnect();
 	}
 }
 
@@ -35,14 +35,14 @@ ENetAddress * Session::getSessionID()
 	return &peer->address ;
 }
 
-void Session::setSessionListener(SessionListener * sessionListener)
+void Session::setSessionListener(Model * model)
 {
-	this->sessionListener = sessionListener;
+	this->model = model;
 }
 
-SessionListener * Session::getSessionListener()
+Model * Session::getSessionListener()
 {
-	return sessionListener;
+	return model;
 }
 
 std::string Session::getIP()

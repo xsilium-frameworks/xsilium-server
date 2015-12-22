@@ -12,6 +12,7 @@
 #include <sstream>
 #include <boost/serialization/map.hpp>
 #include <boost/date_time/posix_time/time_serialize.hpp>
+#include <Model/Session/Session.h>
 
 /*
  *
@@ -87,6 +88,16 @@ private:
 
 		return ss.str();
 	}
+
+};
+
+/*
+ *
+ */
+
+struct MessageNetwork {
+    Session * session;
+    MessagePacket * messagePacket;
 
 };
 

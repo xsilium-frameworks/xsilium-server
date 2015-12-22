@@ -9,8 +9,8 @@
 #define SRC_SERVER_SHARED_SESSION_SESSIONMANAGER_H_
 
 #include "Model/Session/Session.h"
-#include <Service/Network/NetworkManager.h>
-#include <Manager/Log/Log.h>
+#include <Manager/Network/NetworkManager.h>
+#include <Manager/Log/LogManager.h>
 
 #include <Singleton/Singleton.h>
 
@@ -28,7 +28,7 @@ public:
 
 private:
 	std::vector<Session *> listOfSession;
-	Log * log;
+	LogManager * log;
 
 	boost::mutex mutexSession;
 

@@ -21,7 +21,7 @@ enum ServerDB
 /*
  *
  */
-class DatabaseManager : public Singleton<DatabaseManager> , public Utilities {
+class DatabaseManager : public Singleton<DatabaseManager> {
 
 public:
 	DatabaseManager();

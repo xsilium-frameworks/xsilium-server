@@ -10,6 +10,18 @@
 
 class Model {
 
+public:
+    Model();
+    virtual ~Model();
+
+    int getSessionListenerType() const;
+    void setSessionListenerType(int sessionListenerType);
+
+    virtual void disconnect() = 0 ;
+
+protected:
+    int sessionListenerType ;
+
 };
 
 #endif /* SRC_SERVER_SHARED_DATABASES_MODEL_H_ */

@@ -1,43 +1,43 @@
 /*
- * \file Configuration.cpp
+ * ConfigurationManager.cpp
  *
- *  Created on: \date 3 mai 2012
- *      Author: \author joda
- *  \brief :
+ *  Created on: 17 déc. 2015
+ *      Author: joda
  */
 
-#include "Configuration.h"
+#include "ConfigurationManager.h"
 
-Configuration::Configuration()
-{
+ConfigurationManager::ConfigurationManager() {
+    // TODO Auto-generated constructor stub
+
 }
 
-Configuration::~Configuration() {
-	// TODO Auto-generated destructor stub
+ConfigurationManager::~ConfigurationManager() {
+    // TODO Auto-generated destructor stub
 }
 
-void Configuration::clear()
+void ConfigurationManager::clear()
 {
     data.clear();
 }
 
-bool Configuration::load(std::string file)
+bool ConfigurationManager::load(std::string file)
 {
 
-	boost::mutex::scoped_lock lock(mutex1);
+    boost::mutex::scoped_lock lock(mutex1);
 
-	std::ifstream inFile(file.c_str());
+    std::ifstream inFile(file.c_str());
 
     if (!inFile.good())
     {
-    	std::cout << "Cannot read configuration file " << file << std::endl;
+        std::cout << "Cannot read configuration file " << file << std::endl;
         return false;
     }
 
     while (inFile.good() && ! inFile.eof())
     {
-    	std::string line;
-    	std::getline(inFile, line);
+        std::string line;
+        std::getline(inFile, line);
 
         // filter out comments
         if (!line.empty())
@@ -57,8 +57,8 @@ bool Configuration::load(std::string file)
 
             if (pos != (int)std::string::npos)
             {
-            	std::string key     = trim(line.substr(0, pos));
-            	std::string value   = trim(line.substr(pos + 1));
+                std::string key     = trim(line.substr(0, pos));
+                std::string value   = trim(line.substr(pos + 1));
 
                 if (!key.empty() && !value.empty())
                 {
@@ -71,14 +71,14 @@ bool Configuration::load(std::string file)
     return true;
 }
 
-bool Configuration::contains(std::string key)
+bool ConfigurationManager::contains(std::string key)
 {
     return data.find(key) != data.end();
 }
 
-bool Configuration::get(std::string key, std::string& value)
+bool ConfigurationManager::get(std::string key, std::string& value)
 {
-	std::map<std::string,std::string>::const_iterator iter = data.find(key);
+    std::map<std::string,std::string>::const_iterator iter = data.find(key);
 
     if (iter != data.end())
     {
@@ -92,13 +92,13 @@ bool Configuration::get(std::string key, std::string& value)
     }
 }
 
-bool Configuration::get(std::string key, int& value)
+bool ConfigurationManager::get(std::string key, int& value)
 {
-	std::string str;
+    std::string str;
 
     if (get(key, str))
     {
-        value = ToInt(str);
+        value = Utilities::toInt(str);
         return true;
     }
     else
@@ -107,9 +107,9 @@ bool Configuration::get(std::string key, int& value)
     }
 }
 
-bool Configuration::get(std::string key, long& value)
+bool ConfigurationManager::get(std::string key, long& value)
 {
-	std::string str;
+    std::string str;
 
     if (get(key, str))
     {
@@ -122,9 +122,9 @@ bool Configuration::get(std::string key, long& value)
     }
 }
 
-bool Configuration::get(std::string key, double& value)
+bool ConfigurationManager::get(std::string key, double& value)
 {
-	std::string str;
+    std::string str;
 
     if (get(key, str))
     {
@@ -137,18 +137,18 @@ bool Configuration::get(std::string key, double& value)
     }
 }
 
-bool Configuration::get(std::string key, bool& value)
+bool ConfigurationManager::get(std::string key, bool& value)
 {
-	std::string str;
+    std::string str;
 
     if (get(key, str))
     {
-    	if(str == "true")
-    		value = true;
-    	else if(str == "1")
-    		value = true;
-    	else
-    		value = false;
+        if(str == "true")
+            value = true;
+        else if(str == "1")
+            value = true;
+        else
+            value = false;
         return true;
     }
     else
@@ -157,7 +157,7 @@ bool Configuration::get(std::string key, bool& value)
     }
 }
 
-std::string Configuration::trim(std::string str)
+std::string ConfigurationManager::trim(std::string str)
 {
     int first = str.find_first_not_of(" \t");
 

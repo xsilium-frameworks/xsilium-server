@@ -8,9 +8,9 @@
 #ifndef SRC_SERVER_AUTHENTIFICATION_AUTHENTIFICATION_SERVICE_AUTHENTIFICATIONSERVICE_H_
 #define SRC_SERVER_AUTHENTIFICATION_AUTHENTIFICATION_SERVICE_AUTHENTIFICATIONSERVICE_H_
 
-#include <Network/NetworkManager.h>
-#include "Authentification/Manager/AuthentificationManager.h"
-#include "Realm/Manager/RealmManager.h"
+#include <Manager/Network/NetworkManager.h>
+#include <Manager/Authentification/AuthentificationManager.h>
+#include <Manager/Realm/RealmManager.h>
 
 namespace Auth {
 
@@ -47,7 +47,7 @@ enum stepOfAuth
 };
 
 
-class AuthentificationService : public NetworkListener  {
+class AuthentificationService : public Service  {
 public:
 
 	/*!
@@ -83,7 +83,7 @@ public:
 
 private:
 	NetworkManager * networkManager;
-	Log * log;
+	LogManager * log;
 
 	AuthentificationManager * authentificationManager ;
 	RealmManager * realmManager;
