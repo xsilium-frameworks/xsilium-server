@@ -10,26 +10,21 @@
 namespace Auth {
 
 RealmManager::RealmManager() {
-	configuration = Configuration::getInstance();
+	configuration = ConfigurationManager::getInstance();
 }
 
 RealmManager::~RealmManager() {
 	// TODO Auto-generated destructor stub
 }
 
-
-void RealmManager::createRealm()
-{
+void RealmManager::createRealm() {
 
 }
-void RealmManager::updateRealm()
-{
-
+void RealmManager::updateRealm() {
 
 }
 
-int RealmManager::checkRealmName(std::string nameRealm)
-{
+int RealmManager::checkRealmName(std::string nameRealm) {
 	RealmDAO realmDao(nameRealm);
 	if (realmDao.read()) {
 		return realmDao.getIdRoyaume();
@@ -38,11 +33,10 @@ int RealmManager::checkRealmName(std::string nameRealm)
 	}
 }
 
-bool RealmManager::checkRealmKey(std::string realmKey)
-{
+bool RealmManager::checkRealmKey(std::string realmKey) {
 	std::string configKey;
 
-	configuration->get("realmKey",configKey);
+	configuration->get("realmKey", configKey);
 
 	if (configKey.compare(realmKey) != 0) {
 		return false;
@@ -51,24 +45,19 @@ bool RealmManager::checkRealmKey(std::string realmKey)
 	}
 }
 
-std::vector<std::string> RealmManager::getRealmsList(int version,int autorisation)
-{
-	std::vector<std::string> retour;
+std::vector<std::string> RealmManager::getRealmsList(int version, int autorisation) {
+	std::vector < std::string > retour;
 	std::vector<RealmDAO *>::iterator it;
 
-
-	for (it=listRoyaume.begin(); it!=listRoyaume.end(); ++it)
-	{
-		if(*it != NULL)
-		{
-			if((*it)->getAutorisationRoyaume() <= autorisation && (*it)->getVersionClientRoyaume() == version)
+	for (it = listRoyaume.begin(); it != listRoyaume.end(); ++it) {
+		if (*it != NULL) {
+			if ((*it)->getAutorisationRoyaume() <= autorisation
+					&& (*it)->getVersionClientRoyaume() == version)
 				retour.push_back((*it)->getUrlRoyaume());
-		}
-		else
+		} else
 			listRoyaume.erase(it);
 	}
 	return retour;
 }
-
 
 } /* namespace Auth */

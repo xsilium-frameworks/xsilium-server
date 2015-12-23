@@ -14,9 +14,9 @@
 /*
  *
  */
-class IP : public Model {
+class IP: public Model {
 public:
-	IP(std::string ip_temp_ip );
+	IP(std::string ip_temp_ip);
 	virtual ~IP();
 
 	int getIdIp() const;
@@ -25,6 +25,8 @@ public:
 	void setIpTempIp(const std::string& ipTempIp);
 	int getIpTempNessais() const;
 	void setIpTempNessais(int ipTempNessais);
+
+	void disconnect();
 
 private:
 	int id_ip;

@@ -16,7 +16,7 @@
  *
  *
  */
-class IPBan : public Model {
+class IPBan: public Model {
 public:
 	IPBan(std::string hostip);
 	virtual ~IPBan();
@@ -33,6 +33,8 @@ public:
 	void setRaison(const std::string& raison);
 	time_t getUnbandate() const;
 	void setUnbandate(time_t unbandate);
+
+	void disconnect();
 
 private:
 	int id_ip_banned;

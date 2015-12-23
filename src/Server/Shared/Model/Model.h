@@ -11,16 +11,17 @@
 class Model {
 
 public:
-    Model();
-    virtual ~Model();
+	Model();
+	virtual ~Model();
 
-    int getSessionListenerType() const;
-    void setSessionListenerType(int sessionListenerType);
+	int getSessionListenerType() const;
+	void setSessionListenerType(int sessionListenerType);
 
-    virtual void disconnect() = 0 ;
+	virtual void disconnect() = 0;
 
 protected:
-    int sessionListenerType ;
+	int sessionListenerType;
+	bool updateData;
 
 };
 

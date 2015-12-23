@@ -9,6 +9,7 @@
 
 Model::Model() {
 	sessionListenerType = 0;
+	updateData = false;
 
 }
 

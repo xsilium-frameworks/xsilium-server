@@ -16,13 +16,12 @@
  *
  */
 
-class Compte : public Model {
+class Compte: public Model {
 public:
 	Compte(std::string nomString = "");
 	virtual ~Compte();
 
 	void disconnect();
-
 
 	std::string& getEmail();
 	void setEmail(std::string& email);
@@ -51,14 +50,12 @@ private:
 	std::string username; /*!< Le nom du compte */
 	std::string sha_pass_hash; /*!< Le mot de passe crypter */
 	std::string email; /*!<L'email du compte */
-	time_t joindate ; /*!< date de creation du compte  */
-	std::string last_ip ; /*!< derniere IP du compte  */
+	time_t joindate; /*!< date de creation du compte  */
+	std::string last_ip; /*!< derniere IP du compte  */
 	bool locked; /*!< Si le client lock sont compte sur l'ip*/
-	time_t last_login ; /*!< derniere date de connexion du compte  */
-	bool online ; /*!< le compte est utilise  */
+	time_t last_login; /*!< derniere date de connexion du compte  */
+	bool online; /*!< le compte est utilise  */
 	int locale; /*!< langue du compte  */
-
-	bool updateData;
 
 };
 

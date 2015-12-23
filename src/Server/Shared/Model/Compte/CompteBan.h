@@ -13,11 +13,10 @@
 
 #include <time.h>
 
-
 /*
  *
  */
-class CompteBan : public Model {
+class CompteBan: public Model {
 public:
 	CompteBan(int id_account);
 	virtual ~CompteBan();
@@ -35,14 +34,15 @@ public:
 	time_t getUnbandate();
 	void setUnbandate(time_t unbandate);
 
+	void disconnect();
+
 private:
 	int id_account_banned;
 	int id_account;
-	time_t bandate ;
-	time_t unbandate ;
-	std::string raison ;
-	int bannedby ;
-
+	time_t bandate;
+	time_t unbandate;
+	std::string raison;
+	int bannedby;
 
 };
 
