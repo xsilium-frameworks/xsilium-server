@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include <cstdlib>
+#include <stdlib.h>
 /*
  *
  */
@@ -23,16 +23,16 @@ public:
 	Utilities();
 	virtual ~Utilities();
 
-	Tokens strSplit(std::string src, std::string sep);
+	static Tokens strSplit(std::string src, std::string sep);
 
-	int ToInt(std::string str);
-	long ToLong(std::string str);
-	double ToDouble(std::string str);
-	bool ToBool(std::string str);
-	time_t ToDate(std::string str);
+	static int toInt(std::string str);
+	static long toLong(std::string str);
+	static double toDouble(std::string str);
+	static bool toBool(std::string str);
+	static time_t toDate(std::string str);
 
 	template<typename T>
-	std::string ToString(T variable) {
+	static std::string toString(T variable) {
 		std::ostringstream ss;
 		ss << variable;
 		return ss.str();

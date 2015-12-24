@@ -16,4 +16,6 @@ endif()
 
 
 add_subdirectory(Server)
-add_subdirectory(Test)
+add_subdirectory(Genrevision)
+
+#add_subdirectory(Test)

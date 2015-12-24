@@ -1,3 +1,4 @@
+
 /** 
  @file  unix.c
  @brief ENet Unix system specific functions
@@ -14,7 +15,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
-#include <time.h>
+#include "../enet/time.h"
 
 #define ENET_BUILDING_LIB 1
 #include "enet/enet.h"
