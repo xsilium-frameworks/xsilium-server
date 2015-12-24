@@ -26,8 +26,6 @@ public:
 	int getIpTempNessais() const;
 	void setIpTempNessais(int ipTempNessais);
 
-	void disconnect();
-
 private:
 	int id_ip;
 	std::string ip_temp_ip;

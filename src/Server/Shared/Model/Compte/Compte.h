@@ -21,8 +21,6 @@ public:
 	Compte(std::string nomString = "");
 	virtual ~Compte();
 
-	void disconnect();
-
 	std::string& getEmail();
 	void setEmail(std::string& email);
 	int getIdAccount();

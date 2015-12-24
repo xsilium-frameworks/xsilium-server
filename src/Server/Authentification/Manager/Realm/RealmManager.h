@@ -38,8 +38,10 @@ public:
 
 
 private:
-	std::vector<RealmDAO *> listRoyaume;
+	std::vector<Realm *> listRoyaume;
 	ConfigurationManager * configuration;
+	RealmDAO * realmDAO;
+
 };
 
 } /* namespace Auth */

@@ -3,6 +3,7 @@
 file(GLOB_RECURSE sources_Service Service/*.cpp Service/*.h)
 file(GLOB_RECURSE sources_Manager Manager/*.cpp Manager/*.h)
 file(GLOB_RECURSE sources_DAO DAO/*.cpp DAO/*.h)
+file(GLOB_RECURSE sources_Model Model/*.cpp Model/*.h)
 file(GLOB sources_localdir *.cpp *.h)
 
 
@@ -12,6 +13,7 @@ set(authserver_SRCS
   ${sources_Service}
   ${sources_Manager}
   ${sources_DAO}
+  ${sources_Model}
 )
 
 include_directories(

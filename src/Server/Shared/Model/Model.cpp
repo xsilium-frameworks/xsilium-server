@@ -10,6 +10,7 @@
 Model::Model() {
 	sessionListenerType = 0;
 	updateData = false;
+	online = true;
 
 }
 
@@ -23,4 +24,14 @@ int Model::getSessionListenerType() const {
 
 void Model::setSessionListenerType(int sessionListenerType) {
 	this->sessionListenerType = sessionListenerType;
+}
+
+
+void Model::disconnect()
+{
+    online = false;
+}
+
+bool Model::isOnline() const {
+    return online;
 }

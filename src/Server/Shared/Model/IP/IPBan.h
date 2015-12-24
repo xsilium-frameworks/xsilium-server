@@ -34,8 +34,6 @@ public:
 	time_t getUnbandate() const;
 	void setUnbandate(time_t unbandate);
 
-	void disconnect();
-
 private:
 	int id_ip_banned;
 	std::string ip;

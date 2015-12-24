@@ -17,11 +17,15 @@ public:
 	int getSessionListenerType() const;
 	void setSessionListenerType(int sessionListenerType);
 
-	virtual void disconnect() = 0;
+	void disconnect();
+
+    bool isOnline() const;
 
 protected:
 	int sessionListenerType;
 	bool updateData;
+
+	bool online;
 
 };
 

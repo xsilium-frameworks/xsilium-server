@@ -8,12 +8,12 @@
 #ifndef SRC_SERVER_AUTHENTIFICATION_AUTHSERVER_H_
 #define SRC_SERVER_AUTHENTIFICATION_AUTHSERVER_H_
 
-#include <Signal/SignalHandler.h>
+#include <Manager/Signal/SignalHandler.h>
 #include <unistd.h>
 #include <iostream>
 
-#include "Authentification/Service/AuthentificationService.h"
-#include "Realm/Service/RealmService.h"
+#include "Service/Authentification/AuthentificationService.h"
+#include "Service/Realm/RealmService.h"
 
 namespace Auth {
 
@@ -31,8 +31,8 @@ public:
 
 private:
 	SignalHandler * signalHandler;
-	Configuration * configuration;
-	Log * log;
+	ConfigurationManager * configuration;
+	LogManager * log;
 
 	DatabaseManager * databaseManager;
 	NetworkManager * networkManager;

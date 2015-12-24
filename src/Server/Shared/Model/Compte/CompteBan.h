@@ -34,8 +34,6 @@ public:
 	time_t getUnbandate();
 	void setUnbandate(time_t unbandate);
 
-	void disconnect();
-
 private:
 	int id_account_banned;
 	int id_account;

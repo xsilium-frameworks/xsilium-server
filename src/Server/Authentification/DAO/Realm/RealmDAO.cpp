@@ -9,24 +9,15 @@
 
 namespace Auth {
 
-RealmDAO::RealmDAO(std::string nameRoyaume) {
+RealmDAO::RealmDAO() {
 	suffix = "Royaume";
-	this->nameRoyaume = nameRoyaume;
-	idRoyaume = 0;
-	keyRoyaume = "";
 
-	urlRoyaume = "";
-	portRoyaume = 0;
-	autorisationRoyaume = 0;
-	versionClientRoyaume = 0;
-	online_royaume = 0;
-
-	database->prepareStatement(suffix + database->ToString(REALMS_SEL_LISTESROYAUMES),
+	database->prepareStatement(suffix + Utilities::toString(REALMS_SEL_LISTESROYAUMES),
 			"SELECT id_royaume,key_royaume,url_royaume,port_royaume,autorisation_royaume,version_client_royaume,online_royaume FROM royaumes.liste_royaume where name_royaume = $1");
-	database->prepareStatement(suffix + database->ToString(REALMS_UPD_LISTESROYAUMES),"UPDATE royaumes.liste_royaume SET "
+	database->prepareStatement(suffix + Utilities::toString(REALMS_UPD_LISTESROYAUMES),"UPDATE royaumes.liste_royaume SET "
 			"keyRoyaume = $2,nameRoyaume=$3,urlRoyaume = $4,portRoyaume=$5,autorisationRoyaume=$6,versionClientRoyaume=$7,online_royaume = $8 WHERE idRoyaume = $1");
-	database->prepareStatement(suffix + database->ToString(REALMS_INS_LISTESROYAUMES),"INSERT INTO royaumes.liste_royaume VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7)");
-	database->prepareStatement(suffix + database->ToString(REALMS_DEL_LISTESROYAUMES),"DELETE FROM royaumes.liste_royaume WHERE id_royaume = $1");
+	database->prepareStatement(suffix + Utilities::toString(REALMS_INS_LISTESROYAUMES),"INSERT INTO royaumes.liste_royaume VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7)");
+	database->prepareStatement(suffix + Utilities::toString(REALMS_DEL_LISTESROYAUMES),"DELETE FROM royaumes.liste_royaume WHERE id_royaume = $1");
 
 
 }
@@ -35,20 +26,20 @@ RealmDAO::~RealmDAO() {
 	// TODO Auto-generated destructor stub
 }
 
-bool RealmDAO::create(int idTransaction)
+bool RealmDAO::create(Realm * realm, int idTransaction)
 {
 	bool retour;
 	Tokens tokens;
-	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_INS_LISTESROYAUMES),&tokens,idTransaction,7,keyRoyaume.c_str(),nameRoyaume.c_str(),urlRoyaume.c_str(),database->ToString(portRoyaume).c_str(),database->ToString(autorisationRoyaume).c_str(),database->ToString(versionClientRoyaume).c_str(),database->ToString(online_royaume).c_str());
-	retour = read();
+	retour = database->executionPrepareStatement(suffix + Utilities::toString(REALMS_INS_LISTESROYAUMES),&tokens,idTransaction,7,realm->getKeyRoyaume().c_str(),realm->getNameRoyaume().c_str(),realm->getUrlRoyaume().c_str(),Utilities::toString(realm->getPortRoyaume()).c_str(),Utilities::toString(realm->getAutorisationRoyaume()).c_str(),Utilities::toString(realm->getVersionClientRoyaume()).c_str(),Utilities::toString(realm->isOnlineRoyaume()).c_str());
+	retour = read(realm);
 	return retour;
 }
-bool RealmDAO::read(int idTransaction)
+bool RealmDAO::read(Realm * realm, int idTransaction)
 {
 	bool retour ;
 	Tokens resultsqlT;
 
-	retour = database->executionPrepareStatement(suffix + database->ToString(REALMS_SEL_LISTESROYAUMES),&resultsqlT,idTransaction,1,database->ToString(idRoyaume).c_str());
+	retour = database->executionPrepareStatement(suffix + Utilities::toString(REALMS_SEL_LISTESROYAUMES),&resultsqlT,idTransaction,1,realm->getNameRoyaume().c_str());
 
 	if(resultsqlT.empty())
 	{
@@ -57,15 +48,15 @@ bool RealmDAO::read(int idTransaction)
 	else
 	{
 		Tokens resultatsql;
-		resultatsql = database->strSplit( resultsqlT[0] ,";");
+		resultatsql = Utilities::strSplit( resultsqlT[0] ,";");
 
-		nameRoyaume = resultatsql[0];
-		keyRoyaume = resultatsql[1];
-		urlRoyaume = resultatsql[2];
-		portRoyaume = database->ToInt(resultatsql[3]);
-		autorisationRoyaume = database->ToInt(resultatsql[4]);
-		versionClientRoyaume = database->ToInt(resultatsql[5]);
-		online_royaume = database->ToBool(resultatsql[6]);
+		realm->setNameRoyaume(resultatsql[0]);
+		realm->setKeyRoyaume(resultatsql[1]);
+		realm->setUrlRoyaume(resultatsql[2]);
+		realm->setPortRoyaume(Utilities::toInt(resultatsql[3]));
+		realm->setAutorisationRoyaume(Utilities::toInt(resultatsql[4]));
+		realm->setVersionClientRoyaume(Utilities::toInt(resultatsql[5]));
+		realm->setOnlineRoyaume(Utilities::toBool(resultatsql[6]));
 
 		retour = true ;
 
@@ -74,81 +65,17 @@ bool RealmDAO::read(int idTransaction)
 	return retour ;
 
 }
-bool RealmDAO::update(int idTransaction)
+bool RealmDAO::update(Realm * realm, int idTransaction)
 {
 	Tokens resultsqlT;
-	return database->executionPrepareStatement(suffix + database->ToString(REALMS_UPD_LISTESROYAUMES),&resultsqlT,idTransaction,8,database->ToString(idRoyaume).c_str(),keyRoyaume.c_str(),nameRoyaume.c_str(),urlRoyaume.c_str(),database->ToString(portRoyaume).c_str(),database->ToString(autorisationRoyaume).c_str(),database->ToString(versionClientRoyaume).c_str(),database->ToString(online_royaume).c_str());
+	return database->executionPrepareStatement(suffix + Utilities::toString(REALMS_UPD_LISTESROYAUMES),&resultsqlT,idTransaction,8,Utilities::toString(realm->getIdRoyaume()).c_str(),realm->getKeyRoyaume().c_str(),realm->getNameRoyaume().c_str(),realm->getUrlRoyaume().c_str(),Utilities::toString(realm->getPortRoyaume()).c_str(),Utilities::toString(realm->getAutorisationRoyaume()).c_str(),Utilities::toString(realm->getVersionClientRoyaume()).c_str(),Utilities::toString(realm->isOnlineRoyaume()).c_str());
 
 }
-bool RealmDAO::suppr(int idTransaction)
+bool RealmDAO::suppr(Realm * realm, int idTransaction)
 {
 	Tokens resultsqlT;
-	return  database->executionPrepareStatement(suffix + database->ToString(REALMS_DEL_LISTESROYAUMES),&resultsqlT,idTransaction,1,database->ToString(idRoyaume).c_str());
+	return  database->executionPrepareStatement(suffix + Utilities::toString(REALMS_DEL_LISTESROYAUMES),&resultsqlT,idTransaction,1,Utilities::toString(realm->getIdRoyaume()).c_str());
 
-}
-
-int RealmDAO::getAutorisationRoyaume()  {
-	return autorisationRoyaume;
-}
-
-void RealmDAO::setAutorisationRoyaume(int autorisationRoyaume) {
-	this->autorisationRoyaume = autorisationRoyaume;
-}
-
-int RealmDAO::getIdRoyaume()  {
-	return idRoyaume;
-}
-
-void RealmDAO::setIdRoyaume(int idRoyaume) {
-	this->idRoyaume = idRoyaume;
-}
-
-std::string RealmDAO::getKeyRoyaume()  {
-	return keyRoyaume;
-}
-
-void RealmDAO::setKeyRoyaume( std::string keyRoyaume) {
-	this->keyRoyaume = keyRoyaume;
-}
-
-std::string RealmDAO::getNameRoyaume()  {
-	return nameRoyaume;
-}
-
-void RealmDAO::setNameRoyaume( std::string nameRoyaume) {
-	this->nameRoyaume = nameRoyaume;
-}
-
-bool RealmDAO::isOnlineRoyaume()  {
-	return online_royaume;
-}
-
-void RealmDAO::setOnlineRoyaume(bool onlineRoyaume) {
-	online_royaume = onlineRoyaume;
-}
-
-int RealmDAO::getPortRoyaume()  {
-	return portRoyaume;
-}
-
-void RealmDAO::setPortRoyaume(int portRoyaume) {
-	this->portRoyaume = portRoyaume;
-}
-
-std::string RealmDAO::getUrlRoyaume()  {
-	return urlRoyaume;
-}
-
-void RealmDAO::setUrlRoyaume( std::string urlRoyaume) {
-	this->urlRoyaume = urlRoyaume;
-}
-
-int RealmDAO::getVersionClientRoyaume()  {
-	return versionClientRoyaume;
-}
-
-void RealmDAO::setVersionClientRoyaume(int versionClientRoyaume) {
-	this->versionClientRoyaume = versionClientRoyaume;
 }
 
 } /* namespace Auth */

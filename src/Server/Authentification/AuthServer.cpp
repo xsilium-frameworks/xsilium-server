@@ -14,8 +14,8 @@ AuthServer::AuthServer() {
 	authentificationService = 0;
 	realmService = 0;
 	networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
-	configuration = Configuration::getInstance();
-	log = Log::getInstance();
+	configuration = ConfigurationManager::getInstance();
+	log = LogManager::getInstance();
 	databaseManager = DatabaseManager::getInstance();
 
 }
@@ -25,8 +25,8 @@ AuthServer::~AuthServer() {
 	delete realmService;
 	delete networkManager;
 	DatabaseManager::DestroyInstance();
-	Configuration::DestroyInstance();
-	Log::DestroyInstance();
+	ConfigurationManager::DestroyInstance();
+	LogManager::DestroyInstance();
 }
 
 void AuthServer::startServer()
@@ -43,21 +43,21 @@ void AuthServer::startServer()
 
 
 		configuration->get("LogLevel",logLevel);
-		log->start((Log::Priority)logLevel,"authserver.log");
+		log->start((LogManager::Priority)logLevel,"authserver.log");
 		log->activationFile();
 
-		log->write(Log::DEBUG,"Demarrage de la connexion SQL (loginDB) ");
+		log->write(LogManager::DEBUG,"Demarrage de la connexion SQL (loginDB) ");
 		configuration->get("typeDatabase",typeDatabase);
 		configuration->get("databaseInfo",infoDB);
 
 		databaseManager->createServer(typeDatabase);
 		databaseManager->connection(infoDB);
 
-		log->write(Log::DEBUG,"Demarrage du serveur d'authentification");
+		log->write(LogManager::DEBUG,"Demarrage du serveur d'authentification");
 		authentificationService = new AuthentificationService(networkManager);
 		authentificationService->run();
 
-		log->write(Log::DEBUG,"Demarrage du serveur de Royaume");
+		log->write(LogManager::DEBUG,"Demarrage du serveur de Royaume");
 		realmService = new RealmService(networkManager);
 		realmService->run();
 
@@ -66,11 +66,11 @@ void AuthServer::startServer()
 		adresse.host = ENET_HOST_ANY;
 		adresse.port  = (enet_uint16) serverPort;
 
-		log->write(Log::DEBUG,"Demarrage du socket d'authentification");
+		log->write(LogManager::DEBUG,"Demarrage du socket d'authentification");
 
 		if(!networkManager->createConnexion(adresse,numClient))
 		{
-			log->write(Log::DEBUG,"Impossible d'ouvrir la connexion ");
+			log->write(LogManager::DEBUG,"Impossible d'ouvrir la connexion ");
 			return;
 		}
 
@@ -88,7 +88,7 @@ void AuthServer::startServer()
 
 void AuthServer::stopThread()
 {
-	log->write(Log::DEBUG,"Extinction du serveur ");
+	log->write(LogManager::DEBUG,"Extinction du serveur ");
 	networkManager->disconnexion();
 	authentificationService->stopThread();
 	realmService->stopThread();
