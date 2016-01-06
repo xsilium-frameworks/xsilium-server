@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../../lib/Enet/enet/time.h"
+#include <time.h>
 
 #pragma warning(disable:4996)
 
