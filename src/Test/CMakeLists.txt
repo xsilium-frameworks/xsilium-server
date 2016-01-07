@@ -18,6 +18,7 @@ include_directories(
 	${CMAKE_SOURCE_DIR}/src/Server/Shared
 	${CMAKE_SOURCE_DIR}/src/Server/Auth
 	${CMAKE_SOURCE_DIR}/src/Server/Kingdom
+	${TURTLE_INCLUDE_DIR}
 )
 
 add_executable(UnitTester ${UnitTests_SRCS} ${sources_Test} )

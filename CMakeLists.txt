@@ -21,6 +21,7 @@ endif()
 
 include(CheckCXXSourceRuns)
 include(CheckIncludeFiles)
+include(SubModule)
 
 # set default buildoptions and print them
 include(cmake/options.cmake)

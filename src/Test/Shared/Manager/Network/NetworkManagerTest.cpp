@@ -10,9 +10,9 @@
 #define TEST_DATABASEMANAGER
 
 
-#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
 
-#include <Network/NetworkManager.h>
+#include <Manager/Network/NetworkManager.h>
 
 BOOST_AUTO_TEST_SUITE(NetworkManagerTest)
 
