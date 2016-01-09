@@ -41,7 +41,7 @@ public:
      *
      *  \param
      */
-    void start(Priority maxPriority, std::string logFile);
+    void start(Priority maxPriority, std::string logFile = "");
 
     /*!
      *  \brief Stop

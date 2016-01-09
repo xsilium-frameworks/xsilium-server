@@ -28,6 +28,7 @@ void LogManager::start(Priority maxPriority, std::string logFile) {
     this->maxPriority = maxPriority;
     if (logFile != "") {
         fileStream.open(logFile.c_str());
+        activeFile = true ;
     }
 }
 
