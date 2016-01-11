@@ -27,10 +27,10 @@ public:
 	RealmDAO();
 	virtual ~RealmDAO();
 
-	bool create(Realm * realm, int idTransaction = 0);
-	bool read(Realm * realm, int idTransaction = 0) ;
-	bool update(Realm * realm, int idTransaction = 0);
-	bool suppr(Realm * realm, int idTransaction = 0);
+	bool create(Model * model, int idTransaction = 0);
+	bool read(Model * model, int idTransaction = 0) ;
+	bool update(Model * model, int idTransaction = 0);
+	bool suppr(Model * model, int idTransaction = 0);
 };
 
 } /* namespace Auth */

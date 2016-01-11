@@ -35,9 +35,12 @@ IPBanDAO::~IPBanDAO() {
 	// TODO Auto-generated destructor stub
 }
 
-bool IPBanDAO::create(IPBan * ipBan, int idTransaction) {
+bool IPBanDAO::create(Model * model, int idTransaction) {
 	bool retour;
 	Tokens tokens;
+
+	IPBan * ipBan = static_cast<IPBan*> (model) ;
+
 	retour = database->executionPrepareStatement(
 			suffix + Utilities::toString(REALMS_INS_IPBANNED_BANIP), &tokens, idTransaction, 5,
 			ipBan->getIp().c_str(), Utilities::toString(ipBan->getBandate()).c_str(),
@@ -46,9 +49,12 @@ bool IPBanDAO::create(IPBan * ipBan, int idTransaction) {
 	read(ipBan, idTransaction);
 	return retour;
 }
-bool IPBanDAO::read(IPBan * ipBan, int idTransaction) {
+bool IPBanDAO::read(Model * model, int idTransaction) {
 	bool retour;
 	Tokens resultsqlT;
+
+	IPBan * ipBan = static_cast<IPBan*> (model) ;
+
 	retour = database->executionPrepareStatement(
 			suffix + Utilities::toString(REALMS_SEL_IPBANNED_INFOSSURIPBANNIES), &resultsqlT,
 			idTransaction, 1, ipBan->getIp().c_str());
@@ -72,8 +78,11 @@ bool IPBanDAO::read(IPBan * ipBan, int idTransaction) {
 	return retour;
 
 }
-bool IPBanDAO::update(IPBan * ipBan, int idTransaction) {
+bool IPBanDAO::update(Model * model, int idTransaction) {
 	Tokens resultsqlT;
+
+	IPBan * ipBan = static_cast<IPBan*> (model) ;
+
 	return database->executionPrepareStatement(
 			suffix + Utilities::toString(REALMS_UPD_IPBANNED_DEBANIP), &resultsqlT, idTransaction, 5,
 			Utilities::toString(ipBan->getBandate()).c_str(),
@@ -81,8 +90,11 @@ bool IPBanDAO::update(IPBan * ipBan, int idTransaction) {
 			Utilities::toString(ipBan->getBannedby()).c_str(),
 			Utilities::toString(ipBan->getIdIpBanned()).c_str());
 }
-bool IPBanDAO::suppr(IPBan * ipBan, int idTransaction) {
+bool IPBanDAO::suppr(Model * model, int idTransaction) {
 	Tokens resultsqlT;
+
+	IPBan * ipBan = static_cast<IPBan*> (model) ;
+
 	return database->executionPrepareStatement(
 			suffix + Utilities::toString(REALMS_DEL_IPBANNED_DEBANIP), &resultsqlT, idTransaction, 1,
 			Utilities::toString(ipBan->getIdIpBanned()).c_str());

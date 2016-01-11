@@ -23,10 +23,10 @@ public:
 	CompteDAO();
 	virtual ~CompteDAO();
 
-	bool create(Compte * compte, int idTransaction = 0);
-	bool update(Compte * compte, int idTransaction = 0);
-	bool read(Compte * compte, int idTransaction = 0);
-	bool suppr(Compte * compte, int idTransaction = 0);
+	bool create(Model * model, int idTransaction = 0);
+	bool update(Model * model, int idTransaction = 0);
+	bool read(Model * model, int idTransaction = 0);
+	bool suppr(Model * model, int idTransaction = 0);
 
 private:
 

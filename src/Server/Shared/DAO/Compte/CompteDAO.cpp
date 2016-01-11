@@ -35,9 +35,12 @@ CompteDAO::~CompteDAO() {
 	// TODO Auto-generated destructor stub
 }
 
-bool CompteDAO::create(Compte * compte, int idTransaction) {
+bool CompteDAO::create(Model * model, int idTransaction) {
 	bool retour;
 	Tokens tokens;
+
+	Compte * compte = static_cast<Compte*> (model) ;
+
 	retour = database->executionPrepareStatement(suffix + Utilities::toString(REALMS_INS_ACCOUNT),
 			&tokens, idTransaction, 9, compte->getUsername().c_str(),
 			compte->getShaPassHash().c_str(), compte->getEmail().c_str(),
@@ -48,8 +51,11 @@ bool CompteDAO::create(Compte * compte, int idTransaction) {
 			Utilities::toString(compte->getLocale()).c_str());
 	return retour;
 }
-bool CompteDAO::update(Compte * compte, int idTransaction) {
+bool CompteDAO::update(Model * model, int idTransaction) {
 	Tokens resultsqlT;
+
+	Compte * compte = static_cast<Compte*> (model) ;
+
 	return database->executionPrepareStatement(suffix + Utilities::toString(REALMS_UPD_ACCOUNT),
 			&resultsqlT, idTransaction, 9, Utilities::toString(compte->getIdAccount()).c_str(),
 			compte->getShaPassHash().c_str(), compte->getEmail().c_str(),
@@ -60,9 +66,12 @@ bool CompteDAO::update(Compte * compte, int idTransaction) {
 			Utilities::toString(compte->getLocale()).c_str());
 
 }
-bool CompteDAO::read(Compte * compte, int idTransaction) {
+bool CompteDAO::read(Model * model, int idTransaction) {
 	bool retour;
 	Tokens resultsqlT;
+
+	Compte * compte = static_cast<Compte*> (model) ;
+
 	retour = database->executionPrepareStatement(suffix + Utilities::toString(REALMS_SEL_ACCOUNT),
 			&resultsqlT, idTransaction, 1, compte->getUsername().c_str());
 
@@ -88,8 +97,11 @@ bool CompteDAO::read(Compte * compte, int idTransaction) {
 
 	return retour;
 }
-bool CompteDAO::suppr(Compte * compte, int idTransaction) {
+bool CompteDAO::suppr(Model * model, int idTransaction) {
 	Tokens resultsqlT;
+
+	Compte * compte = static_cast<Compte*> (model) ;
+
 	return database->executionPrepareStatement(suffix + Utilities::toString(REALMS_DEL_ACCOUNT),
 			&resultsqlT, idTransaction, 1, Utilities::toString(compte->getIdAccount()).c_str());
 }

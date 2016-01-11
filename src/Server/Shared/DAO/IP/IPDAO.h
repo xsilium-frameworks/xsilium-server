@@ -23,10 +23,10 @@ public:
 	IPDAO();
 	virtual ~IPDAO();
 
-	bool create(IP * ip, int idTransaction = 0);
-	bool update(IP * ip, int idTransaction = 0);
-	bool read(IP * ip, int idTransaction = 0);
-	bool suppr(IP * ip, int idTransaction = 0);
+	bool create(Model * model, int idTransaction = 0);
+	bool update(Model * model, int idTransaction = 0);
+	bool read(Model * model, int idTransaction = 0);
+	bool suppr(Model * model, int idTransaction = 0);
 
 private:
 

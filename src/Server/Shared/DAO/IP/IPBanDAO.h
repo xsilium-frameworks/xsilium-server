@@ -23,10 +23,10 @@ public:
 	IPBanDAO();
 	virtual ~IPBanDAO();
 
-	bool create(IPBan * ipBan, int idTransaction = 0);
-	bool update(IPBan * ipBan, int idTransaction = 0);
-	bool read(IPBan * ipBan, int idTransaction = 0);
-	bool suppr(IPBan * ipBan, int idTransaction = 0);
+	bool create(Model * model, int idTransaction = 0);
+	bool update(Model * model, int idTransaction = 0);
+	bool read(Model * model, int idTransaction = 0);
+	bool suppr(Model * model, int idTransaction = 0);
 
 private:
 

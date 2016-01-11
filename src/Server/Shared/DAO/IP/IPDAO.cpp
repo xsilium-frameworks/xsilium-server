@@ -29,9 +29,12 @@ IPDAO::~IPDAO() {
 	// TODO Auto-generated destructor stub
 }
 
-bool IPDAO::create(IP * ip, int idTransaction) {
+bool IPDAO::create(Model * model, int idTransaction) {
 	bool retour;
 	Tokens tokens;
+
+	IP * ip = static_cast<IP*> (model) ;
+
 	retour = database->executionPrepareStatement(
 			suffix + Utilities::toString(REALMS_INS_IPTEMPORAIRE), &tokens,
 			idTransaction, 2, ip->getIpTempIp().c_str(),
@@ -39,9 +42,11 @@ bool IPDAO::create(IP * ip, int idTransaction) {
 	read(ip, idTransaction);
 	return retour;
 }
-bool IPDAO::read(IP * ip, int idTransaction) {
+bool IPDAO::read(Model * model, int idTransaction) {
 	bool retour;
 	Tokens resultsqlT;
+
+	IP * ip = static_cast<IP*> (model) ;
 
 	retour = database->executionPrepareStatement(
 			suffix + Utilities::toString(REALMS_SEL_IPTEMPORAIRE), &resultsqlT,
@@ -58,15 +63,21 @@ bool IPDAO::read(IP * ip, int idTransaction) {
 	}
 	return retour;
 }
-bool IPDAO::update(IP * ip, int idTransaction) {
+bool IPDAO::update(Model * model, int idTransaction) {
 	Tokens resultsqlT;
+
+	IP * ip = static_cast<IP*> (model) ;
+
 	return database->executionPrepareStatement(
 			suffix + Utilities::toString(REALMS_UPD_IPTEMPORAIRE), &resultsqlT,
 			idTransaction, 2, Utilities::toString(ip->getIpTempNessais()).c_str(),
 			Utilities::toString(ip->getIdIp()).c_str());
 }
-bool IPDAO::suppr(IP * ip, int idTransaction) {
+bool IPDAO::suppr(Model * model, int idTransaction) {
 	Tokens resultsqlT;
+
+	IP * ip = static_cast<IP*> (model) ;
+
 	return database->executionPrepareStatement(
 			suffix + Utilities::toString(REALMS_DEL_IPTEMPORAIRE), &resultsqlT,
 			idTransaction, 1, Utilities::toString(ip->getIdIp()).c_str());

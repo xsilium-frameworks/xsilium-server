@@ -26,18 +26,23 @@ RealmDAO::~RealmDAO() {
 	// TODO Auto-generated destructor stub
 }
 
-bool RealmDAO::create(Realm * realm, int idTransaction)
+bool RealmDAO::create(Model * model, int idTransaction)
 {
 	bool retour;
 	Tokens tokens;
+
+	Realm * realm = static_cast<Realm*> (model) ;
+
 	retour = database->executionPrepareStatement(suffix + Utilities::toString(REALMS_INS_LISTESROYAUMES),&tokens,idTransaction,7,realm->getKeyRoyaume().c_str(),realm->getNameRoyaume().c_str(),realm->getUrlRoyaume().c_str(),Utilities::toString(realm->getPortRoyaume()).c_str(),Utilities::toString(realm->getAutorisationRoyaume()).c_str(),Utilities::toString(realm->getVersionClientRoyaume()).c_str(),Utilities::toString(realm->isOnlineRoyaume()).c_str());
 	retour = read(realm);
 	return retour;
 }
-bool RealmDAO::read(Realm * realm, int idTransaction)
+bool RealmDAO::read(Model * model, int idTransaction)
 {
 	bool retour ;
 	Tokens resultsqlT;
+
+	Realm * realm = static_cast<Realm*> (model) ;
 
 	retour = database->executionPrepareStatement(suffix + Utilities::toString(REALMS_SEL_LISTESROYAUMES),&resultsqlT,idTransaction,1,realm->getNameRoyaume().c_str());
 
@@ -65,15 +70,21 @@ bool RealmDAO::read(Realm * realm, int idTransaction)
 	return retour ;
 
 }
-bool RealmDAO::update(Realm * realm, int idTransaction)
+bool RealmDAO::update(Model * model, int idTransaction)
 {
 	Tokens resultsqlT;
+
+	Realm * realm = static_cast<Realm*> (model) ;
+
 	return database->executionPrepareStatement(suffix + Utilities::toString(REALMS_UPD_LISTESROYAUMES),&resultsqlT,idTransaction,8,Utilities::toString(realm->getIdRoyaume()).c_str(),realm->getKeyRoyaume().c_str(),realm->getNameRoyaume().c_str(),realm->getUrlRoyaume().c_str(),Utilities::toString(realm->getPortRoyaume()).c_str(),Utilities::toString(realm->getAutorisationRoyaume()).c_str(),Utilities::toString(realm->getVersionClientRoyaume()).c_str(),Utilities::toString(realm->isOnlineRoyaume()).c_str());
 
 }
-bool RealmDAO::suppr(Realm * realm, int idTransaction)
+bool RealmDAO::suppr(Model * model, int idTransaction)
 {
 	Tokens resultsqlT;
+
+	Realm * realm = static_cast<Realm*> (model) ;
+
 	return  database->executionPrepareStatement(suffix + Utilities::toString(REALMS_DEL_LISTESROYAUMES),&resultsqlT,idTransaction,1,Utilities::toString(realm->getIdRoyaume()).c_str());
 
 }

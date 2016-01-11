@@ -23,10 +23,10 @@ public:
 	CompteBanDAO();
 	virtual ~CompteBanDAO();
 
-	bool create(CompteBan * compteBan, int idTransaction = 0);
-	bool update(CompteBan * compteBan, int idTransaction = 0);
-	bool read(CompteBan * compteBan, int idTransaction = 0);
-	bool suppr(CompteBan * compteBan, int idTransaction = 0);
+	bool create(Model * model, int idTransaction = 0);
+	bool update(Model * model, int idTransaction = 0);
+	bool read(Model * model, int idTransaction = 0);
+	bool suppr(Model * model, int idTransaction = 0);
 
 private:
 

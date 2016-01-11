@@ -37,9 +37,12 @@ CompteBanDAO::~CompteBanDAO() {
 	// TODO Auto-generated destructor stub
 }
 
-bool CompteBanDAO::create(CompteBan * compteBan, int idTransaction) {
+bool CompteBanDAO::create(Model * model, int idTransaction) {
 	bool retour;
 	Tokens tokens;
+
+	CompteBan * compteBan = static_cast<CompteBan*> (model) ;
+
 	retour = database->executionPrepareStatement(
 			suffix + Utilities::toString(REALMS_INS_ACCOUNTBANNED), &tokens, idTransaction, 5,
 			Utilities::toString(compteBan->getIdAccount()).c_str(),
@@ -49,8 +52,10 @@ bool CompteBanDAO::create(CompteBan * compteBan, int idTransaction) {
 	read(compteBan, idTransaction);
 	return retour;
 }
-bool CompteBanDAO::update(CompteBan * compteBan, int idTransaction) {
+bool CompteBanDAO::update(Model * model, int idTransaction) {
 	Tokens resultsqlT;
+	CompteBan * compteBan = static_cast<CompteBan*> (model) ;
+
 	return database->executionPrepareStatement(
 			suffix + Utilities::toString(REALMS_UPD_ACCOUNTBANNED), &resultsqlT, idTransaction, 5,
 			Utilities::toString(compteBan->getBandate()).c_str(),
@@ -58,9 +63,10 @@ bool CompteBanDAO::update(CompteBan * compteBan, int idTransaction) {
 			Utilities::toString(compteBan->getBannedby()).c_str(),
 			Utilities::toString(compteBan->getIdAccountBanned()).c_str());
 }
-bool CompteBanDAO::read(CompteBan * compteBan, int idTransaction) {
+bool CompteBanDAO::read(Model * model, int idTransaction) {
 	bool retour;
 	Tokens resultsqlT;
+	CompteBan * compteBan = static_cast<CompteBan*> (model) ;
 	retour = database->executionPrepareStatement(
 			suffix + Utilities::toString(REALMS_SEL_ACCOUNTBANNED), &resultsqlT, idTransaction, 1,
 			Utilities::toString(compteBan->getIdAccount()).c_str());
@@ -82,8 +88,9 @@ bool CompteBanDAO::read(CompteBan * compteBan, int idTransaction) {
 
 	return retour;
 }
-bool CompteBanDAO::suppr(CompteBan * compteBan, int idTransaction) {
+bool CompteBanDAO::suppr(Model * model, int idTransaction) {
 	Tokens resultsqlT;
+	CompteBan * compteBan = static_cast<CompteBan*> (model) ;
 	return database->executionPrepareStatement(
 			suffix + Utilities::toString(REALMS_DEL_ACCOUNTBANNED), &resultsqlT, idTransaction, 1,
 			Utilities::toString(compteBan->getIdAccountBanned()).c_str());

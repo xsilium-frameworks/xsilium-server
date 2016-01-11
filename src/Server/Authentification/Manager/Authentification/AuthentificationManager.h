@@ -15,6 +15,7 @@
 #include <DAO/Compte/CompteDAO.h>
 #include <DAO/Compte/CompteBanDAO.h>
 
+
 namespace Auth {
 
 class AuthentificationManager : public Manager , public Singleton<AuthentificationManager> {
@@ -29,6 +30,8 @@ public:
 	 */
 	virtual ~AuthentificationManager();
 
+	void init();
+
 	bool checkIp(std::string ip);
 
 	Compte * isAccountExist(std::string Username,std::string ip);
@@ -39,11 +42,16 @@ public:
 
 	void banIP(std::string ip);
 
+    void setCompteBanDao( DAO* compteBanDao);
+    void setCompteDao( DAO* compteDao);
+    void setIpBanDao( DAO* ipBanDao);
+    void setIpDao( DAO* ipDao);
+
 private:
-	IPBanDAO * ipBanDAO ;
-	IPDAO * ipDAO;
-	CompteDAO * compteDAO;
-	CompteBanDAO * compteBanDAO;
+	DAO * ipBanDAO ;
+	DAO * ipDAO;
+	DAO * compteDAO;
+	DAO * compteBanDAO;
 };
 
 } /* namespace Auth */

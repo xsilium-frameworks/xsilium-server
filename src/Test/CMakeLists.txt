@@ -16,7 +16,7 @@ TestRunnerClient.cpp
 include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CMAKE_SOURCE_DIR}/src/Server/Shared
-	${CMAKE_SOURCE_DIR}/src/Server/Auth
+	${CMAKE_SOURCE_DIR}/src/Server/Authentification
 	${CMAKE_SOURCE_DIR}/src/Server/Kingdom
 	${TURTLE_INCLUDE_DIR}
 )
@@ -25,6 +25,7 @@ add_executable(UnitTester ${UnitTests_SRCS} ${sources_Test} )
 TARGET_LINK_LIBRARIES(UnitTester 
 	${Boost_LIBRARIES}
 	SHARED
+	Auth
 )
 
 
