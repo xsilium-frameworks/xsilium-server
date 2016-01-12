@@ -14,6 +14,8 @@
 
 #include <Manager/Databases/DatabaseManager.h>
 
+#define PARAMETRE "database;5432;Xsilium;Xsilium;xsilium_develop"
+
 
 BOOST_AUTO_TEST_SUITE(DatabaseManagerTest)
 
@@ -21,7 +23,7 @@ BOOST_AUTO_TEST_CASE(testConnection)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_CHECK_EQUAL(databaseManager->connection("176.31.131.32;5444;Xsilium;Xsilium;xsilium_develop"), true);
+	BOOST_CHECK_EQUAL(databaseManager->connection(PARAMETRE), true);
 	databaseManager->deconnection();
 	DatabaseManager::DestroyInstance();
 }
@@ -40,7 +42,7 @@ BOOST_AUTO_TEST_CASE(testDeconnection)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_REQUIRE(databaseManager->connection("176.31.131.32;5444;Xsilium;Xsilium;xsilium_develop"));
+	BOOST_CHECK(databaseManager->connection(PARAMETRE));
 	BOOST_CHECK(databaseManager->deconnection());
 	DatabaseManager::DestroyInstance();
 }
@@ -50,7 +52,7 @@ BOOST_AUTO_TEST_CASE(testSelect)
 	Tokens resultat;
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_REQUIRE(databaseManager->connection("176.31.131.32;5444;Xsilium;Xsilium;xsilium_develop"));
+	BOOST_CHECK(databaseManager->connection(PARAMETRE));
 	databaseManager->prepareStatement("test1","select 2");
 	BOOST_CHECK(databaseManager->executionPrepareStatement("test1",&resultat));
 	databaseManager->deconnection();
@@ -63,7 +65,7 @@ BOOST_AUTO_TEST_CASE(testSelectCommit)
 	Tokens resultat;
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_REQUIRE(databaseManager->connection("176.31.131.32;5444;Xsilium;Xsilium;xsilium_develop"));
+	BOOST_CHECK(databaseManager->connection(PARAMETRE));
 	databaseManager->prepareStatement("test1","select 2");
 	int commit = databaseManager->createTransaction();
 	BOOST_CHECK(databaseManager->executionPrepareStatement("test1",&resultat,commit));
