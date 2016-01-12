@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(testDeconnection)
 {
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_CHECK(databaseManager->connection(PARAMETRE));
+	BOOST_REQUIRE(databaseManager->connection(PARAMETRE));
 	BOOST_CHECK(databaseManager->deconnection());
 	DatabaseManager::DestroyInstance();
 }
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(testSelect)
 	Tokens resultat;
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_CHECK(databaseManager->connection(PARAMETRE));
+	BOOST_REQUIRE(databaseManager->connection(PARAMETRE));
 	databaseManager->prepareStatement("test1","select 2");
 	BOOST_CHECK(databaseManager->executionPrepareStatement("test1",&resultat));
 	databaseManager->deconnection();
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE(testSelectCommit)
 	Tokens resultat;
 	DatabaseManager * databaseManager = DatabaseManager::getInstance();
 	databaseManager->createServer(POSTGRESQL);
-	BOOST_CHECK(databaseManager->connection(PARAMETRE));
+	BOOST_REQUIRE(databaseManager->connection(PARAMETRE));
 	databaseManager->prepareStatement("test1","select 2");
 	int commit = databaseManager->createTransaction();
 	BOOST_CHECK(databaseManager->executionPrepareStatement("test1",&resultat,commit));

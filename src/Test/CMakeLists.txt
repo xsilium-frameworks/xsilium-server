@@ -1,9 +1,7 @@
 ENABLE_TESTING()
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-    include(CodeCoverage)
-    SETUP_TARGET_FOR_COVERAGE_COBERTURA(UnitTester_coverage UnitTester coverage "--log_format=XML;--log_sink=boost-report.xml;--log_level=all;--report_level=no")
-endif()
+include(CodeCoverage)
+SETUP_TARGET_FOR_COVERAGE_COBERTURA(UnitTester_coverage UnitTester coverage "--log_format=XML;--log_sink=boost-report.xml;--log_level=all;--report_level=no;--result_code=no")
 
 file(GLOB_RECURSE sources_Test *Test.cpp *Test.h)
 
