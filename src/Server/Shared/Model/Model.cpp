@@ -8,7 +8,6 @@
 #include "Model.h"
 
 Model::Model() {
-	sessionListenerType = 0;
 	updateData = false;
 	online = true;
 
@@ -18,18 +17,14 @@ Model::~Model() {
 	// TODO Auto-generated destructor stub
 }
 
-int Model::getSessionListenerType() const {
-	return sessionListenerType;
-}
-
-void Model::setSessionListenerType(int sessionListenerType) {
-	this->sessionListenerType = sessionListenerType;
+std::string Model::getTypeModel() const {
+	return std::string(typeid(this).name());
 }
 
 
-void Model::disconnect()
+void Model::setOnline(bool online)
 {
-    online = false;
+    this->online = true;
 }
 
 bool Model::isOnline() const {

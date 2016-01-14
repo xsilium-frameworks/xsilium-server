@@ -8,21 +8,23 @@
 #ifndef SRC_SERVER_SHARED_DATABASES_MODEL_H_
 #define SRC_SERVER_SHARED_DATABASES_MODEL_H_
 
+#include <typeinfo>
+#include <string>
+
 class Model {
 
 public:
 	Model();
 	virtual ~Model();
 
-	int getSessionListenerType() const;
-	void setSessionListenerType(int sessionListenerType);
-
-	void disconnect();
+	std::string getTypeModel() const;
 
     bool isOnline() const;
+    void setOnline(bool online);
+
 
 protected:
-	int sessionListenerType;
+
 	bool updateData;
 
 	bool online;

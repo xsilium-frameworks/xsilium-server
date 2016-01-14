@@ -49,8 +49,6 @@ void RealmService::handleRegisterRealm(MessageNetwork * messageNetwork,
 	tableauData.push_back("URL");
 	tableauData.push_back("Version");
 
-	messageNetwork->session->getSessionListener()->setSessionListenerType(SESSION_REALM);
-
 	// Controle Presence Donneee
 	if (!controleData(messageNetwork->messagePacket, &tableauData)) {
 		log->write(LogManager::INFO, "Le message venant de %d:%d est illisible ",

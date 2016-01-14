@@ -16,7 +16,7 @@ Session::Session() {
 Session::~Session() {
 	if(model)
 	{
-	    model->disconnect();
+	    model->setOnline(false);
 	}
 }
 

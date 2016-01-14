@@ -60,8 +60,6 @@ void AuthentificationService::handleLogonChallenge(MessageNetwork * messageNetwo
 		return;
 	}
 
-	messageNetwork->session->getSessionListener()->setSessionListenerType(SESSION_COMPTE);
-
 	if (!authentificationManager->checkIp(messageNetwork->session->getIP())) {
 		log->write(LogManager::INFO, "[AuthChallenge] L'ip %s est bannie !",
 				messageNetwork->session->getIP().c_str());
@@ -112,7 +110,7 @@ void AuthentificationService::handleLogonProof(MessageNetwork * messageNetwork,
 		sendErrorPacket(messageRetour, ID_ERROR_PACKET_SIZE);
 	}
 
-	if (messageNetwork->session->getSessionListener()->getSessionListenerType() != SESSION_COMPTE) {
+	if (messageNetwork->session->getSessionListener()->getTypeModel().compare("Compte") == 0   ) {
 		log->write(LogManager::INFO, "Le message venant de %d:%d est illisible ",
 				messageNetwork->session->getSessionID()->host,
 				messageNetwork->session->getSessionID()->port);
