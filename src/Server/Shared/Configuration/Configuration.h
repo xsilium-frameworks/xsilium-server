@@ -1,9 +1,8 @@
-/*
+/*!
  * \file Configuration.h
- *
- *  Created on: \date 23 oct. 2014
- *      Author: \author joda
- *  \brief :
+ * \date 23 oct. 2014
+ * \author joda
+ * \brief : File that contain Configuration class
  */
 #ifndef SRC_SERVER_SHARED_CONFIGURATION_CONFIGURATION_H_
 #define SRC_SERVER_SHARED_CONFIGURATION_CONFIGURATION_H_
@@ -16,8 +15,9 @@
 #include <boost/thread.hpp>
 #include <Utilities/Utilities.h>
 
-/*
- *
+/*!
+ * \class Configuration
+ * \brief Class that handle configuration stuff
  */
 class Configuration : public Singleton<Configuration>, public Utilities
 {
@@ -25,7 +25,6 @@ class Configuration : public Singleton<Configuration>, public Utilities
 public:
 	Configuration();
 	virtual ~Configuration();
-
 	/*!
 	 *  \brief Clear
 	 *
@@ -34,37 +33,29 @@ public:
 	 *  \param
 	 */
 	void clear();
-
-
 	/*!
 	 *  \brief Load
 	 *
 	 *  brief load a configuration file
 	 *
-	 *  \param
+	 *  \param[in] File std::string type
 	 */
-
 	bool load(std::string File);
-
 	/*!
 	 *  \brief Contains
 	 *
 	 *  brief check if value associated with given key exists
 	 *
-	 *  \param
+	 *  \param[in] key std::string type
 	 */
-
 	bool contains(std::string key);
-
-
 	/*!
 	 *  \brief Get
 	 *
 	 *  brief get value associated with given key
 	 *
-	 *  \param
+	 *  \param key,value
 	 */
-
 	bool get(std::string key, std::string& value);
 	bool get(std::string key, int&    value);
 	bool get(std::string key, long&   value);

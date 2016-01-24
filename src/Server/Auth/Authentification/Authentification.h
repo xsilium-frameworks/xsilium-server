@@ -48,28 +48,19 @@ enum erreurOfAuth
 class Authentification : public NetworkListener {
 public:
 	/*!
-	 *  \brief Constructeur
+	 *  \brief Constructor
 	 *
-	 *  Constructeur de la classe Authentification
-	 *	Et se connecte a la DB
-	 *  \param
+	 *  Constructor of Authentification class
+	 *  \param networkManager a constant constructor pointer of class NetworkManager
 	 */
-
 	Authentification(NetworkManager * networkManager);
-
 	/*!
-	 *  \brief Constructeur
+	 *  \brief Destructorr
 	 *
-	 *  Destructeur de la classe Authentification
-	 *  Et se déconnecte de la DB
-	 *  \param
+	 *  Pure virtual destructor of Authentification class
 	 */
-
 	virtual ~Authentification();
-
-
 	void run();
-
 	/*!
 	 *  \brief _HandleLogonChallenge
 	 *
@@ -78,12 +69,10 @@ public:
 	 *
 	 *  \param
 	 */
-
 	int  HandleLogonChallenge(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 	int  HandleLogonProof(MessageNetwork * messageNetwork,MessagePacket * messageRetour);
 
 	void processPacket(MessageNetwork * messageNetwork);
-
 
 private:
 	Log * log;

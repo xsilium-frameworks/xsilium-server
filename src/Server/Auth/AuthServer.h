@@ -1,8 +1,9 @@
-/** \file AuthServer.h
- *  \date 18 déc. 2014
- *  \author xsilium-frameworks team
- *  \author joda
- *  \brief : Basic authentification server
+/*!
+ * \file AuthServer.h
+ * \date 18 déc. 2014
+ * \author xsilium-frameworks team
+ * \author joda
+ * \brief : Basic authentification server
  */
 #ifndef SRC_SERVER_AUTH_AUTHSERVER_H_
 #define SRC_SERVER_AUTH_AUTHSERVER_H_
@@ -15,39 +16,49 @@
 
 #include "Royaumes/RoyaumesManager.h"
 
-/** \namespace Auth
+/*!
+ * \namespace Auth
  *
  * namespace that contain authentification's stuff.
  */
 namespace Auth {
 
-/** \class AuthServer
- *  \brief Class that manage the authentification server.
+/*!
+ * \class AuthServer
+ * \brief Class that manage the authentification server.
  */
 class AuthServer {
 public:
-	/** \brief Constructor
+	/*!
+	 * \brief Constructor
 	 * 
 	 * Constructor of the AuthServer class.
 	 */
 	AuthServer();
-	/** \brief Destructor
+	/*!
+	 * \brief Destructor
+	 *
 	 * Destructor of the AuthServer class.
 	 */
 	virtual ~AuthServer();
-	/** \brief Start
+	/*!
+	 * \brief Start
 	 * 
 	 * Start the authentification server.
 	 */
 	void startServer();
-	/** \brief Stop
+	/*!
+	 * \brief Stop
 	 * 
 	 * Stop the authentification server.
 	 */
-	void stopThread(); /** Should change to stopServer() */
+	void stopThread(); /*! Should change to stopServer() ? */
 
 
 private:
+	/*!
+	 * \param signalHandler a constant constructor pointer.
+	 */
 	SignalHandler * signalHandler;
 	Configuration * configuration;
 	Log * log;

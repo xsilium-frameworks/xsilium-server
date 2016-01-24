@@ -1,9 +1,8 @@
-/*
+/*!
  * \file AuthServer.cpp
- *
- *  Created on: \date 18 déc. 2014
- *      Author: \author joda
- *  \brief :
+ * \date 18 déc. 2014
+ * \author joda
+ * \brief : AuthServer class that contain the main() function and also the constructor/destructor of the AuhServer object.
  */
 #include "AuthServer.h"
 
