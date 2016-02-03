@@ -7,13 +7,19 @@
 
 #include "Manager.h"
 
+std::vector<Manager *> Manager::listOfManager ;
+
 Manager::Manager() {
     logManager = LogManager::getInstance();
     configurationManager = ConfigurationManager::getInstance();
-
+    addManager(this);
 }
 
 Manager::~Manager() {
-    // TODO Auto-generated destructor stub
+}
+
+void Manager::addManager(Manager * manager)
+{
+    Manager::listOfManager.push_back(manager);
 }
 

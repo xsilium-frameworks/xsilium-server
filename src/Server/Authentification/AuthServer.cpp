@@ -10,17 +10,18 @@
 namespace Auth {
 
 AuthServer::AuthServer() {
-	signalHandler = 0;
 	authentificationService = 0;
 	realmService = 0;
 	networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
 	configuration = ConfigurationManager::getInstance();
 	log = LogManager::getInstance();
 	databaseManager = DatabaseManager::getInstance();
+	schedulingService = new SchedulingService();
 
 }
 
 AuthServer::~AuthServer() {
+    delete schedulingService;
 	delete authentificationService;
 	delete realmService;
 	delete networkManager;
@@ -37,7 +38,6 @@ void AuthServer::startServer()
 		std::string infoDB;
 		ENetAddress adresse;
 
-		signalHandler->setupSignalHandlers();
 		if (!configuration->load("../etc/auth.config"))
 			return;
 
@@ -74,8 +74,7 @@ void AuthServer::startServer()
 			return;
 		}
 
-		while(!signalHandler->gotExitSignal())
-			sleep(1);
+		schedulingService->runLoop();
 
 		stopThread();
 

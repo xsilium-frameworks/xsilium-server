@@ -73,7 +73,7 @@ public:
      *
      *  \PARAM
      */
-    void        setupSignalHandlers();
+    static void setupSignalHandlers();
     /*!
      *  \brief exitSignalHandler
      *

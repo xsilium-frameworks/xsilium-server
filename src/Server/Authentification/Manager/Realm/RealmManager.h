@@ -8,13 +8,15 @@
 #ifndef SRC_SERVER_AUTHENTIFICATION_REALM_SERVICE_REALMMANAGER_H_
 #define SRC_SERVER_AUTHENTIFICATION_REALM_SERVICE_REALMMANAGER_H_
 
+#include <Manager/Manager.h>
+
 #include "DAO/Realm/RealmDAO.h"
 #include <Manager/Configuration/ConfigurationManager.h>
 #include <vector>
 
 namespace Auth {
 
-class RealmManager : public Singleton<RealmManager> {
+class RealmManager : public Manager , public Singleton<RealmManager> {
 public:
 	RealmManager();
 	virtual ~RealmManager();
@@ -36,10 +38,11 @@ public:
 
 	std::vector<std::string> getRealmsList(int version,int autorisation);
 
+	void update(int diff);
+
 
 private:
 	std::vector<Realm *> listRoyaume;
-	ConfigurationManager * configuration;
 	RealmDAO * realmDAO;
 
 };

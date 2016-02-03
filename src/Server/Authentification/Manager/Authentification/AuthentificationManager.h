@@ -30,8 +30,6 @@ public:
 	 */
 	virtual ~AuthentificationManager();
 
-	void init();
-
 	bool checkIp(std::string ip);
 
 	Compte * isAccountExist(std::string Username,std::string ip);
@@ -46,6 +44,8 @@ public:
     void setCompteDao( DAO* compteDao);
     void setIpBanDao( DAO* ipBanDao);
     void setIpDao( DAO* ipDao);
+
+    void update(int diff);
 
 private:
 	DAO * ipBanDAO ;

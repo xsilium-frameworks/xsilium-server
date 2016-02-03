@@ -10,7 +10,6 @@
 namespace Auth {
 
 RealmManager::RealmManager() {
-	configuration = ConfigurationManager::getInstance();
 	realmDAO = new RealmDAO();
 }
 
@@ -37,7 +36,7 @@ int RealmManager::checkRealmName(std::string nameRealm) {
 bool RealmManager::checkRealmKey(std::string realmKey) {
 	std::string configKey;
 
-	configuration->get("realmKey", configKey);
+	configurationManager->get("realmKey", configKey);
 
 	if (configKey.compare(realmKey) != 0) {
 		return false;
@@ -59,6 +58,11 @@ std::vector<std::string> RealmManager::getRealmsList(int version, int autorisati
 			listRoyaume.erase(it);
 	}
 	return retour;
+}
+
+void RealmManager::update(int diff)
+{
+    printf("test realm \n");
 }
 
 } /* namespace Auth */

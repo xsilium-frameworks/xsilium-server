@@ -11,12 +11,10 @@ namespace Auth {
 
 AuthentificationManager::AuthentificationManager() {
 
-    ipBanDAO = 0;
-    ipDAO = 0;
-    compteDAO = 0;
-    compteBanDAO = 0;
-
-
+    ipBanDAO = new IPBanDAO();
+    ipDAO = new IPDAO();
+    compteDAO = new CompteDAO();
+    compteBanDAO = new CompteBanDAO();
 }
 
 AuthentificationManager::~AuthentificationManager() {
@@ -24,15 +22,6 @@ AuthentificationManager::~AuthentificationManager() {
     delete ipDAO ;
     delete compteDAO;
     delete compteBanDAO ;
-}
-
-
-void AuthentificationManager::init() {
-
-        this->ipBanDAO = new IPBanDAO();
-        this->ipDAO = new IPDAO();
-        this->compteDAO = new CompteDAO();
-        this->compteBanDAO = new CompteBanDAO();
 }
 
 bool AuthentificationManager::checkIp(std::string ip){
@@ -124,6 +113,11 @@ void AuthentificationManager::setIpBanDao(DAO* ipBanDao) {
 
 void AuthentificationManager::setIpDao(DAO* ipDao) {
     this->ipDAO = ipDao;
+}
+
+void AuthentificationManager::update(int diff)
+{
+    printf("test auth \n");
 }
 
 } /* namespace Auth */

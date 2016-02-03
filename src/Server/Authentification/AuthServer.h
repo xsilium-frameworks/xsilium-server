@@ -12,8 +12,10 @@
 #include <unistd.h>
 #include <iostream>
 
+#include "Service/scheduling/SchedulingService.h"
 #include "Service/Authentification/AuthentificationService.h"
 #include "Service/Realm/RealmService.h"
+
 
 namespace Auth {
 
@@ -30,7 +32,6 @@ public:
 
 
 private:
-	SignalHandler * signalHandler;
 	ConfigurationManager * configuration;
 	LogManager * log;
 
@@ -38,6 +39,7 @@ private:
 	NetworkManager * networkManager;
 	AuthentificationService * authentificationService;
 	RealmService * realmService;
+	SchedulingService * schedulingService ;
 };
 
 } /* namespace Auth */

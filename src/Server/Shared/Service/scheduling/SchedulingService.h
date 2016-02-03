@@ -10,19 +10,19 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <unistd.h>
+#include "Manager/Signal/SignalHandler.h"
+#include "Manager/Manager.h"
 
-class schedulingService {
+class SchedulingService {
 public:
-    schedulingService();
-    virtual ~schedulingService();
+    SchedulingService();
+    virtual ~SchedulingService();
 
     void runLoop();
 
 private:
-
     void callBack(int diff);
-
-    boost::posix_time::ptime timestampSave;
+    SignalHandler signalHandler;
 };
 
 #endif /* SRC_SERVER_SHARED_SERVICE_SCHEDULINGSERVICE_H_ */
