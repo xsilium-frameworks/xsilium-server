@@ -43,9 +43,7 @@ BOOST_AUTO_TEST_CASE(checkIp)
 
 
 
-    Auth::AuthentificationManager * authentificationManager = Auth::AuthentificationManager::getInstance();
-    authentificationManager->setIpBanDao(ipBanDAOMock);
-    authentificationManager->setIpDao(ipDAOMock);
+    Auth::AuthentificationManager * authentificationManager = new Auth::AuthentificationManager(0,0,ipBanDAOMock,ipDAOMock);
     MOCK_EXPECT( ipBanDAOMock->read ).returns( false );
     MOCK_EXPECT( ipDAOMock->read ).returns( false );
 

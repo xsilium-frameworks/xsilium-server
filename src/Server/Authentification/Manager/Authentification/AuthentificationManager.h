@@ -21,37 +21,39 @@ namespace Auth {
 class AuthentificationManager : public Manager , public Singleton<AuthentificationManager> {
 public:
 
-	/*!
-	 *  \brief Constructeur de la classe AuthentificationManager
-	 */
-	AuthentificationManager();
-	/*!
-	 *  \brief Destructeur de la classe AuthentificationManager
-	 */
-	virtual ~AuthentificationManager();
+    /*!
+     *  \brief Constructeur de la classe AuthentificationManager
+     */
+    AuthentificationManager();
+    /*!
+     *  \brief Constructeur de la classe AuthentificationManager
+     */
+    AuthentificationManager(DAO* compteBanDao,DAO* compteDao,DAO* ipBanDao,DAO* ipDao);
 
-	bool checkIp(std::string ip);
+    /*!
+     *  \brief Destructeur de la classe AuthentificationManager
+     */
+    virtual ~AuthentificationManager();
 
-	Compte * isAccountExist(std::string Username,std::string ip);
+    bool checkIp(std::string ip);
 
-	bool checkAccount(int idAccount);
+    Compte * isAccountExist(std::string Username,std::string ip);
 
-	void resetIpTemp(std::string ip);
+    bool checkAccount(int idAccount);
 
-	void banIP(std::string ip);
+    void resetIpTemp(std::string ip);
 
-    void setCompteBanDao( DAO* compteBanDao);
-    void setCompteDao( DAO* compteDao);
-    void setIpBanDao( DAO* ipBanDao);
-    void setIpDao( DAO* ipDao);
+    void banIP(std::string ip);
 
     void update(int diff);
 
 private:
-	DAO * ipBanDAO ;
-	DAO * ipDAO;
-	DAO * compteDAO;
-	DAO * compteBanDAO;
+    DAO * ipBanDAO ;
+    DAO * ipDAO;
+    DAO * compteDAO;
+    DAO * compteBanDAO;
+
+    std::vector<Compte*> listOfCompte;
 };
 
 } /* namespace Auth */

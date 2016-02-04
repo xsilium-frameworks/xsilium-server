@@ -17,6 +17,14 @@ AuthentificationManager::AuthentificationManager() {
     compteBanDAO = new CompteBanDAO();
 }
 
+AuthentificationManager::AuthentificationManager(DAO* compteBanDao,DAO* compteDao,DAO* ipBanDao,DAO* ipDao) {
+
+    this->ipBanDAO = ipBanDao;
+    this->ipDAO = ipDao;
+    this->compteDAO = compteDao;
+    this->compteBanDAO = compteBanDao;
+}
+
 AuthentificationManager::~AuthentificationManager() {
     delete ipBanDAO ;
     delete ipDAO ;
@@ -26,93 +34,77 @@ AuthentificationManager::~AuthentificationManager() {
 
 bool AuthentificationManager::checkIp(std::string ip){
 
-	IPBan ipBan(ip);
-	IP ipTemp(ip);
+    IPBan ipBan(ip);
+    IP ipTemp(ip);
 
 
-	if(ipBanDAO->read(&ipBan))
-		return false;
+    if(ipBanDAO->read(&ipBan))
+        return false;
 
 
-	if(ipDAO->read(&ipTemp))
-	    ipDAO->create(&ipTemp);
+    if(ipDAO->read(&ipTemp))
+        ipDAO->create(&ipTemp);
 
-	return true ;
+    return true ;
 }
 
 Compte * AuthentificationManager::isAccountExist(std::string Username,std::string ip)
 {
-	Compte * compte = new Compte(Username);
+    Compte * compte = new Compte(Username);
 
-	if(!compteDAO->read(compte))
-	{
-		banIP(ip);
-		return 0;
-	}
+    if(!compteDAO->read(compte))
+    {
+        banIP(ip);
+        return 0;
+    }
 
-	return compte;
+    return compte;
 }
 
 bool AuthentificationManager::checkAccount(int idAccount)
 {
-	CompteBan compteBan( idAccount);
+    CompteBan compteBan( idAccount);
 
-	if(compteBanDAO->read(&compteBan))
-		return false;
+    if(compteBanDAO->read(&compteBan))
+        return false;
 
-	return true;
+    return true;
 
 }
 
 void AuthentificationManager::banIP(std::string ip)
 {
-	int nombreErreurMax,banTime;
-	int idTransaction = 0;
-	IP ipTemp(ip);
-	IPBan ipBan(ip);
+    int nombreErreurMax,banTime;
+    int idTransaction = 0;
+    IP ipTemp(ip);
+    IPBan ipBan(ip);
 
-	ipDAO->read(&ipTemp);
-	ipTemp.setIpTempNessais(ipTemp.getIpTempNessais() + 1);
+    ipDAO->read(&ipTemp);
+    ipTemp.setIpTempNessais(ipTemp.getIpTempNessais() + 1);
 
-	configurationManager->get("nombreErreurMax",nombreErreurMax);
-	configurationManager->get("banTime",banTime);
+    configurationManager->get("nombreErreurMax",nombreErreurMax);
+    configurationManager->get("banTime",banTime);
 
-	if( ( ipTemp.getIpTempNessais() % nombreErreurMax ) == 0 )
-	{
+    if( ( ipTemp.getIpTempNessais() % nombreErreurMax ) == 0 )
+    {
 
-		idTransaction = DatabaseManager::getInstance()->createTransaction();
+        idTransaction = DatabaseManager::getInstance()->createTransaction();
 
-		ipBan.setBandate(time(NULL));
-		ipBan.setUnbandate((time(NULL) + (banTime * (ipTemp.getIpTempNessais() / nombreErreurMax ))  *60));
-		ipBan.setRaison("autoban");
-		ipBan.setBannedby(0);
-		ipBanDAO->create(&ipBan,idTransaction);
-	}
-	ipDAO->update(&ipTemp,idTransaction);
+        ipBan.setBandate(time(NULL));
+        ipBan.setUnbandate((time(NULL) + (banTime * (ipTemp.getIpTempNessais() / nombreErreurMax ))  *60));
+        ipBan.setRaison("autoban");
+        ipBan.setBannedby(0);
+        ipBanDAO->create(&ipBan,idTransaction);
+    }
+    ipDAO->update(&ipTemp,idTransaction);
 }
 
 void AuthentificationManager::resetIpTemp(std::string ip)
 {
-	IP ipTemp(ip);
-	ipDAO->read(&ipTemp);
-	ipTemp.setIpTempNessais(0);
-	ipDAO->update(&ipTemp);
-}
-
-void AuthentificationManager::setCompteBanDao(DAO* compteBanDao) {
-    this->compteBanDAO = compteBanDao;
-}
-
-void AuthentificationManager::setCompteDao(DAO* compteDao) {
-    this->compteDAO = compteDao;
-}
-
-void AuthentificationManager::setIpBanDao(DAO* ipBanDao) {
-    this->ipBanDAO = ipBanDao;
-}
-
-void AuthentificationManager::setIpDao(DAO* ipDao) {
-    this->ipDAO = ipDao;
+    IP ipTemp(ip);
+    ipDAO->read(&ipTemp);
+    ipTemp.setIpTempNessais(0);
+    ipDAO->update(&ipTemp);
 }
 
 void AuthentificationManager::update(int diff)
