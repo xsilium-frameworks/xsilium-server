@@ -19,11 +19,13 @@ Compte::Compte(std::string nomString) {
 	online = false ;
 	locale = 0;
 	updateData = false;
+	compteBan = 0;
 
 }
 
 Compte::~Compte() {
-	// TODO Auto-generated destructor stub
+	if(compteBan)
+	    delete compteBan;
 }
 
 std::string& Compte::getEmail() {
@@ -104,4 +106,13 @@ std::string& Compte::getUsername() {
 
 void Compte::setUsername(std::string& username) {
 	this->username = username;
+}
+
+void Compte::setCompteBan(CompteBan * compteBan)
+{
+    this->compteBan = compteBan;
+}
+CompteBan * Compte::getCompteBan()
+{
+    return compteBan;
 }

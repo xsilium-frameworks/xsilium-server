@@ -9,6 +9,7 @@
 #define SRC_SERVER_AUTHENTIFICATION_AUTHENTIFICATION_MANAGER_AUTHENTIFICATIONMANAGER_H_
 
 #include <Manager/Manager.h>
+#include <map>
 
 #include <DAO/IP/IPBanDAO.h>
 #include <DAO/IP/IPDAO.h>
@@ -37,9 +38,9 @@ public:
 
     bool checkIp(std::string ip);
 
-    Compte * isAccountExist(std::string Username,std::string ip);
+    Compte * getAccount(std::string Username);
 
-    bool checkAccount(int idAccount);
+    bool checkAccount(std::string Username);
 
     void resetIpTemp(std::string ip);
 
@@ -53,7 +54,7 @@ private:
     DAO * compteDAO;
     DAO * compteBanDAO;
 
-    std::vector<Compte*> listOfCompte;
+    std::map<const char *,Compte*> listOfCompte;
 };
 
 } /* namespace Auth */

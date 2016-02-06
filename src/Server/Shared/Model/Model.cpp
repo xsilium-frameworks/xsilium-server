@@ -30,3 +30,8 @@ void Model::setOnline(bool online)
 bool Model::isOnline() const {
     return online;
 }
+
+bool Model::isUpdate()
+{
+    return updateData;
+}

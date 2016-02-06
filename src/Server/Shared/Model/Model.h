@@ -22,6 +22,8 @@ public:
     bool isOnline() const;
     void setOnline(bool online);
 
+    bool isUpdate();
+
 
 protected:
 

@@ -48,28 +48,30 @@ bool AuthentificationManager::checkIp(std::string ip){
     return true ;
 }
 
-Compte * AuthentificationManager::isAccountExist(std::string Username,std::string ip)
+Compte * AuthentificationManager::getAccount(std::string Username)
 {
-    Compte * compte = new Compte(Username);
-
-    if(!compteDAO->read(compte))
-    {
-        banIP(ip);
-        return 0;
-    }
-
-    return compte;
+    return listOfCompte.find(Username.c_str())->second;
 }
 
-bool AuthentificationManager::checkAccount(int idAccount)
+bool AuthentificationManager::checkAccount(std::string Username)
 {
-    CompteBan compteBan( idAccount);
+    bool resultat = false;
+    Compte * compte = new Compte(Username);
+    CompteBan * compteBan;
 
-    if(compteBanDAO->read(&compteBan))
-        return false;
 
-    return true;
+    if(compteDAO->read(compte))
+    {
+        resultat = true;
+        listOfCompte.insert(std::pair<const char *,Compte*>(Username.c_str(),compte));
+        compteBan = new CompteBan(compte->getIdAccount());
+        if(compteBanDAO->read(compteBan))
+        {
+            compte->setCompteBan(compteBan);
+        }
+    }
 
+    return resultat;
 }
 
 void AuthentificationManager::banIP(std::string ip)
@@ -109,7 +111,20 @@ void AuthentificationManager::resetIpTemp(std::string ip)
 
 void AuthentificationManager::update(int diff)
 {
-    printf("test auth \n");
+    std::map<const char *,Compte*>::iterator it;
+
+    for (it=listOfCompte.begin(); it!=listOfCompte.end(); ++it)
+    {
+        if(it->second->isUpdate())
+        {
+            compteDAO->update(it->second);
+        }
+        if(!it->second->isOnline())
+        {
+            compteDAO->update(it->second);
+            listOfCompte.erase(it);
+        }
+    }
 }
 
 } /* namespace Auth */

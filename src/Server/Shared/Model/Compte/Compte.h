@@ -9,6 +9,7 @@
 #define SRC_SERVER_SHARED_COMPTE_COMPTE_H_
 
 #include <Model/Model.h>
+#include <Model/Compte/CompteBan.h>
 #include <string>
 #include <time.h>
 
@@ -42,6 +43,10 @@ public:
 	std::string& getUsername();
 	void setUsername(std::string& username);
 
+	void setCompteBan(CompteBan * compteBan);
+	CompteBan * getCompteBan();
+
+
 private:
 
 	int id_account; /*!< numero unique du compte dans la base de donn�e      */
@@ -54,6 +59,8 @@ private:
 	time_t last_login; /*!< derniere date de connexion du compte  */
 	bool online; /*!< le compte est utilise  */
 	int locale; /*!< langue du compte  */
+
+	CompteBan * compteBan;
 
 };
 
