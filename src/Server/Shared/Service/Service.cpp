@@ -87,7 +87,7 @@ bool Service::controleData(MessagePacket * messagePacket,std::vector<std::string
     for (std::vector<std::string>::iterator it = tableauData->begin() ; it != tableauData->end(); ++it)
     {
         if(!messagePacket->hasProperty(*it->c_str()))
-            return false;
+            retour = false;
     }
-    return true;
+    return retour;
 }
