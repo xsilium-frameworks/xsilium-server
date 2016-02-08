@@ -13,7 +13,6 @@ CompteBan::CompteBan(int id_account) {
 	this->id_account = id_account;
 	bandate = 0;
 	unbandate = 0;
-	raison = "";
 	bannedby = 0;
 
 }

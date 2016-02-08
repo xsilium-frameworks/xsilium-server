@@ -9,17 +9,15 @@
 
 Compte::Compte(std::string nomString) {
 	id_account = 0;
-	username = nomString;
-	sha_pass_hash = "";
-	email = "";
 	joindate = 0 ;
-	last_ip = "" ;
 	locked = false;
 	last_login = 0 ;
 	online = false ;
 	locale = 0;
 	updateData = false;
 	compteBan = 0;
+
+	setUsername(nomString);
 
 }
 

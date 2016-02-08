@@ -11,7 +11,7 @@ IP::IP(std::string ip_temp_ip ) {
 
 	ip_temp_nessais = 0;
 	id_ip = 0;
-	this->ip_temp_ip = ip_temp_ip;
+	setIpTempIp(ip_temp_ip);
 
 }
 

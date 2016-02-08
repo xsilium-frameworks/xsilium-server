@@ -8,11 +8,10 @@
 #include "IPBan.h"
 
 IPBan::IPBan(std::string ip) {
-	this->ip = ip;
+	setIp(ip);
 	id_ip_banned = 0;
 	bandate = 0;
 	unbandate = 0;
-	raison = "";
 	bannedby = 0;
 
 }
