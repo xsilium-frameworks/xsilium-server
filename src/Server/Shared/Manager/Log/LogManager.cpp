@@ -13,6 +13,7 @@ LogManager::LogManager() {
     activeConsole = true;
     maxPriority = ERROR;
     date[0] = '0';
+    temps = 0;
     PRIORITY_NAMES[0] = "ERROR";
     PRIORITY_NAMES[1] = "WARNING";
     PRIORITY_NAMES[2] = "INFO";

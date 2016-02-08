@@ -57,14 +57,12 @@ bool AuthentificationManager::checkAccount(std::string Username)
 {
     bool resultat = false;
     Compte * compte = new Compte(Username);
-    CompteBan * compteBan;
-
 
     if(compteDAO->read(compte))
     {
         resultat = true;
         listOfCompte.insert(std::pair<const char *,Compte*>(Username.c_str(),compte));
-        compteBan = new CompteBan(compte->getIdAccount());
+        CompteBan * compteBan = new CompteBan(compte->getIdAccount());
         if(compteBanDAO->read(compteBan))
         {
             compte->setCompteBan(compteBan);
@@ -111,18 +109,24 @@ void AuthentificationManager::resetIpTemp(std::string ip)
 
 void AuthentificationManager::update(int diff)
 {
-    std::map<const char *,Compte*>::iterator it;
+    std::map<const char *,Compte*>::iterator it = listOfCompte.begin();
 
-    for (it=listOfCompte.begin(); it!=listOfCompte.end(); it++)
+    while(it!=listOfCompte.end())
     {
         if(it->second->isUpdate())
         {
             compteDAO->update(it->second);
         }
+
+
         if(!it->second->isOnline())
         {
             compteDAO->update(it->second);
-            listOfCompte.erase(it);
+            listOfCompte.erase(it++);
+        }
+        else
+        {
+            ++it;
         }
     }
 }

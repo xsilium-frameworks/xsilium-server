@@ -74,7 +74,6 @@ bool Postgresql::executionPrepareStatement(std::string index, Tokens * resultat,
 	boost::mutex::scoped_lock lock(mutex1);
 
 	bool retour = true;
-	char * argument;
 	pqxx::work * txn;
 	bool autoCommit = false;
 
@@ -89,6 +88,7 @@ bool Postgresql::executionPrepareStatement(std::string index, Tokens * resultat,
 		if (txn->prepared(index.c_str()).exists()) {
 			pqxx::prepare::invocation invoc = txn->prepared(index.c_str());
 
+			char * argument;
 			for (int increment = 0; increment < nombreArgument; increment++) {
 				argument = va_arg(listOfArgument,char*);
 				invoc(argument);
@@ -125,11 +125,9 @@ int Postgresql::createTransaction() {
 void Postgresql::commit(int idTransaction) {
 	boost::mutex::scoped_lock lock(mutex1);
 
-	pqxx::work * txn;
-
 	std::map<int, pqxx::work *>::iterator iter = listOfTransaction.find(idTransaction);
 	if (iter != listOfTransaction.end()) {
-		txn = iter->second;
+	    pqxx::work * txn = iter->second;
 		txn->commit();
 		delete txn;
 		listOfTransaction.erase(iter);
