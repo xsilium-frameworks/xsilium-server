@@ -113,7 +113,7 @@ void AuthentificationManager::update(int diff)
 {
     std::map<const char *,Compte*>::iterator it;
 
-    for (it=listOfCompte.begin(); it!=listOfCompte.end(); ++it)
+    for (it=listOfCompte.begin(); it!=listOfCompte.end(); it++)
     {
         if(it->second->isUpdate())
         {
