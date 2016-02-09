@@ -10,11 +10,11 @@
 namespace Auth {
 
 RealmManager::RealmManager() {
-	realmDAO = new RealmDAO();
+    realmDAO = new RealmDAO();
 }
 
 RealmManager::~RealmManager() {
-	delete realmDAO;
+    delete realmDAO;
 }
 
 void RealmManager::createRealm() {
@@ -25,44 +25,55 @@ void RealmManager::updateRealm() {
 }
 
 int RealmManager::checkRealmName(std::string nameRealm) {
-	Realm realm(nameRealm);
-	if (realmDAO->read(&realm)) {
-		return realm.getIdRoyaume();
-	} else {
-		return 0;
-	}
+    Realm realm(nameRealm);
+    if (realmDAO->read(&realm)) {
+        return realm.getIdRoyaume();
+    } else {
+        return 0;
+    }
 }
 
 bool RealmManager::checkRealmKey(std::string realmKey) {
-	std::string configKey;
+    std::string configKey;
 
-	configurationManager->get("realmKey", configKey);
+    configurationManager->get("realmKey", configKey);
 
-	if (configKey.compare(realmKey) != 0) {
-		return false;
-	} else {
-		return true;
-	}
+    if (configKey.compare(realmKey) != 0) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 std::vector<std::string> RealmManager::getRealmsList(int version, int autorisation) {
-	std::vector < std::string > retour;
-	std::vector<Realm *>::iterator it;
+    std::vector < std::string > retour;
+    std::vector<Realm *>::iterator it;
 
-	for (it = listRoyaume.begin(); it != listRoyaume.end(); ++it) {
-		if (*it != NULL) {
-			if ((*it)->getAutorisationRoyaume() <= autorisation
-					&& (*it)->getVersionClientRoyaume() == version)
-				retour.push_back((*it)->getUrlRoyaume());
-		} else
-			listRoyaume.erase(it);
-	}
-	return retour;
+    for (it = listRoyaume.begin(); it != listRoyaume.end(); ++it) {
+        if (*it != NULL) {
+            if ((*it)->getAutorisationRoyaume() <= autorisation
+                    && (*it)->getVersionClientRoyaume() == version)
+                retour.push_back((*it)->getUrlRoyaume());
+        }
+    }
+    return retour;
 }
 
-void RealmManager::update(int diff)
-{
-    printf("test realm \n");
+void RealmManager::update(int diff) {
+    std::map<const char *, Realm*>::iterator it = listRoyaume.begin();
+
+    while (it != listRoyaume.end()) {
+        if (it->second->isUpdate()) {
+            realmDAO->update(it->second);
+        }
+
+        if (!it->second->isOnline()) {
+            realmDAO->update(it->second);
+            listRoyaume.erase(it++);
+        } else {
+            ++it;
+        }
+    }
 }
 
 } /* namespace Auth */

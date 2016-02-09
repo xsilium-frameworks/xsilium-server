@@ -16,34 +16,33 @@
 
 namespace Auth {
 
-class RealmManager : public Manager , public Singleton<RealmManager> {
+class RealmManager: public Manager, public Singleton<RealmManager> {
 public:
-	RealmManager();
-	virtual ~RealmManager();
+    RealmManager();
+    virtual ~RealmManager();
 
-	void createRealm();
-	void updateRealm();
-	/*!
-	 * Methode de verification de l'existence d'un realm par son nom
-	 * @param nameRoyaume
-	 * @return idRealm ou 0 si non trouv�
-	 */
-	int checkRealmName(std::string nameRealm);
-	/*!
-	 * Methode de verification de la cl� d'un realm
-	 * @param nameRoyaume
-	 * @return bool
-	 */
-	bool checkRealmKey(std::string keyRealm);
+    void createRealm();
+    void updateRealm();
+    /*!
+     * Methode de verification de l'existence d'un realm par son nom
+     * @param nameRoyaume
+     * @return idRealm ou 0 si non trouv�
+     */
+    int checkRealmName(std::string nameRealm);
+    /*!
+     * Methode de verification de la cl� d'un realm
+     * @param nameRoyaume
+     * @return bool
+     */
+    bool checkRealmKey(std::string keyRealm);
 
-	std::vector<std::string> getRealmsList(int version,int autorisation);
+    std::vector<std::string> getRealmsList(int version, int autorisation);
 
-	void update(int diff);
-
+    void update(int diff);
 
 private:
-	std::vector<Realm *> listRoyaume;
-	RealmDAO * realmDAO;
+    std::map<const char *, Realm*> listRoyaume;
+    RealmDAO * realmDAO;
 
 };
 
