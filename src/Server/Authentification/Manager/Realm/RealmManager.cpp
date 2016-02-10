@@ -45,15 +45,14 @@ bool RealmManager::checkRealmKey(std::string realmKey) {
     }
 }
 
-std::vector<std::string> RealmManager::getRealmsList(int version, int autorisation) {
-    std::vector < std::string > retour;
-    std::vector<Realm *>::iterator it;
+std::vector<Realm*> RealmManager::getRealmsList(int version, int autorisation) {
+    std::vector<Realm*> retour;
+    std::map<const char *, Realm*>::iterator itListRoyaume = listRoyaume.begin();
 
-    for (it = listRoyaume.begin(); it != listRoyaume.end(); ++it) {
-        if (*it != NULL) {
-            if ((*it)->getAutorisationRoyaume() <= autorisation
-                    && (*it)->getVersionClientRoyaume() == version)
-                retour.push_back((*it)->getUrlRoyaume());
+    while (itListRoyaume != listRoyaume.end()) {
+        if (itListRoyaume->second->getAutorisationRoyaume() <= autorisation
+                && itListRoyaume->second->getVersionClientRoyaume() == version) {
+            retour.push_back(itListRoyaume->second);
         }
     }
     return retour;

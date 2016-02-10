@@ -70,12 +70,12 @@ void AuthentificationService::handleLogonChallenge(MessageNetwork * messageNetwo
     log->write(LogManager::INFO, "Nom du client : %s ",
             messageNetwork->messagePacket->getProperty("Login").c_str());
 
-    if(authentificationManager->checkAccount(messageNetwork->messagePacket->getProperty("Login")))
-    {
-        messageNetwork->session->setSessionListener(authentificationManager->getAccount(messageNetwork->messagePacket->getProperty("Login")));
-    }
-    else
-    {
+    if (authentificationManager->checkAccount(
+            messageNetwork->messagePacket->getProperty("Login"))) {
+        messageNetwork->session->setSessionListener(
+                authentificationManager->getAccount(
+                        messageNetwork->messagePacket->getProperty("Login")));
+    } else {
         authentificationManager->banIP(messageNetwork->session->getIP());
         log->write(LogManager::INFO, "[AuthChallenge] Le compte %s n'existe pas",
                 messageNetwork->messagePacket->getProperty("Login").c_str());
@@ -86,8 +86,9 @@ void AuthentificationService::handleLogonChallenge(MessageNetwork * messageNetwo
     Compte * compte = static_cast<Compte*>(messageNetwork->session->getSessionListener());
 
     if (compte->getCompteBan() != 0) {
-        time_t unbandate = compte->getCompteBan()->getUnbandate() ;
-        log->write(LogManager::INFO,"[AuthChallenge] Le compte %s est banni jusqu'au %s",compte->getUsername().c_str(),ctime(&unbandate));
+        time_t unbandate = compte->getCompteBan()->getUnbandate();
+        log->write(LogManager::INFO, "[AuthChallenge] Le compte %s est banni jusqu'au %s",
+                compte->getUsername().c_str(), ctime(&unbandate));
         sendErrorPacket(messageRetour, ID_COMPTE_BANNIE);
         return;
     }
@@ -112,7 +113,7 @@ void AuthentificationService::handleLogonProof(MessageNetwork * messageNetwork,
         sendErrorPacket(messageRetour, ID_ERROR_PACKET_SIZE);
     }
 
-    if (messageNetwork->session->getSessionListener()->getTypeModel().compare("Compte") == 0   ) {
+    if (messageNetwork->session->getSessionListener()->getTypeModel().compare("Compte") == 0) {
         log->write(LogManager::INFO, "Le message venant de %d:%d est illisible ",
                 messageNetwork->session->getSessionID()->host,
                 messageNetwork->session->getSessionID()->port);
@@ -160,13 +161,13 @@ void AuthentificationService::handleRealmsList(MessageNetwork * messageNetwork,
         sendErrorPacket(messageRetour, ID_ERROR_ETAPE);
     }
 
-    std::vector < std::string > listOfRealms = realmManager->getRealmsList(
+    std::vector<Realm*> listOfRealms = realmManager->getRealmsList(
             Utilities::toInt(messageNetwork->messagePacket->getProperty("versionClient")), 1);
 
-    for (int increment = 0; increment < listOfRealms.size(); ++increment) {
-        messageRetour->setProperty("realm" + Utilities::toString(increment),
-                listOfRealms[increment]);
-    }
+    /*  for (int increment = 0; increment < listOfRealms.size(); ++increment) {
+     messageRetour->setProperty("realm" + Utilities::toString(increment),
+     listOfRealms[increment]);
+     } */
 
     messageRetour->setOpcode(ID_AUTH);
     messageRetour->setSousOpcode(ID_REALMSLIST);

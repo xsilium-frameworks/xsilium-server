@@ -36,7 +36,7 @@ public:
      */
     bool checkRealmKey(std::string keyRealm);
 
-    std::vector<std::string> getRealmsList(int version, int autorisation);
+    std::vector<Realm*> getRealmsList(int version, int autorisation);
 
     void update(int diff);
 
