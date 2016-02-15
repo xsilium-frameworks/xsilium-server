@@ -10,30 +10,33 @@
 
 #include <Model/Model.h>
 #include <string>
+#include <Utilities/Utilities.h>
 
 namespace Auth {
 
-class Realm : public Model {
+class Realm: public Model {
 public:
     Realm(std::string nameRealm);
     virtual ~Realm();
 
-    int getAutorisationRoyaume() ;
+    int getAutorisationRoyaume();
     void setAutorisationRoyaume(int autorisationRoyaume);
-    int getIdRoyaume() ;
+    int getIdRoyaume();
     void setIdRoyaume(int idRoyaume);
-     std::string getKeyRoyaume() ;
-    void setKeyRoyaume( std::string keyRoyaume);
-     std::string getNameRoyaume() ;
-    void setNameRoyaume( std::string nameRoyaume);
-    bool isOnlineRoyaume() ;
+    std::string getKeyRoyaume();
+    void setKeyRoyaume(std::string keyRoyaume);
+    std::string getNameRoyaume();
+    void setNameRoyaume(std::string nameRoyaume);
+    bool isOnlineRoyaume();
     void setOnlineRoyaume(bool onlineRoyaume);
-    int getPortRoyaume() ;
+    int getPortRoyaume();
     void setPortRoyaume(int portRoyaume);
-     std::string getUrlRoyaume() ;
-    void setUrlRoyaume( std::string urlRoyaume);
-    int getVersionClientRoyaume() ;
+    std::string getUrlRoyaume();
+    void setUrlRoyaume(std::string urlRoyaume);
+    int getVersionClientRoyaume();
     void setVersionClientRoyaume(int versionClientRoyaume);
+
+    std::string toString();
 
 private:
 

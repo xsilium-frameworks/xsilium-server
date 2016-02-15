@@ -17,7 +17,8 @@ AuthentificationManager::AuthentificationManager() {
     compteBanDAO = new CompteBanDAO();
 }
 
-AuthentificationManager::AuthentificationManager(DAO* compteBanDao,DAO* compteDao,DAO* ipBanDao,DAO* ipDao) {
+AuthentificationManager::AuthentificationManager(DAO* compteBanDao, DAO* compteDao, DAO* ipBanDao,
+        DAO* ipDao) {
 
     this->ipBanDAO = ipBanDao;
     this->ipDAO = ipDao;
@@ -26,45 +27,39 @@ AuthentificationManager::AuthentificationManager(DAO* compteBanDao,DAO* compteDa
 }
 
 AuthentificationManager::~AuthentificationManager() {
-    delete ipBanDAO ;
-    delete ipDAO ;
+    delete ipBanDAO;
+    delete ipDAO;
     delete compteDAO;
-    delete compteBanDAO ;
+    delete compteBanDAO;
 }
 
-bool AuthentificationManager::checkIp(std::string ip){
+bool AuthentificationManager::checkIp(std::string ip) {
 
     IPBan ipBan(ip);
     IP ipTemp(ip);
 
-
-    if(ipBanDAO->read(&ipBan))
+    if (ipBanDAO->read(&ipBan))
         return false;
 
-
-    if(ipDAO->read(&ipTemp))
+    if (ipDAO->read(&ipTemp))
         ipDAO->create(&ipTemp);
 
-    return true ;
+    return true;
 }
 
-Compte * AuthentificationManager::getAccount(std::string Username)
-{
+Compte * AuthentificationManager::getAccount(std::string Username) {
     return listOfCompte.find(Username.c_str())->second;
 }
 
-bool AuthentificationManager::checkAccount(std::string Username)
-{
+bool AuthentificationManager::checkAccount(std::string Username) {
     bool resultat = false;
     Compte * compte = new Compte(Username);
 
-    if(compteDAO->read(compte))
-    {
+    if (compteDAO->read(compte)) {
         resultat = true;
-        listOfCompte.insert(std::pair<const char *,Compte*>(Username.c_str(),compte));
+        listOfCompte.insert(std::pair<const char *, Compte*>(Username.c_str(), compte));
         CompteBan * compteBan = new CompteBan(compte->getIdAccount());
-        if(compteBanDAO->read(compteBan))
-        {
+        if (compteBanDAO->read(compteBan)) {
             compte->setCompteBan(compteBan);
         }
     }
@@ -72,9 +67,8 @@ bool AuthentificationManager::checkAccount(std::string Username)
     return resultat;
 }
 
-void AuthentificationManager::banIP(std::string ip)
-{
-    int nombreErreurMax,banTime;
+void AuthentificationManager::banIP(std::string ip) {
+    int nombreErreurMax, banTime;
     int idTransaction = 0;
     IP ipTemp(ip);
     IPBan ipBan(ip);
@@ -82,50 +76,42 @@ void AuthentificationManager::banIP(std::string ip)
     ipDAO->read(&ipTemp);
     ipTemp.setIpTempNessais(ipTemp.getIpTempNessais() + 1);
 
-    configurationManager->get("nombreErreurMax",nombreErreurMax);
-    configurationManager->get("banTime",banTime);
+    configurationManager->get("nombreErreurMax", nombreErreurMax);
+    configurationManager->get("banTime", banTime);
 
-    if( ( ipTemp.getIpTempNessais() % nombreErreurMax ) == 0 )
-    {
+    if ((ipTemp.getIpTempNessais() % nombreErreurMax) == 0) {
 
         idTransaction = DatabaseManager::getInstance()->createTransaction();
 
         ipBan.setBandate(time(NULL));
-        ipBan.setUnbandate((time(NULL) + (banTime * (ipTemp.getIpTempNessais() / nombreErreurMax ))  *60));
+        ipBan.setUnbandate(
+                (time(NULL) + (banTime * (ipTemp.getIpTempNessais() / nombreErreurMax)) * 60));
         ipBan.setRaison("autoban");
         ipBan.setBannedby(0);
-        ipBanDAO->create(&ipBan,idTransaction);
+        ipBanDAO->create(&ipBan, idTransaction);
     }
-    ipDAO->update(&ipTemp,idTransaction);
+    ipDAO->update(&ipTemp, idTransaction);
 }
 
-void AuthentificationManager::resetIpTemp(std::string ip)
-{
+void AuthentificationManager::resetIpTemp(std::string ip) {
     IP ipTemp(ip);
     ipDAO->read(&ipTemp);
     ipTemp.setIpTempNessais(0);
     ipDAO->update(&ipTemp);
 }
 
-void AuthentificationManager::update(int diff)
-{
-    std::map<const char *,Compte*>::iterator it = listOfCompte.begin();
+void AuthentificationManager::update(int diff) {
+    std::map<const char *, Compte*>::iterator it = listOfCompte.begin();
 
-    while(it!=listOfCompte.end())
-    {
-        if(it->second->isUpdate())
-        {
+    while (it != listOfCompte.end()) {
+        if (it->second->isUpdate()) {
             compteDAO->update(it->second);
         }
 
-
-        if(!it->second->isOnline())
-        {
+        if (!it->second->isOnline()) {
             compteDAO->update(it->second);
             listOfCompte.erase(it++);
-        }
-        else
-        {
+        } else {
             ++it;
         }
     }

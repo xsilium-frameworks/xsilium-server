@@ -12,9 +12,7 @@ namespace Auth {
 Realm::Realm(std::string nameRealm) {
 
     idRoyaume = 0;
-    keyRoyaume = "";
-    nameRoyaume = nameRealm;
-    urlRoyaume = "";
+    setNameRoyaume(nameRealm);
     portRoyaume = 0;
     autorisationRoyaume = 0;
     versionClientRoyaume = 0;
@@ -26,7 +24,7 @@ Realm::~Realm() {
     // TODO Auto-generated destructor stub
 }
 
-int Realm::getAutorisationRoyaume()  {
+int Realm::getAutorisationRoyaume() {
     return autorisationRoyaume;
 }
 
@@ -34,7 +32,7 @@ void Realm::setAutorisationRoyaume(int autorisationRoyaume) {
     this->autorisationRoyaume = autorisationRoyaume;
 }
 
-int Realm::getIdRoyaume()  {
+int Realm::getIdRoyaume() {
     return idRoyaume;
 }
 
@@ -42,23 +40,23 @@ void Realm::setIdRoyaume(int idRoyaume) {
     this->idRoyaume = idRoyaume;
 }
 
- std::string Realm::getKeyRoyaume()  {
+std::string Realm::getKeyRoyaume() {
     return keyRoyaume;
 }
 
-void Realm::setKeyRoyaume( std::string keyRoyaume) {
+void Realm::setKeyRoyaume(std::string keyRoyaume) {
     this->keyRoyaume = keyRoyaume;
 }
 
- std::string Realm::getNameRoyaume()  {
+std::string Realm::getNameRoyaume() {
     return nameRoyaume;
 }
 
-void Realm::setNameRoyaume( std::string nameRoyaume) {
+void Realm::setNameRoyaume(std::string nameRoyaume) {
     this->nameRoyaume = nameRoyaume;
 }
 
-bool Realm::isOnlineRoyaume()  {
+bool Realm::isOnlineRoyaume() {
     return online_royaume;
 }
 
@@ -66,7 +64,7 @@ void Realm::setOnlineRoyaume(bool onlineRoyaume) {
     online_royaume = onlineRoyaume;
 }
 
-int Realm::getPortRoyaume()  {
+int Realm::getPortRoyaume() {
     return portRoyaume;
 }
 
@@ -74,20 +72,28 @@ void Realm::setPortRoyaume(int portRoyaume) {
     this->portRoyaume = portRoyaume;
 }
 
- std::string Realm::getUrlRoyaume()  {
+std::string Realm::getUrlRoyaume() {
     return urlRoyaume;
 }
 
-void Realm::setUrlRoyaume( std::string urlRoyaume) {
+void Realm::setUrlRoyaume(std::string urlRoyaume) {
     this->urlRoyaume = urlRoyaume;
 }
 
-int Realm::getVersionClientRoyaume()  {
+int Realm::getVersionClientRoyaume() {
     return versionClientRoyaume;
 }
 
 void Realm::setVersionClientRoyaume(int versionClientRoyaume) {
     this->versionClientRoyaume = versionClientRoyaume;
+}
+
+std::string Realm::toString() {
+    return Utilities::toString(idRoyaume) + ";" + keyRoyaume + ";" + nameRoyaume + ";" + urlRoyaume
+            + ";" + Utilities::toString(portRoyaume) + ";"
+            + Utilities::toString(autorisationRoyaume) + ";"
+            + Utilities::toString(versionClientRoyaume) + ";" + Utilities::toString(online_royaume);
+
 }
 
 } /* namespace Auth */

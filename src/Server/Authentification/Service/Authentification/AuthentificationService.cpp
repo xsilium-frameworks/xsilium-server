@@ -164,10 +164,10 @@ void AuthentificationService::handleRealmsList(MessageNetwork * messageNetwork,
     std::vector<Realm*> listOfRealms = realmManager->getRealmsList(
             Utilities::toInt(messageNetwork->messagePacket->getProperty("versionClient")), 1);
 
-    /*  for (int increment = 0; increment < listOfRealms.size(); ++increment) {
-     messageRetour->setProperty("realm" + Utilities::toString(increment),
-     listOfRealms[increment]);
-     } */
+    for (int increment = 0; increment < listOfRealms.size(); ++increment) {
+        messageRetour->setProperty("realm" + Utilities::toString(increment),
+                listOfRealms[increment]->toString());
+    }
 
     messageRetour->setOpcode(ID_AUTH);
     messageRetour->setSousOpcode(ID_REALMSLIST);
