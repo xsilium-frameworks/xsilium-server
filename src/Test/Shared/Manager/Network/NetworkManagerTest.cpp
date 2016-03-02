@@ -9,47 +9,45 @@
 #ifndef TEST_DATABASEMANAGER
 #define TEST_DATABASEMANAGER
 
-
 #include <boost/test/auto_unit_test.hpp>
 
 #include <Manager/Network/NetworkManager.h>
 
-BOOST_AUTO_TEST_SUITE(NetworkManagerTest)
+BOOST_AUTO_TEST_SUITE (NetworkManagerTest)
 
 BOOST_AUTO_TEST_CASE(testConnection)
 {
-	NetworkManager * networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
+    NetworkManager * networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
 
-	ENetAddress adresse;
-	adresse.host = ENET_HOST_ANY;
-	adresse.port  =60003;
+    ENetAddress adresse;
+    adresse.host = ENET_HOST_ANY;
+    adresse.port =60003;
 
-	BOOST_CHECK(networkManager->createConnexion(adresse,1));
+    BOOST_CHECK(networkManager->createConnexion(&adresse,1));
 
-	BOOST_CHECK(networkManager->disconnexion());
+    networkManager->disconnexion();
 
-	delete networkManager;
+    delete networkManager;
 }
 
 BOOST_AUTO_TEST_CASE(testErrorConnection)
 {
-	NetworkManager * networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
+    NetworkManager * networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
 
-	ENetAddress adresse;
-	adresse.host = ENET_HOST_ANY;
-	adresse.port  =60003;
+    ENetAddress adresse;
+    adresse.host = ENET_HOST_ANY;
+    adresse.port =60003;
 
-	BOOST_REQUIRE(networkManager->createConnexion(adresse,1));
+    BOOST_REQUIRE(networkManager->createConnexion(&adresse,1));
 
-	ENetAddress adresse2;
-	adresse2.host = ENET_HOST_ANY;
-	adresse2.port  =60003;
+    ENetAddress adresse2;
+    adresse2.host = ENET_HOST_ANY;
+    adresse2.port =60003;
 
-	BOOST_CHECK(!networkManager->createConnexion(adresse2,1));
+    BOOST_CHECK(!networkManager->createConnexion(&adresse2,1));
 
-	networkManager->disconnexion();
-	delete networkManager;
-
+    networkManager->disconnexion();
+    delete networkManager;
 
 }
 

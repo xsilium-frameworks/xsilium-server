@@ -8,11 +8,13 @@
 #ifndef SRC_SERVER_KINGDOM_KINGDOMSERVER_H_
 #define SRC_SERVER_KINGDOM_KINGDOMSERVER_H_
 
-#include <Signal/SignalHandler.h>
+#include <Manager/Signal/SignalHandler.h>
 #include <unistd.h>
 #include <iostream>
-#include <Chat/ChatManager.h>
-#include <Databases/DatabaseManager.h>
+#include <Manager/Databases/DatabaseManager.h>
+#include <Manager/Configuration/ConfiguratioNManager.h>
+#include <Manager/Log/LogManager.h>
+#include <Manager/Network/NetworkManager.h>
 
 namespace Kingdom {
 
@@ -21,21 +23,20 @@ namespace Kingdom {
  */
 class KingdomServer {
 public:
-	KingdomServer();
-	virtual ~KingdomServer();
+    KingdomServer();
+    virtual ~KingdomServer();
 
-	void startServer();
-	void stopThread();
+    void startServer();
+    void stopThread();
 
 private:
-	SignalHandler * signalHandler;
-	Configuration * configuration;
-	Log * log;
+    SignalHandler * signalHandler;
+    ConfigurationManager * configuration;
+    LogManager * log;
 
-	DatabaseManager * databaseManager;
-	NetworkManager * networkManager;
+    DatabaseManager * databaseManager;
+    NetworkManager * networkManager;
 
-	ChatManager * chatManager;
 };
 
 } /* namespace Kingdom */

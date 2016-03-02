@@ -10,87 +10,75 @@
 namespace Kingdom {
 
 KingdomServer::KingdomServer() {
-	signalHandler = 0;
-	networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
-	configuration = Configuration::getInstance();
-	log = Log::getInstance();
-	databaseManager = DatabaseManager::getInstance();
-	chatManager = 0;
+    signalHandler = 0;
+    networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
+    configuration = ConfigurationManager::getInstance();
+    log = LogManager::getInstance();
+    databaseManager = DatabaseManager::getInstance();
 
 }
 
 KingdomServer::~KingdomServer() {
-	delete chatManager;
-	delete networkManager;
-	DatabaseManager::DestroyInstance();
-	Configuration::DestroyInstance();
-	Log::DestroyInstance();
+    delete networkManager;
+    DatabaseManager::DestroyInstance();
+    ConfigurationManager::DestroyInstance();
+    LogManager::DestroyInstance();
 }
 
-void KingdomServer::startServer()
-{
-	try {
+void KingdomServer::startServer() {
+    try {
 
-		int logLevel,typeDatabase,serverPort,numClient;
-		std::string infoDB;
-		ENetAddress adresse;
+        int logLevel, typeDatabase, serverPort, numClient;
+        std::string infoDB;
+        ENetAddress adresse;
 
-		signalHandler->setupSignalHandlers();
-		if (!configuration->load("../etc/Kingdom.config"))
-			return;
+        signalHandler->setupSignalHandlers();
+        //if (!configuration->load("../etc/Kingdom.config"))
+        //    return;
 
+        configuration->get("LogLevel", logLevel);
+        log->start((LogManager::Priority) logLevel, "kingdomServer.log");
+        log->activationFile();
+        /*
+         log->write(LogManager::DEBUG, "Demarrage de la connexion SQL (loginDB) ");
+         configuration->get("typeDatabase", typeDatabase);
+         configuration->get("databaseInfo", infoDB);
 
-		configuration->get("LogLevel",logLevel);
-		log->start((Log::Priority)logLevel,"kingdomServer.log");
-		log->activationFile();
+         databaseManager->createServer(typeDatabase);
+         databaseManager->connection(infoDB);
+         */
 
-		log->write(Log::DEBUG,"Demarrage de la connexion SQL (loginDB) ");
-		configuration->get("typeDatabase",typeDatabase);
-		configuration->get("databaseInfo",infoDB);
+        configuration->get("portClient", serverPort);
+        configuration->get("clientMax", numClient);
+        adresse.host = ENET_HOST_ANY;
+        adresse.port = (enet_uint16) serverPort;
 
-		databaseManager->createServer(typeDatabase);
-		databaseManager->connection(infoDB);
+        log->write(LogManager::DEBUG, "Demarrage du socket Kingdom");
 
-		log->write(Log::DEBUG,"Demarrage du module de Chat");
-		chatManager = new ChatManager(networkManager);
-		chatManager->run();
+        if (!networkManager->createConnexion(&adresse, numClient)) {
+            log->write(LogManager::DEBUG, "Impossible d'ouvrir la connexion ");
+            return;
+        }
 
-		configuration->get("portClient",serverPort);
-		configuration->get("clientMax",numClient);
-		adresse.host = ENET_HOST_ANY;
-		adresse.port  = (enet_uint16) serverPort;
+        while (!signalHandler->gotExitSignal())
+            sleep(1);
 
-		log->write(Log::DEBUG,"Demarrage du socket Kingdom");
+        stopThread();
 
-		if(!networkManager->createConnexion(adresse,numClient))
-		{
-			log->write(Log::DEBUG,"Impossible d'ouvrir la connexion ");
-			return;
-		}
-
-		while(!signalHandler->gotExitSignal())
-			sleep(1);
-
-		stopThread();
-
-	}
-	catch (SignalException& e) {
-		std::cerr << "SignalException: " << e.what() << std::endl;
-	}
+    } catch (SignalException& e) {
+        std::cerr << "SignalException: " << e.what() << std::endl;
+    }
 }
-void KingdomServer::stopThread()
-{
-	log->write(Log::DEBUG,"Extinction du serveur ");
-	networkManager->disconnexion();
-	chatManager->stopThread();
-	databaseManager->deconnection();
+void KingdomServer::stopThread() {
+    log->write(LogManager::DEBUG, "Extinction du serveur ");
+    networkManager->disconnexion();
+    databaseManager->deconnection();
 }
 
 } /* namespace Kingdom */
 
-int main()
-{
-	Kingdom::KingdomServer * kingdomServer = new Kingdom::KingdomServer();
-	kingdomServer->startServer();
-	delete kingdomServer;
+int main() {
+    Kingdom::KingdomServer * kingdomServer = new Kingdom::KingdomServer();
+    kingdomServer->startServer();
+    delete kingdomServer;
 }

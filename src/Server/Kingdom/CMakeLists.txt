@@ -1,6 +1,6 @@
 
 
-file(GLOB_RECURSE sources_Chat Chat/*.cpp Chat/*.h)
+#file(GLOB_RECURSE sources_Chat Chat/*.cpp Chat/*.h)
 file(GLOB sources_localdir *.cpp *.h)
 
 
@@ -25,10 +25,10 @@ link_libraries(
 	SHARED
 )
 
-add_library(KS STATIC ${kingdom_STAT_SRCS})
+#add_library(KS STATIC ${kingdom_STAT_SRCS})
 
 add_executable(KingdomServer ${sources_localdir})
-target_link_libraries(KingdomServer KS)
+#target_link_libraries(KingdomServer KS)
 
 install(TARGETS KingdomServer DESTINATION bin)
 install(FILES  Kingdom.config DESTINATION etc)

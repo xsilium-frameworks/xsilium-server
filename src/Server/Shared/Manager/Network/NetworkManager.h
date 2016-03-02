@@ -18,71 +18,69 @@
 #include <Singleton/Singleton.h>
 
 enum typeNetwork {
-	NETWORK_TYPE_SERVER = 0, NETWORK_TYPE_CLIENT
+    NETWORK_TYPE_SERVER = 0, NETWORK_TYPE_CLIENT
 };
 
 /*
  *
  */
-class NetworkManager : public Singleton<NetworkManager> {
+class NetworkManager: public Singleton<NetworkManager> {
 public:
-	NetworkManager(int TypeConnexion);
-	virtual ~NetworkManager();
+    NetworkManager(int TypeConnexion);
+    virtual ~NetworkManager();
 
-	/*!
-	 *  \brief createConnexion
-	 *
-	 *  brief créer un connexion
-	 *
-	 *  \param
-	 */
+    /*!
+     *  \brief createConnexion
+     *
+     *  brief créer un connexion
+     *
+     *  \param
+     */
 
-	bool createConnexion(ENetAddress adresse, int MaxClient);
+    bool createConnexion(ENetAddress * adresse = NULL, int MaxClient = 0);
 
-	/*!
-	 *  \brief deleteConnexion
-	 *
-	 *  brief Supprime la connexion
-	 *
-	 *  \param
-	 */
+    /*!
+     *  \brief deleteConnexion
+     *
+     *  brief Supprime la connexion
+     *
+     *  \param
+     */
 
-	int connexionToHost(std::string url, int port);
+    int connexionToHost(std::string url, int port);
 
-	bool disconnexion();
+    void disconnexion();
 
-	void sendPacket(ENetHost * host, enet_uint8 channel, MessagePacket * messagePacket);
+    void sendPacket(ENetHost * host, enet_uint8 channel, MessagePacket * messagePacket);
 
-	void sendPacket(ENetPeer * peer, enet_uint8 channel, MessagePacket * messagePacket);
+    void sendPacket(ENetPeer * peer, enet_uint8 channel, MessagePacket * messagePacket);
 
-	ENetHost * getHost();
-	ENetPeer * getPeer();
+    ENetHost * getHost();
+    ENetPeer * getPeer();
 
-	void addListenneur(int identifiant, Service * service);
-	void removeListenneur(int identifiant);
-	void callBack(int identifiant, Session * session = 0, MessagePacket * messagePacket = 0);
+    void addListenneur(int identifiant, Service * service);
+    void removeListenneur(int identifiant);
+    void callBack(int identifiant, Session * session = 0, MessagePacket * messagePacket = 0);
 
 private:
 
-	int typeConnexion;
+    static void * threadConnexion(void * arguments);
 
-	static void * threadConnexion(void * arguments);
+    bool endThread;
 
-	bool endThread;
+    bool isConnectedflag;
 
-	bool isConnectedflag;
+    boost::thread thread;
 
-	boost::thread thread;
+    ENetHost * host;
 
-	ENetHost * host;
+    ENetEvent event;
 
-	ENetEvent event;
+    ENetPeer *peer;
 
-	ENetPeer *peer;
+    boost::mutex mutexSend;
 
-	boost::mutex mutexSend;
-
-	std::map<int, Service *> listOfListenner;
+    std::map<int, Service *> listOfListenner;
 
 };
 
