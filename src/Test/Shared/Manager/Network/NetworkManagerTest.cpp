@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_SUITE (NetworkManagerTest)
 
 BOOST_AUTO_TEST_CASE(testConnection)
 {
-    NetworkManager * networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
+    NetworkManager * networkManager = new NetworkManager();
 
     ENetAddress adresse;
     adresse.host = ENET_HOST_ANY;
@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(testConnection)
 
 BOOST_AUTO_TEST_CASE(testErrorConnection)
 {
-    NetworkManager * networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
+    NetworkManager * networkManager = new NetworkManager();
 
     ENetAddress adresse;
     adresse.host = ENET_HOST_ANY;

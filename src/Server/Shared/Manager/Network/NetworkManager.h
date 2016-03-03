@@ -26,7 +26,7 @@ enum typeNetwork {
  */
 class NetworkManager: public Singleton<NetworkManager> {
 public:
-    NetworkManager(int TypeConnexion);
+    NetworkManager();
     virtual ~NetworkManager();
 
     /*!
@@ -37,7 +37,7 @@ public:
      *  \param
      */
 
-    bool createConnexion(ENetAddress * adresse = NULL, int MaxClient = 0);
+    bool createConnexion(ENetAddress * adresse = NULL, int MaxClient = 1);
 
     /*!
      *  \brief deleteConnexion

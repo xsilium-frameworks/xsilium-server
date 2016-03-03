@@ -35,7 +35,8 @@ private:
     LogManager * log;
 
     DatabaseManager * databaseManager;
-    NetworkManager * networkManager;
+    NetworkManager * clientNetwork;
+    NetworkManager * authNetwork;
 
 };
 

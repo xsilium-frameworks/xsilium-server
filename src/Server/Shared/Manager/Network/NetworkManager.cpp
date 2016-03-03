@@ -7,7 +7,7 @@
  */
 #include "NetworkManager.h"
 
-NetworkManager::NetworkManager(int typeConnexion) {
+NetworkManager::NetworkManager() {
     enet_initialize();
     host = 0;
     peer = 0;
@@ -46,6 +46,7 @@ bool NetworkManager::createConnexion(ENetAddress * adresse, int MaxClient) {
         }
         enet_host_compress_with_range_coder (host);
         if (adresse != NULL) {
+            isConnectedflag = true;
             thread = boost::thread(&NetworkManager::threadConnexion, (void *) this);
         }
     } else {
@@ -63,6 +64,7 @@ int NetworkManager::connexionToHost(std::string url, int port) {
     if (peer == NULL) {
         retour = 1;
     }
+
     if (enet_host_service(host, &event, 1000) > 0 && event.type == ENET_EVENT_TYPE_CONNECT) {
         isConnectedflag = true;
         endThread = false;
@@ -79,13 +81,15 @@ int NetworkManager::connexionToHost(std::string url, int port) {
 
 void NetworkManager::disconnexion() {
 
-    endThread = true;
-    thread.join();
-
-    if (peer != NULL) {
+    if (isConnectedflag) {
         isConnectedflag = false;
-        enet_peer_disconnect(peer, 0);
-        enet_peer_reset (peer);
+        endThread = true;
+        thread.join();
+
+        if (peer != NULL) {
+            enet_peer_disconnect(peer, 0);
+            enet_peer_reset (peer);
+        }
     }
 }
 

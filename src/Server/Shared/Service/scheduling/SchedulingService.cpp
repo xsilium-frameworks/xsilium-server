@@ -14,8 +14,7 @@ SchedulingService::~SchedulingService() {
     // TODO Auto-generated destructor stub
 }
 
-void SchedulingService::runLoop()
-{
+void SchedulingService::runLoop() {
     boost::posix_time::ptime realCurrTime;
     boost::posix_time::ptime realPrevTime = boost::posix_time::microsec_clock::local_time();
     int prevSleepTime = 0;
@@ -23,8 +22,7 @@ void SchedulingService::runLoop()
 
     signalHandler.setupSignalHandlers();
 
-    while(!signalHandler.gotExitSignal())
-    {
+    while (!signalHandler.gotExitSignal()) {
         realCurrTime = boost::posix_time::microsec_clock::local_time();
         diff = realCurrTime - realPrevTime;
 
@@ -32,27 +30,19 @@ void SchedulingService::runLoop()
 
         realPrevTime = realCurrTime;
 
-        if( diff.total_milliseconds() <= 50 + prevSleepTime )
-        {
-            prevSleepTime = 50 + prevSleepTime - diff.total_milliseconds() ;
+        if (diff.total_milliseconds() <= 50 + prevSleepTime) {
+            prevSleepTime = 50 + prevSleepTime - diff.total_milliseconds();
             boost::this_thread::sleep_for(boost::chrono::milliseconds(prevSleepTime));
-        }
-        else
-        {
-            prevSleepTime = 0 ;
+        } else {
+            prevSleepTime = 0;
         }
     }
 }
 
-
-void SchedulingService::callBack(int diff)
-{
+void SchedulingService::callBack(int diff) {
     std::vector<Manager*>::iterator it;
 
-    for (it = Manager::listOfManager.begin() ; it != Manager::listOfManager.end(); ++it)
-    {
+    for (it = Manager::listOfManager.begin(); it != Manager::listOfManager.end(); ++it) {
         (*it)->update(diff);
     }
-
-    printf("%d \n",diff);
 }

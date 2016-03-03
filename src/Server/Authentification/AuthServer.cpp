@@ -12,7 +12,7 @@ namespace Auth {
 AuthServer::AuthServer() {
     authentificationService = 0;
     realmService = 0;
-    networkManager = new NetworkManager(NETWORK_TYPE_SERVER);
+    networkManager = new NetworkManager();
     configuration = ConfigurationManager::getInstance();
     log = LogManager::getInstance();
     databaseManager = DatabaseManager::getInstance();
