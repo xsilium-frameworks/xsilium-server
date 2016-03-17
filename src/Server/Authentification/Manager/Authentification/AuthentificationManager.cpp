@@ -128,7 +128,7 @@ void AuthentificationManager::update(int diff) {
                 compteDAO->update(it->second);
                 logManager->write(LogManager::DEBUG, "Delete du compte : %s",
                         it->second->getUsername().c_str());
-                it = listOfCompte.erase(it);
+                listOfCompte.erase(it++);
             } else {
                 ++it;
             }
