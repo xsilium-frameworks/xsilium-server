@@ -8,7 +8,8 @@
 #include "Session.h"
 
 Session::Session() {
-    peer = NULL;
+    peer = 0;
+    host = 0;
     model = 0;
     sessionEtape = 0;
 }
@@ -25,6 +26,14 @@ void Session::setSessionPeer(ENetPeer * peer) {
 
 ENetPeer * Session::getSessionPeer() {
     return peer;
+}
+
+void Session::setSessionHost(ENetHost * host) {
+    this->host = host;
+}
+
+ENetHost * Session::getSessionHost() {
+    return host;
 }
 
 ENetAddress * Session::getSessionID() {

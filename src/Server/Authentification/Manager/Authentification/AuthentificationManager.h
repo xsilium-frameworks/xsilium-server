@@ -16,10 +16,9 @@
 #include <DAO/Compte/CompteDAO.h>
 #include <DAO/Compte/CompteBanDAO.h>
 
-
 namespace Auth {
 
-class AuthentificationManager : public Manager , public Singleton<AuthentificationManager> {
+class AuthentificationManager: public Manager, public Singleton<AuthentificationManager> {
 public:
 
     /*!
@@ -29,7 +28,7 @@ public:
     /*!
      *  \brief Constructeur de la classe AuthentificationManager
      */
-    AuthentificationManager(DAO* compteBanDao,DAO* compteDao,DAO* ipBanDao,DAO* ipDao);
+    AuthentificationManager(DAO* compteBanDao, DAO* compteDao, DAO* ipBanDao, DAO* ipDao);
 
     /*!
      *  \brief Destructeur de la classe AuthentificationManager
@@ -38,9 +37,9 @@ public:
 
     bool checkIp(std::string ip);
 
-    Compte * getAccount(std::string Username);
+    Compte * getAccount(int idCompte);
 
-    bool checkAccount(std::string Username);
+    int checkAccount(std::string username);
 
     void resetIpTemp(std::string ip);
 
@@ -49,12 +48,12 @@ public:
     void update(int diff);
 
 private:
-    DAO * ipBanDAO ;
+    DAO * ipBanDAO;
     DAO * ipDAO;
     DAO * compteDAO;
     DAO * compteBanDAO;
 
-    std::map<const char *,Compte*> listOfCompte;
+    std::map<int, Compte*> listOfCompte;
 };
 
 } /* namespace Auth */

@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <Manager/Databases/DatabaseManager.h>
-#include <Manager/Configuration/ConfiguratioNManager.h>
+#include <Manager/Configuration/ConfigurationManager.h>
 #include <Manager/Log/LogManager.h>
 #include <Manager/Network/NetworkManager.h>
 

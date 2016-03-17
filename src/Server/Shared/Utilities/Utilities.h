@@ -12,6 +12,7 @@
 #include <vector>
 #include <sstream>
 #include <stdlib.h>
+#include <boost/date_time/posix_time/posix_time.hpp>
 /*
  *
  */
@@ -20,24 +21,23 @@ typedef std::vector<std::string> Tokens;
 
 class Utilities {
 public:
-	Utilities();
-	virtual ~Utilities();
+    Utilities();
+    virtual ~Utilities();
 
-	static Tokens strSplit(std::string src, std::string sep);
+    static Tokens strSplit(std::string src, std::string sep);
 
-	static int toInt(std::string str);
-	static long toLong(std::string str);
-	static double toDouble(std::string str);
-	static bool toBool(std::string str);
-	static time_t toDate(std::string str);
+    static int toInt(std::string str);
+    static long toLong(std::string str);
+    static double toDouble(std::string str);
+    static bool toBool(std::string str);
+    static time_t toDate(std::string str);
 
-	template<typename T>
-	static std::string toString(T variable) {
-		std::ostringstream ss;
-		ss << variable;
-		return ss.str();
-	}
-
+    template<typename T>
+    static std::string toString(T variable) {
+        std::ostringstream ss;
+        ss << variable;
+        return ss.str();
+    }
 
 };
 

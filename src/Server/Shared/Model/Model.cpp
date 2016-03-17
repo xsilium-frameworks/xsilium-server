@@ -8,30 +8,31 @@
 #include "Model.h"
 
 Model::Model() {
-	updateData = false;
-	online = true;
+    updateData = false;
+    online = false;
 
 }
 
 Model::~Model() {
-	// TODO Auto-generated destructor stub
+    // TODO Auto-generated destructor stub
 }
 
 std::string Model::getTypeModel() const {
-	return std::string(typeid(this).name());
+    return std::string(typeid(this).name());
 }
 
-
-void Model::setOnline(bool online)
-{
-    this->online = true;
+void Model::setOnline(bool online) {
+    this->online = online;
 }
 
 bool Model::isOnline() const {
     return online;
 }
 
-bool Model::isUpdate()
-{
+void Model::setUpdate(bool updateData) {
+    this->updateData = updateData;
+}
+
+bool Model::isUpdate() {
     return updateData;
 }

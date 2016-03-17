@@ -17,7 +17,7 @@
  */
 enum typeOfSession {
 
-	SESSION_REALM = 0, SESSION_ZONE, SESSION_COMPTE, SESSION_PERSO,
+    SESSION_REALM = 0, SESSION_ZONE, SESSION_COMPTE, SESSION_PERSO,
 };
 
 /*
@@ -25,25 +25,30 @@ enum typeOfSession {
  */
 class Session {
 public:
-	Session();
-	virtual ~Session();
+    Session();
+    virtual ~Session();
 
-	void setSessionPeer(ENetPeer * peer);
-	ENetPeer * getSessionPeer();
-	ENetAddress * getSessionID();
+    void setSessionPeer(ENetPeer * peer);
+    ENetPeer * getSessionPeer();
 
-	void setSessionListener(Model * model);
-	Model * getSessionListener();
+    void setSessionHost(ENetHost * host);
+    ENetHost * getSessionHost();
 
-	std::string getIP();
+    ENetAddress * getSessionID();
 
-	int getSessionEtape() const;
-	void setSessionEtape(int sessionEtape);
+    void setSessionListener(Model * model);
+    Model * getSessionListener();
+
+    std::string getIP();
+
+    int getSessionEtape() const;
+    void setSessionEtape(int sessionEtape);
 
 private:
-	ENetPeer * peer;
-	Model * model;
-	int sessionEtape;
+    ENetPeer * peer;
+    ENetHost * host;
+    Model * model;
+    int sessionEtape;
 
 };
 

@@ -8,29 +8,29 @@
 #ifndef SRC_SERVER_SHARED_SESSION_SESSIONMANAGER_H_
 #define SRC_SERVER_SHARED_SESSION_SESSIONMANAGER_H_
 
-#include "Model/Session/Session.h"
-#include <Manager/Network/NetworkManager.h>
+#include <Model/Session/Session.h>
 #include <Manager/Log/LogManager.h>
-
 #include <Singleton/Singleton.h>
+#include <boost/thread/mutex.hpp>
+#include <vector>
 
 /*
  *
  */
 class SessionManager: public Singleton<SessionManager> {
 public:
-	SessionManager();
-	virtual ~SessionManager();
+    SessionManager();
+    virtual ~SessionManager();
 
-	void creerSession(ENetPeer * peer);
-	void supprimerSession(ENetPeer * peer);
-	Session * trouverSession(ENetAddress address);
+    void creerSession(ENetPeer * peer);
+    void supprimerSession(ENetPeer * peer);
+    Session * trouverSession(ENetAddress address);
 
 private:
-	std::vector<Session *> listOfSession;
-	LogManager * log;
+    std::vector<Session *> listOfSession;
+    LogManager * log;
 
-	boost::mutex mutexSession;
+    boost::mutex mutexSession;
 
 };
 

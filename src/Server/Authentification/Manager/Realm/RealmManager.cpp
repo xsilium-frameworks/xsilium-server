@@ -25,9 +25,11 @@ void RealmManager::updateRealm() {
 }
 
 int RealmManager::checkRealmName(std::string nameRealm) {
-    Realm realm(nameRealm);
-    if (realmDAO->read(&realm)) {
-        return realm.getIdRoyaume();
+    Realm * realm = new Realm(nameRealm);
+
+    if (realmDAO->read(realm)) {
+        listRoyaume[realm->getIdRoyaume()] = realm;
+        return realm->getIdRoyaume();
     } else {
         return 0;
     }

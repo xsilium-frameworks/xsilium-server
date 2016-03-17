@@ -10,76 +10,82 @@
 namespace Auth {
 
 RealmService::RealmService(NetworkManager * networkManager) {
-	this->networkManager = networkManager;
-	log = LogManager::getInstance();
+    this->networkManager = networkManager;
 
-	realmManager = RealmManager::getInstance();
+    realmManager = RealmManager::getInstance();
 
 }
 
 RealmService::~RealmService() {
-	networkManager->removeListenneur(ID_REALM);
-	RealmManager::DestroyInstance();
+    networkManager->removeListenneur(ID_REALM);
+    RealmManager::DestroyInstance();
 }
 
 void RealmService::run() {
-	networkManager->addListenneur(ID_REALM, this);
-	Service::run();
+    networkManager->addListenneur(ID_REALM, this);
+    Service::run();
 }
 
 void RealmService::processPacket(MessageNetwork * messageNetwork) {
-	log->write(LogManager::DEBUG, "Nouveau Packet Realm");
-	MessagePacket * messageRetour = new MessagePacket();
-	switch (messageNetwork->messagePacket->getSousOpcode()) {
-	case ID_REGISTER_REALM:
-		handleRegisterRealm(messageNetwork, messageRetour);
-		break;
-	default:
-		break;
-	}
-	networkManager->sendPacket(messageNetwork->session->getSessionPeer(), 0, messageRetour);
+    log->write(LogManager::DEBUG, "Nouveau Packet Realm");
+    MessageNetwork * messageRetour = new MessageNetwork();
+    switch (messageNetwork->messagePacket->getSousOpcode()) {
+    case ID_REGISTER_REALM:
+        handleRegisterRealm(messageNetwork, messageRetour);
+        break;
+    default:
+        break;
+    }
+    networkManager->sendPacket(messageRetour);
 }
 
 void RealmService::handleRegisterRealm(MessageNetwork * messageNetwork,
-		MessagePacket * messageRetour) {
-	std::vector < std::string > tableauData;
-	tableauData.push_back("Name");
-	tableauData.push_back("Key");
-	tableauData.push_back("Port");
-	tableauData.push_back("URL");
-	tableauData.push_back("Version");
+        MessageNetwork * messageRetour) {
 
-	// Controle Presence Donneee
-	if (!controleData(messageNetwork->messagePacket, &tableauData)) {
-		log->write(LogManager::INFO, "Le message venant de %d:%d est illisible ",
-				messageNetwork->session->getSessionID()->host,
-				messageNetwork->session->getSessionID()->port);
-		sendErrorPacket(messageRetour, ID_ERROR_PACKET_SIZE_R);
-		return;
-	}
+    messageRetour->messagePacket = new MessagePacket();
 
-	// Verification de la cl�
-	if (!realmManager->checkRealmKey(messageNetwork->messagePacket->getProperty("Key"))) {
-		log->write(LogManager::INFO, "Le message venant de %d:%d est illisible ",
-				messageNetwork->session->getSessionID()->host,
-				messageNetwork->session->getSessionID()->port);
-		sendErrorPacket(messageRetour, ID_ERROR_KEY);
-	}
+    std::vector < std::string > tableauData;
+    tableauData.push_back("Name");
+    tableauData.push_back("Key");
+    tableauData.push_back("Port");
+    tableauData.push_back("URL");
+    tableauData.push_back("Version");
 
-	// R�cup�ration du Realm et mise � jour
-	idRealm = realmManager->checkRealmName(messageNetwork->messagePacket->getProperty("Name"));
+    // Controle Presence Donneee
+    if (!controleData(messageNetwork->messagePacket, &tableauData)) {
+        log->write(LogManager::INFO, "Le message venant de %d:%d est illisible ",
+                messageNetwork->session->getSessionID()->host,
+                messageNetwork->session->getSessionID()->port);
+        sendErrorPacket(messageNetwork, messageRetour, ID_ERROR_PACKET_SIZE_R);
+        return;
+    }
 
-	if (idRealm) {
-		realmManager->createRealm();
-	} else {
-		realmManager->updateRealm();
-	}
+    // Verification de la cl�
+    if (!realmManager->checkRealmKey(messageNetwork->messagePacket->getProperty("Key"))) {
+        log->write(LogManager::INFO, "Le message venant de %d:%d est illisible ",
+                messageNetwork->session->getSessionID()->host,
+                messageNetwork->session->getSessionID()->port);
+        sendErrorPacket(messageNetwork, messageRetour, ID_ERROR_KEY);
+    }
+
+    // R�cup�ration du Realm et mise � jour
+    idRealm = realmManager->checkRealmName(messageNetwork->messagePacket->getProperty("Name"));
+
+    if (idRealm) {
+        realmManager->createRealm();
+    } else {
+        realmManager->updateRealm();
+    }
+
+    messageRetour->session->setSessionPeer(messageNetwork->session->getSessionPeer());
 }
 
-void RealmService::sendErrorPacket(MessagePacket * messageRetour, int typeError) {
-	messageRetour->setOpcode(ID_REALM);
-	messageRetour->setSousOpcode(ID_ERREUR_REALM);
-	messageRetour->setProperty("ErrorId", typeError);
+void RealmService::sendErrorPacket(MessageNetwork * messageNetwork, MessageNetwork * messageRetour,
+        int typeError) {
+    messageRetour->session->setSessionPeer(messageNetwork->session->getSessionPeer());
+    messageRetour->messagePacket->setOpcode(ID_REALM);
+    messageRetour->messagePacket->setSousOpcode(ID_ERREUR_REALM);
+    messageRetour->messagePacket->setProperty("ErrorId", typeError);
 }
 
 } /* namespace Auth */

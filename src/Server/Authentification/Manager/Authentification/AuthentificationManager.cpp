@@ -47,24 +47,35 @@ bool AuthentificationManager::checkIp(std::string ip) {
     return true;
 }
 
-Compte * AuthentificationManager::getAccount(std::string Username) {
-    return listOfCompte.find(Username.c_str())->second;
+Compte * AuthentificationManager::getAccount(int idCompte) {
+
+    Compte * compte = NULL;
+    std::map<int, Compte*>::iterator it;
+
+    it = listOfCompte.find(idCompte);
+
+    if (it != listOfCompte.end()) {
+        compte = it->second;
+    }
+
+    return compte;
 }
 
-bool AuthentificationManager::checkAccount(std::string Username) {
-    bool resultat = false;
-    Compte * compte = new Compte(Username);
+int AuthentificationManager::checkAccount(std::string username) {
+    int idCompte = 0;
+    Compte * compte = new Compte(username);
 
     if (compteDAO->read(compte)) {
-        resultat = true;
-        listOfCompte.insert(std::pair<const char *, Compte*>(Username.c_str(), compte));
+        idCompte = compte->getIdAccount();
+        compte->setOnline(true);
+        listOfCompte[idCompte] = compte;
         CompteBan * compteBan = new CompteBan(compte->getIdAccount());
         if (compteBanDAO->read(compteBan)) {
             compte->setCompteBan(compteBan);
         }
     }
 
-    return resultat;
+    return idCompte;
 }
 
 void AuthentificationManager::banIP(std::string ip) {
@@ -101,20 +112,30 @@ void AuthentificationManager::resetIpTemp(std::string ip) {
 }
 
 void AuthentificationManager::update(int diff) {
-    std::map<const char *, Compte*>::iterator it = listOfCompte.begin();
+    std::map<int, Compte*>::iterator it = listOfCompte.begin();
 
-    while (it != listOfCompte.end()) {
-        if (it->second->isUpdate()) {
-            compteDAO->update(it->second);
-        }
+    if (!listOfCompte.empty()) {
+        while (it != listOfCompte.end()) {
+            if (it->second->isUpdate()) {
+                if (!compteDAO->update(it->second)) {
+                    logManager->write(LogManager::ERROR, "Update du compte %s est en erreur.",
+                            it->second->getUsername().c_str());
+                } else {
+                    it->second->setUpdate(false);
+                }
+            }
+            if (!it->second->isOnline()) {
+                compteDAO->update(it->second);
+                logManager->write(LogManager::DEBUG, "Delete du compte : %s",
+                        it->second->getUsername().c_str());
+                it = listOfCompte.erase(it);
+            } else {
+                ++it;
+            }
 
-        if (!it->second->isOnline()) {
-            compteDAO->update(it->second);
-            listOfCompte.erase(it++);
-        } else {
-            ++it;
         }
     }
+
 }
 
 } /* namespace Auth */

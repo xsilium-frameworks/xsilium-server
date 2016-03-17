@@ -14,22 +14,22 @@
 class Model {
 
 public:
-	Model();
-	virtual ~Model();
+    Model();
+    virtual ~Model();
 
-	std::string getTypeModel() const;
+    std::string getTypeModel() const;
 
     bool isOnline() const;
     void setOnline(bool online);
 
     bool isUpdate();
-
+    void setUpdate(bool updateData);
 
 protected:
 
-	bool updateData;
+    bool updateData;
 
-	bool online;
+    bool online;
 
 };
 

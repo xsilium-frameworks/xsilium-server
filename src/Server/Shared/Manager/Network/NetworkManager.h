@@ -11,15 +11,18 @@
 #include <boost/serialization/serialization.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
+#include <boost/thread.hpp>
 
+#include <Model/Network/MessagePacket.h>
 #include <Service/Service.h>
 #include "Opcode.h"
 #include <Manager/Session/SessionManager.h>
-#include <Singleton/Singleton.h>
 
 enum typeNetwork {
     NETWORK_TYPE_SERVER = 0, NETWORK_TYPE_CLIENT
 };
+
+class Service;
 
 /*
  *
@@ -51,10 +54,6 @@ public:
 
     void disconnexion();
 
-    void sendPacket(ENetHost * host, enet_uint8 channel, MessagePacket * messagePacket);
-
-    void sendPacket(ENetPeer * peer, enet_uint8 channel, MessagePacket * messagePacket);
-
     ENetHost * getHost();
     ENetPeer * getPeer();
 
@@ -62,7 +61,12 @@ public:
     void removeListenneur(int identifiant);
     void callBack(int identifiant, Session * session = 0, MessagePacket * messagePacket = 0);
 
+    void sendPacket(MessageNetwork * messageToSend);
+
 private:
+
+    void sendPacket(ENetHost * host, enet_uint8 channel, MessagePacket * messagePacket);
+    void sendPacket(ENetPeer * peer, enet_uint8 channel, MessagePacket * messagePacket);
 
     static void * threadConnexion(void * arguments);
 

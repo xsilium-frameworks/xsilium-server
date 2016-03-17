@@ -12,10 +12,10 @@
 #include <boost/thread.hpp>
 
 #include <Model/Network/MessagePacket.h>
+#include <Manager/Log/LogManager.h>
 #include <Utilities/Utilities.h>
 
 #define NUM_THREAD_MODULE 4
-
 
 class Service {
 public:
@@ -42,6 +42,8 @@ protected:
     boost::condition_variable condition_Queue;
     boost::thread_group groupThread;
     bool endThread;
+
+    LogManager * log;
 
 private:
     std::queue<MessageNetwork *> ListOfPacket;
