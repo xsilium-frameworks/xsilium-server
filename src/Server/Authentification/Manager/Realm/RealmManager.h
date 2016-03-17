@@ -41,7 +41,7 @@ public:
     void update(int diff);
 
 private:
-    std::map<const char *, Realm*> listRoyaume;
+    std::map<int, Realm*> listRoyaume;
     RealmDAO * realmDAO;
 
 };

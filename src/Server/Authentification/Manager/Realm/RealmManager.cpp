@@ -49,7 +49,7 @@ bool RealmManager::checkRealmKey(std::string realmKey) {
 
 std::vector<Realm*> RealmManager::getRealmsList(int version, int autorisation) {
     std::vector<Realm*> retour;
-    std::map<const char *, Realm*>::iterator itListRoyaume = listRoyaume.begin();
+    std::map<int, Realm*>::iterator itListRoyaume = listRoyaume.begin();
 
     while (itListRoyaume != listRoyaume.end()) {
         if (itListRoyaume->second->getAutorisationRoyaume() <= autorisation
@@ -61,7 +61,7 @@ std::vector<Realm*> RealmManager::getRealmsList(int version, int autorisation) {
 }
 
 void RealmManager::update(int diff) {
-    std::map<const char *, Realm*>::iterator it = listRoyaume.begin();
+    std::map<int, Realm*>::iterator it = listRoyaume.begin();
 
     while (it != listRoyaume.end()) {
         if (it->second->isUpdate()) {

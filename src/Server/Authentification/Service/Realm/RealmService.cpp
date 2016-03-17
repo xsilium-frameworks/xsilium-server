@@ -69,13 +69,13 @@ void RealmService::handleRegisterRealm(MessageNetwork * messageNetwork,
     }
 
     // R�cup�ration du Realm et mise � jour
-    idRealm = realmManager->checkRealmName(messageNetwork->messagePacket->getProperty("Name"));
+    /* idRealm = realmManager->checkRealmName(messageNetwork->messagePacket->getProperty("Name"));
 
-    if (idRealm) {
-        realmManager->createRealm();
-    } else {
-        realmManager->updateRealm();
-    }
+     if (idRealm) {
+     realmManager->createRealm();
+     } else {
+     realmManager->updateRealm();
+     } */
 
     messageRetour->session->setSessionPeer(messageNetwork->session->getSessionPeer());
 }
