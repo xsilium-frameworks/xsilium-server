@@ -99,8 +99,10 @@ void NetworkManager::sendPacket(ENetHost * host, enet_uint8 channel,
 
     std::ostringstream archive_stream;
     std::string messageSend;
-
     boost::archive::text_oarchive archive(archive_stream);
+
+    messagePacket->setTimestampDepart(
+            boost::posix_time::ptime(boost::posix_time::microsec_clock::universal_time()));
     archive << messagePacket;
 
     messageSend = archive_stream.str();
@@ -145,6 +147,9 @@ void* NetworkManager::threadConnexion(void* arguments) {
                     std::string((char*) networkManager->event.packet->data));
             boost::archive::text_iarchive archive(archive_stream);
             archive >> message;
+
+            message->setTimestampArriver(
+                    boost::posix_time::ptime(boost::posix_time::microsec_clock::universal_time()));
 
             networkManager->callBack(message->getOpcode(),
                     SessionManager::getInstance()->trouverSession(

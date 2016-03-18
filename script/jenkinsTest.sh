@@ -8,7 +8,6 @@ echo "Lancement des tests unitaire "
 if [ ! -d "$REPORT" ]; then
     mkdir $REPORT
 fi
-cd $BUILD
 
 cp $WORKSPACE"/src/Test/TestConfig.config" .
 

@@ -51,7 +51,7 @@ bool IPBanDAO::create(Model * model, int idTransaction) {
     return retour;
 }
 bool IPBanDAO::read(Model * model, int idTransaction) {
-    bool retour;
+    bool retour = false;
     Tokens resultsqlT;
 
     IPBan * ipBan = static_cast<IPBan*>(model);
@@ -60,9 +60,7 @@ bool IPBanDAO::read(Model * model, int idTransaction) {
             suffix + Utilities::toString(REALMS_SEL_IPBANNED_INFOSSURIPBANNIES), &resultsqlT,
             idTransaction, 1, ipBan->getIp().c_str());
 
-    if (resultsqlT.empty()) {
-        retour = false;
-    } else {
+    if (!resultsqlT.empty()) {
         Tokens resultatsql;
 
         resultatsql = Utilities::strSplit(resultsqlT[0], ";");

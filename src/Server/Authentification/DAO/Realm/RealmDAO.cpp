@@ -41,11 +41,13 @@ bool RealmDAO::create(Model * model, int idTransaction) {
             Utilities::toString(realm->getAutorisationRoyaume()).c_str(),
             Utilities::toString(realm->getVersionClientRoyaume()).c_str(),
             Utilities::toString(realm->isOnlineRoyaume()).c_str());
-    retour = read(realm);
+
+    if (retour)
+        retour = read(realm);
     return retour;
 }
 bool RealmDAO::read(Model * model, int idTransaction) {
-    bool retour;
+    bool retour = false;
     Tokens resultsqlT;
 
     Realm * realm = static_cast<Realm*>(model);
@@ -54,9 +56,7 @@ bool RealmDAO::read(Model * model, int idTransaction) {
             suffix + Utilities::toString(REALMS_SEL_LISTESROYAUMES), &resultsqlT, idTransaction, 1,
             realm->getNameRoyaume().c_str());
 
-    if (resultsqlT.empty()) {
-        retour = false;
-    } else {
+    if (!resultsqlT.empty()) {
         Tokens resultatsql;
         resultatsql = Utilities::strSplit(resultsqlT[0], ";");
 

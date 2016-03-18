@@ -38,7 +38,7 @@ bool IPDAO::create(Model * model, int idTransaction) {
     return retour;
 }
 bool IPDAO::read(Model * model, int idTransaction) {
-    bool retour;
+    bool retour = false;
     Tokens resultsqlT;
 
     IP * ip = static_cast<IP*>(model);
@@ -47,9 +47,7 @@ bool IPDAO::read(Model * model, int idTransaction) {
             suffix + Utilities::toString(REALMS_SEL_IPTEMPORAIRE), &resultsqlT, idTransaction, 1,
             ip->getIpTempIp().c_str());
 
-    if (resultsqlT.empty()) {
-        retour = false;
-    } else {
+    if (!resultsqlT.empty()) {
         Tokens resultatsql;
         resultatsql = Utilities::strSplit(resultsqlT[0], ";");
         ip->setIdIp(Utilities::toInt(resultatsql[0]));

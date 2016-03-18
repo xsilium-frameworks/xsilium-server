@@ -64,16 +64,14 @@ bool CompteBanDAO::update(Model * model, int idTransaction) {
             Utilities::toString(compteBan->getIdAccountBanned()).c_str());
 }
 bool CompteBanDAO::read(Model * model, int idTransaction) {
-    bool retour;
+    bool retour = false;
     Tokens resultsqlT;
     CompteBan * compteBan = static_cast<CompteBan*>(model);
     retour = database->executionPrepareStatement(
             suffix + Utilities::toString(REALMS_SEL_ACCOUNTBANNED), &resultsqlT, idTransaction, 1,
             Utilities::toString(compteBan->getIdAccount()).c_str());
 
-    if (resultsqlT.empty()) {
-        retour = false;
-    } else {
+    if (!resultsqlT.empty()) {
         Tokens resultatsql;
 
         resultatsql = Utilities::strSplit(resultsqlT[0], ";");

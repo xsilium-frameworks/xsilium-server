@@ -58,7 +58,7 @@ bool CompteDAO::create(Model * model, int idTransaction) {
 bool CompteDAO::update(Model * model, int idTransaction) {
     Tokens resultsqlT;
 
-    bool retour = false;
+    bool retour;
 
     Compte * compte = static_cast<Compte*>(model);
 
@@ -75,7 +75,7 @@ bool CompteDAO::update(Model * model, int idTransaction) {
 
 }
 bool CompteDAO::read(Model * model, int idTransaction) {
-    bool retour;
+    bool retour = false;
     Tokens resultsqlT;
 
     Compte * compte = static_cast<Compte*>(model);
@@ -83,9 +83,7 @@ bool CompteDAO::read(Model * model, int idTransaction) {
     retour = database->executionPrepareStatement(suffix + Utilities::toString(REALMS_SEL_ACCOUNT),
             &resultsqlT, idTransaction, 1, compte->getUsername().c_str());
 
-    if (resultsqlT.empty()) {
-        retour = false;
-    } else {
+    if (!resultsqlT.empty()) {
         Tokens resultatsql;
 
         resultatsql = Utilities::strSplit(resultsqlT[0], ";");
