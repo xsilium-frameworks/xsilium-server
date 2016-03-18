@@ -64,7 +64,7 @@ bool CompteBanDAO::update(Model * model, int idTransaction) {
             Utilities::toString(compteBan->getIdAccountBanned()).c_str());
 }
 bool CompteBanDAO::read(Model * model, int idTransaction) {
-    bool retour = false;
+    bool retour;
     Tokens resultsqlT;
     CompteBan * compteBan = static_cast<CompteBan*>(model);
     retour = database->executionPrepareStatement(

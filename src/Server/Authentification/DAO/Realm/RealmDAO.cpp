@@ -47,7 +47,7 @@ bool RealmDAO::create(Model * model, int idTransaction) {
     return retour;
 }
 bool RealmDAO::read(Model * model, int idTransaction) {
-    bool retour = false;
+    bool retour;
     Tokens resultsqlT;
 
     Realm * realm = static_cast<Realm*>(model);

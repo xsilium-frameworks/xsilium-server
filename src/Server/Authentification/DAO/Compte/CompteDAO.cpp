@@ -75,7 +75,7 @@ bool CompteDAO::update(Model * model, int idTransaction) {
 
 }
 bool CompteDAO::read(Model * model, int idTransaction) {
-    bool retour = false;
+    bool retour;
     Tokens resultsqlT;
 
     Compte * compte = static_cast<Compte*>(model);

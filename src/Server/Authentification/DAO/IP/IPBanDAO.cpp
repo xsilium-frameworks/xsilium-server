@@ -51,7 +51,7 @@ bool IPBanDAO::create(Model * model, int idTransaction) {
     return retour;
 }
 bool IPBanDAO::read(Model * model, int idTransaction) {
-    bool retour = false;
+    bool retour;
     Tokens resultsqlT;
 
     IPBan * ipBan = static_cast<IPBan*>(model);
