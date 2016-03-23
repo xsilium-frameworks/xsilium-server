@@ -15,34 +15,33 @@
 
 namespace Auth {
 
-/*!
- * \enum typeForAuth
- * Enumeration des OPcodes
- */
-enum typeForAuth {
-    ID_CHALLENGE = 0, //!< ID_CHALLENGE
-    ID_REPONSE,      //!< ID_REPONSE
-    ID_REALMSLIST,
-    ID_SEND_CANCEL,  //!< ID_SEND_CANCEL
-    ID_ERREUR        //!< ID_ERREUR
-};
-
-enum erreurOfAuth {
-    ID_NOERROR = 0,
-    ID_ERROR_PACKET_SIZE,
-    ID_CONNECTION_BANNED,
-    ID_INVALID_ACCOUNT_OR_PASSWORD,
-    ID_COMPTE_BANNIE,
-    ID_INVALID_IP,
-    ID_ERROR_ETAPE
-};
-
-enum stepOfAuth {
-    STEP_CHALLENGE = 0, STEP_REPONSE, STEP_REAMSLIST
-
-};
-
 class AuthentificationService: public Service {
+
+    /*!
+     * \enum typeForAuth
+     * Enumeration des OPcodes
+     */
+    enum typeForAuth {
+        ID_CHALLENGE = 0, //!< ID_CHALLENGE
+        ID_REPONSE,      //!< ID_REPONSE
+        ID_REALMSLIST,
+        ID_SEND_CANCEL,  //!< ID_SEND_CANCEL
+        ID_ERROR        //!< ID_ERREUR
+    };
+
+    enum erreurOfAuth {
+        ID_CONNECTION_BANNED = Service::ID_OTHER_ERROR,
+        ID_INVALID_ACCOUNT_OR_PASSWORD,
+        ID_COMPTE_BANNIE,
+        ID_INVALID_IP,
+        ID_ERROR_ETAPE
+    };
+
+    enum stepOfAuth {
+        STEP_CHALLENGE = 0, STEP_REPONSE, STEP_REAMSLIST
+
+    };
+
 public:
 
     /*!

@@ -132,7 +132,7 @@ void ChatService::handleChatCommunity(MessageNetwork * messageNetwork,
 //TODO Implementation SpamDetector
 bool ChatService::spamDetector(MessageNetwork * messageNetwork, MessagePacket * messageRetour) {
     messageRetour->setOpcode(ID_CHAT);
-    messageRetour->setSousOpcode(ID_ERREUR);
+    messageRetour->setSousOpcode(ID_ERROR);
     messageRetour->setProperty("ErrorId", ID_SPAM);
 
     return false;
@@ -142,7 +142,7 @@ void ChatService::sendErrorPacket(MessageNetwork * messageNetwork, MessageNetwor
         int typeErreur) {
     messageRetour->session->setSessionPeer(messageNetwork->session->getSessionPeer());
     messageRetour->messagePacket->setOpcode(ID_CHAT);
-    messageRetour->messagePacket->setSousOpcode(ID_ERREUR);
+    messageRetour->messagePacket->setSousOpcode(ID_ERROR);
     messageRetour->messagePacket->setProperty("ErrorId", typeErreur);
 }
 

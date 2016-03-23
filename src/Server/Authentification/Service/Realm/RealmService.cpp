@@ -56,7 +56,7 @@ void RealmService::handleRegisterRealm(MessageNetwork * messageNetwork,
         log->write(LogManager::INFO, "Le message venant de %d:%d est illisible ",
                 messageNetwork->session->getSessionID()->host,
                 messageNetwork->session->getSessionID()->port);
-        sendErrorPacket(messageNetwork, messageRetour, ID_ERROR_PACKET_SIZE_R);
+        sendErrorPacket(messageNetwork, messageRetour, ID_ERROR_PACKET_SIZE);
         return;
     }
 
@@ -84,7 +84,7 @@ void RealmService::sendErrorPacket(MessageNetwork * messageNetwork, MessageNetwo
         int typeError) {
     messageRetour->session->setSessionPeer(messageNetwork->session->getSessionPeer());
     messageRetour->messagePacket->setOpcode(ID_REALM);
-    messageRetour->messagePacket->setSousOpcode(ID_ERREUR_REALM);
+    messageRetour->messagePacket->setSousOpcode(ID_ERROR);
     messageRetour->messagePacket->setProperty("ErrorId", typeError);
 }
 

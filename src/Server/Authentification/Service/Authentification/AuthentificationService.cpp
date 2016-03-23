@@ -195,7 +195,7 @@ void AuthentificationService::sendErrorPacket(MessageNetwork * messageNetwork,
 
     messageRetour->session->setSessionPeer(messageNetwork->session->getSessionPeer());
     messageRetour->messagePacket->setOpcode(ID_AUTH);
-    messageRetour->messagePacket->setSousOpcode(ID_ERREUR);
+    messageRetour->messagePacket->setSousOpcode(ID_ERROR);
     messageRetour->messagePacket->setProperty("ErrorId", typeErreur);
 }
 

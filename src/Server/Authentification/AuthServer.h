@@ -8,14 +8,12 @@
 #ifndef SRC_SERVER_AUTHENTIFICATION_AUTHSERVER_H_
 #define SRC_SERVER_AUTHENTIFICATION_AUTHSERVER_H_
 
-#include <Manager/Signal/SignalHandler.h>
 #include <unistd.h>
 #include <iostream>
 
 #include "Service/scheduling/SchedulingService.h"
 #include "Service/Authentification/AuthentificationService.h"
 #include "Service/Realm/RealmService.h"
-
 
 namespace Auth {
 
@@ -24,22 +22,25 @@ namespace Auth {
  */
 class AuthServer {
 public:
-	AuthServer();
-	virtual ~AuthServer();
+    AuthServer();
+    AuthServer(ConfigurationManager * configuration, LogManager * log,
+            DatabaseManager * databaseManager, NetworkManager * networkManager,
+            AuthentificationService * authentificationService, RealmService * realmService,
+            SchedulingService * schedulingService);
+    virtual ~AuthServer();
 
-	void startServer();
-	void stopThread();
-
+    void startServer();
+    void stopThread();
 
 private:
-	ConfigurationManager * configuration;
-	LogManager * log;
+    ConfigurationManager * configuration;
+    LogManager * log;
 
-	DatabaseManager * databaseManager;
-	NetworkManager * networkManager;
-	AuthentificationService * authentificationService;
-	RealmService * realmService;
-	SchedulingService * schedulingService ;
+    DatabaseManager * databaseManager;
+    NetworkManager * networkManager;
+    AuthentificationService * authentificationService;
+    RealmService * realmService;
+    SchedulingService * schedulingService;
 };
 
 } /* namespace Auth */

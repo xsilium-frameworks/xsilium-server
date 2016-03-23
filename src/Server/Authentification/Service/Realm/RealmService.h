@@ -12,16 +12,16 @@
 
 namespace Auth {
 
-enum erreurOfRealm {
-    ID_NOERROR_R = 0, ID_ERROR_PACKET_SIZE_R, ID_ERROR_KEY
-};
-
-enum typeForRealm {
-    ID_REGISTER_REALM, ID_ERREUR_REALM
-
-};
-
 class RealmService: public Service {
+
+    enum erreurOfRealm {
+        ID_ERROR_KEY = Service::ID_OTHER_ERROR
+    };
+
+    enum typeForRealm {
+        ID_REGISTER_REALM, ID_ERROR
+
+    };
 
 public:
     RealmService(NetworkManager * networkManager);

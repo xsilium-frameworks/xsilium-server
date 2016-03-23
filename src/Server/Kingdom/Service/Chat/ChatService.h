@@ -12,21 +12,22 @@
 
 namespace Kingdom {
 
-/*! Enumeration des types de message disponibles */
-enum typeForChat {
-    ID_KINGDOM, /*!< Message a destination de tout le royaume pour un canal particulier: world/trade...  */
-    ID_AREA, /*!< Message a destination d'une zone du jeu*/
-    ID_PRIVATE, /*!< Message prive entre 2 joueurs*/
-    ID_COMMUNITY, /*!< Message a destination d'un groupe de joueur: Guilde, alliance...*/
-    ID_ERREUR /*!< Message de retour en cas d'anomalie*/
-};
-
-/*! Enumeration des types de retour possibles */
-enum erreurOfChat {
-    ID_NOERROR = 0, ID_ERROR_PACKET_SIZE = 1, ID_SPAM = 3
-};
-
 class ChatService: public Service {
+
+    /*! Enumeration des types de message disponibles */
+    enum typeForChat {
+        ID_KINGDOM, /*!< Message a destination de tout le royaume pour un canal particulier: world/trade...  */
+        ID_AREA, /*!< Message a destination d'une zone du jeu*/
+        ID_PRIVATE, /*!< Message prive entre 2 joueurs*/
+        ID_COMMUNITY, /*!< Message a destination d'un groupe de joueur: Guilde, alliance...*/
+        ID_ERROR /*!< Message de retour en cas d'anomalie*/
+    };
+
+    /*! Enumeration des types de retour possibles */
+    enum erreurOfChat {
+        ID_SPAM = Service::ID_OTHER_ERROR
+    };
+
 public:
 
     /*!

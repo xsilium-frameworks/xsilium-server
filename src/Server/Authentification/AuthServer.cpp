@@ -10,14 +10,27 @@
 namespace Auth {
 
 AuthServer::AuthServer() {
-    authentificationService = 0;
-    realmService = 0;
     networkManager = new NetworkManager();
     configuration = ConfigurationManager::getInstance();
     log = LogManager::getInstance();
     databaseManager = DatabaseManager::getInstance();
     schedulingService = new SchedulingService();
+    realmService = new RealmService(networkManager);
+    authentificationService = new AuthentificationService(networkManager);
 
+}
+
+AuthServer::AuthServer(ConfigurationManager * configuration, LogManager * log,
+        DatabaseManager * databaseManager, NetworkManager * networkManager,
+        AuthentificationService * authentificationService, RealmService * realmService,
+        SchedulingService * schedulingService) {
+    this->networkManager = networkManager;
+    this->configuration = configuration;
+    this->log = log;
+    this->databaseManager = databaseManager;
+    this->schedulingService = schedulingService;
+    this->realmService = realmService;
+    this->authentificationService = authentificationService;
 }
 
 AuthServer::~AuthServer() {
@@ -52,11 +65,9 @@ void AuthServer::startServer() {
         databaseManager->connection(infoDB);
 
         log->write(LogManager::DEBUG, "Demarrage du serveur d'authentification");
-        authentificationService = new AuthentificationService(networkManager);
         authentificationService->run();
 
         log->write(LogManager::DEBUG, "Demarrage du serveur de Royaume");
-        realmService = new RealmService(networkManager);
         realmService->run();
 
         configuration->get("port", serverPort);

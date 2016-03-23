@@ -10,18 +10,35 @@
 namespace Kingdom {
 
 KingdomServer::KingdomServer() {
-    signalHandler = 0;
     clientNetwork = new NetworkManager();
-    authNetwork = new NetworkManager();
     configuration = ConfigurationManager::getInstance();
     log = LogManager::getInstance();
     databaseManager = DatabaseManager::getInstance();
+    schedulingService = new SchedulingService();
+    chatService = new ChatService(clientNetwork);
+    playerService = new PlayerService(clientNetwork);
+
+}
+
+KingdomServer::KingdomServer(ConfigurationManager * configuration, LogManager * log,
+        DatabaseManager * databaseManager, NetworkManager * networkManager,
+        SchedulingService * schedulingService, ChatService * chatService,
+        PlayerService * playerService) {
+
+    this->clientNetwork = networkManager;
+    this->configuration = configuration;
+    this->log = log;
+    this->databaseManager = databaseManager;
+    this->schedulingService = schedulingService;
+    this->chatService = chatService;
+    this->playerService = playerService;
 
 }
 
 KingdomServer::~KingdomServer() {
+    delete schedulingService;
+    delete chatService;
     delete clientNetwork;
-    delete authNetwork;
     DatabaseManager::DestroyInstance();
     ConfigurationManager::DestroyInstance();
     LogManager::DestroyInstance();
@@ -34,39 +51,39 @@ void KingdomServer::startServer() {
         std::string infoDB;
         ENetAddress adresse;
 
-        signalHandler->setupSignalHandlers();
-        //if (!configuration->load("../etc/Kingdom.config"))
-        //    return;
+        if (!configuration->load("../etc/Kingdom.config"))
+            return;
 
-        //configuration->get("LogLevel", logLevel);
-        //log->start((LogManager::Priority) logLevel, "kingdomServer.log");
-        //log->activationFile();
-        /*
-         log->write(LogManager::DEBUG, "Demarrage de la connexion SQL (loginDB) ");
-         configuration->get("typeDatabase", typeDatabase);
-         configuration->get("databaseInfo", infoDB);
+        configuration->get("LogLevel", logLevel);
+        log->start((LogManager::Priority) logLevel, "kingdomServer.log");
+        log->activationFile();
 
-         databaseManager->createServer(typeDatabase);
-         databaseManager->connection(infoDB);
-         */
+        log->write(LogManager::DEBUG, "Demarrage de la connexion SQL (loginDB) ");
+        configuration->get("typeDatabase", typeDatabase);
+        configuration->get("databaseInfo", infoDB);
 
-        /*configuration->get("portClient", serverPort);
-         configuration->get("clientMax", numClient);
-         adresse.host = ENET_HOST_ANY;
-         adresse.port = (enet_uint16) serverPort;
+        databaseManager->createServer(typeDatabase);
+        databaseManager->connection(infoDB);
 
+        log->write(LogManager::DEBUG, "Demarrage du Service de chat");
+        chatService->run();
 
-         log->write(LogManager::DEBUG, "Demarrage du socket Kingdom");
+        log->write(LogManager::DEBUG, "Demarrage du Service de chat");
+        playerService->run();
 
-         if (!clientNetwork->createConnexion(&adresse, numClient)) {
-         log->write(LogManager::DEBUG, "Impossible d'ouvrir la connexion ");
-         return;
-         }
-         */
-        authNetwork->createConnexion();
-        authNetwork->connexionToHost("127.0.0.1", 60000);
-        while (!signalHandler->gotExitSignal())
-            sleep(1);
+        configuration->get("portClient", serverPort);
+        configuration->get("clientMax", numClient);
+        adresse.host = ENET_HOST_ANY;
+        adresse.port = (enet_uint16) serverPort;
+
+        log->write(LogManager::DEBUG, "Demarrage du socket Kingdom");
+
+        if (!clientNetwork->createConnexion(&adresse, numClient)) {
+            log->write(LogManager::DEBUG, "Impossible d'ouvrir la connexion ");
+            return;
+        }
+
+        schedulingService->runLoop();
 
         stopThread();
 
@@ -77,7 +94,6 @@ void KingdomServer::startServer() {
 void KingdomServer::stopThread() {
     log->write(LogManager::DEBUG, "Extinction du serveur ");
     clientNetwork->disconnexion();
-    authNetwork->disconnexion();
     databaseManager->deconnection();
 
 }

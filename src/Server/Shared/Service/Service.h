@@ -18,6 +18,7 @@
 #define NUM_THREAD_MODULE 4
 
 class Service {
+
 public:
     Service();
     virtual ~Service();
@@ -36,6 +37,10 @@ public:
     bool controleData(MessagePacket * messagePacket, std::vector<std::string> * tableauData);
 
 protected:
+
+    enum {
+        ID_NOERROR = 0, ID_ERROR_PACKET_SIZE, ID_OTHER_ERROR
+    };
 
     static void threadProcess(void * arguments);
 
