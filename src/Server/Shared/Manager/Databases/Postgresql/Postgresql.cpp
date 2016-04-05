@@ -30,8 +30,9 @@ bool Postgresql::connection(std::string infoConnection) {
         increment++;
     }
 
-    if (increment != 5)
-        return false;
+    if (increment != 5) {
+        throw new DatabaseException("Mauvais nombre d'arguments");
+    }
 
     connectionString = "host=" + dataConnexion[0] + " port=" + dataConnexion[1] + " user="
             + dataConnexion[2] + " password=" + dataConnexion[3] + " dbname=" + dataConnexion[4];
@@ -42,25 +43,23 @@ bool Postgresql::connection(std::string infoConnection) {
         return connexion->is_open();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
-        return false;
+        throw new DatabaseException(e);
     }
 
 }
 
-bool Postgresql::deconnection() {
+void Postgresql::deconnection() {
 
     try {
 
         if (connexion->is_open()) {
             connexion->disconnect();
-            return true;
         }
 
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
-        return false;
+        throw new DatabaseException(e);
     }
-    return false;
 }
 
 void Postgresql::prepareStatement(std::string index, const char * sql) {
@@ -69,11 +68,10 @@ void Postgresql::prepareStatement(std::string index, const char * sql) {
     connexion->prepare(index.c_str(), sql);
 }
 
-bool Postgresql::executionPrepareStatement(std::string index, Tokens * resultat, int idTransaction,
+void Postgresql::executionPrepareStatement(std::string index, Tokens * resultat, int idTransaction,
         int nombreArgument, va_list listOfArgument) {
     boost::mutex::scoped_lock lock(mutex1);
 
-    bool retour = true;
     pqxx::work * txn;
     bool autoCommit = false;
 
@@ -99,14 +97,12 @@ bool Postgresql::executionPrepareStatement(std::string index, Tokens * resultat,
     } catch (const std::exception &e) {
         resultat->push_back(e.what());
         txn->abort();
-        retour = false;
+        throw new DatabaseException(e);
     }
 
     if (autoCommit) {
         delete txn;
     }
-
-    return retour;
 }
 
 int Postgresql::createTransaction() {

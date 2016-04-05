@@ -29,30 +29,24 @@ void DatabaseManager::createServer(int choixServerDB) {
 bool DatabaseManager::connection(std::string infoConnection) {
     return database->connection(infoConnection);
 }
-bool DatabaseManager::deconnection() {
-    bool retour = true;
+void DatabaseManager::deconnection() {
     if (database) {
-        retour = database->deconnection();
+        database->deconnection();
     }
-
-    return retour;
-
 }
 void DatabaseManager::prepareStatement(std::string index, const char * sql) {
     boost::mutex::scoped_lock lock(mutex1);
     database->prepareStatement(index, sql);
 }
-bool DatabaseManager::executionPrepareStatement(std::string index, Tokens * resultat,
+void DatabaseManager::executionPrepareStatement(std::string index, Tokens * resultat,
         int idTransaction, int nombreArgument, ...) {
     boost::mutex::scoped_lock lock(mutex1);
     va_list listOfArgument;
-    bool retour;
 
     va_start(listOfArgument, nombreArgument);
-    retour = database->executionPrepareStatement(index, resultat, idTransaction, nombreArgument,
+    database->executionPrepareStatement(index, resultat, idTransaction, nombreArgument,
             listOfArgument);
     va_end(listOfArgument);
-    return retour;
 }
 int DatabaseManager::createTransaction() {
     boost::mutex::scoped_lock lock(mutex1);

@@ -31,9 +31,9 @@ public:
 	void createServer(int choixServerDB);
 
 	bool connection(std::string infoConnection);
-	bool deconnection();
+	void deconnection();
 	void prepareStatement(std::string index, const char * sql);
-	bool executionPrepareStatement(std::string index,Tokens * resultat, int idTransaction = 0,
+	void executionPrepareStatement(std::string index,Tokens * resultat, int idTransaction = 0,
 			int nombreArgument = 0, ...);
 	int createTransaction();
 	void commit(int idTransaction);

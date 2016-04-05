@@ -40,48 +40,61 @@ CompteDAO::~CompteDAO() {
 }
 
 bool CompteDAO::create(Model * model, int idTransaction) {
-    bool retour;
+    bool retour = true;
     Tokens tokens;
 
     Compte * compte = static_cast<Compte*>(model);
 
-    retour = database->executionPrepareStatement(suffix + Utilities::toString(REALMS_INS_ACCOUNT),
-            &tokens, idTransaction, 9, compte->getUsername().c_str(),
-            compte->getShaPassHash().c_str(), compte->getEmail().c_str(),
-            Utilities::toString(compte->getJoindate()).c_str(), compte->getLastIp().c_str(),
-            Utilities::toString(compte->isLocked()).c_str(),
-            Utilities::toString(compte->getLastLogin()).c_str(),
-            Utilities::toString(compte->isOnline()).c_str(),
-            Utilities::toString(compte->getLocale()).c_str());
+    try {
+        database->executionPrepareStatement(suffix + Utilities::toString(REALMS_INS_ACCOUNT),
+                &tokens, idTransaction, 9, compte->getUsername().c_str(),
+                compte->getShaPassHash().c_str(), compte->getEmail().c_str(),
+                Utilities::toString(compte->getJoindate()).c_str(), compte->getLastIp().c_str(),
+                Utilities::toString(compte->isLocked()).c_str(),
+                Utilities::toString(compte->getLastLogin()).c_str(),
+                Utilities::toString(compte->isOnline()).c_str(),
+                Utilities::toString(compte->getLocale()).c_str());
+    } catch (DatabaseException e) {
+        retour = false;
+    }
     return retour;
 }
+
 bool CompteDAO::update(Model * model, int idTransaction) {
     Tokens resultsqlT;
 
-    bool retour;
+    bool retour = true;
 
     Compte * compte = static_cast<Compte*>(model);
 
-    retour = database->executionPrepareStatement(suffix + Utilities::toString(REALMS_UPD_ACCOUNT),
-            &resultsqlT, idTransaction, 9, Utilities::toString(compte->getIdAccount()).c_str(),
-            compte->getShaPassHash().c_str(), compte->getEmail().c_str(),
-            Utilities::toString(compte->getJoindate()).c_str(), compte->getLastIp().c_str(),
-            Utilities::toString(compte->isLocked()).c_str(),
-            Utilities::toString(compte->getLastLogin()).c_str(),
-            Utilities::toString(compte->isOnline()).c_str(),
-            Utilities::toString(compte->getLocale()).c_str());
+    try {
+        database->executionPrepareStatement(suffix + Utilities::toString(REALMS_UPD_ACCOUNT),
+                &resultsqlT, idTransaction, 9, Utilities::toString(compte->getIdAccount()).c_str(),
+                compte->getShaPassHash().c_str(), compte->getEmail().c_str(),
+                Utilities::toString(compte->getJoindate()).c_str(), compte->getLastIp().c_str(),
+                Utilities::toString(compte->isLocked()).c_str(),
+                Utilities::toString(compte->getLastLogin()).c_str(),
+                Utilities::toString(compte->isOnline()).c_str(),
+                Utilities::toString(compte->getLocale()).c_str());
+    } catch (DatabaseException e) {
+        retour = false;
+    }
 
     return retour;
 
 }
 bool CompteDAO::read(Model * model, int idTransaction) {
-    bool retour;
+    bool retour = true;
     Tokens resultsqlT;
 
     Compte * compte = static_cast<Compte*>(model);
 
-    retour = database->executionPrepareStatement(suffix + Utilities::toString(REALMS_SEL_ACCOUNT),
-            &resultsqlT, idTransaction, 1, compte->getUsername().c_str());
+    try {
+        database->executionPrepareStatement(suffix + Utilities::toString(REALMS_SEL_ACCOUNT),
+                &resultsqlT, idTransaction, 1, compte->getUsername().c_str());
+    } catch (DatabaseException e) {
+        retour = false;
+    }
 
     if (!resultsqlT.empty()) {
         Tokens resultatsql;
@@ -97,17 +110,21 @@ bool CompteDAO::read(Model * model, int idTransaction) {
         compte->setLastLogin(Utilities::toDate(resultatsql[6]));
         compte->setOnline(Utilities::toBool(resultatsql[8]));
         compte->setLocale(Utilities::toInt(resultatsql[8]));
-
-        retour = true;
     }
 
     return retour;
 }
 bool CompteDAO::suppr(Model * model, int idTransaction) {
     Tokens resultsqlT;
+    bool retour = true;
 
     Compte * compte = static_cast<Compte*>(model);
 
-    return database->executionPrepareStatement(suffix + Utilities::toString(REALMS_DEL_ACCOUNT),
-            &resultsqlT, idTransaction, 1, Utilities::toString(compte->getIdAccount()).c_str());
+    try {
+        database->executionPrepareStatement(suffix + Utilities::toString(REALMS_DEL_ACCOUNT),
+                &resultsqlT, idTransaction, 1, Utilities::toString(compte->getIdAccount()).c_str());
+    } catch (DatabaseException e) {
+        retour = false;
+    }
+    return retour;
 }

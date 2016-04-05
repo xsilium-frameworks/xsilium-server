@@ -26,53 +26,68 @@ IPDAO::~IPDAO() {
 }
 
 bool IPDAO::create(Model * model, int idTransaction) {
-    bool retour;
+    bool retour = true;
     Tokens tokens;
 
     IP * ip = static_cast<IP*>(model);
 
-    retour = database->executionPrepareStatement(
-            suffix + Utilities::toString(REALMS_INS_IPTEMPORAIRE), &tokens, idTransaction, 2,
-            ip->getIpTempIp().c_str(), Utilities::toString(ip->getIpTempNessais()).c_str());
+    try {
+        database->executionPrepareStatement(suffix + Utilities::toString(REALMS_INS_IPTEMPORAIRE),
+                &tokens, idTransaction, 2, ip->getIpTempIp().c_str(),
+                Utilities::toString(ip->getIpTempNessais()).c_str());
+    } catch (DatabaseException e) {
+        retour = false;
+    }
     read(ip, idTransaction);
     return retour;
 }
 bool IPDAO::read(Model * model, int idTransaction) {
-    bool retour;
+    bool retour = true;
     Tokens resultsqlT;
 
     IP * ip = static_cast<IP*>(model);
 
-    retour = database->executionPrepareStatement(
-            suffix + Utilities::toString(REALMS_SEL_IPTEMPORAIRE), &resultsqlT, idTransaction, 1,
-            ip->getIpTempIp().c_str());
+    try {
+        database->executionPrepareStatement(suffix + Utilities::toString(REALMS_SEL_IPTEMPORAIRE),
+                &resultsqlT, idTransaction, 1, ip->getIpTempIp().c_str());
+    } catch (DatabaseException e) {
+        retour = false;
+    }
 
     if (!resultsqlT.empty()) {
         Tokens resultatsql;
         resultatsql = Utilities::strSplit(resultsqlT[0], ";");
         ip->setIdIp(Utilities::toInt(resultatsql[0]));
         ip->setIpTempNessais(Utilities::toInt(resultatsql[1]));
-        retour = true;
     }
     return retour;
 }
 bool IPDAO::update(Model * model, int idTransaction) {
+    bool retour = true;
     Tokens resultsqlT;
 
     IP * ip = static_cast<IP*>(model);
 
-    return database->executionPrepareStatement(
-            suffix + Utilities::toString(REALMS_UPD_IPTEMPORAIRE), &resultsqlT, idTransaction, 2,
-            Utilities::toString(ip->getIpTempNessais()).c_str(),
-            Utilities::toString(ip->getIdIp()).c_str());
+    try {
+        database->executionPrepareStatement(suffix + Utilities::toString(REALMS_UPD_IPTEMPORAIRE),
+                &resultsqlT, idTransaction, 2, Utilities::toString(ip->getIpTempNessais()).c_str(),
+                Utilities::toString(ip->getIdIp()).c_str());
+    } catch (DatabaseException e) {
+        retour = false;
+    }
+    return retour;
 }
 bool IPDAO::suppr(Model * model, int idTransaction) {
+    bool retour = true;
     Tokens resultsqlT;
 
     IP * ip = static_cast<IP*>(model);
 
-    return database->executionPrepareStatement(
-            suffix + Utilities::toString(REALMS_DEL_IPTEMPORAIRE), &resultsqlT, idTransaction, 1,
-            Utilities::toString(ip->getIdIp()).c_str());
+    try {
+        database->executionPrepareStatement(suffix + Utilities::toString(REALMS_DEL_IPTEMPORAIRE),
+                &resultsqlT, idTransaction, 1, Utilities::toString(ip->getIdIp()).c_str());
+    } catch (DatabaseException e) {
+        retour = false;
+    }
 
 }
