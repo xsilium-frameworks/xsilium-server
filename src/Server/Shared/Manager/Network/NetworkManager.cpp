@@ -195,10 +195,13 @@ void NetworkManager::callBack(int identifiant, Session * session, MessagePacket 
 
 void NetworkManager::sendPacket(MessageNetwork * messageToSend) {
 
-    if (messageToSend->session->getSessionHost() != 0) {
-        sendPacket(messageToSend->session->getSessionHost(), 0, messageToSend->messagePacket);
-    } else {
-        sendPacket(messageToSend->session->getSessionPeer(), 0, messageToSend->messagePacket);
+    if (messageToSend->messagePacket != NULL) {
+
+        if (messageToSend->session->getSessionHost() != 0) {
+            sendPacket(messageToSend->session->getSessionHost(), 0, messageToSend->messagePacket);
+        } else {
+            sendPacket(messageToSend->session->getSessionPeer(), 0, messageToSend->messagePacket);
+        }
     }
 }
 

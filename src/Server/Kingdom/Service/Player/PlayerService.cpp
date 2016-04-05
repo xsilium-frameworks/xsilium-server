@@ -19,7 +19,7 @@ PlayerService::~PlayerService() {
 }
 
 void PlayerService::run() {
-    networkManager->addListenneur(ID_CHAT, this);
+    networkManager->addListenneur(ID_PLAYER, this);
     Service::run();
 
 }

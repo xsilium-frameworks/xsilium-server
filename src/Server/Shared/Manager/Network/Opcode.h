@@ -12,31 +12,33 @@ enum Opcode
 
 {
 
-	// partie generique
+    // partie generique
 
-	ID_CONNEXION = 0,
+    ID_CONNEXION = 0,
 
-	ID_DECONEXION,
+    ID_DECONEXION,
 
-	// partie authentification
+    // partie authentification
 
-	ID_AUTH,
-	ID_REALM,
-	ID_ZONE,
+    ID_AUTH,
+    ID_REALM,
+    ID_ZONE,
 
-	//partie royaume
+    //partie royaume
 
-	ID_CHAT,
+    ID_CHAT,
 
-	//partie ticket
+    //partie ticket
 
-	ID_TICKET,
+    ID_TICKET,
 
-	//Partie message
+    //Partie message
 
-	ID_MAIL,
+    ID_MAIL,
 
-	ID_ALL
+    ID_PLAYER,
+
+    ID_ALL
 };
 
 #endif /* SRC_SERVER_SHARED_NETWORK_OPCODE_H_ */
