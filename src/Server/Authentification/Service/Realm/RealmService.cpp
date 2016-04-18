@@ -60,7 +60,7 @@ void RealmService::handleRegisterRealm(MessageNetwork * messageNetwork,
         return;
     }
 
-    // Verification de la cl�
+    // Verification de la cle
     if (!realmManager->checkRealmKey(messageNetwork->messagePacket->getProperty("Key"))) {
         log->write(LogManager::INFO, "Le message venant de %d:%d est illisible ",
                 messageNetwork->session->getSessionID()->host,
@@ -68,7 +68,7 @@ void RealmService::handleRegisterRealm(MessageNetwork * messageNetwork,
         sendErrorPacket(messageNetwork, messageRetour, ID_ERROR_KEY);
     }
 
-    // R�cup�ration du Realm et mise � jour
+    // Recuperation du Realm et mise a jour
     /* idRealm = realmManager->checkRealmName(messageNetwork->messagePacket->getProperty("Name"));
 
      if (idRealm) {

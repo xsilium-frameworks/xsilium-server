@@ -13,17 +13,22 @@
 #include <vector>
 #include <Utilities/Utilities.h>
 
-class Database : public Utilities {
+class Database: public Utilities {
 public:
-	Database(){};
-	virtual ~Database(){};
+    Database() {
+    }
+    ;
+    virtual ~Database() {
+    }
+    ;
 
-	virtual bool connection(std::string infoConnection) = 0;
-	virtual void deconnection() = 0;
-	virtual void prepareStatement(std::string index, const char * sql) = 0;
-	virtual void executionPrepareStatement(std::string index,Tokens * resultat, int idTransaction = 0,int nombreArgument = 0, va_list listOfArgument = 0) = 0;
-	virtual int createTransaction() = 0;
-	virtual void commit(int idTransaction) = 0;
+    virtual void connection(std::string infoConnection) = 0;
+    virtual void deconnection() = 0;
+    virtual void prepareStatement(std::string index, const char * sql) = 0;
+    virtual void executionPrepareStatement(std::string index, Tokens * resultat, int idTransaction =
+            0, int nombreArgument = 0, va_list listOfArgument = 0) = 0;
+    virtual int createTransaction() = 0;
+    virtual void commit(int idTransaction) = 0;
 };
 
 #endif /* SRC_SERVER_SHARED_DATABASES_DATABASE_H_ */

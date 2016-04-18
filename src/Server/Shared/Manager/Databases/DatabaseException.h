@@ -13,9 +13,9 @@
 class DatabaseException {
 public:
     DatabaseException();
-    DatabaseException(int sqlCode ,std::string message);
+    DatabaseException(int sqlCode, std::string message);
     DatabaseException(std::string message);
-    DatabaseException(const std::exception &e);
+    DatabaseException(std::exception e);
     virtual ~DatabaseException();
 };
 

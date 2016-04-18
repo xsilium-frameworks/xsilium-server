@@ -73,6 +73,18 @@ BOOST_AUTO_TEST_CASE(testSelectCommit)
     DatabaseManager::DestroyInstance();
 }
 
+BOOST_AUTO_TEST_CASE(testSelectError)
+{
+    Tokens resultat;
+    DatabaseManager * databaseManager = DatabaseManager::getInstance();
+    databaseManager->createServer(POSTGRESQL);
+    databaseManager->connection(PARAMETRE);
+    databaseManager->prepareStatement("test1","select 2 from dudul");
+    BOOST_CHECK_NO_THROW(databaseManager->executionPrepareStatement("test1",&resultat));
+    databaseManager->deconnection();
+    DatabaseManager::DestroyInstance();
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 #endif

@@ -46,7 +46,7 @@ public:
 
 private:
 
-    int id_account; /*!< numero unique du compte dans la base de donn�e      */
+    int id_account; /*!< numero unique du compte dans la base de donnee      */
     std::string username; /*!< Le nom du compte */
     std::string sha_pass_hash; /*!< Le mot de passe crypter */
     std::string email; /*!<L'email du compte */

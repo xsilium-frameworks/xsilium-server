@@ -11,11 +11,7 @@ DatabaseException::DatabaseException() {
     // TODO Auto-generated constructor stub
 }
 
-DatabaseException::DatabaseException(const std::exception &e) {
-    // TODO Auto-generated constructor stub
-}
-
-DatabaseException::DatabaseException(int sqlCode ,std::string message) {
+DatabaseException::DatabaseException(int sqlCode, std::string message) {
     // TODO Auto-generated constructor stub
 }
 
@@ -23,6 +19,9 @@ DatabaseException::DatabaseException(std::string message) {
     // TODO Auto-generated constructor stub
 }
 
+DatabaseException::DatabaseException(std::exception e) {
+
+}
 
 DatabaseException::~DatabaseException() {
     // TODO Auto-generated destructor stub

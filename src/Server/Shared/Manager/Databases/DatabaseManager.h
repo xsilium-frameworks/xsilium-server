@@ -12,38 +12,34 @@
 #include <Singleton/Singleton.h>
 #include <boost/thread.hpp>
 
-
-enum ServerDB
-{
-	POSTGRESQL = 0
+enum ServerDB {
+    POSTGRESQL = 0
 };
-
 
 /*
  *
  */
-class DatabaseManager : public Singleton<DatabaseManager> {
+class DatabaseManager: public Singleton<DatabaseManager> {
 
 public:
-	DatabaseManager();
-	virtual ~DatabaseManager();
+    DatabaseManager();
+    virtual ~DatabaseManager();
 
-	void createServer(int choixServerDB);
+    void createServer(int choixServerDB);
 
-	bool connection(std::string infoConnection);
-	void deconnection();
-	void prepareStatement(std::string index, const char * sql);
-	void executionPrepareStatement(std::string index,Tokens * resultat, int idTransaction = 0,
-			int nombreArgument = 0, ...);
-	int createTransaction();
-	void commit(int idTransaction);
+    void connection(std::string infoConnection);
+    void deconnection();
+    void prepareStatement(std::string index, const char * sql);
+    void executionPrepareStatement(std::string index, Tokens * resultat, int idTransaction = 0,
+            int nombreArgument = 0, ...);
+    int createTransaction();
+    void commit(int idTransaction);
 
 private:
 
-	boost::mutex mutex1 ;
+    boost::mutex mutex1;
 
-	Database * database;
-
+    Database * database;
 
 };
 

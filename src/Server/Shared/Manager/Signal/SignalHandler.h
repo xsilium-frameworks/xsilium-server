@@ -1,7 +1,7 @@
 /*
  * SignalException.h
  *
- *  Created on: 11 f�vr. 2012
+ *  Created on: 11 fevr. 2012
  *      Author: joda2
  */
 
@@ -19,16 +19,14 @@
 
 using std::runtime_error;
 
-class SignalException : public runtime_error
-{
+class SignalException: public runtime_error {
 public:
-   SignalException(const char * _message)
-      : std::runtime_error(_message)
-   {}
+    SignalException(const char * _message) :
+            std::runtime_error(_message) {
+    }
 };
 
-class SignalHandler
-{
+class SignalHandler {
 protected:
     static bool mbGotExitSignal;
 

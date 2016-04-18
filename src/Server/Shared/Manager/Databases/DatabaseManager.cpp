@@ -26,8 +26,8 @@ void DatabaseManager::createServer(int choixServerDB) {
     }
 }
 
-bool DatabaseManager::connection(std::string infoConnection) {
-    return database->connection(infoConnection);
+void DatabaseManager::connection(std::string infoConnection) {
+    database->connection(infoConnection);
 }
 void DatabaseManager::deconnection() {
     if (database) {

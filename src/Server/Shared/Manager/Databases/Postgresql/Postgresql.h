@@ -23,7 +23,7 @@ public:
     Postgresql();
     virtual ~Postgresql();
 
-    bool connection(std::string infoConnection);
+    void connection(std::string infoConnection);
     void deconnection();
     void prepareStatement(std::string index, const char * sql);
     void executionPrepareStatement(std::string index, Tokens * resultat, int idTransaction = 0,
@@ -37,7 +37,7 @@ private:
     time_t timer;
     boost::mutex mutex1;
 
-    bool conversionRetour(pqxx::result resultat, Tokens * resultatToken);
+    void conversionRetour(pqxx::result resultat, Tokens * resultatToken);
 
 };
 
