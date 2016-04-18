@@ -26,11 +26,11 @@ public:
     /*!
      * Methode de verification de l'existence d'un realm par son nom
      * @param nameRoyaume
-     * @return idRealm ou 0 si non trouv�
+     * @return idRealm ou 0 si non trouve
      */
     int checkRealmName(std::string nameRealm);
     /*!
-     * Methode de verification de la cl� d'un realm
+     * Methode de verification de la cle d'un realm
      * @param nameRoyaume
      * @return bool
      */

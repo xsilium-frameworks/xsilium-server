@@ -16,6 +16,7 @@ AuthentificationService::AuthentificationService(NetworkManager * networkManager
 }
 
 AuthentificationService::~AuthentificationService() {
+    networkManager->removeListenneur(ID_AUTH);
     AuthentificationManager::DestroyInstance();
     RealmManager::DestroyInstance();
 }

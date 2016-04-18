@@ -16,7 +16,7 @@ Postgresql::~Postgresql() {
     delete connexion;
 }
 
-bool Postgresql::connection(std::string infoConnection) {
+void Postgresql::connection(std::string infoConnection) {
     Tokens::iterator iter;
     std::string dataConnexion[5], connectionString;
     int increment = 0;
@@ -38,14 +38,8 @@ bool Postgresql::connection(std::string infoConnection) {
             + dataConnexion[2] + " password=" + dataConnexion[3] + " dbname=" + dataConnexion[4];
 
     connexion = new pqxx::lazyconnection(connectionString.c_str());
-    try {
-        connexion->activate();
-        return connexion->is_open();
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw new DatabaseException(e);
-    }
 
+    connexion->activate();
 }
 
 void Postgresql::deconnection() {
@@ -56,9 +50,9 @@ void Postgresql::deconnection() {
             connexion->disconnect();
         }
 
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw new DatabaseException(e);
+    } catch (const pqxx::pqxx_exception &e) {
+        std::cerr << e.base().what() << std::endl;
+        throw new DatabaseException(e.base());
     }
 }
 
@@ -93,15 +87,12 @@ void Postgresql::executionPrepareStatement(std::string index, Tokens * resultat,
 
         if (autoCommit) {
             txn->commit();
+            delete txn;
         }
-    } catch (const std::exception &e) {
-        resultat->push_back(e.what());
+    } catch (const pqxx::pqxx_exception &e) {
         txn->abort();
-        throw new DatabaseException(e);
-    }
-
-    if (autoCommit) {
         delete txn;
+        throw new DatabaseException(e.base());
     }
 }
 
@@ -128,7 +119,7 @@ void Postgresql::commit(int idTransaction) {
     connexion->deactivate();
 }
 
-bool Postgresql::conversionRetour(pqxx::result resultat, Tokens * resultatToken) {
+void Postgresql::conversionRetour(pqxx::result resultat, Tokens * resultatToken) {
 
     for (pqxx::result::const_iterator row = resultat.begin(); row != resultat.end(); ++row) {
         std::string ligneRetour;
@@ -144,5 +135,4 @@ bool Postgresql::conversionRetour(pqxx::result resultat, Tokens * resultatToken)
         }
         resultatToken->push_back(ligneRetour);
     }
-    return true;
 }
