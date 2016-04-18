@@ -21,14 +21,13 @@ RUN wget http://downloads.sourceforge.net/project/boost/boost/${boost_version}/$
     && rm ${boost_dir}.tar.gz \
     && cd ${boost_dir} \
     && ./bootstrap.sh \
-    && ./b2 --prefix=/usr -j 4 link=shared runtime-link=shared install \
+    && ./b2 --build-type=complete --with-thread --with-date_time --with-system --with-signals --with-serialization --with-unit_test_framework --prefix=/usr -j 4 link=shared runtime-link=shared install \
     && cd .. && rm -rf ${boost_dir} && ldconfig
 
-# Debug tools 
+# Debug tools
 RUN apt-get install -y --no-install-recommends cppcheck && rm -rf /var/lib/apt/lists/*
-RUN pip install gcovr 
+RUN pip install gcovr
 
 USER jenkins
 
 ENTRYPOINT ["jenkins-slave"]
-
