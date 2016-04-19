@@ -4,9 +4,6 @@ MAINTAINER Xelfe <xelfes@gmail.com>
 
 USER root
 
-RUN pwd
-RUN ls
-
 RUN apt-get update -y
 
 # Installing base dev tools
@@ -32,6 +29,10 @@ RUN wget http://downloads.sourceforge.net/project/boost/boost/${boost_version}/$
 # User need by the entry point
 RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
       -c "Default Application User" default
+
+
+RUN pwd
+RUN ls
 
 WORKDIR ${HOME}
 
