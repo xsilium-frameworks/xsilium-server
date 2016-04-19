@@ -1,2 +1,2 @@
 #!/bin/bash
-exec "authserver /etc/xsilium/auth.config"
+exec "while 1"
