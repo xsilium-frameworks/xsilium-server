@@ -4,6 +4,9 @@ MAINTAINER Xelfe <xelfes@gmail.com>
 
 USER root
 
+RUN pwd
+RUN ls
+
 RUN apt-get update -y
 
 # Installing base dev tools
