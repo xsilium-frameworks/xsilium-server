@@ -9,7 +9,7 @@ include_directories(
 	${ENET_INCLUDE_DIR}
 )	
 
-if(CMAKE_COMPILER_IS_GNUCXX)
+if(CMAKE_COMPILER_IS_GNUCXX AND XSILIUM_TEST)
 	SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
     SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
 endif()
@@ -18,4 +18,6 @@ endif()
 add_subdirectory(Server)
 #add_subdirectory(Genrevision)
 
-add_subdirectory(Test)
+if(CMAKE_COMPILER_IS_GNUCXX AND XSILIUM_TEST)
+	add_subdirectory(Test)
+endif()
