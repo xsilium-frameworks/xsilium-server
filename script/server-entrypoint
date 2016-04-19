@@ -1,2 +1,2 @@
-#!/bin/bash -e
-exec authserver -g "daemon off;"
+#!/bin/bash
+exec "$@"
