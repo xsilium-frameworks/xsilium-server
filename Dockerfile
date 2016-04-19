@@ -32,4 +32,6 @@ RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
 
 WORKDIR ${HOME}
 
+RUN ${HOME}/script/install.sh
+
 ENTRYPOINT ["script/server-entrypoint"]

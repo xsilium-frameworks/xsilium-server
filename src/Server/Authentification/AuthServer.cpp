@@ -43,14 +43,14 @@ AuthServer::~AuthServer() {
     LogManager::DestroyInstance();
 }
 
-void AuthServer::startServer() {
+void AuthServer::startServer(std::string configFile) {
     try {
 
         int logLevel, typeDatabase, serverPort, numClient;
         std::string infoDB;
         ENetAddress adresse;
 
-        if (!configuration->load("../etc/auth.config"))
+        if (!configuration->load(configFile))
             return;
 
         configuration->get("LogLevel", logLevel);
@@ -103,8 +103,9 @@ void AuthServer::stopThread() {
 
 } /* namespace Auth */
 
-int main() {
-    Auth::AuthServer * authserver = new Auth::AuthServer();
-    authserver->startServer();
-    delete authserver;
+int main(int argc, char* argv[]) {
+    if (argc < 1) {
+        Auth::AuthServer authserver;
+        authserver.startServer(argv[1]);
+    }
 }

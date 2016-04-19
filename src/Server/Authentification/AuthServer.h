@@ -29,7 +29,7 @@ public:
             SchedulingService * schedulingService);
     virtual ~AuthServer();
 
-    void startServer();
+    void startServer(std::string configFile);
     void stopThread();
 
 private:
