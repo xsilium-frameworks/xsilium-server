@@ -9,7 +9,7 @@ USER root
 RUN apt-get update -y
 
 # Installing base dev tools
-RUN apt-get install -y --no-install-recommends gcc g++ make cmake python-pip libpqxx-dev git python-dev libbz2-dev
+RUN apt-get install -y --no-install-recommends gcc g++ make cmake python-pip libpqxx-dev git python-dev libbz2-dev python-setuptools
 
 # Installing boost
 ENV boost_version=1.59.0

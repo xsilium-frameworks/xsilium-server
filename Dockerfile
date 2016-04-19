@@ -40,6 +40,7 @@ USER 1001
 
 WORKDIR ${HOME}
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["/etc/xsilium/auth.conf"]
+EXPOSE 60000
+CMD ["/usr/local/etc/xsilium/auth.conf"]
