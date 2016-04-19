@@ -13,7 +13,7 @@ RUN pip install gcovr
 ENV \
     # The $HOME is not set by default, but some applications needs this variable
     HOME=/opt/app-root/src \
-    PATH=/opt/app-root/src/bin:/opt/app-root/bin:$PATH
+    PATH=/opt/app-root/src/bin:/opt/app-root/src/script:$PATH
 ENV boost_version=1.59.0
 ENV boost_dir=boost_1_59_0
 
@@ -30,8 +30,6 @@ COPY . $HOME
 RUN chmod -R 777 $HOME
 RUN $HOME/script/install.sh $HOME
 
-RUN ln -s $HOME/script/server-entrypoint /entrypoint.sh # backwards compat
-
 # User need by the entry point
 RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
       -c "Default Application User" default
@@ -40,7 +38,7 @@ USER 1001
 
 WORKDIR ${HOME}
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["server-entrypoint"]
 
 EXPOSE 60000
 CMD ["/usr/local/etc/xsilium/auth.conf"]
