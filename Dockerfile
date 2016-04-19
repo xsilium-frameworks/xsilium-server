@@ -5,7 +5,9 @@ MAINTAINER Xelfe <xelfes@gmail.com>
 RUN apt-get update -y
 
 # Installing base dev tools
-RUN apt-get install -y --no-install-recommends gcc wget g++ make cmake libpqxx-dev git libbz2-dev
+RUN apt-get install -y --no-install-recommends gcc wget g++ make cmake libpqxx-dev git libbz2-dev python-dev
+
+RUN pip install gcovr
 
 # Installing boost
 ENV \
