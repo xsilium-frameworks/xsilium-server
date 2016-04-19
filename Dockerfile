@@ -26,7 +26,7 @@ RUN wget http://downloads.sourceforge.net/project/boost/boost/${boost_version}/$
     && ./b2 --clean-all -n \
     && cd .. && rm -rf ${boost_dir} && ldconfig
 
-RUN ${HOME}/script/install.sh
+# RUN ${HOME}/script/install.sh
 
 # User need by the entry point
 RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
@@ -37,6 +37,6 @@ USER 1001
 WORKDIR ${HOME}
 
 RUN pwd
-RUN ls
+RUN ${HOME}/ls
 
 ENTRYPOINT ["script/server-entrypoint"]
