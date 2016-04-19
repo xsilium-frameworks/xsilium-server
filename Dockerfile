@@ -27,7 +27,7 @@ RUN wget http://downloads.sourceforge.net/project/boost/boost/${boost_version}/$
     && cd .. && rm -rf ${boost_dir} && ldconfig
 
 # User need by the entry point
-useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
+RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
       -c "Default Application User" default
 
 WORKDIR ${HOME}
