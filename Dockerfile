@@ -25,7 +25,7 @@ RUN wget http://downloads.sourceforge.net/project/boost/boost/${boost_version}/$
     && cd .. && rm -rf ${boost_dir} && ldconfig
 
 COPY . $HOME
-#RUN chmod -R 777 $HOME
+RUN chmod -R 777 $HOME
 RUN $HOME/script/install.sh $HOME
 
 RUN ln -s $HOME/script/server-entrypoint /entrypoint.sh # backwards compat
