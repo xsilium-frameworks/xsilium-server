@@ -2,8 +2,6 @@
 FROM debian:sid
 MAINTAINER Xelfe <xelfes@gmail.com>
 
-USER root
-
 RUN apt-get update -y
 
 # Installing base dev tools
@@ -27,7 +25,8 @@ RUN wget http://downloads.sourceforge.net/project/boost/boost/${boost_version}/$
     && cd .. && rm -rf ${boost_dir} && ldconfig
 
 COPY . $HOME
-RUN $HOME/script/install.sh
+#RUN chmod -R 777 $HOME
+RUN $HOME/script/install.sh $HOME
 
 RUN ln -s $HOME/script/server-entrypoint /entrypoint.sh # backwards compat
 
