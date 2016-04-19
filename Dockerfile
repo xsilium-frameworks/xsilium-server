@@ -32,7 +32,8 @@ RUN $HOME/script/install.sh $HOME
 
 # User need by the entry point
 RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
-      -c "Default Application User" default
+      -c "Default Application User" default \
+      && chown -R 1001:0 ${HOME}
 
 USER 1001
 
