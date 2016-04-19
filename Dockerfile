@@ -26,7 +26,10 @@ RUN wget http://downloads.sourceforge.net/project/boost/boost/${boost_version}/$
     && ./b2 --clean-all -n \
     && cd .. && rm -rf ${boost_dir} && ldconfig
 
-# RUN script/install.sh
+COPY . $HOME
+RUN $HOME/script/install.sh
+
+RUN ln -s $HOME/script/server-entrypoint /entrypoint.sh # backwards compat
 
 # User need by the entry point
 RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
@@ -36,4 +39,6 @@ USER 1001
 
 WORKDIR ${HOME}
 
-ENTRYPOINT ["script/server-entrypoint"]
+ENTRYPOINT ["entrypoint.sh"]
+
+CMD ["/etc/xsilium/auth.conf"]
