@@ -37,6 +37,6 @@ USER 1001
 WORKDIR ${HOME}
 
 RUN pwd
-RUN ${HOME}/ls
+RUN ls
 
 ENTRYPOINT ["script/server-entrypoint"]

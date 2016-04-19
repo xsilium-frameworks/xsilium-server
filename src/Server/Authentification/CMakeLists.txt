@@ -32,6 +32,6 @@ add_library(Auth STATIC ${authserver_SRCS})
 add_executable(authserver ${sources_localdir})
 target_link_libraries(authserver Auth)
 
-install(TARGETS authserver DESTINATION /usr/bin COMPONENT binaries)
-install(FILES auth.config DESTINATION /etc/xsilium COMPONENT config)
+install(TARGETS authserver DESTINATION bin)
+install(FILES auth.config DESTINATION etc/xsilium )
 
