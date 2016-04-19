@@ -47,4 +47,8 @@ bool AuthentificationManager::registerRealm() {
     return true;
 }
 
+void AuthentificationManager::update(int diff) {
+
+}
+
 } /* namespace Kingdom */

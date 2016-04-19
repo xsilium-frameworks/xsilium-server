@@ -23,6 +23,8 @@ public:
 
     bool registerRealm();
 
+    void update(int diff);
+
 private:
     void init();
     void disconnexion();
