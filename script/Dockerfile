@@ -1,7 +1,6 @@
-
-# xsilium-server-dev
+# xsilium-server-lite
 FROM jenkinsci/jnlp-slave
-MAINTAINER Johan Lore <johan.lore@free.fr>
+MAINTAINER Xelfe <xelfes@gmail.com>
 
 USER root
 
@@ -20,15 +19,17 @@ RUN wget http://downloads.sourceforge.net/project/boost/boost/${boost_version}/$
     && tar xfz ${boost_dir}.tar.gz \
     && rm ${boost_dir}.tar.gz \
     && cd ${boost_dir} \
-    && ./bootstrap.sh \
+    && ./bootstrap.sh --with-libraries=thread,date_time,system,signals,serialization,test \
     && ./b2 --prefix=/usr -j 4 link=shared runtime-link=shared install \
+    && ./b2 --clean-all -n \
     && cd .. && rm -rf ${boost_dir} && ldconfig
 
-# Debug tools 
-RUN apt-get install -y --no-install-recommends cppcheck && rm -rf /var/lib/apt/lists/*
-RUN pip install gcovr 
+# Debug tools
+RUN apt-get install -y --no-install-recommends cppcheck \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN pip  install gcovr
 
 USER jenkins
 
 ENTRYPOINT ["jenkins-slave"]
-
