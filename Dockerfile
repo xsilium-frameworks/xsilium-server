@@ -37,7 +37,7 @@ USER 1001
 
 WORKDIR ${HOME}
 
-ENTRYPOINT ["server-entrypoint"]
+ENTRYPOINT ["$HOME/script/server-entrypoint"]
 
 EXPOSE 60000
-CMD ["authserver-launch"]
+CMD ["/usr/local/etc/xsilium/auth.conf"]

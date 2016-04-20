@@ -1,2 +1,0 @@
-#!/bin/bash
-exec authserver "$@" 2>&1
