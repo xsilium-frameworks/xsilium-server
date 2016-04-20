@@ -27,9 +27,6 @@ RUN wget http://downloads.sourceforge.net/project/boost/boost/${boost_version}/$
 COPY . $HOME
 RUN chmod -R 777 $HOME
 RUN $HOME/script/install.sh $HOME
-RUN sed "s/database;/${DATABASE_XSILIUM_SERVICE_HOST};/g" /opt/app-root/src/etc/xsilium/auth.config
-
-RUN more /opt/app-root/src/etc/xsilium/auth.config
 
 WORKDIR ${HOME}
 
