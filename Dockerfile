@@ -37,7 +37,7 @@ RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
 
 WORKDIR ${HOME}
 
-RUN ls /usr/local/etc/xsilium/auth.conf
+RUN chmod -R 777 /usr/local/etc
 
 ENTRYPOINT ["/server-entrypoint"]
 
