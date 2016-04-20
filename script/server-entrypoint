@@ -1,5 +1,2 @@
 #!/bin/bash
-
-exec pwd
-
 exec authserver "$@"
