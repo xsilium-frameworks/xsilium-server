@@ -27,7 +27,7 @@ RUN wget http://downloads.sourceforge.net/project/boost/boost/${boost_version}/$
 COPY . $HOME
 RUN chmod -R 777 $HOME
 RUN $HOME/script/install.sh $HOME
-RUN echo ${DATABASE_XSILIUM_SERVICE_HOST} database > /etc/hosts
+RUN echo ${DATABASE_XSILIUM_SERVICE_HOST} database >> /etc/hosts
 
 RUN more /etc/hosts
 
