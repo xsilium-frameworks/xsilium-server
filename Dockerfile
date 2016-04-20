@@ -32,5 +32,5 @@ WORKDIR ${HOME}
 
 ENTRYPOINT ["server-entrypoint"]
 
-EXPOSE 60000
+EXPOSE 60000/udp
 CMD ["/opt/app-root/src/etc/xsilium/auth.config"]
