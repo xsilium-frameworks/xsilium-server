@@ -33,3 +33,4 @@ WORKDIR ${HOME}
 ENTRYPOINT ["server-entrypoint"]
 
 EXPOSE 60000
+CMD ["/opt/app-root/src/etc/xsilium/auth.conf"]
