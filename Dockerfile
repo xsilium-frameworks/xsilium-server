@@ -29,15 +29,14 @@ RUN chmod -R 777 $HOME
 RUN $HOME/script/install.sh $HOME
 
 RUN ln -s $HOME/script/server-entrypoint /server-entrypoint # backwards compat
+RUN chmod -R 777 /usr/local/etc
 
 # User need by the entry point
-RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
-      -c "Default Application User" default \
-      && chown -R 1001:0 ${HOME}
-
-WORKDIR ${HOME}
-
-RUN chmod -R 777 /usr/local/etc
+#RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
+#      -c "Default Application User" default \
+#      && chown -R 1001:0 ${HOME}
+#
+#WORKDIR ${HOME}
 
 ENTRYPOINT ["/server-entrypoint"]
 
