@@ -9,7 +9,6 @@
 
 DAO::DAO() {
     database = DatabaseManager::getInstance();
-
 }
 
 DAO::~DAO() {

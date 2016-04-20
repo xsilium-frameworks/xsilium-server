@@ -15,8 +15,8 @@ AuthServer::AuthServer() {
     log = LogManager::getInstance();
     databaseManager = DatabaseManager::getInstance();
     schedulingService = new SchedulingService();
-    realmService = new RealmService(networkManager);
-    authentificationService = new AuthentificationService(networkManager);
+    realmService = 0;
+    authentificationService = 0;
 
 }
 
@@ -65,9 +65,15 @@ void AuthServer::startServer(std::string configFile) {
         databaseManager->connection(infoDB);
 
         log->write(LogManager::DEBUG, "Demarrage du serveur d'authentification");
+        if (authentificationService == 0) {
+            authentificationService = new AuthentificationService(networkManager);
+        }
         authentificationService->run();
 
         log->write(LogManager::DEBUG, "Demarrage du serveur de Royaume");
+        if (realmService == 0) {
+            realmService = new RealmService(networkManager);
+        }
         realmService->run();
 
         configuration->get("port", serverPort);
@@ -104,7 +110,7 @@ void AuthServer::stopThread() {
 } /* namespace Auth */
 
 int main(int argc, char* argv[]) {
-    if (argc < 1) {
+    if (argc == 2) {
         Auth::AuthServer authserver;
         authserver.startServer(argv[1]);
     }

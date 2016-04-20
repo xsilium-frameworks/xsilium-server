@@ -11,9 +11,9 @@ namespace Auth {
 
 RealmDAO::RealmDAO() {
     suffix = "Royaume";
-
     database->prepareStatement(suffix + Utilities::toString(REALMS_SEL_LISTESROYAUMES),
             "SELECT id_royaume,key_royaume,url_royaume,port_royaume,autorisation_royaume,version_client_royaume,online_royaume FROM authentification.liste_royaume where name_royaume = $1");
+
     database->prepareStatement(suffix + Utilities::toString(REALMS_UPD_LISTESROYAUMES),
             "UPDATE authentification.liste_royaume SET "
                     "keyRoyaume = $2,nameRoyaume=$3,urlRoyaume = $4,portRoyaume=$5,autorisationRoyaume=$6,versionClientRoyaume=$7,online_royaume = $8 WHERE idRoyaume = $1");
