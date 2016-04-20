@@ -40,4 +40,4 @@ WORKDIR ${HOME}
 ENTRYPOINT ["server-entrypoint"]
 
 EXPOSE 60000
-CMD ["/usr/local/etc/xsilium/auth.conf"]
+CMD ["authserver-launch"]
