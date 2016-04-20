@@ -29,6 +29,8 @@ RUN chmod -R 777 $HOME
 RUN $HOME/script/install.sh $HOME
 RUN echo ${DATABASE_XSILIUM_SERVICE_HOST} database > /etc/hosts
 
+RUN more /etc/hosts
+
 WORKDIR ${HOME}
 
 ENTRYPOINT ["server-entrypoint"]
