@@ -28,6 +28,8 @@ COPY . $HOME
 RUN chmod -R 777 $HOME
 RUN $HOME/script/install.sh $HOME
 
+RUN ln -s $HOME/script/server-entrypoint /server-entrypoint # backwards compat
+
 # User need by the entry point
 RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
       -c "Default Application User" default \
@@ -37,7 +39,7 @@ USER 1001
 
 WORKDIR ${HOME}
 
-ENTRYPOINT ["$HOME/script/server-entrypoint"]
+ENTRYPOINT ["/server-entrypoint"]
 
 EXPOSE 60000
 CMD ["/usr/local/etc/xsilium/auth.conf"]
