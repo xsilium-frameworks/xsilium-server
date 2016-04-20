@@ -29,9 +29,9 @@ RUN chmod -R 777 $HOME
 RUN $HOME/script/install.sh $HOME
 
 RUN ln -s $HOME/script/server-entrypoint /server-entrypoint # backwards compat
-RUN cp /usr/local/etc/xsilium/auth.conf /auth.conf
+RUN cp /usr/local/etc/xsilium/auth.conf $HOME/auth.conf
 
 ENTRYPOINT ["/server-entrypoint"]
 
 EXPOSE 60000
-CMD ["/auth.conf"]
+CMD ["auth.conf"]
