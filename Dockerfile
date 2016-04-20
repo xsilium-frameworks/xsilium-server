@@ -11,7 +11,7 @@ RUN apt-get install -y --no-install-recommends gcc wget g++ make cmake libpqxx-d
 ENV \
     # The $HOME is not set by default, but some applications needs this variable
     HOME=/opt/app-root/src \
-    PATH=/opt/app-root/bin:/opt/app-root/src/script:$PATH
+    PATH=/opt/app-root/bin:/opt/app-root/src/bin:$PATH
 ENV boost_version=1.59.0
 ENV boost_dir=boost_1_59_0
 
@@ -35,4 +35,4 @@ RUN cp usr/local/etc/xsilium/auth.conf /auth.conf
 ENTRYPOINT ["/server-entrypoint"]
 
 EXPOSE 60000
-CMD ["auth.conf"]
+CMD ["./etc/auth.conf"]
