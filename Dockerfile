@@ -33,4 +33,4 @@ WORKDIR ${HOME}
 ENTRYPOINT ["server-entrypoint"]
 
 EXPOSE 60000
-CMD ["./etc/auth.conf"]
+CMD ["/opt/app-root/src/etc/auth.conf"]
