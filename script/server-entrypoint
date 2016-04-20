@@ -1,5 +1,5 @@
 #!/bin/bash
 
-sed "s/database;/${DATABASE_XSILIUM_SERVICE_HOST};/g" /opt/app-root/src/etc/xsilium/auth.config
+sed "s/database;/${DATABASE_XSILIUM_SERVICE_HOST};/g" /opt/app-root/src/etc/xsilium/auth.config > /opt/app-root/src/etc/xsilium/auth.config
 
 exec authserver "$@"
