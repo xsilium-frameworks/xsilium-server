@@ -1,2 +1,2 @@
 #!/bin/bash
-exec authserver "$@"
+exec authserver /opt/app-root/src/etc/auth.conf "$@"
