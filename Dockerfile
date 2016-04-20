@@ -30,7 +30,9 @@ RUN $HOME/script/install.sh $HOME
 
 RUN ln -s $HOME/script/server-entrypoint /server-entrypoint # backwards compat
 
-ENTRYPOINT ["/server-entrypoint"]
+WORKDIR ${HOME}
+
+ENTRYPOINT ["server-entrypoint"]
 
 EXPOSE 60000
 CMD ["./etc/auth.conf"]
