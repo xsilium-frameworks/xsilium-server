@@ -39,6 +39,8 @@ USER 1001
 
 WORKDIR ${HOME}
 
+RUN ls /usr/local/etc/xsilium/auth.conf
+
 ENTRYPOINT ["/server-entrypoint"]
 
 EXPOSE 60000
