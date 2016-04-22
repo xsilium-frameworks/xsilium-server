@@ -17,6 +17,7 @@ KingdomServer::KingdomServer() {
     schedulingService = new SchedulingService();
     chatService = new ChatService(clientNetwork);
     playerService = new PlayerService(clientNetwork);
+    authentificationService = new AuthentificationService(clientNetwork);
 
 }
 
@@ -36,6 +37,7 @@ KingdomServer::KingdomServer(ConfigurationManager * configuration, LogManager * 
 }
 
 KingdomServer::~KingdomServer() {
+    delete authentificationService;
     delete schedulingService;
     delete chatService;
     delete clientNetwork;

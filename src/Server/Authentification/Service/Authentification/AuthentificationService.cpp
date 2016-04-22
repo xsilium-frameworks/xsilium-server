@@ -31,8 +31,8 @@ void AuthentificationService::processPacket(MessageNetwork * messageNetwork) {
     log->write(LogManager::DEBUG, "Nouveau Packet Authentification");
     MessageNetwork * messageRetour = new MessageNetwork();
     messageRetour->messagePacket = new MessagePacket();
-    messageRetour->session = new Session ();
-    
+    messageRetour->session = new Session();
+
     switch (messageNetwork->messagePacket->getSousOpcode()) {
     case ID_CHALLENGE:
         handleLogonChallenge(messageNetwork, messageRetour);
@@ -52,7 +52,6 @@ void AuthentificationService::processPacket(MessageNetwork * messageNetwork) {
 void AuthentificationService::handleLogonChallenge(MessageNetwork * messageNetwork,
         MessageNetwork * messageRetour) {
     std::vector < std::string > tableauData;
-    
 
     tableauData.push_back("Build");
     tableauData.push_back("Login");

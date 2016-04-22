@@ -51,7 +51,7 @@ bool RealmDAO::create(Model * model, int idTransaction) {
     return retour;
 }
 bool RealmDAO::read(Model * model, int idTransaction) {
-    bool retour = true;
+    bool retour = false;
     Tokens resultsqlT;
 
     Realm * realm = static_cast<Realm*>(model);
@@ -74,6 +74,7 @@ bool RealmDAO::read(Model * model, int idTransaction) {
         realm->setAutorisationRoyaume(Utilities::toInt(resultatsql[4]));
         realm->setVersionClientRoyaume(Utilities::toInt(resultatsql[5]));
         realm->setOnlineRoyaume(Utilities::toBool(resultatsql[6]));
+        retour = true;
     }
 
     return retour;

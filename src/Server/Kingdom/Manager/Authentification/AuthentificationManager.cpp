@@ -32,7 +32,7 @@ void AuthentificationManager::init() {
     configurationManager->get("urlAuth", urlAuth);
 
     authNetwork->createConnexion();
-    authNetwork->connexionToHost(urlAuth, portAuth);
+    authNetwork->connexionToHost("127.0.0.1", 60000);
 }
 
 void AuthentificationManager::disconnexion() {

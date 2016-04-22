@@ -84,7 +84,7 @@ bool CompteDAO::update(Model * model, int idTransaction) {
 
 }
 bool CompteDAO::read(Model * model, int idTransaction) {
-    bool retour = true;
+    bool retour = false;
     Tokens resultsqlT;
 
     Compte * compte = static_cast<Compte*>(model);
@@ -110,6 +110,8 @@ bool CompteDAO::read(Model * model, int idTransaction) {
         compte->setLastLogin(Utilities::toDate(resultatsql[6]));
         compte->setOnline(Utilities::toBool(resultatsql[8]));
         compte->setLocale(Utilities::toInt(resultatsql[8]));
+
+        retour = true;
     }
 
     return retour;

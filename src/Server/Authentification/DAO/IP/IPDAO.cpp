@@ -42,7 +42,7 @@ bool IPDAO::create(Model * model, int idTransaction) {
     return retour;
 }
 bool IPDAO::read(Model * model, int idTransaction) {
-    bool retour = true;
+    bool retour = false;
     Tokens resultsqlT;
 
     IP * ip = static_cast<IP*>(model);
@@ -59,6 +59,7 @@ bool IPDAO::read(Model * model, int idTransaction) {
         resultatsql = Utilities::strSplit(resultsqlT[0], ";");
         ip->setIdIp(Utilities::toInt(resultatsql[0]));
         ip->setIpTempNessais(Utilities::toInt(resultatsql[1]));
+        retour = true;
     }
     return retour;
 }

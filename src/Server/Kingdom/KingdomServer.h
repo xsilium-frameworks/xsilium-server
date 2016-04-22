@@ -14,6 +14,7 @@
 #include <Service/scheduling/SchedulingService.h>
 #include <Service/Chat/ChatService.h>
 #include <Service/Player/PlayerService.h>
+#include <Service/Authentification/AuthentificationService.h>
 
 namespace Kingdom {
 
@@ -42,6 +43,7 @@ private:
     SchedulingService * schedulingService;
     ChatService * chatService;
     PlayerService * playerService;
+    AuthentificationService * authentificationService;
 
 };
 

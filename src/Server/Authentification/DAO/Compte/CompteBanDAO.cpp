@@ -74,7 +74,7 @@ bool CompteBanDAO::update(Model * model, int idTransaction) {
     return retour;
 }
 bool CompteBanDAO::read(Model * model, int idTransaction) {
-    bool retour = true;
+    bool retour = false;
     Tokens resultsqlT;
     CompteBan * compteBan = static_cast<CompteBan*>(model);
     try {
@@ -95,6 +95,7 @@ bool CompteBanDAO::read(Model * model, int idTransaction) {
         compteBan->setUnbandate(Utilities::toDate(resultatsql[2]));
         compteBan->setRaison(resultatsql[3]);
         compteBan->setBannedby(Utilities::toInt(resultatsql[4]));
+        retour = true;
     }
 
     return retour;
