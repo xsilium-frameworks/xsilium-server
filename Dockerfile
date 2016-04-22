@@ -35,6 +35,8 @@ RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
 
 USER 1001
 
+RUN export LC_ALL=fr_FR.UTF-8
+
 WORKDIR ${HOME}
 
 ENTRYPOINT ["server-entrypoint"]
