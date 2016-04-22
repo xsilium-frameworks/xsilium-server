@@ -30,6 +30,9 @@ void AuthentificationService::run() {
 void AuthentificationService::processPacket(MessageNetwork * messageNetwork) {
     log->write(LogManager::DEBUG, "Nouveau Packet Authentification");
     MessageNetwork * messageRetour = new MessageNetwork();
+    messageRetour->messagePacket = new MessagePacket();
+    messageRetour->session = new Session ();
+    
     switch (messageNetwork->messagePacket->getSousOpcode()) {
     case ID_CHALLENGE:
         handleLogonChallenge(messageNetwork, messageRetour);
@@ -42,7 +45,6 @@ void AuthentificationService::processPacket(MessageNetwork * messageNetwork) {
     default:
         break;
     }
-
     networkManager->sendPacket(messageRetour);
 
 }
@@ -50,7 +52,7 @@ void AuthentificationService::processPacket(MessageNetwork * messageNetwork) {
 void AuthentificationService::handleLogonChallenge(MessageNetwork * messageNetwork,
         MessageNetwork * messageRetour) {
     std::vector < std::string > tableauData;
-    messageRetour->messagePacket = new MessagePacket();
+    
 
     tableauData.push_back("Build");
     tableauData.push_back("Login");
@@ -108,7 +110,6 @@ void AuthentificationService::handleLogonChallenge(MessageNetwork * messageNetwo
 
 void AuthentificationService::handleLogonProof(MessageNetwork * messageNetwork,
         MessageNetwork * messageRetour) {
-    messageRetour->messagePacket = new MessagePacket();
     std::vector < std::string > tableauData;
 
     tableauData.push_back("Password");
@@ -158,7 +159,6 @@ void AuthentificationService::handleLogonProof(MessageNetwork * messageNetwork,
 
 void AuthentificationService::handleRealmsList(MessageNetwork * messageNetwork,
         MessageNetwork * messageRetour) {
-    messageRetour->messagePacket = new MessagePacket();
     std::vector < std::string > tableauData;
     tableauData.push_back("versionClient");
 
