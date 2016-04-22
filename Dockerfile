@@ -7,8 +7,11 @@ RUN apt-get update -y
 # Installing base dev tools
 RUN apt-get install -y --no-install-recommends gcc wget g++ make cmake libpqxx-dev git libbz2-dev locales
 
-RUN echo "locales locales/default_environment_locale select fr_FR.UTF-8" | debconf-set-selections \
-&& echo "locales locales/locales_to_be_generated multiselect 'fr_FR.UTF-8 UTF-8'" | debconf-set-selections 
+# Set the locale
+RUN locale-gen fr_FR.UTF-8  
+ENV LANG fr_FR.UTF-8  
+ENV LANGUAGE fr_FR:fr  
+ENV LC_ALL fr_FR.UTF-8    
 
 # Installing boost
 ENV \
