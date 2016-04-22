@@ -2,6 +2,11 @@
 FROM debian:sid
 MAINTAINER Xelfe <xelfes@gmail.com>
 
+RUN locale-gen fr_FR.UTF-8  
+ENV LANG fr_FR.UTF-8  
+ENV LANGUAGE fr_FR:fr  
+ENV LC_ALL fr_FR.UTF-8 
+
 RUN apt-get update -y
 
 # Installing base dev tools
@@ -34,8 +39,6 @@ RUN useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
       && chown -R 1001:0 ${HOME} && chmod -R 777 $HOME
 
 USER 1001
-
-RUN export LC_ALL=fr_FR.UTF-8
 
 WORKDIR ${HOME}
 
