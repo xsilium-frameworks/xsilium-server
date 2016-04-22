@@ -40,6 +40,11 @@ void Postgresql::connection(std::string infoConnection) {
     connexion = new pqxx::lazyconnection(connectionString.c_str());
 
     connexion->activate();
+
+    pqxx::work txn(*connexion);
+
+    txn.exec("SET client_encoding = LATIN9");
+    txn.commit();
 }
 
 void Postgresql::deconnection() {

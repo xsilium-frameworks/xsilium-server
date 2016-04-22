@@ -5,13 +5,7 @@ MAINTAINER Xelfe <xelfes@gmail.com>
 RUN apt-get update -y
 
 # Installing base dev tools
-RUN apt-get install -y --no-install-recommends gcc wget g++ make cmake libpqxx-dev git libbz2-dev locales
-
-# Set the locale
-RUN locale-gen fr_FR.UTF-8  
-ENV LANG fr_FR.UTF-8  
-ENV LANGUAGE fr_FR:fr  
-ENV LC_ALL fr_FR.UTF-8    
+RUN apt-get install -y --no-install-recommends gcc wget g++ make cmake libpqxx-dev git libbz2-dev   
 
 # Installing boost
 ENV \
