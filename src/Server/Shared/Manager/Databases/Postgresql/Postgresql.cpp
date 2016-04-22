@@ -78,6 +78,7 @@ void Postgresql::executionPrepareStatement(std::string index, Tokens * resultat,
 
     try {
         if (txn->prepared(index.c_str()).exists()) {
+            txn->exec("SET client_encoding = UTF8");
             pqxx::prepare::invocation invoc = txn->prepared(index.c_str());
 
             for (int increment = 0; increment < nombreArgument; increment++) {
