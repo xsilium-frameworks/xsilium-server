@@ -92,6 +92,7 @@ void Postgresql::executionPrepareStatement(std::string index, Tokens * resultat,
     } catch (const pqxx::pqxx_exception &e) {
         txn->abort();
         delete txn;
+        std::cerr << e.base().what() << std::endl;
         throw new DatabaseException(e.base());
     }
 }
