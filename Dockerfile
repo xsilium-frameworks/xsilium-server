@@ -2,10 +2,8 @@
 FROM debian:sid
 MAINTAINER Xelfe <xelfes@gmail.com>
 
-RUN locale-gen fr_FR.UTF-8  
-ENV LANG fr_FR.UTF-8  
-ENV LANGUAGE fr_FR:fr  
-ENV LC_ALL fr_FR.UTF-8 
+RUN echo "locales locales/default_environment_locale select fr_FR.UTF-8" | debconf-set-selections \
+&& echo "locales locales/locales_to_be_generated multiselect 'fr_FR.UTF-8 UTF-8'" | debconf-set-selections 
 
 RUN apt-get update -y
 
