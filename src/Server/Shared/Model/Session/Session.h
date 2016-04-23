@@ -12,6 +12,8 @@
 #include <Model/Model.h>
 #include <string>
 
+#define INET_ADDRSTRLEN 16
+
 /*
  * Enum type session
  */

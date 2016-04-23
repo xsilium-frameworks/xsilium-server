@@ -49,9 +49,9 @@ Model * Session::getSessionListener() {
 }
 
 std::string Session::getIP() {
-    char * buffer = new char[16];
-    enet_address_get_host_ip(&peer->address, buffer, sizeof(buffer));
-    return std::string(buffer);
+    char temp[INET_ADDRSTRLEN] = "";
+    enet_address_get_host_ip(&peer->address, temp, INET_ADDRSTRLEN);
+    return std::string(temp);
 }
 
 int Session::getSessionEtape() const {

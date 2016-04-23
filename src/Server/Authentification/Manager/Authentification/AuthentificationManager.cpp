@@ -41,7 +41,7 @@ bool AuthentificationManager::checkIp(std::string ip) {
     if (ipBanDAO->read(&ipBan))
         return false;
 
-    if (ipDAO->read(&ipTemp))
+    if (!ipDAO->read(&ipTemp))
         ipDAO->create(&ipTemp);
 
     return true;
@@ -102,6 +102,7 @@ void AuthentificationManager::banIP(std::string ip) {
         ipBanDAO->create(&ipBan, idTransaction);
     }
     ipDAO->update(&ipTemp, idTransaction);
+    DatabaseManager::getInstance()->commit(idTransaction);
 }
 
 void AuthentificationManager::resetIpTemp(std::string ip) {
