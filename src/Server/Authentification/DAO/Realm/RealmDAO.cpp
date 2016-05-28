@@ -42,7 +42,7 @@ bool RealmDAO::create(Model * model, int idTransaction) {
                 Utilities::toString(realm->getAutorisationRoyaume()).c_str(),
                 Utilities::toString(realm->getVersionClientRoyaume()).c_str(),
                 Utilities::toString(realm->isOnlineRoyaume()).c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
 
@@ -59,7 +59,7 @@ bool RealmDAO::read(Model * model, int idTransaction) {
     try {
         database->executionPrepareStatement(suffix + Utilities::toString(REALMS_SEL_LISTESROYAUMES),
                 &resultsqlT, idTransaction, 1, realm->getNameRoyaume().c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
 
@@ -95,7 +95,7 @@ bool RealmDAO::update(Model * model, int idTransaction) {
                 Utilities::toString(realm->getAutorisationRoyaume()).c_str(),
                 Utilities::toString(realm->getVersionClientRoyaume()).c_str(),
                 Utilities::toString(realm->isOnlineRoyaume()).c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
     return retour;
@@ -110,7 +110,7 @@ bool RealmDAO::suppr(Model * model, int idTransaction) {
     try {
         database->executionPrepareStatement(suffix + Utilities::toString(REALMS_DEL_LISTESROYAUMES),
                 &resultsqlT, idTransaction, 1, Utilities::toString(realm->getIdRoyaume()).c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
     return retour;

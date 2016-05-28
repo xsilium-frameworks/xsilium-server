@@ -54,7 +54,7 @@ bool CompteDAO::create(Model * model, int idTransaction) {
                 Utilities::toString(compte->getLastLogin()).c_str(),
                 Utilities::toString(compte->isOnline()).c_str(),
                 Utilities::toString(compte->getLocale()).c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
     return retour;
@@ -76,7 +76,7 @@ bool CompteDAO::update(Model * model, int idTransaction) {
                 Utilities::toString(compte->getLastLogin()).c_str(),
                 Utilities::toString(compte->isOnline()).c_str(),
                 Utilities::toString(compte->getLocale()).c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
 
@@ -92,7 +92,7 @@ bool CompteDAO::read(Model * model, int idTransaction) {
     try {
         database->executionPrepareStatement(suffix + Utilities::toString(REALMS_SEL_ACCOUNT),
                 &resultsqlT, idTransaction, 1, compte->getUsername().c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
 
@@ -125,7 +125,7 @@ bool CompteDAO::suppr(Model * model, int idTransaction) {
     try {
         database->executionPrepareStatement(suffix + Utilities::toString(REALMS_DEL_ACCOUNT),
                 &resultsqlT, idTransaction, 1, Utilities::toString(compte->getIdAccount()).c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
     return retour;

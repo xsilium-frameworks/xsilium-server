@@ -20,17 +20,14 @@ AuthServer::AuthServer() {
 
 }
 
-AuthServer::AuthServer(ConfigurationManager * configuration, LogManager * log,
-        DatabaseManager * databaseManager, NetworkManager * networkManager,
-        AuthentificationService * authentificationService, RealmService * realmService,
-        SchedulingService * schedulingService) {
-    this->networkManager = networkManager;
-    this->configuration = configuration;
-    this->log = log;
-    this->databaseManager = databaseManager;
-    this->schedulingService = schedulingService;
-    this->realmService = realmService;
-    this->authentificationService = authentificationService;
+AuthServer::AuthServer(AuthServer * authServer) {
+    this->networkManager = authServer->getNetworkManager();
+    this->configuration = authServer->getConfiguration();
+    this->log = authServer->getLog();
+    this->databaseManager = authServer->getDatabaseManager();
+    this->schedulingService = authServer->getSchedulingService();
+    this->realmService = authServer->getRealmService();
+    this->authentificationService = authServer->getAuthentificationService();
 }
 
 AuthServer::~AuthServer() {
@@ -104,7 +101,64 @@ void AuthServer::stopThread() {
     realmService->stopThread();
     authentificationService->stopThread();
     databaseManager->deconnection();
+    log->stop();
 
+}
+
+AuthentificationService*& AuthServer::getAuthentificationService() {
+    return authentificationService;
+}
+
+void AuthServer::setAuthentificationService(AuthentificationService*& authentificationService) {
+    this->authentificationService = authentificationService;
+}
+
+ConfigurationManager*& AuthServer::getConfiguration() {
+    return configuration;
+}
+
+void AuthServer::setConfiguration(ConfigurationManager*& configuration) {
+    this->configuration = configuration;
+}
+
+DatabaseManager*& AuthServer::getDatabaseManager() {
+    return databaseManager;
+}
+
+void AuthServer::setDatabaseManager(DatabaseManager*& databaseManager) {
+    this->databaseManager = databaseManager;
+}
+
+LogManager*& AuthServer::getLog() {
+    return log;
+}
+
+void AuthServer::setLog(LogManager*& log) {
+    this->log = log;
+}
+
+NetworkManager*& AuthServer::getNetworkManager() {
+    return networkManager;
+}
+
+void AuthServer::setNetworkManager(NetworkManager*& networkManager) {
+    this->networkManager = networkManager;
+}
+
+RealmService*& AuthServer::getRealmService() {
+    return realmService;
+}
+
+void AuthServer::setRealmService(RealmService*& realmService) {
+    this->realmService = realmService;
+}
+
+SchedulingService*& AuthServer::getSchedulingService() {
+    return schedulingService;
+}
+
+void AuthServer::setSchedulingService(SchedulingService*& schedulingService) {
+    this->schedulingService = schedulingService;
 }
 
 } /* namespace Auth */
