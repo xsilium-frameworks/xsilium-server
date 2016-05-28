@@ -29,6 +29,8 @@ void RealmService::run() {
 void RealmService::processPacket(MessageNetwork * messageNetwork) {
     log->write(LogManager::DEBUG, "Nouveau Packet Realm");
     MessageNetwork * messageRetour = new MessageNetwork();
+    messageRetour->messagePacket = new MessagePacket();
+    messageRetour->session = new Session();
     switch (messageNetwork->messagePacket->getSousOpcode()) {
     case ID_REGISTER_REALM:
         handleRegisterRealm(messageNetwork, messageRetour);
@@ -41,8 +43,6 @@ void RealmService::processPacket(MessageNetwork * messageNetwork) {
 
 void RealmService::handleRegisterRealm(MessageNetwork * messageNetwork,
         MessageNetwork * messageRetour) {
-
-    messageRetour->messagePacket = new MessagePacket();
 
     std::vector < std::string > tableauData;
     tableauData.push_back("Name");

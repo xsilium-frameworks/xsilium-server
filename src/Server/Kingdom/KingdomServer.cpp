@@ -46,14 +46,14 @@ KingdomServer::~KingdomServer() {
     LogManager::DestroyInstance();
 }
 
-void KingdomServer::startServer() {
+void KingdomServer::startServer(std::string configFile) {
     try {
 
         int logLevel, typeDatabase, serverPort, numClient;
         std::string infoDB;
         ENetAddress adresse;
 
-        if (!configuration->load("../etc/Kingdom.config"))
+        if (!configuration->load(configFile))
             return;
 
         configuration->get("LogLevel", logLevel);
@@ -66,6 +66,9 @@ void KingdomServer::startServer() {
 
         databaseManager->createServer(typeDatabase);
         databaseManager->connection(infoDB);
+
+        log->write(LogManager::DEBUG, "Demarrage du Service Authentification");
+        authentificationService->run();
 
         log->write(LogManager::DEBUG, "Demarrage du Service de chat");
         chatService->run();
@@ -102,8 +105,9 @@ void KingdomServer::stopThread() {
 
 } /* namespace Kingdom */
 
-int main() {
-    Kingdom::KingdomServer * kingdomServer = new Kingdom::KingdomServer();
-    kingdomServer->startServer();
-    delete kingdomServer;
+int main(int argc, char* argv[]) {
+    if (argc == 2) {
+        Kingdom::KingdomServer kingdomServer;
+        kingdomServer.startServer(argv[1]);
+    }
 }

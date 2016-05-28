@@ -3,7 +3,6 @@
 	<name>xsilium-server</name>
 	<comment></comment>
 	<projects>
-		<project>Xsilium-Debug@server</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

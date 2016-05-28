@@ -32,7 +32,7 @@ void AuthentificationManager::init() {
     configurationManager->get("urlAuth", urlAuth);
 
     authNetwork->createConnexion();
-    authNetwork->connexionToHost("127.0.0.1", 60000);
+    authNetwork->connexionToHost(urlAuth, portAuth);
 }
 
 void AuthentificationManager::disconnexion() {
@@ -49,6 +49,21 @@ bool AuthentificationManager::registerRealm() {
 
 void AuthentificationManager::update(int diff) {
 
+}
+
+void AuthentificationManager::connexionToRealm() {
+    MessageNetwork * messageRetour = new MessageNetwork();
+    messageRetour->session = new Session();
+    messageRetour->messagePacket = new MessagePacket();
+    messageRetour->session->setSessionPeer(authNetwork->getPeer());
+    messageRetour->messagePacket->setOpcode(ID_REALM);
+    messageRetour->messagePacket->setSousOpcode(ID_REGISTER_REALM);
+    messageRetour->messagePacket->setProperty("Name", "serveur 1");
+    messageRetour->messagePacket->setProperty("Key", "123456789");
+    messageRetour->messagePacket->setProperty("Port", "60001");
+    messageRetour->messagePacket->setProperty("URL", "127.0.0.1");
+    messageRetour->messagePacket->setProperty("Version", "1");
+    authNetwork->sendPacket(messageRetour);
 }
 
 } /* namespace Kingdom */

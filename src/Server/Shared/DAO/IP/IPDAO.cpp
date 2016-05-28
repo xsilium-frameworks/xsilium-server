@@ -91,4 +91,5 @@ bool IPDAO::suppr(Model * model, int idTransaction) {
         retour = false;
     }
 
+    return retour;
 }

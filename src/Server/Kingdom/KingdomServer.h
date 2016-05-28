@@ -30,7 +30,7 @@ public:
             PlayerService * playerService);
     virtual ~KingdomServer();
 
-    void startServer();
+    void startServer(std::string configFile);
     void stopThread();
 
 private:

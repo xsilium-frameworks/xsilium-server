@@ -14,6 +14,12 @@
 namespace Kingdom {
 
 class AuthentificationManager: public Manager, public Singleton<AuthentificationManager> {
+
+    enum typeForRealm {
+        ID_REGISTER_REALM, ID_ERROR
+
+    };
+
 public:
     AuthentificationManager();
     AuthentificationManager(NetworkManager * authNetwork);
@@ -22,6 +28,8 @@ public:
     bool checkAccount(int idAccount);
 
     bool registerRealm();
+
+    void connexionToRealm();
 
     void update(int diff);
 

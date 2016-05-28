@@ -11,8 +11,7 @@ namespace Kingdom {
 
 AuthentificationService::AuthentificationService(NetworkManager * networkManager) {
     this->networkManager = networkManager;
-    authentificationManager = AuthentificationManager::getInstance();
-
+    authentificationManager = 0;
 }
 
 AuthentificationService::~AuthentificationService() {
@@ -20,6 +19,8 @@ AuthentificationService::~AuthentificationService() {
 }
 
 void AuthentificationService::run() {
+    authentificationManager = AuthentificationManager::getInstance();
+    authentificationManager->connexionToRealm();
     networkManager->addListenneur(ID_AUTH, this);
     Service::run();
 
