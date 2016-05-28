@@ -24,14 +24,27 @@ namespace Kingdom {
 class KingdomServer {
 public:
     KingdomServer();
-    KingdomServer(ConfigurationManager * configuration, LogManager * log,
-            DatabaseManager * databaseManager, NetworkManager * networkManager,
-            SchedulingService * schedulingService, ChatService * chatService,
-            PlayerService * playerService);
+    KingdomServer(KingdomServer * kingdomServer);
     virtual ~KingdomServer();
 
     void startServer(std::string configFile);
     void stopThread();
+    AuthentificationService*& getAuthentificationService();
+    void setAuthentificationService(AuthentificationService*& authentificationService);
+    ChatService*& getChatService();
+    void setChatService(ChatService*& chatService);
+    NetworkManager*& getClientNetwork();
+    void setClientNetwork(NetworkManager*& clientNetwork);
+    ConfigurationManager*& getConfiguration();
+    void setConfiguration(ConfigurationManager*& configuration);
+    DatabaseManager*& getDatabaseManager();
+    void setDatabaseManager(DatabaseManager*& databaseManager);
+    LogManager*& getLog();
+    void setLog(LogManager*& log);
+    PlayerService*& getPlayerService();
+    void setPlayerService(PlayerService*& playerService);
+    SchedulingService*& getSchedulingService();
+    void setSchedulingService(SchedulingService*& schedulingService);
 
 private:
     ConfigurationManager * configuration;

@@ -48,7 +48,7 @@ bool IPBanDAO::create(Model * model, int idTransaction) {
                 Utilities::toString(ipBan->getBandate()).c_str(),
                 Utilities::toString(ipBan->getUnbandate()).c_str(), ipBan->getRaison().c_str(),
                 Utilities::toString(ipBan->getBannedby()).c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
     read(ipBan, idTransaction);
@@ -64,7 +64,7 @@ bool IPBanDAO::read(Model * model, int idTransaction) {
         database->executionPrepareStatement(
                 suffix + Utilities::toString(REALMS_SEL_IPBANNED_INFOSSURIPBANNIES), &resultsqlT,
                 idTransaction, 1, ipBan->getIp().c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
 
@@ -97,7 +97,7 @@ bool IPBanDAO::update(Model * model, int idTransaction) {
                 Utilities::toString(ipBan->getUnbandate()).c_str(), ipBan->getRaison().c_str(),
                 Utilities::toString(ipBan->getBannedby()).c_str(),
                 Utilities::toString(ipBan->getIdIpBanned()).c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
     return retour;
@@ -112,7 +112,7 @@ bool IPBanDAO::suppr(Model * model, int idTransaction) {
         database->executionPrepareStatement(
                 suffix + Utilities::toString(REALMS_DEL_IPBANNED_DEBANIP), &resultsqlT,
                 idTransaction, 1, Utilities::toString(ipBan->getIdIpBanned()).c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
     return retour;

@@ -50,7 +50,7 @@ bool CompteBanDAO::create(Model * model, int idTransaction) {
                 Utilities::toString(compteBan->getUnbandate()).c_str(),
                 compteBan->getRaison().c_str(),
                 Utilities::toString(compteBan->getBannedby()).c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
     read(compteBan, idTransaction);
@@ -68,7 +68,7 @@ bool CompteBanDAO::update(Model * model, int idTransaction) {
                 compteBan->getRaison().c_str(),
                 Utilities::toString(compteBan->getBannedby()).c_str(),
                 Utilities::toString(compteBan->getIdAccountBanned()).c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
     return retour;
@@ -81,7 +81,7 @@ bool CompteBanDAO::read(Model * model, int idTransaction) {
         database->executionPrepareStatement(suffix + Utilities::toString(REALMS_SEL_ACCOUNTBANNED),
                 &resultsqlT, idTransaction, 1,
                 Utilities::toString(compteBan->getIdAccount()).c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
 
@@ -108,7 +108,7 @@ bool CompteBanDAO::suppr(Model * model, int idTransaction) {
         database->executionPrepareStatement(suffix + Utilities::toString(REALMS_DEL_ACCOUNTBANNED),
                 &resultsqlT, idTransaction, 1,
                 Utilities::toString(compteBan->getIdAccountBanned()).c_str());
-    } catch (DatabaseException e) {
+    } catch (DatabaseException & e) {
         retour = false;
     }
     return retour;

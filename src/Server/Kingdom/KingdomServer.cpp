@@ -21,18 +21,16 @@ KingdomServer::KingdomServer() {
 
 }
 
-KingdomServer::KingdomServer(ConfigurationManager * configuration, LogManager * log,
-        DatabaseManager * databaseManager, NetworkManager * networkManager,
-        SchedulingService * schedulingService, ChatService * chatService,
-        PlayerService * playerService) {
+KingdomServer::KingdomServer(KingdomServer * kingdomServer) {
 
-    this->clientNetwork = networkManager;
-    this->configuration = configuration;
-    this->log = log;
-    this->databaseManager = databaseManager;
-    this->schedulingService = schedulingService;
-    this->chatService = chatService;
-    this->playerService = playerService;
+    setClientNetwork(kingdomServer->getClientNetwork());
+    setConfiguration(kingdomServer->getConfiguration());
+    setLog(kingdomServer->getLog());
+    setDatabaseManager(kingdomServer->getDatabaseManager());
+    setSchedulingService(kingdomServer->getSchedulingService());
+    setChatService(kingdomServer->getChatService());
+    setPlayerService(kingdomServer->getPlayerService());
+    setAuthentificationService(kingdomServer->getAuthentificationService());
 
 }
 
@@ -101,6 +99,70 @@ void KingdomServer::stopThread() {
     clientNetwork->disconnexion();
     databaseManager->deconnection();
 
+}
+
+AuthentificationService*& KingdomServer::getAuthentificationService() {
+    return authentificationService;
+}
+
+void KingdomServer::setAuthentificationService(AuthentificationService*& authentificationService) {
+    this->authentificationService = authentificationService;
+}
+
+ChatService*& KingdomServer::getChatService() {
+    return chatService;
+}
+
+void KingdomServer::setChatService(ChatService*& chatService) {
+    this->chatService = chatService;
+}
+
+NetworkManager*& KingdomServer::getClientNetwork() {
+    return clientNetwork;
+}
+
+void KingdomServer::setClientNetwork(NetworkManager*& clientNetwork) {
+    this->clientNetwork = clientNetwork;
+}
+
+ConfigurationManager*& KingdomServer::getConfiguration() {
+    return configuration;
+}
+
+void KingdomServer::setConfiguration(ConfigurationManager*& configuration) {
+    this->configuration = configuration;
+}
+
+DatabaseManager*& KingdomServer::getDatabaseManager() {
+    return databaseManager;
+}
+
+void KingdomServer::setDatabaseManager(DatabaseManager*& databaseManager) {
+    this->databaseManager = databaseManager;
+}
+
+LogManager*& KingdomServer::getLog() {
+    return log;
+}
+
+void KingdomServer::setLog(LogManager*& log) {
+    this->log = log;
+}
+
+PlayerService*& KingdomServer::getPlayerService() {
+    return playerService;
+}
+
+void KingdomServer::setPlayerService(PlayerService*& playerService) {
+    this->playerService = playerService;
+}
+
+SchedulingService*& KingdomServer::getSchedulingService() {
+    return schedulingService;
+}
+
+void KingdomServer::setSchedulingService(SchedulingService*& schedulingService) {
+    this->schedulingService = schedulingService;
 }
 
 } /* namespace Kingdom */

@@ -23,14 +23,26 @@ namespace Auth {
 class AuthServer {
 public:
     AuthServer();
-    AuthServer(ConfigurationManager * configuration, LogManager * log,
-            DatabaseManager * databaseManager, NetworkManager * networkManager,
-            AuthentificationService * authentificationService, RealmService * realmService,
-            SchedulingService * schedulingService);
+    AuthServer(AuthServer * authServer);
     virtual ~AuthServer();
 
     void startServer(std::string configFile);
     void stopThread();
+
+    AuthentificationService*& getAuthentificationService();
+    void setAuthentificationService(AuthentificationService*& authentificationService);
+    ConfigurationManager*& getConfiguration();
+    void setConfiguration(ConfigurationManager*& configuration);
+    DatabaseManager*& getDatabaseManager();
+    void setDatabaseManager(DatabaseManager*& databaseManager);
+    LogManager*& getLog();
+    void setLog(LogManager*& log);
+    NetworkManager*& getNetworkManager();
+    void setNetworkManager(NetworkManager*& networkManager);
+    RealmService*& getRealmService();
+    void setRealmService(RealmService*& realmService);
+    SchedulingService*& getSchedulingService();
+    void setSchedulingService(SchedulingService*& schedulingService);
 
 private:
     ConfigurationManager * configuration;
