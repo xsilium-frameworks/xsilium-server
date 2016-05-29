@@ -21,16 +21,16 @@ KingdomServer::KingdomServer() {
 
 }
 
-KingdomServer::KingdomServer(KingdomServer * kingdomServer) {
+KingdomServer::KingdomServer(KingdomServer & kingdomServer) {
 
-    setClientNetwork(kingdomServer->getClientNetwork());
-    setConfiguration(kingdomServer->getConfiguration());
-    setLog(kingdomServer->getLog());
-    setDatabaseManager(kingdomServer->getDatabaseManager());
-    setSchedulingService(kingdomServer->getSchedulingService());
-    setChatService(kingdomServer->getChatService());
-    setPlayerService(kingdomServer->getPlayerService());
-    setAuthentificationService(kingdomServer->getAuthentificationService());
+    setClientNetwork(kingdomServer.getClientNetwork());
+    setConfiguration(kingdomServer.getConfiguration());
+    setLog(kingdomServer.getLog());
+    setDatabaseManager(kingdomServer.getDatabaseManager());
+    setSchedulingService(kingdomServer.getSchedulingService());
+    setChatService(kingdomServer.getChatService());
+    setPlayerService(kingdomServer.getPlayerService());
+    setAuthentificationService(kingdomServer.getAuthentificationService());
 
 }
 

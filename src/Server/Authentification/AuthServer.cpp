@@ -20,14 +20,14 @@ AuthServer::AuthServer() {
 
 }
 
-AuthServer::AuthServer(AuthServer * authServer) {
-    setNetworkManager(authServer->getNetworkManager());
-    setConfiguration(authServer->getConfiguration());
-    setLog(authServer->getLog());
-    setDatabaseManager(authServer->getDatabaseManager());
-    setSchedulingService(authServer->getSchedulingService());
-    setRealmService(authServer->getRealmService());
-    setAuthentificationService(authServer->getAuthentificationService());
+AuthServer::AuthServer(AuthServer & authServer) {
+    setNetworkManager(authServer.getNetworkManager());
+    setConfiguration(authServer.getConfiguration());
+    setLog(authServer.getLog());
+    setDatabaseManager(authServer.getDatabaseManager());
+    setSchedulingService(authServer.getSchedulingService());
+    setRealmService(authServer.getRealmService());
+    setAuthentificationService(authServer.getAuthentificationService());
 }
 
 AuthServer::~AuthServer() {

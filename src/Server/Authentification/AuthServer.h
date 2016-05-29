@@ -23,7 +23,7 @@ namespace Auth {
 class AuthServer {
 public:
     AuthServer();
-    AuthServer(AuthServer * authServer);
+    AuthServer(AuthServer & authServer);
     virtual ~AuthServer();
 
     void startServer(std::string configFile);

@@ -24,7 +24,7 @@ namespace Kingdom {
 class KingdomServer {
 public:
     KingdomServer();
-    KingdomServer(KingdomServer * kingdomServer);
+    KingdomServer(KingdomServer& kingdomServer);
     virtual ~KingdomServer();
 
     void startServer(std::string configFile);
